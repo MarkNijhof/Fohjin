@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fohjin.DDD", "Fohjin.DDD\Fohjin.DDD.csproj", "{A3DC385A-BFCB-4AF2-B5BE-D31309098142}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A3DC385A-BFCB-4AF2-B5BE-D31309098142}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3DC385A-BFCB-4AF2-B5BE-D31309098142}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3DC385A-BFCB-4AF2-B5BE-D31309098142}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3DC385A-BFCB-4AF2-B5BE-D31309098142}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
