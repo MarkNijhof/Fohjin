@@ -1,5 +1,8 @@
 
 namespace Fohjin.DDD.Domain.Events
 {
-    public interface IDomainEvent { }
+    public interface IDomainEvent
+    {
+        long TimeStamp { get; }
+    }
 }

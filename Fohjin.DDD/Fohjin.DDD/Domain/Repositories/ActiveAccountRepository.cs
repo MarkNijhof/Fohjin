@@ -18,7 +18,7 @@ namespace Fohjin.DDD.Domain.Repositories
 
         public IActiveAccount GetById(Guid id)
         {
-            if (_domainEventStorage.GetEvents().Count() == 0)
+            if (_domainEventStorage.GetEventsAfter(0).Count() == 0)
                 throw new Exception(string.Format("ActiveAccount with id {0} was not found", id));
 
             var activeAccount = new ActiveAccount();
@@ -35,7 +35,7 @@ namespace Fohjin.DDD.Domain.Repositories
             var entity = (IExposeMyInternalChanges) activeAccount;
             foreach (var domainEvent in entity.GetChanges())
             {
-                _domainEventStorage.AddEvent(domainEvent);
+                _domainEventStorage.AddEvent(entity.Id, domainEvent);
                 makeSnapShot(entity);
             }
             entity.Clear();
@@ -43,11 +43,11 @@ namespace Fohjin.DDD.Domain.Repositories
 
         private void makeSnapShot(IExposeMyInternalChanges activeAccount)
         {
-            if (_domainEventStorage.GetEvents().Count() % 10 != 0)
+            if (_domainEventStorage.GetEventsAfter(0).Count() % 10 != 0)
                 return;
 
             var orginator = (IOrginator) activeAccount;
-            _snapShotStorage.Add(_domainEventStorage.GetEvents().Count(), orginator.CreateMemento());
+            _snapShotStorage.Add(activeAccount.Id, new SnapShot(_domainEventStorage.GetEventsAfter(0).Count(), orginator.CreateMemento()));
         }
 
         private int LoadSnapShotIfExists(IOrginator activeAccount)
@@ -55,18 +55,18 @@ namespace Fohjin.DDD.Domain.Repositories
             var startIndex = -1;
             if (_snapShotStorage.HasSnapShots())
             {
-                var keyValuePair = _snapShotStorage.GetLastSnapShot();
-                startIndex = keyValuePair.Key;
-                activeAccount.SetMemento(keyValuePair.Value);
+                var snapShot = _snapShotStorage.GetLastSnapShot();
+                startIndex = snapShot.EventLocation;
+                activeAccount.SetMemento(snapShot.Memento);
             }
             return startIndex;
         }
 
         private void loadRemainingHistoryEvents(IExposeMyInternalChanges activeAccount, int startIndex)
         {
-            if (_domainEventStorage.GetEvents().Count() > startIndex)
+            if (_domainEventStorage.GetEventsAfter(startIndex).Count() > startIndex)
             {
-                activeAccount.LoadHistory(_domainEventStorage.GetEvents().SkipWhile((o, i) => i <= startIndex));
+                activeAccount.LoadHistory(_domainEventStorage.GetEventsAfter(startIndex));
             }
         }
     }

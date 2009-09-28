@@ -1,25 +1,27 @@
+using System;
 using System.Collections.Generic;
+using System.Data.SQLite;
 using Fohjin.DDD.Domain.Events;
 
 namespace Fohjin.DDD.Domain.Repositories
 {
     public class DomainEventStorage : IDomainEventStorage
     {
-        private readonly List<IDomainEvent> _domainEvents;
+        private readonly SQLiteConnection _sqLiteConnection;
 
-        public DomainEventStorage()
+        public DomainEventStorage(SQLiteConnection sqLiteConnection)
         {
-            _domainEvents = new List<IDomainEvent>();
+            _sqLiteConnection = sqLiteConnection;
         }
 
-        public IEnumerable<IDomainEvent> GetEvents()
+        public IEnumerable<IDomainEvent> GetEventsAfter(int index)
         {
-            return _domainEvents.AsReadOnly();
+            throw new NotImplementedException();
         }
 
-        public void AddEvent(IDomainEvent domainEvent)
+        public void AddEvent(Guid id, IDomainEvent domainEvent)
         {
-            _domainEvents.Add(domainEvent);
+            throw new NotImplementedException();
         }
     }
 }

@@ -9,6 +9,8 @@ namespace Fohjin.DDD.Domain
         private readonly Dictionary<Type, Delegate> _events;
         private readonly List<IDomainEvent> _appliedEvents;
 
+        public Guid Id { get; protected set; }
+
         public BaseAggregateRoot()
         {
             _events = new Dictionary<Type, Delegate>();

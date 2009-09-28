@@ -1,31 +1,45 @@
-using System.Linq;
-using System.Collections.Generic;
-using Fohjin.DDD.Domain.Memento;
+using System;
+using System.Data.Common;
+using System.Data.SQLite;
 
 namespace Fohjin.DDD.Domain.Repositories
 {
     public class SnapShotStorage : ISnapShotStorage 
     {
-        private readonly Dictionary<int, IMemento> _snapShots;
+        private readonly SQLiteConnection _sqLiteConnection;
 
-        public SnapShotStorage()
+        public SnapShotStorage(SQLiteConnection sqLiteConnection)
         {
-            _snapShots = new Dictionary<int, IMemento>();
+            _sqLiteConnection = sqLiteConnection;
         }
 
-        public void Add(int eventLocation, IMemento memento)
+        public void Add(Guid id, ISnapShot snapShot)
         {
-            _snapShots.Add(eventLocation, memento);
+            using (DbTransaction dbTrans = _sqLiteConnection.BeginTransaction())
+            {
+                using (DbCommand sqLiteCommand = _sqLiteConnection.CreateCommand())
+                {
+                    //sqLiteCommand.CommandText = "INSERT INTO TestCase(MyValue) VALUES(?)";
+                    //DbParameter Field1 = sqLiteCommand.CreateParameter();
+                    //sqLiteCommand.Parameters.Add(Field1);
+                    //for (int n = 0; n < 100000; n++)
+                    //{
+                    //    Field1.Value = n + 100000;
+                    //    sqLiteCommand.ExecuteNonQuery();
+                    //}
+                }
+                dbTrans.Commit();
+            }
         }
 
         public bool HasSnapShots()
         {
-            return _snapShots.Count > 0;
+            throw new NotImplementedException();
         }
 
-        public KeyValuePair<int, IMemento> GetLastSnapShot()
+        public ISnapShot GetLastSnapShot()
         {
-            return _snapShots.Last();
+            throw new NotImplementedException();
         }
     }
 }

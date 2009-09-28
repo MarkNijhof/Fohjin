@@ -6,7 +6,7 @@ using Fohjin.DDD.Domain.ValueObjects;
 
 namespace Fohjin.DDD.Domain.Entities
 {
-    internal class ActiveAccountMemento : IMemento
+    public class ActiveAccountMemento : IMemento
     {
         internal string State;
         internal List<KeyValuePair<string, decimal>> Mutations { get; private set; }

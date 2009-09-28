@@ -10,17 +10,16 @@ namespace Fohjin.DDD.Domain.Entities
 {
     public class ActiveAccount : BaseAggregateRoot, IActiveAccount, IOrginator
     {
-        private Guid _id;
         private Balance _balance;
         private readonly List<Ledger> _ledgers;
         private IActiveAccountState _state;
 
         public ActiveAccount()
         {
-            _id = new Guid();
+            Id = new Guid();
             _balance = new Balance();
             _ledgers = new List<Ledger>();
-            _state = new InValidState(Apply, () => _id, () => _balance, () => _ledgers);
+            _state = new InValidState(Apply, () => Id, () => _balance, () => _ledgers);
 
             registerEvents();
         }
@@ -47,13 +46,13 @@ namespace Fohjin.DDD.Domain.Entities
 
         IMemento IOrginator.CreateMemento()
         {
-            return new ActiveAccountMemento(_id, _balance, _ledgers, _state);
+            return new ActiveAccountMemento(Id, _balance, _ledgers, _state);
         }
 
         void IOrginator.SetMemento(IMemento memento)
         {
             var accountMemento = (ActiveAccountMemento) memento;
-            _id = accountMemento.Id;
+            Id = accountMemento.Id;
             _balance = accountMemento.Balance;
 
             foreach (var mutation in accountMemento.Mutations)
@@ -61,7 +60,7 @@ namespace Fohjin.DDD.Domain.Entities
                 _ledgers.Add(InstantiateClassFromStringValue<Ledger>(mutation.Key, new Amount(mutation.Value)));
             }
 
-            Func<Guid> idFunc = () => _id;
+            Func<Guid> idFunc = () => Id;
             Func<Balance> balanceFunc = () => _balance;
             Func<List<Ledger>> ledgersFunc = () => _ledgers;
             Action<IDomainEvent> applyAction = x => Apply(x);
@@ -90,13 +89,13 @@ namespace Fohjin.DDD.Domain.Entities
 
         private void onAccountCreated(AccountCreatedEvent accountCreatedEvent)
         {
-            _id = accountCreatedEvent.Guid;
-            _state = new CreatedState(Apply, () => _id, () => _balance, () => _ledgers);
+            Id = accountCreatedEvent.Guid;
+            _state = new CreatedState(Apply, () => Id, () => _balance, () => _ledgers);
         }
 
         private void onAccountClosed(AccountClosedEvent accountClosedEvent)
         {
-            _state = new ClosedState(Apply, () => _id, () => _balance, () => _ledgers);
+            _state = new ClosedState(Apply, () => Id, () => _balance, () => _ledgers);
         }
 
         private void onWithdrawl(WithdrawlEvent withdrawlEvent)

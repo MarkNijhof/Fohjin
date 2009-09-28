@@ -5,17 +5,18 @@ namespace Fohjin.DDD.Domain.Entities
 {
     public class ClosedAccount
     {
-        private readonly List<Ledger> _mutations;
+        private readonly List<Ledger> _ledgers;
         private Guid _id;
 
         public ClosedAccount()
         {
-            _mutations = new List<Ledger>();
+            _ledgers = new List<Ledger>();
         }
 
-        public ClosedAccount(List<Ledger> mutations)
+        public ClosedAccount(Guid id, List<Ledger> mutations)
         {
-            _mutations = mutations;
+            _id = id;
+            _ledgers = mutations;
         }
     }
 }

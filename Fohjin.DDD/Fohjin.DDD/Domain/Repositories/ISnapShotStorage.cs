@@ -1,12 +1,11 @@
-using System.Collections.Generic;
-using Fohjin.DDD.Domain.Memento;
+using System;
 
 namespace Fohjin.DDD.Domain.Repositories
 {
     public interface ISnapShotStorage
     {
-        void Add(int eventLocation, IMemento memento);
         bool HasSnapShots();
-        KeyValuePair<int, IMemento> GetLastSnapShot();
+        ISnapShot GetLastSnapShot();
+        void Add(Guid id, ISnapShot snapShot);
     }
 }

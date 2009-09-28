@@ -16,7 +16,7 @@ namespace Fohjin.DDD.Domain.Entities.ActiveAccountStates
 
         public override ClosedAccount Close()
         {
-            var closedAccount = new ClosedAccount(_ledgers());
+            var closedAccount = new ClosedAccount(_id(), _ledgers());
             _apply(new AccountClosedEvent());
             return closedAccount;
         }
@@ -24,7 +24,7 @@ namespace Fohjin.DDD.Domain.Entities.ActiveAccountStates
         public override void Withdrawl(Amount amount)
         {
             if (_balance().WithdrawlWillResultInNegativeBalance(amount))
-                throw new Exception("The amount is larger than your current balance");
+                throw new Exception(string.Format("The amount {0} is larger than your current balance {1}", (decimal)amount, (decimal)_balance()));
 
             var newBalance = _balance().Withdrawl(amount);
 
