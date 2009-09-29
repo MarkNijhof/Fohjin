@@ -1,8 +1,11 @@
 
+using System;
+
 namespace Fohjin.DDD.Domain.Events
 {
     public interface IDomainEvent
     {
-        long TimeStamp { get; }
+        Guid Id { get; }
+        DateTime TimeStamp { get; }
     }
 }

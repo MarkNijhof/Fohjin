@@ -1,18 +1,20 @@
 using System;
-using Fohjin.DDD.Domain.ValueObjects;
 
 namespace Fohjin.DDD.Domain.Events
 {
+    [Serializable]
     public class WithdrawlEvent : IDomainEvent
     {
-        public WithdrawlEvent(Balance balance, Amount amount)
+        public WithdrawlEvent(decimal balance, decimal amount)
         {
-            TimeStamp = DateTime.Now.Ticks;
+            Id = Guid.NewGuid();
+            TimeStamp = DateTime.Now;
             Balance = balance;
             Amount = amount;
         }
-        public long TimeStamp { get; private set; }
-        public Balance Balance { get; private set; }
-        public Amount Amount { get; private set; }
+        public Guid Id { get; private set; }
+        public DateTime TimeStamp { get; private set; }
+        public decimal Balance { get; private set; }
+        public decimal Amount { get; private set; }
     }
 }

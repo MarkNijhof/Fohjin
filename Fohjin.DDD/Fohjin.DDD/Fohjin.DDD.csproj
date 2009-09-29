@@ -61,7 +61,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Configuration.cs" />
+    <Compile Include="Configuration\DomainConfiguration.cs" />
+    <Compile Include="Configuration\DatabaseBootStrapper.cs" />
     <Compile Include="DomainBootStrapper.cs" />
     <Compile Include="Domain\BaseAggregateRoot.cs" />
     <Compile Include="Domain\Entities\ActiveAccount.cs" />
@@ -73,6 +74,7 @@
     <Compile Include="Domain\Entities\IActiveAccount.cs" />
     <Compile Include="Domain\Entities\ActiveAccountStates\IActiveAccountState.cs" />
     <Compile Include="Domain\Entities\ActiveAccountStates\InValidState.cs" />
+    <Compile Include="Domain\Entities\IDomainAggregate.cs" />
     <Compile Include="Domain\Events\IDomainEvent.cs" />
     <Compile Include="Domain\IExposeMyInternalChanges.cs" />
     <Compile Include="Domain\Memento\IOrginator.cs" />
@@ -83,16 +85,23 @@
     <Compile Include="Domain\Events\WithdrawlEvent.cs" />
     <Compile Include="Domain\Memento\IMomento.cs" />
     <Compile Include="Domain\Repositories\ActiveAccountRepository.cs" />
-    <Compile Include="Domain\Repositories\DomainEventStorage.cs" />
-    <Compile Include="Domain\Repositories\IDomainEventStorage.cs" />
-    <Compile Include="Domain\Repositories\ISnapShot.cs" />
-    <Compile Include="Domain\Repositories\ISnapShotStorage.cs" />
+    <Compile Include="Infrastructure\DomainEventStorage.cs" />
+    <Compile Include="Infrastructure\Serializer.cs" />
+    <Compile Include="Domain\Contracts\IDomainEventStorage.cs" />
+    <Compile Include="Domain\Contracts\ISerializer.cs" />
+    <Compile Include="Domain\Contracts\ISnapShot.cs" />
+    <Compile Include="Domain\Contracts\ISnapShotStorage.cs" />
     <Compile Include="Domain\Repositories\SnapShot.cs" />
-    <Compile Include="Domain\Repositories\SnapShotStorage.cs" />
+    <Compile Include="Infrastructure\SnapShotStorage.cs" />
     <Compile Include="Domain\TypeExtension.cs" />
     <Compile Include="Domain\ValueObjects\Amount.cs" />
     <Compile Include="Domain\ValueObjects\Balance.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="sqlite3.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

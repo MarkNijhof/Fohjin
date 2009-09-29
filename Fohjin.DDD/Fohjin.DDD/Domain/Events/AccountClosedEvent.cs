@@ -2,12 +2,15 @@ using System;
 
 namespace Fohjin.DDD.Domain.Events
 {
+    [Serializable]
     public class AccountClosedEvent : IDomainEvent
     {
         public AccountClosedEvent()
         {
-            TimeStamp = DateTime.Now.Ticks;
+            Id = Guid.NewGuid();
+            TimeStamp = DateTime.Now;
         }
-        public long TimeStamp { get; private set; }
+        public Guid Id { get; private set; }
+        public DateTime TimeStamp { get; private set; }
     }
 }

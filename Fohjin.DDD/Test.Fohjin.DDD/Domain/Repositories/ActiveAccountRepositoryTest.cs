@@ -1,11 +1,12 @@
 using System;
 using System.Data.SQLite;
-using System.IO;
 using System.Linq;
+using Fohjin.DDD.Configuration;
 using Fohjin.DDD.Domain;
 using Fohjin.DDD.Domain.Entities;
 using Fohjin.DDD.Domain.Repositories;
 using Fohjin.DDD.Domain.ValueObjects;
+using Fohjin.DDD.Infrastructure;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 
@@ -23,18 +24,12 @@ namespace Test.Fohjin.DDD.Domain.Repositories
         [SetUp]
         public void SetUp()
         {
-            File.Delete(dataBaseFile);
+            new DatabaseBootStrapper().ReCreateDatabaseSchema();
 
             var sqLiteConnection = new SQLiteConnection(string.Format("Data Source={0}", dataBaseFile));
-            _domainEventStorage = new DomainEventStorage(sqLiteConnection);
-            _snapShotStorage = new SnapShotStorage(sqLiteConnection);
+            _domainEventStorage = new DomainEventStorage(sqLiteConnection, new Serializer());
+            _snapShotStorage = new SnapShotStorage(sqLiteConnection, new Serializer());
             _activeAccountRepository = new ActiveAccountRepository(_domainEventStorage, _snapShotStorage);
-        }
-
-        [TearDown]
-        public void TearDown()
-        {
-            File.Delete(dataBaseFile);
         }
 
         [Test]
@@ -47,7 +42,8 @@ namespace Test.Fohjin.DDD.Domain.Repositories
 
             _activeAccountRepository.Save(activeAccount);
 
-            Assert.That(_domainEventStorage.GetEventsAfter(0).Count(), Is.EqualTo(3));
+            Assert.That(_domainEventStorage.GetEventsSinceLastSnapShot(activeAccount.Id).Count(), Is.EqualTo(0));
+            Assert.That(_domainEventStorage.GetAllEvents(activeAccount.Id).Count(), Is.EqualTo(3));
         }
 
         [Test]
@@ -66,7 +62,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
         }
 
         [Test]
-        public void When_calling_Save_after_every_10_events_a_new_snap_shot_will_be_created_9_events_will_not()
+        public void When_calling_Save_after_more_than_9_events_a_new_snap_shot_will_be_created_9_events_will_not()
         {
             IActiveAccount activeAccount = new ActiveAccount();
             activeAccount.Create();
@@ -81,11 +77,11 @@ namespace Test.Fohjin.DDD.Domain.Repositories
 
             _activeAccountRepository.Save(activeAccount);
 
-            Assert.That(_snapShotStorage.HasSnapShots(), Is.False);
+            Assert.That(_snapShotStorage.GetLastSnapShot(activeAccount.Id), Is.Null);
         }
 
         [Test]
-        public void When_calling_Save_after_every_10_events_a_new_snap_shot_will_be_created()
+        public void When_calling_Save_after_more_than_9_events_a_new_snap_shot_will_be_created_10_events()
         {
             IActiveAccount activeAccount = new ActiveAccount();
             activeAccount.Create();
@@ -99,15 +95,20 @@ namespace Test.Fohjin.DDD.Domain.Repositories
             activeAccount.Deposite(new Amount(1));
             activeAccount.Deposite(new Amount(1));
 
+            var activeAccountForRepository = (IExposeMyInternalChanges)activeAccount;
+            var id = activeAccountForRepository.GetChanges().Last().Id;
+
             _activeAccountRepository.Save(activeAccount);
 
-            Assert.That(_snapShotStorage.HasSnapShots(), Is.True);
-            Assert.That(_snapShotStorage.GetLastSnapShot().EventLocation, Is.EqualTo(10));
-            Assert.That(_snapShotStorage.GetLastSnapShot().Memento, Is.InstanceOfType(typeof(ActiveAccountMemento)));
+            var snapShot = _snapShotStorage.GetLastSnapShot(activeAccount.Id);
+
+            Assert.That(snapShot, Is.Not.Null);
+            Assert.That(snapShot.EventLocation, Is.EqualTo(id));
+            Assert.That(snapShot.Memento, Is.InstanceOfType(typeof(ActiveAccountMemento)));
         }
 
         [Test]
-        public void When_calling_Save_after_every_10_events_a_new_snap_shot_will_be_created_11_events()
+        public void When_calling_Save_after_more_than_9_events_a_new_snap_shot_will_be_created_11_events()
         {
             IActiveAccount activeAccount = new ActiveAccount();
             activeAccount.Create();
@@ -122,11 +123,97 @@ namespace Test.Fohjin.DDD.Domain.Repositories
             activeAccount.Deposite(new Amount(1));
             activeAccount.Deposite(new Amount(1));
 
+            var activeAccountForRepository = (IExposeMyInternalChanges)activeAccount;
+            var id = activeAccountForRepository.GetChanges().Last().Id;
+
             _activeAccountRepository.Save(activeAccount);
 
-            Assert.That(_snapShotStorage.HasSnapShots(), Is.True);
-            Assert.That(_snapShotStorage.GetLastSnapShot().EventLocation, Is.EqualTo(10));
-            Assert.That(_snapShotStorage.GetLastSnapShot().Memento, Is.InstanceOfType(typeof(ActiveAccountMemento)));
+            var snapShot = _snapShotStorage.GetLastSnapShot(activeAccount.Id);
+
+            Assert.That(snapShot, Is.Not.Null);
+            Assert.That(snapShot.EventLocation, Is.EqualTo(id));
+            Assert.That(snapShot.Memento, Is.InstanceOfType(typeof(ActiveAccountMemento)));
+        }
+
+        [Test]
+        public void When_calling_Save_after_more_than_9_events_after_the_last_snap_shot_a_new_snapshot_will_be_created_10_events_after_last_snapshot()
+        {
+            IActiveAccount activeAccount = new ActiveAccount();
+            activeAccount.Create();
+            activeAccount.Deposite(new Amount(1));
+            activeAccount.Deposite(new Amount(1));
+            activeAccount.Deposite(new Amount(1));
+            activeAccount.Deposite(new Amount(1));
+            activeAccount.Deposite(new Amount(1));
+            activeAccount.Deposite(new Amount(1));
+            activeAccount.Deposite(new Amount(1));
+            activeAccount.Deposite(new Amount(1));
+            activeAccount.Deposite(new Amount(1));
+
+            _activeAccountRepository.Save(activeAccount);
+
+            activeAccount.Deposite(new Amount(1));
+            activeAccount.Deposite(new Amount(1));
+            activeAccount.Deposite(new Amount(1));
+            activeAccount.Deposite(new Amount(1));
+            activeAccount.Deposite(new Amount(1));
+            activeAccount.Deposite(new Amount(1));
+            activeAccount.Deposite(new Amount(1));
+            activeAccount.Deposite(new Amount(1));
+            activeAccount.Deposite(new Amount(1));
+            activeAccount.Deposite(new Amount(1));
+            activeAccount.Deposite(new Amount(1));
+            activeAccount.Deposite(new Amount(1));
+
+            var activeAccountForRepository = (IExposeMyInternalChanges)activeAccount;
+            var id = activeAccountForRepository.GetChanges().Last().Id;
+
+            _activeAccountRepository.Save(activeAccount);
+
+            var snapShot = _snapShotStorage.GetLastSnapShot(activeAccount.Id);
+
+            Assert.That(snapShot, Is.Not.Null);
+            Assert.That(snapShot.EventLocation, Is.EqualTo(id));
+            Assert.That(snapShot.Memento, Is.InstanceOfType(typeof(ActiveAccountMemento)));
+        }
+
+        [Test]
+        public void When_calling_Save_after_more_than_9_events_after_the_last_snap_shot_a_new_snapshot_will_be_created_10_events_after_last_snapshot_9_events_after_last_snapshot()
+        {
+            IActiveAccount activeAccount = new ActiveAccount();
+            activeAccount.Create();
+            activeAccount.Deposite(new Amount(1));
+            activeAccount.Deposite(new Amount(1));
+            activeAccount.Deposite(new Amount(1));
+            activeAccount.Deposite(new Amount(1));
+            activeAccount.Deposite(new Amount(1));
+            activeAccount.Deposite(new Amount(1));
+            activeAccount.Deposite(new Amount(1));
+            activeAccount.Deposite(new Amount(1));
+            activeAccount.Deposite(new Amount(1));
+
+            var activeAccountForRepository = (IExposeMyInternalChanges)activeAccount;
+            var id = activeAccountForRepository.GetChanges().Last().Id;
+
+            _activeAccountRepository.Save(activeAccount);
+
+            activeAccount.Deposite(new Amount(1));
+            activeAccount.Deposite(new Amount(1));
+            activeAccount.Deposite(new Amount(1));
+            activeAccount.Deposite(new Amount(1));
+            activeAccount.Deposite(new Amount(1));
+            activeAccount.Deposite(new Amount(1));
+            activeAccount.Deposite(new Amount(1));
+            activeAccount.Deposite(new Amount(1));
+            activeAccount.Deposite(new Amount(1));
+
+            _activeAccountRepository.Save(activeAccount);
+
+            var snapShot = _snapShotStorage.GetLastSnapShot(activeAccount.Id);
+
+            Assert.That(snapShot, Is.Not.Null);
+            Assert.That(snapShot.EventLocation, Is.EqualTo(id));
+            Assert.That(snapShot.Memento, Is.InstanceOfType(typeof(ActiveAccountMemento)));
         }
 
         [Test]
@@ -146,7 +233,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
 
             _activeAccountRepository.Save(activeAccount);
 
-            var sut = _activeAccountRepository.GetById(new Guid());
+            var sut = _activeAccountRepository.GetById(activeAccount.Id);
 
             try
             {
@@ -178,7 +265,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
 
             _activeAccountRepository.Save(activeAccount);
 
-            var sut = _activeAccountRepository.GetById(new Guid());
+            var sut = _activeAccountRepository.GetById(activeAccount.Id);
 
             try
             {
@@ -211,7 +298,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
 
             _activeAccountRepository.Save(activeAccount);
 
-            var sut = _activeAccountRepository.GetById(new Guid());
+            var sut = _activeAccountRepository.GetById(activeAccount.Id);
 
             try
             {

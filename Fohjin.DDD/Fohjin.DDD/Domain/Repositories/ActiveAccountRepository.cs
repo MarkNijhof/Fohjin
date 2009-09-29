@@ -1,12 +1,16 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using Fohjin.DDD.Domain.Contracts;
 using Fohjin.DDD.Domain.Entities;
+using Fohjin.DDD.Domain.Events;
 using Fohjin.DDD.Domain.Memento;
 
 namespace Fohjin.DDD.Domain.Repositories
 {
     public class ActiveAccountRepository
     {
+        private const int snapShotInterval = 10;
         private readonly IDomainEventStorage _domainEventStorage;
         private readonly ISnapShotStorage _snapShotStorage;
 
@@ -18,14 +22,11 @@ namespace Fohjin.DDD.Domain.Repositories
 
         public IActiveAccount GetById(Guid id)
         {
-            if (_domainEventStorage.GetEventsAfter(0).Count() == 0)
-                throw new Exception(string.Format("ActiveAccount with id {0} was not found", id));
-
             var activeAccount = new ActiveAccount();
 
-            var startIndex = LoadSnapShotIfExists(activeAccount);
+            LoadSnapShotIfExists(id, activeAccount);
 
-            loadRemainingHistoryEvents(activeAccount, startIndex);
+            loadRemainingHistoryEvents(id, activeAccount);
 
             return activeAccount;
         }
@@ -33,41 +34,51 @@ namespace Fohjin.DDD.Domain.Repositories
         public void Save(IActiveAccount activeAccount)
         {
             var entity = (IExposeMyInternalChanges) activeAccount;
-            foreach (var domainEvent in entity.GetChanges())
-            {
-                _domainEventStorage.AddEvent(entity.Id, domainEvent);
-                makeSnapShot(entity);
-            }
+            _domainEventStorage.AddEvents(entity.Id, entity.GetChanges());
+
+            makeSnapShot(entity);
+
             entity.Clear();
         }
 
         private void makeSnapShot(IExposeMyInternalChanges activeAccount)
         {
-            if (_domainEventStorage.GetEventsAfter(0).Count() % 10 != 0)
+            if (_snapShotStorage.GetLastSnapShot(activeAccount.Id) != null)
+            {
+                var events = _domainEventStorage.GetEventsSinceLastSnapShot(activeAccount.Id);
+                if (events.Count() < snapShotInterval)
+                    return;
+            }
+            else
+            {
+                var events = _domainEventStorage.GetAllEvents(activeAccount.Id);
+                if (events.Count() < snapShotInterval)
+                    return;
+            }
+
+            var orginator = (IOrginator)activeAccount;
+            _snapShotStorage.Add(activeAccount.Id, new SnapShot(activeAccount.GetChanges().Last().Id, orginator.CreateMemento()));
+        }
+
+        private void LoadSnapShotIfExists(Guid id, IOrginator activeAccount)
+        {
+            var snapShot = _snapShotStorage.GetLastSnapShot(id);
+            if (snapShot == null)
                 return;
 
-            var orginator = (IOrginator) activeAccount;
-            _snapShotStorage.Add(activeAccount.Id, new SnapShot(_domainEventStorage.GetEventsAfter(0).Count(), orginator.CreateMemento()));
+            activeAccount.SetMemento(snapShot.Memento);
         }
 
-        private int LoadSnapShotIfExists(IOrginator activeAccount)
+        private void loadRemainingHistoryEvents(Guid id, IExposeMyInternalChanges activeAccount)
         {
-            var startIndex = -1;
-            if (_snapShotStorage.HasSnapShots())
+            var events = _domainEventStorage.GetEventsSinceLastSnapShot(id);
+            if (events.Count() > 0)
             {
-                var snapShot = _snapShotStorage.GetLastSnapShot();
-                startIndex = snapShot.EventLocation;
-                activeAccount.SetMemento(snapShot.Memento);
+                activeAccount.LoadHistory(events);
+                return;
             }
-            return startIndex;
-        }
 
-        private void loadRemainingHistoryEvents(IExposeMyInternalChanges activeAccount, int startIndex)
-        {
-            if (_domainEventStorage.GetEventsAfter(startIndex).Count() > startIndex)
-            {
-                activeAccount.LoadHistory(_domainEventStorage.GetEventsAfter(startIndex));
-            }
+            activeAccount.LoadHistory(_domainEventStorage.GetAllEvents(id));
         }
     }
 }

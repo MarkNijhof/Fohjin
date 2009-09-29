@@ -6,6 +6,7 @@ using Fohjin.DDD.Domain.ValueObjects;
 
 namespace Fohjin.DDD.Domain.Entities
 {
+    [Serializable]
     public class ActiveAccountMemento : IMemento
     {
         internal string State;

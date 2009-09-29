@@ -90,7 +90,7 @@ namespace Test.Fohjin.DDD.Domain.Entities
             var activeAccountForRepository = (IExposeMyInternalChanges)activeAccount;
 
             Assert.That(activeAccountForRepository.GetChanges().Last(), Is.InstanceOfType(typeof(DepositeEvent)));
-            Assert.That(((DepositeEvent)activeAccountForRepository.GetChanges().Last()).Amount.GetDecimal(), Is.EqualTo(20));
+            Assert.That(((DepositeEvent)activeAccountForRepository.GetChanges().Last()).Amount, Is.EqualTo(20));
         }
 
         [Test]
@@ -104,7 +104,7 @@ namespace Test.Fohjin.DDD.Domain.Entities
             var activeAccountForRepository = (IExposeMyInternalChanges)activeAccount;
 
             Assert.That(activeAccountForRepository.GetChanges().Last(), Is.InstanceOfType(typeof(WithdrawlEvent)));
-            Assert.That(((WithdrawlEvent)activeAccountForRepository.GetChanges().Last()).Amount.GetDecimal(), Is.EqualTo(10));
+            Assert.That(((WithdrawlEvent)activeAccountForRepository.GetChanges().Last()).Amount, Is.EqualTo(10));
         }
     }
 }

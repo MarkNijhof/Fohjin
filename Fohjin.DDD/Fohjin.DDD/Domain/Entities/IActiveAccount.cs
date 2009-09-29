@@ -2,7 +2,7 @@ using Fohjin.DDD.Domain.ValueObjects;
 
 namespace Fohjin.DDD.Domain.Entities
 {
-    public interface IActiveAccount
+    public interface IActiveAccount : IDomainAggregate
     {
         void Create();
         ClosedAccount Close();
