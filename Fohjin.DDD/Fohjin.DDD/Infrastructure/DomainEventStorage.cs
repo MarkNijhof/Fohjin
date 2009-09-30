@@ -107,7 +107,7 @@ namespace Fohjin.DDD.Infrastructure
             return domainEvents;
         }
 
-        public void AddEvents(Guid id, IEnumerable<IDomainEvent> domainEvents)
+        public void SaveEvents(Guid id, IEnumerable<IDomainEvent> domainEvents)
         {
             try
             {

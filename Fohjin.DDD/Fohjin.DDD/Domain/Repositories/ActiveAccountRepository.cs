@@ -36,9 +36,9 @@ namespace Fohjin.DDD.Domain.Repositories
 
             _eventPropagator.ForwardEvents(entity.Id, entity.GetChanges());
 
-            _domainEventStorage.AddEvents(entity.Id, entity.GetChanges());
+            _domainEventStorage.SaveEvents(entity.Id, entity.GetChanges());
 
-            _snapShotStorage.MakeShapShot(entity);
+            _snapShotStorage.SaveShapShot(entity);
 
             entity.Clear();
         }

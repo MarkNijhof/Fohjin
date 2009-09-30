@@ -24,47 +24,7 @@ namespace Fohjin.DDD.Infrastructure
             _domainEventStorage = domainEventStorage;
         }
 
-        public void Add(Guid entityId, ISnapShot snapShot)
-        {
-            try
-            {
-                _sqLiteConnection.Open();
-
-                using (DbTransaction dbTrans = _sqLiteConnection.BeginTransaction())
-                {
-                    using (DbCommand sqLiteCommand = _sqLiteConnection.CreateCommand())
-                    {
-                        sqLiteCommand.CommandText = @"INSERT INTO SnapShots (Id, AggregateId, SnapShot, TimeStamp) VALUES (@id, @aggregateId, @snapShot, @timeStamp);";
-                        var idField = sqLiteCommand.CreateParameter();
-                        idField.ParameterName = "@id";
-                        idField.Value = Guid.NewGuid();
-                        var aggregateIdField = sqLiteCommand.CreateParameter();
-                        aggregateIdField.ParameterName = "@aggregateId";
-                        aggregateIdField.Value = entityId;
-                        var snapShotField = sqLiteCommand.CreateParameter();
-                        snapShotField.ParameterName = "@snapShot";
-                        snapShotField.Value = _serializer.Serialize(snapShot);
-                        var timeStampField = sqLiteCommand.CreateParameter();
-                        timeStampField.ParameterName = "@timeStamp";
-                        timeStampField.Value = DateTime.Now;
-
-                        sqLiteCommand.Parameters.Add(idField);
-                        sqLiteCommand.Parameters.Add(aggregateIdField);
-                        sqLiteCommand.Parameters.Add(snapShotField);
-                        sqLiteCommand.Parameters.Add(timeStampField);
-
-                        sqLiteCommand.ExecuteNonQuery();
-                    }
-                    dbTrans.Commit();
-                }
-            }
-            finally
-            {
-                _sqLiteConnection.Close();
-            }
-        }
-
-        public void MakeShapShot(IExposeMyInternalChanges entity)
+        public void SaveShapShot(IExposeMyInternalChanges entity)
         {
             if (GetLastSnapShot(entity.Id) != null)
             {
@@ -116,6 +76,46 @@ namespace Fohjin.DDD.Infrastructure
                 _sqLiteConnection.Close();
             }
             return null;
+        }
+
+        private void Add(Guid entityId, ISnapShot snapShot)
+        {
+            try
+            {
+                _sqLiteConnection.Open();
+
+                using (DbTransaction dbTrans = _sqLiteConnection.BeginTransaction())
+                {
+                    using (DbCommand sqLiteCommand = _sqLiteConnection.CreateCommand())
+                    {
+                        sqLiteCommand.CommandText = @"INSERT INTO SnapShots (Id, AggregateId, SnapShot, TimeStamp) VALUES (@id, @aggregateId, @snapShot, @timeStamp);";
+                        var idField = sqLiteCommand.CreateParameter();
+                        idField.ParameterName = "@id";
+                        idField.Value = Guid.NewGuid();
+                        var aggregateIdField = sqLiteCommand.CreateParameter();
+                        aggregateIdField.ParameterName = "@aggregateId";
+                        aggregateIdField.Value = entityId;
+                        var snapShotField = sqLiteCommand.CreateParameter();
+                        snapShotField.ParameterName = "@snapShot";
+                        snapShotField.Value = _serializer.Serialize(snapShot);
+                        var timeStampField = sqLiteCommand.CreateParameter();
+                        timeStampField.ParameterName = "@timeStamp";
+                        timeStampField.Value = DateTime.Now;
+
+                        sqLiteCommand.Parameters.Add(idField);
+                        sqLiteCommand.Parameters.Add(aggregateIdField);
+                        sqLiteCommand.Parameters.Add(snapShotField);
+                        sqLiteCommand.Parameters.Add(timeStampField);
+
+                        sqLiteCommand.ExecuteNonQuery();
+                    }
+                    dbTrans.Commit();
+                }
+            }
+            finally
+            {
+                _sqLiteConnection.Close();
+            }
         }
     }
 }

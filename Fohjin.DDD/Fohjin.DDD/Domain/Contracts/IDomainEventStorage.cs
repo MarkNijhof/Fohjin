@@ -8,6 +8,6 @@ namespace Fohjin.DDD.Domain.Contracts
     {
         IEnumerable<IDomainEvent> GetAllEvents(Guid aggregateId);
         IEnumerable<IDomainEvent> GetEventsSinceLastSnapShot(Guid aggregateId);
-        void AddEvents(Guid id, IEnumerable<IDomainEvent> domainEvents);
+        void SaveEvents(Guid id, IEnumerable<IDomainEvent> domainEvents);
     }
 }
