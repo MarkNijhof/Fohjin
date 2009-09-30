@@ -1,22 +1,21 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Fohjin.DDD.Domain.Contracts;
 using Fohjin.DDD.Domain.Entities;
-using Fohjin.DDD.Domain.Events;
 using Fohjin.DDD.Domain.Memento;
 
 namespace Fohjin.DDD.Domain.Repositories
 {
     public class ActiveAccountRepository
     {
-        private const int snapShotInterval = 10;
         private readonly IDomainEventStorage _domainEventStorage;
         private readonly ISnapShotStorage _snapShotStorage;
+        private readonly IEventPropagator _eventPropagator;
 
-        public ActiveAccountRepository(IDomainEventStorage domainEventStorage, ISnapShotStorage snapShotStorage)
+        public ActiveAccountRepository(IDomainEventStorage domainEventStorage, ISnapShotStorage snapShotStorage, IEventPropagator eventPropagator)
         {
             _snapShotStorage = snapShotStorage;
+            _eventPropagator = eventPropagator;
             _domainEventStorage = domainEventStorage;
         }
 
@@ -34,30 +33,14 @@ namespace Fohjin.DDD.Domain.Repositories
         public void Save(IActiveAccount activeAccount)
         {
             var entity = (IExposeMyInternalChanges) activeAccount;
+
+            _eventPropagator.ForwardEvents(entity.Id, entity.GetChanges());
+
             _domainEventStorage.AddEvents(entity.Id, entity.GetChanges());
 
-            makeSnapShot(entity);
+            _snapShotStorage.MakeShapShot(entity);
 
             entity.Clear();
-        }
-
-        private void makeSnapShot(IExposeMyInternalChanges activeAccount)
-        {
-            if (_snapShotStorage.GetLastSnapShot(activeAccount.Id) != null)
-            {
-                var events = _domainEventStorage.GetEventsSinceLastSnapShot(activeAccount.Id);
-                if (events.Count() < snapShotInterval)
-                    return;
-            }
-            else
-            {
-                var events = _domainEventStorage.GetAllEvents(activeAccount.Id);
-                if (events.Count() < snapShotInterval)
-                    return;
-            }
-
-            var orginator = (IOrginator)activeAccount;
-            _snapShotStorage.Add(activeAccount.Id, new SnapShot(activeAccount.GetChanges().Last().Id, orginator.CreateMemento()));
         }
 
         private void LoadSnapShotIfExists(Guid id, IOrginator activeAccount)

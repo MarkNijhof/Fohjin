@@ -1,19 +1,27 @@
 using System;
 using System.Data.Common;
 using System.Data.SQLite;
+using System.Linq;
+using Fohjin.DDD.Domain;
 using Fohjin.DDD.Domain.Contracts;
+using Fohjin.DDD.Domain.Memento;
+using Fohjin.DDD.Domain.Repositories;
 
 namespace Fohjin.DDD.Infrastructure
 {
     public class SnapShotStorage : ISnapShotStorage 
     {
+        private const int snapShotInterval = 10;
+
         private readonly SQLiteConnection _sqLiteConnection;
         private readonly ISerializer _serializer;
+        private readonly IDomainEventStorage _domainEventStorage;
 
-        public SnapShotStorage(SQLiteConnection sqLiteConnection, ISerializer serializer)
+        public SnapShotStorage(SQLiteConnection sqLiteConnection, ISerializer serializer, IDomainEventStorage domainEventStorage)
         {
             _sqLiteConnection = sqLiteConnection;
             _serializer = serializer;
+            _domainEventStorage = domainEventStorage;
         }
 
         public void Add(Guid entityId, ISnapShot snapShot)
@@ -54,6 +62,25 @@ namespace Fohjin.DDD.Infrastructure
             {
                 _sqLiteConnection.Close();
             }
+        }
+
+        public void MakeShapShot(IExposeMyInternalChanges entity)
+        {
+            if (GetLastSnapShot(entity.Id) != null)
+            {
+                var events = _domainEventStorage.GetEventsSinceLastSnapShot(entity.Id);
+                if (events.Count() < snapShotInterval)
+                    return;
+            }
+            else
+            {
+                var events = _domainEventStorage.GetAllEvents(entity.Id);
+                if (events.Count() < snapShotInterval)
+                    return;
+            }
+
+            var orginator = (IOrginator)entity;
+            Add(entity.Id, new SnapShot(entity.GetChanges().Last().Id, orginator.CreateMemento()));
         }
 
         public ISnapShot GetLastSnapShot(Guid entityId)

@@ -28,8 +28,8 @@ namespace Test.Fohjin.DDD.Domain.Repositories
 
             var sqLiteConnection = new SQLiteConnection(string.Format("Data Source={0}", dataBaseFile));
             _domainEventStorage = new DomainEventStorage(sqLiteConnection, new Serializer());
-            _snapShotStorage = new SnapShotStorage(sqLiteConnection, new Serializer());
-            _activeAccountRepository = new ActiveAccountRepository(_domainEventStorage, _snapShotStorage);
+            _snapShotStorage = new SnapShotStorage(sqLiteConnection, new Serializer(), _domainEventStorage);
+            _activeAccountRepository = new ActiveAccountRepository(_domainEventStorage, _snapShotStorage, new EventPropagator());
         }
 
         [Test]

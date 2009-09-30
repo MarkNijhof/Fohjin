@@ -6,5 +6,6 @@ namespace Fohjin.DDD.Domain.Contracts
     {
         ISnapShot GetLastSnapShot(Guid entityId);
         void Add(Guid entityId, ISnapShot snapShot);
+        void MakeShapShot(IExposeMyInternalChanges entity);
     }
 }

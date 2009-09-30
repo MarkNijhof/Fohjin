@@ -85,7 +85,9 @@
     <Compile Include="Domain\Events\WithdrawlEvent.cs" />
     <Compile Include="Domain\Memento\IMomento.cs" />
     <Compile Include="Domain\Repositories\ActiveAccountRepository.cs" />
+    <Compile Include="Domain\Contracts\IEventPropagator.cs" />
     <Compile Include="Infrastructure\DomainEventStorage.cs" />
+    <Compile Include="Infrastructure\EventPropagator.cs" />
     <Compile Include="Infrastructure\Serializer.cs" />
     <Compile Include="Domain\Contracts\IDomainEventStorage.cs" />
     <Compile Include="Domain\Contracts\ISerializer.cs" />
