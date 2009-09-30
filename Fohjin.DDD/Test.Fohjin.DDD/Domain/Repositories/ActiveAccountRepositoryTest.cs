@@ -217,6 +217,39 @@ namespace Test.Fohjin.DDD.Domain.Repositories
         }
 
         [Test]
+        public void When_calling_Save_after_more_than_9_events_after_the_last_snap_shot_a_new_snapshot_will_be_created_10_events_after_last_snapshot_9_events_after_last_snapshot_verify_all_event_counts()
+        {
+            IActiveAccount activeAccount = new ActiveAccount();
+            activeAccount.Create();
+            activeAccount.Deposite(new Amount(1));
+            activeAccount.Deposite(new Amount(1));
+            activeAccount.Deposite(new Amount(1));
+            activeAccount.Deposite(new Amount(1));
+            activeAccount.Deposite(new Amount(1));
+            activeAccount.Deposite(new Amount(1));
+            activeAccount.Deposite(new Amount(1));
+            activeAccount.Deposite(new Amount(1));
+            activeAccount.Deposite(new Amount(1));
+
+            _activeAccountRepository.Save(activeAccount);
+
+            activeAccount.Deposite(new Amount(1));
+            activeAccount.Deposite(new Amount(1));
+            activeAccount.Deposite(new Amount(1));
+            activeAccount.Deposite(new Amount(1));
+            activeAccount.Deposite(new Amount(1));
+            activeAccount.Deposite(new Amount(1));
+            activeAccount.Deposite(new Amount(1));
+            activeAccount.Deposite(new Amount(1));
+            activeAccount.Deposite(new Amount(1));
+
+            _activeAccountRepository.Save(activeAccount);
+
+            Assert.That(_domainEventStorage.GetEventsSinceLastSnapShot(activeAccount.Id).Count(), Is.EqualTo(9));
+            Assert.That(_domainEventStorage.GetAllEvents(activeAccount.Id).Count(), Is.EqualTo(19));
+        }
+
+        [Test]
         [ExpectedException(typeof(Exception))]
         public void When_calling_GetById_after_9_events_a_new_ActiveAcount_will_be_populated()
         {
