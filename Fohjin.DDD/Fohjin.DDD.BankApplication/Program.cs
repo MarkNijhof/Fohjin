@@ -1,14 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Windows.Forms;
+using Fohjin.DDD.BankApplication.Presenters;
+using StructureMap;
 
 namespace Fohjin.DDD.BankApplication
 {
-    class Program
+    static class Program
     {
-        static void Main(string[] args)
+        /// <summary>
+        /// The main entry point for the application.
+        /// </summary>
+        [STAThread]
+        static void Main()
         {
+            ApplicationBootStrapper.BootStrap();
+
+            var clientSearchFormPresenter = ObjectFactory.GetInstance<IClientSearchFormPresenter>();
+
+            Application.EnableVisualStyles();
+
+            clientSearchFormPresenter.Display();
         }
     }
 }

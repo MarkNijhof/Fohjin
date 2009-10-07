@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{CEBF24CE-3326-464B-B6C5-463E7F4BF4BC}</ProjectGuid>
+    <ProjectGuid>{44666AF0-AC7A-486E-AD1F-49FD0573ED43}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Test.Fohjin.DDD</RootNamespace>
-    <AssemblyName>Test.Fohjin.DDD</AssemblyName>
+    <RootNamespace>Fohjin.DDD.Reporting.Dto</RootNamespace>
+    <AssemblyName>Fohjin.DDD.Reporting.Dto</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -31,21 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Moq, Version=3.1.416.3, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Lib\Moq.dll</HintPath>
-    </Reference>
-    <Reference Include="nunit.framework, Version=2.4.6.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Lib\nunit.framework.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data.SQLite, Version=1.0.65.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Lib\sqlite\System.Data.SQLite.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -57,34 +45,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Configuration\DatabaseBootStrapperTest.cs" />
-    <Compile Include="Domain\Entities\ActiveAccountTest.cs" />
-    <Compile Include="Domain\Repositories\ActiveAccountRepositoryTest.cs" />
-    <Compile Include="Domain\AggregateRootTestFixture.cs" />
+    <Compile Include="AccountDetailsDto.cs" />
+    <Compile Include="AccountDto.cs" />
+    <Compile Include="LedgerDto.cs" />
+    <Compile Include="ClientDetailsDto.cs" />
+    <Compile Include="ClientDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Fohjin.DDD.Configuration\Fohjin.DDD.Configuration.csproj">
-      <Project>{CF50373D-3EB9-492D-A88F-70D7D6756DFF}</Project>
-      <Name>Fohjin.DDD.Configuration</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Fohjin.DDD.Domain\Fohjin.DDD.Domain.csproj">
-      <Project>{0FB24C8F-FA8C-409E-A71C-8580F7D78474}</Project>
-      <Name>Fohjin.DDD.Domain</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Fohjin.DDD.Events\Fohjin.DDD.Events.csproj">
-      <Project>{CFB4C037-822D-470E-8A01-832957D193C9}</Project>
-      <Name>Fohjin.DDD.Events</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Fohjin.EventStorage\Fohjin.EventStorage.csproj">
-      <Project>{E5EF4E56-6807-4B55-B28F-50A60F0C3B8A}</Project>
-      <Name>Fohjin.EventStorage</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Events\ActiveAccount\" />
-    <Folder Include="Events\Client\" />
-    <Folder Include="Infrastructure\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

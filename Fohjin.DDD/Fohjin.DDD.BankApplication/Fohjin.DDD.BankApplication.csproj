@@ -5,8 +5,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{D90CF0C9-F829-4964-982E-E5D5A17C9351}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{672A4AB0-6972-49F1-86A6-C2B7DE5AD4D4}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Fohjin.DDD.BankApplication</RootNamespace>
     <AssemblyName>Fohjin.DDD.BankApplication</AssemblyName>
@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="StructureMap, Version=2.5.3.0, Culture=neutral, PublicKeyToken=e60ad81abae3c223, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\StructureMap\StructureMap.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -42,11 +46,103 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApplicationBootStrapper.cs" />
+    <Compile Include="ApplicationRegistry.cs" />
+    <Compile Include="Presenters\AccountDetailsPresenter.cs" />
+    <Compile Include="Presenters\ClientDetailsPresenter.cs" />
+    <Compile Include="Presenters\ClientSearchFormPresenter.cs" />
+    <Compile Include="Presenters\IAccountDetailsPresenter.cs" />
+    <Compile Include="Presenters\IClientDetailsPresenter.cs" />
+    <Compile Include="Presenters\IClientSearchFormPresenter.cs" />
+    <Compile Include="Presenters\IPresenter.cs" />
+    <Compile Include="Views\AccountDetails.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\AccountDetails.Designer.cs">
+      <DependentUpon>AccountDetails.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ClientDetails.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\ClientDetails.Designer.cs">
+      <DependentUpon>ClientDetails.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CleantSearchForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\CleantSearchForm.Designer.cs">
+      <DependentUpon>CleantSearchForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Views\AccountDetails.resx">
+      <DependentUpon>AccountDetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\ClientDetails.resx">
+      <DependentUpon>ClientDetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\CleantSearchForm.resx">
+      <DependentUpon>CleantSearchForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Views\IAccountDetailsView.cs" />
+    <Compile Include="Views\IClientDetailsView.cs" />
+    <Compile Include="Views\IClientSearchFormView.cs" />
+    <Compile Include="Views\IView.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Fohjin.DDD.Bus.Implementation\Fohjin.DDD.Bus.Implementation.csproj">
+      <Project>{DA415B11-2B50-4635-9951-42AAAEFA38EF}</Project>
+      <Name>Fohjin.DDD.Bus.Implementation</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fohjin.DDD.Bus\Fohjin.DDD.Bus.csproj">
+      <Project>{14C6E3E5-D4D0-4811-BBBC-89A5FF7BF41F}</Project>
+      <Name>Fohjin.DDD.Bus</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fohjin.DDD.Commands\Fohjin.DDD.Commands.csproj">
+      <Project>{58D61FA0-D67F-4D72-81EA-2D709356AF95}</Project>
+      <Name>Fohjin.DDD.Commands</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fohjin.DDD.Configuration\Fohjin.DDD.Configuration.csproj">
+      <Project>{CF50373D-3EB9-492D-A88F-70D7D6756DFF}</Project>
+      <Name>Fohjin.DDD.Configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fohjin.DDD.Reporting.Dto\Fohjin.DDD.Reporting.Dto.csproj">
+      <Project>{44666AF0-AC7A-486E-AD1F-49FD0573ED43}</Project>
+      <Name>Fohjin.DDD.Reporting.Dto</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fohjin.DDD.Reporting\Fohjin.DDD.Reporting.csproj">
+      <Project>{0E86D5C6-929D-4304-A00D-ADC9FB2AFE77}</Project>
+      <Name>Fohjin.DDD.Reporting</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="sqlite3.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

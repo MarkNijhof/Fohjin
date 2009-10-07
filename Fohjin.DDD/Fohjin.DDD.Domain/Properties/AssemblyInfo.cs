@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Fohjin.DDD.BankApplication")]
+[assembly: AssemblyTitle("Fohjin.DDD.Domain")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Microsoft")]
-[assembly: AssemblyProduct("Fohjin.DDD.BankApplication")]
+[assembly: AssemblyProduct("Fohjin.DDD.Domain")]
 [assembly: AssemblyCopyright("Copyright © Microsoft 2009")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("e82ea08d-8c38-4e53-b385-d11befa8e3bb")]
+[assembly: Guid("4d99af18-f6ab-43ae-a5a4-82bea6d1334f")]
 
 // Version information for an assembly consists of the following four values:
 //

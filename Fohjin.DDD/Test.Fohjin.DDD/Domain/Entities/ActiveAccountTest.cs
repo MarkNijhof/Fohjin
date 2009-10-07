@@ -1,110 +1,205 @@
 using System;
 using System.Linq;
-using Fohjin.DDD.Domain;
+using System.Collections.Generic;
+using Fohjin.DDD.Events;
 using Fohjin.DDD.Domain.Entities;
-using Fohjin.DDD.Domain.Events;
 using Fohjin.DDD.Domain.ValueObjects;
-using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
+using Fohjin.DDD.Events.ActiveAccount;
 
 namespace Test.Fohjin.DDD.Domain.Entities
 {
-    [TestFixture]
-    public class ActiveAccountTest
+    public class When_calling_Create_on_ActiveAccount : AggregateRootTestFixture<ActiveAccount>
     {
-        [Test]
-        public void When_calling_Create_on_ActiveAccount_then_it_will_generate_an_account_create_event()
+        protected override IEnumerable<IDomainEvent> Given()
         {
-            IActiveAccount activeAccount = new ActiveAccount();
-            activeAccount.Create();
-
-            var activeAccountForRepository = (IExposeMyInternalChanges) activeAccount;
-
-            Assert.That(activeAccountForRepository.GetChanges().Count(), Is.EqualTo(1));
-            Assert.That(activeAccountForRepository.GetChanges().First(), Is.InstanceOfType(typeof(AccountCreatedEvent)));
-            Assert.That(((AccountCreatedEvent)activeAccountForRepository.GetChanges().First()).Guid, Is.Not.EqualTo(new Guid()));
+            return new List<IDomainEvent>();
         }
 
-        [Test]
-        [ExpectedException(typeof(Exception))]
-        public void When_calling_Create_twice_on_ActiveAccount_then_it_will_throw_an_exception()
+        protected override void When()
         {
-            IActiveAccount activeAccount = new ActiveAccount();
-            activeAccount.Create();
-            activeAccount.Create();
+            aggregateRoot.Create(Guid.NewGuid(), new AccountName("AccountName"));
         }
 
-        [Test]
-        [ExpectedException(typeof(Exception))]
-        public void When_calling_Close_on_a_not_created_ActiveAccount_then_it_will_throw_an_exception()
+        [Then]
+        public void Then_it_will_generate_an_account_created_event()
         {
-            IActiveAccount activeAccount = new ActiveAccount();
-            activeAccount.Close();
+            events.Last().WillBeOfType<AccountCreatedEvent>();
+        }
+    }
+    public class When_calling_Create_on_ActiveAccount_twice : AggregateRootTestFixture<ActiveAccount>
+    {
+        protected override IEnumerable<IDomainEvent> Given()
+        {
+            yield return new AccountCreatedEvent(Guid.NewGuid(), "AccountName");
         }
 
-        [Test]
-        public void When_calling_Close_on_ActiveAccount_then_it_will_generate_an_account_closed_event()
+        protected override void When()
         {
-            IActiveAccount activeAccount = new ActiveAccount();
-            activeAccount.Create();
-            activeAccount.Close();
-
-            var activeAccountForRepository = (IExposeMyInternalChanges)activeAccount;
-
-
-            Assert.That(activeAccountForRepository.GetChanges().Last(), Is.InstanceOfType(typeof(AccountClosedEvent)));
+            aggregateRoot.Create(Guid.NewGuid(), new AccountName("AccountName"));
         }
 
-        [Test]
-        [ExpectedException(typeof(Exception))]
-        public void When_calling_Deposite_on_a_not_created_ActiveAccount_then_it_will_throw_an_exception()
+        [Then]
+        public void Then_it_will_throw_an_exception()
         {
-            IActiveAccount activeAccount = new ActiveAccount();
-            activeAccount.Deposite(new Amount(0));
+            caught.WillBeOfType<Exception>();
+        }
+    }
+    public class When_calling_Close_on_a_not_created_ActiveAccount : AggregateRootTestFixture<ActiveAccount>
+    {
+        protected override IEnumerable<IDomainEvent> Given()
+        {
+            return new List<IDomainEvent>();
         }
 
-        [Test]
-        [ExpectedException(typeof(Exception))]
-        public void When_calling_Withdrawl_on_a_not_created_ActiveAccount_then_it_will_throw_an_exception()
+        protected override void When()
         {
-            IActiveAccount activeAccount = new ActiveAccount();
-            activeAccount.Withdrawl(new Amount(0));
+            aggregateRoot.Close();
         }
 
-        [Test]
-        [ExpectedException(typeof(Exception))]
-        public void When_trying_to_Withdrawl_more_then_the_current_account_balance_it_will_throw_an_exception()
+        [Then]
+        public void Then_it_will_throw_an_exception()
         {
-            IActiveAccount activeAccount = new ActiveAccount();
-            activeAccount.Create();
-            activeAccount.Withdrawl(new Amount(10));            
+            caught.WillBeOfType<Exception>();
+        }
+    }
+    public class When_calling_Deposite_on_a_not_created_ActiveAccount : AggregateRootTestFixture<ActiveAccount>
+    {
+        protected override IEnumerable<IDomainEvent> Given()
+        {
+            return new List<IDomainEvent>();
         }
 
-        [Test]
-        public void When_calling_Deposite_then_it_will_generate_an_deposite_event_with_the_expected_amount()
+        protected override void When()
         {
-            IActiveAccount activeAccount = new ActiveAccount();
-            activeAccount.Create();
-            activeAccount.Deposite(new Amount(20));
-
-            var activeAccountForRepository = (IExposeMyInternalChanges)activeAccount;
-
-            Assert.That(activeAccountForRepository.GetChanges().Last(), Is.InstanceOfType(typeof(DepositeEvent)));
-            Assert.That(((DepositeEvent)activeAccountForRepository.GetChanges().Last()).Amount, Is.EqualTo(20));
+            aggregateRoot.Deposite(0);
         }
 
-        [Test]
-        public void When_trying_to_Withdrawl_less_then_the_current_account_balance_it_will_generate_an_withdrawl_event_with_the_expected_amount()
+        [Then]
+        public void Then_it_will_throw_an_exception()
         {
-            IActiveAccount activeAccount = new ActiveAccount();
-            activeAccount.Create();
-            activeAccount.Deposite(new Amount(20));
-            activeAccount.Withdrawl(new Amount(10));
+            caught.WillBeOfType<Exception>();
+        }
+    }
+    public class When_calling_Withdrawl_on_a_not_created_ActiveAccount : AggregateRootTestFixture<ActiveAccount>
+    {
+        protected override IEnumerable<IDomainEvent> Given()
+        {
+            return new List<IDomainEvent>();
+        }
 
-            var activeAccountForRepository = (IExposeMyInternalChanges)activeAccount;
+        protected override void When()
+        {
+            aggregateRoot.Withdrawl(0);
+        }
 
-            Assert.That(activeAccountForRepository.GetChanges().Last(), Is.InstanceOfType(typeof(WithdrawlEvent)));
-            Assert.That(((WithdrawlEvent)activeAccountForRepository.GetChanges().Last()).Amount, Is.EqualTo(10));
+        [Then]
+        public void Then_it_will_throw_an_exception()
+        {
+            caught.WillBeOfType<Exception>();
+        }
+    }
+    public class When_calling_Close_on_a_created_ActiveAccount : AggregateRootTestFixture<ActiveAccount>
+    {
+        protected override IEnumerable<IDomainEvent> Given()
+        {
+            yield return new AccountCreatedEvent(Guid.NewGuid(), "AccountName");
+        }
+
+        protected override void When()
+        {
+            aggregateRoot.Close();
+        }
+
+        [Then]
+        public void Then_it_will_generate_an_account_created_event()
+        {
+            events.Last().WillBeOfType<AccountClosedEvent>();
+        }
+    }
+    public class When_calling_Withdrawl_with_not_enough_balance_on_the_ActiveAccount : AggregateRootTestFixture<ActiveAccount>
+    {
+        protected override IEnumerable<IDomainEvent> Given()
+        {
+            yield return new AccountCreatedEvent(Guid.NewGuid(), "AccountName");
+        }
+
+        protected override void When()
+        {
+            aggregateRoot.Withdrawl(1);
+        }
+
+        [Then]
+        public void Then_it_will_throw_an_exception()
+        {
+            caught.WillBeOfType<Exception>();
+        }
+
+        [Then]
+        public void Then_it_will_throw_an_exception_with_a_specified_message()
+        {
+            caught.WithMessage(string.Format("The amount {0} is larger than your current balance {1}", 1, 0));
+        }
+    }
+    public class When_calling_Deposite_with_a_specific_amount_on_the_ActiveAccount : AggregateRootTestFixture<ActiveAccount>
+    {
+        protected override IEnumerable<IDomainEvent> Given()
+        {
+            yield return new AccountCreatedEvent(Guid.NewGuid(), "AccountName");
+            yield return new DepositeEvent(10, 10);
+        }
+
+        protected override void When()
+        {
+            aggregateRoot.Deposite(new Amount(20));
+        }
+
+        [Then]
+        public void Then_it_will_generate_an_deposite_event()
+        {
+            events.Last().WillBeOfType<DepositeEvent>();
+        }
+
+        [Then]
+        public void Then_it_will_generate_an_deposite_event_with_the_expected_new_balance()
+        {
+            events.Last<DepositeEvent>().Balance.WillBe(30);
+        }
+
+        [Then]
+        public void Then_it_will_generate_an_deposite_event_with_the_expected_ammount()
+        {
+            events.Last<DepositeEvent>().Amount.WillBe(20);
+        }
+    }
+    public class When_calling_Withdrawl_with_enough_balance_on_the_ActiveAccount : AggregateRootTestFixture<ActiveAccount>
+    {
+        protected override IEnumerable<IDomainEvent> Given()
+        {
+            yield return new AccountCreatedEvent(Guid.NewGuid(), "AccountName");
+            yield return new DepositeEvent(20, 20);
+        }
+
+        protected override void When()
+        {
+            aggregateRoot.Withdrawl(new Amount(5));
+        }
+
+        [Then]
+        public void Then_it_will_generate_an_deposite_event()
+        {
+            events.Last().WillBeOfType<WithdrawlEvent>();
+        }
+
+        [Then]
+        public void Then_it_will_generate_an_deposite_event_with_the_expected_new_balance()
+        {
+            events.Last<WithdrawlEvent>().Balance.WillBe(15);
+        }
+
+        [Then]
+        public void Then_it_will_generate_an_deposite_event_with_the_expected_ammount()
+        {
+            events.Last<WithdrawlEvent>().Amount.WillBe(5);
         }
     }
 }
