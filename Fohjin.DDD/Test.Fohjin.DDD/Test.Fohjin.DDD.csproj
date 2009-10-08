@@ -62,6 +62,7 @@
     <Compile Include="Domain\Repositories\ActiveAccountRepositoryTest.cs" />
     <Compile Include="Domain\AggregateRootTestFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reporting\Infrastructure\SqlSelectBuilderTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Fohjin.DDD.Configuration\Fohjin.DDD.Configuration.csproj">
@@ -75,6 +76,10 @@
     <ProjectReference Include="..\Fohjin.DDD.Events\Fohjin.DDD.Events.csproj">
       <Project>{CFB4C037-822D-470E-8A01-832957D193C9}</Project>
       <Name>Fohjin.DDD.Events</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fohjin.DDD.Reporting\Fohjin.DDD.Reporting.csproj">
+      <Project>{0E86D5C6-929D-4304-A00D-ADC9FB2AFE77}</Project>
+      <Name>Fohjin.DDD.Reporting</Name>
     </ProjectReference>
     <ProjectReference Include="..\Fohjin.EventStorage\Fohjin.EventStorage.csproj">
       <Project>{E5EF4E56-6807-4B55-B28F-50A60F0C3B8A}</Project>
