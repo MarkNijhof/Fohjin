@@ -64,7 +64,7 @@ namespace Test.Fohjin.DDD.Reporting.Infrastructure
             var guid = Guid.NewGuid();
             var dateTime = DateTime.Now;
             Assert.That(_sqlSelectBuilder.CreateSqlSelectStatementFromDto<TestDtoCase3>(new { Column1 = guid, Column2 = dateTime }),
-                Is.EqualTo(string.Format("SELECT Column1,Column2 FROM TestDtoCase3 WHERE Column1 = '{0}' AND Column2 = '{1}'", guid, dateTime)));
+                Is.EqualTo(string.Format("SELECT Column1,Column2 FROM TestDtoCase3 WHERE Column1 = '{0}' AND Column2 = '{1}';", guid, dateTime)));
         }
     }
 

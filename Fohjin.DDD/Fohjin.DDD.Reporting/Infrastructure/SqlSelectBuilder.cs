@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
-using System.Reflection;
 
 namespace Fohjin.DDD.Reporting.Infrastructure
 {
@@ -20,33 +19,26 @@ namespace Fohjin.DDD.Reporting.Infrastructure
             };
         }
 
-        public string CreateSqlSelectStatementFromDto<TDto>()
+        public string CreateSqlSelectStatementFromDto<TDto>() where TDto : class
         {
             return string.Format("{0};", GetSelectString<TDto>());
         }
 
-        public string CreateSqlSelectStatementFromDto<TDto>(object example)
+        public string CreateSqlSelectStatementFromDto<TDto>(object example) where TDto : class
         {
             if (example == null)
                 throw new ArgumentNullException("example");
 
-            var selectString = GetSelectString<TDto>();
-
-            string whereString = GetWhereString(example);
-            return string.Format("{0} {1};", selectString, whereString).Trim();
+            return string.Format("{0} {1};", GetSelectString<TDto>(), GetWhereString(example));
         }
 
         private static string GetSelectString<TDto>() 
         {
             var type = typeof(TDto);
             var properties = type.GetProperties();
-
             var tableName = type.Name;
-            var columns = properties.Select(x => x.Name);
 
-            var selectString = string.Format("SELECT {0} FROM {1}", string.Join(",", columns.ToArray()), tableName);
-
-            return selectString;
+            return string.Format("SELECT {0} FROM {1}", string.Join(",", properties.Select(x => x.Name).ToArray()), tableName);
         }
 
         private string GetWhereString(object example) 
@@ -54,7 +46,6 @@ namespace Fohjin.DDD.Reporting.Infrastructure
             var properties = example.GetType().GetProperties();
 
             var values = new Dictionary<string, string>();
-
             foreach (var property in properties)
             {
                 var propertyValue = property.GetValue(example, new object[] {});
@@ -64,20 +55,16 @@ namespace Fohjin.DDD.Reporting.Infrastructure
                 values.Add(property.Name, ConvertPropertyValue(propertyValue));
             }
 
-            var whereString = "";
-            if (values.Count() > 0)
-            {
-                whereString = string.Format("WHERE {0}", string.Join(" AND ", values.Select(x => string.Format("{0} = {1}", x.Key, x.Value)).ToArray()));
-            }
-            return whereString;
+            return values.Count() > 0
+                       ? string.Format("WHERE {0}", string.Join(" AND ", values.Select(x => string.Format("{0} = {1}", x.Key, x.Value)).ToArray()))
+                       : string.Empty;
         }
 
         private string ConvertPropertyValue(object propertyValue)
         {
-            if (_typesThatShouldNotBeWrappedInQuotes.Contains(propertyValue.GetType().Name.ToLower()))
-                return string.Format("{0}", propertyValue);
-
-            return string.Format("'{0}'", propertyValue);
+            return _typesThatShouldNotBeWrappedInQuotes.Contains(propertyValue.GetType().Name.ToLower()) 
+                ? string.Format("{0}", propertyValue) 
+                : string.Format("'{0}'", propertyValue);
         }
     }
 }
