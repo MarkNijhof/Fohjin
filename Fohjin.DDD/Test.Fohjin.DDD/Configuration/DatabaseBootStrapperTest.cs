@@ -9,7 +9,7 @@ namespace Test.Fohjin.DDD.Configuration
         [Test]
         public void Will_be_able_to_create_the_database_schema_in_sqlite()
         {
-            new DatabaseBootStrapper().ReCreateDatabaseSchema();
+            new DomainDatabaseBootStrapper().ReCreateDatabaseSchema();
         }
     }
 }

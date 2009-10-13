@@ -20,7 +20,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
 
         public static Repository<ActiveAccount> Setup()
         {
-            new DatabaseBootStrapper().ReCreateDatabaseSchema();
+            new DomainDatabaseBootStrapper().ReCreateDatabaseSchema();
 
             var sqliteConnectionString = string.Format("Data Source={0}", dataBaseFile);
 
@@ -85,7 +85,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
         [SetUp]
         public void SetUp()
         {
-            new DatabaseBootStrapper().ReCreateDatabaseSchema();
+            new DomainDatabaseBootStrapper().ReCreateDatabaseSchema();
 
             var sqliteConnectionString = string.Format("Data Source={0}", dataBaseFile);
 

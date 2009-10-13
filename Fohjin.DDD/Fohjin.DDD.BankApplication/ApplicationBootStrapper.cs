@@ -7,7 +7,7 @@ namespace Fohjin.DDD.BankApplication
     {
         public void BootStrapTheApplication()
         {
-            new DatabaseBootStrapper().CreateDatabaseSchemaIfNeeded();
+            new DomainDatabaseBootStrapper().CreateDatabaseSchemaIfNeeded();
 
             ObjectFactory.Initialize(x =>
             {

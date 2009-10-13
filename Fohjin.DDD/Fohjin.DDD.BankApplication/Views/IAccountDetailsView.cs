@@ -7,7 +7,7 @@ namespace Fohjin.DDD.BankApplication.Views
     public interface IAccountDetailsView : IView<IAccountDetailsPresenter>
     {
         string AccountName { get; set; }
-        IEnumerable<LedgerDto> Ledgers { get; set; }
+        IEnumerable<Ledger> Ledgers { get; set; }
         string Amount { get; set; }
     }
 }

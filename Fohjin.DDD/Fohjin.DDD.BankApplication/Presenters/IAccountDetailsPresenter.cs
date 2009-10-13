@@ -4,7 +4,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
 {
     public interface IAccountDetailsPresenter : IPresenter
     {
-        void SetAccount(AccountDto accountDto);
+        void SetAccount(Account account);
         void CloseTheAccount();
         void SaveAccountDetails();
         void InitiateDeposite();

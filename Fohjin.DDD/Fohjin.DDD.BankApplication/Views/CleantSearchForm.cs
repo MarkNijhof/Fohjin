@@ -15,9 +15,9 @@ namespace Fohjin.DDD.BankApplication.Views
             InitializeComponent();
         }
 
-        public IEnumerable<ClientDto> Clients
+        public IEnumerable<Client> Clients
         {
-            get { return (IEnumerable<ClientDto>)_clients.DataSource; }
+            get { return (IEnumerable<Client>)_clients.DataSource; }
             set { _clients.DataSource = value; }
         }
 
@@ -26,9 +26,9 @@ namespace Fohjin.DDD.BankApplication.Views
             _presenter = clientSearchFormPresenter;
         }
 
-        public ClientDto GetSelectedClient()
+        public Client GetSelectedClient()
         {
-            return (ClientDto)_clients.SelectedItem;
+            return (Client)_clients.SelectedItem;
         }
 
         private void CreateNewClientButton_Click(object sender, EventArgs e)

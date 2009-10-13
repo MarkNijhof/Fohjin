@@ -3,13 +3,14 @@ using Fohjin.DDD.BankApplication.Views;
 using Fohjin.DDD.Bus;
 using Fohjin.DDD.Commands;
 using Fohjin.DDD.Reporting.Dto;
+using AccountDetails=Fohjin.DDD.Reporting.Dto.AccountDetails;
 
 namespace Fohjin.DDD.BankApplication.Presenters
 {
     public class AccountDetailsPresenter : IAccountDetailsPresenter
     {
-        private AccountDto _accountDto;
-        private AccountDetailsDto _accountDetailsDto;
+        private Account _account;
+        private AccountDetails _accountDetails;
         private readonly IAccountDetailsView _accountDetailsView;
         private readonly ICommandBus _bus;
 
@@ -25,25 +26,25 @@ namespace Fohjin.DDD.BankApplication.Presenters
             _accountDetailsView.ShowDialog();
         }
 
-        public void SetAccount(AccountDto accountDto)
+        public void SetAccount(Account account)
         {
-            _accountDto = accountDto;
+            _account = account;
         }
 
         public void CloseTheAccount()
         {
-            if (_accountDetailsDto == null)
+            if (_accountDetails == null)
                 return;
 
-            _bus.Publish(new CloseAnAccountCommand(_accountDto.Id));
+            _bus.Publish(new CloseAnAccountCommand(_account.Id));
         }
 
         public void SaveAccountDetails()
         {
-            if (_accountDetailsDto == null)
+            if (_accountDetails == null)
             {
                 _bus.Publish(new AddNewAccountToClientCommand(
-                    _accountDto.ClientId, 
+                    _account.ClientDetailsId, 
                     Guid.NewGuid(), 
                     _accountDetailsView.AccountName));
                 return;
@@ -52,13 +53,13 @@ namespace Fohjin.DDD.BankApplication.Presenters
 
         public void InitiateDeposite()
         {
-            if (_accountDetailsDto == null)
+            if (_accountDetails == null)
                 return;
         }
 
         public void InitiateWithdrawl()
         {
-            if (_accountDetailsDto == null)
+            if (_accountDetails == null)
                 return;
         }
     }

@@ -4,7 +4,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
 {
     public interface IClientDetailsPresenter : IPresenter
     {
-        void SetClient(ClientDto clientDto);
+        void SetClient(Client client);
         void OpenSelectedAccount();
         void CreateNewAccountAndAttachToClient();
         void SaveClientChanges();

@@ -26,9 +26,9 @@ namespace Fohjin.DDD.BankApplication.Views
             set { _accountName.Text = value; }
         }
 
-        public IEnumerable<LedgerDto> Ledgers
+        public IEnumerable<Ledger> Ledgers
         {
-            get { return (IEnumerable<LedgerDto>)_ledgers.DataSource; }
+            get { return (IEnumerable<Ledger>)_ledgers.DataSource; }
             set { _ledgers.DataSource = value; }
         }
 

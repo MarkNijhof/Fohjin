@@ -45,11 +45,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AccountDetailsDto.cs" />
-    <Compile Include="AccountDto.cs" />
-    <Compile Include="LedgerDto.cs" />
-    <Compile Include="ClientDetailsDto.cs" />
-    <Compile Include="ClientDto.cs" />
+    <Compile Include="AccountDetails.cs" />
+    <Compile Include="Account.cs" />
+    <Compile Include="Ledger.cs" />
+    <Compile Include="ClientDetails.cs" />
+    <Compile Include="Client.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

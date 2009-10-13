@@ -3,12 +3,13 @@ using Fohjin.DDD.BankApplication.Views;
 using Fohjin.DDD.Bus;
 using Fohjin.DDD.Commands;
 using Fohjin.DDD.Reporting.Dto;
+using ClientDetails=Fohjin.DDD.Reporting.Dto.ClientDetails;
 
 namespace Fohjin.DDD.BankApplication.Presenters
 {
     public class ClientDetailsPresenter : IClientDetailsPresenter
     {
-        private ClientDetailsDto _clientDetailsDto;
+        private ClientDetails _clientDetails;
         private readonly IClientDetailsView _clientDetailsView;
         private readonly ICommandBus _bus;
 
@@ -24,9 +25,9 @@ namespace Fohjin.DDD.BankApplication.Presenters
             _clientDetailsView.ShowDialog();
         }
 
-        public void SetClient(ClientDto clientDto)
+        public void SetClient(Client client)
         {
-            if (clientDto == null)
+            if (client == null)
                 return;
 
         }
@@ -43,7 +44,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
 
         public void SaveClientChanges()
         {
-            if (_clientDetailsDto == null)
+            if (_clientDetails == null)
             {
                 _bus.Publish(new ClientCreatedCommand(
                     Guid.NewGuid(), 

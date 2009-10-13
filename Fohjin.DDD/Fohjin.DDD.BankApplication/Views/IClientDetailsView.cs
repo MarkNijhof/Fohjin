@@ -11,8 +11,8 @@ namespace Fohjin.DDD.BankApplication.Views
         string StreetNumber { get; set; }
         string PostalCode { get; set; }
         string City { get; set; }
-        IEnumerable<AccountDto> Accounts { get; set; }
+        IEnumerable<Account> Accounts { get; set; }
         string PhoneNumber { get; set; }
-        AccountDto GetSelectedAccount();
+        Account GetSelectedAccount();
     }
 }

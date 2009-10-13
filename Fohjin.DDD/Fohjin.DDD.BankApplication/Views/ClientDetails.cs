@@ -60,9 +60,9 @@ namespace Fohjin.DDD.BankApplication.Views
             set { _city.Text = value; }
         }
 
-        public IEnumerable<AccountDto> Accounts
+        public IEnumerable<Account> Accounts
         {
-            get { return (IEnumerable<AccountDto>)_accounts.DataSource; }
+            get { return (IEnumerable<Account>)_accounts.DataSource; }
             set { _accounts.DataSource = value; }
         }
 
@@ -77,9 +77,9 @@ namespace Fohjin.DDD.BankApplication.Views
             _presenter = clientDetailsPresenter;
         }
 
-        public AccountDto GetSelectedAccount()
+        public Account GetSelectedAccount()
         {
-            return (AccountDto)_accounts.SelectedItem;
+            return (Account)_accounts.SelectedItem;
         }
     }
 }
