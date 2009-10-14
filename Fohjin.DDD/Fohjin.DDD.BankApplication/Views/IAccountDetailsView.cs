@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Fohjin.DDD.BankApplication.Presenters;
 using Fohjin.DDD.Reporting.Dto;

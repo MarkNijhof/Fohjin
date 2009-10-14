@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Fohjin.DDD.BankApplication.Views;
 using Fohjin.DDD.Bus;
