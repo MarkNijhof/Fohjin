@@ -55,8 +55,8 @@
     <Compile Include="CloseAnAccountCommandHandler.cs" />
     <Compile Include="CommandHandlerRegister.cs" />
     <Compile Include="ICommandHandler.cs" />
-    <Compile Include="MakeADepositeOnAnAccountCommandHandler.cs" />
-    <Compile Include="MakeAWithdrawlFromAnAccountCommandHandler.cs" />
+    <Compile Include="CashDepositeCommandHandler.cs" />
+    <Compile Include="CashWithdrawlCommandHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
