@@ -45,7 +45,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccountNameGotChangedCommand.cs" />
     <Compile Include="AddNewAccountToClientCommand.cs" />
+    <Compile Include="ClientChangedTheirNameCommand.cs" />
     <Compile Include="ClientCreatedCommand.cs" />
     <Compile Include="ClientHasMovedCommand.cs" />
     <Compile Include="CloseAnAccountCommand.cs" />

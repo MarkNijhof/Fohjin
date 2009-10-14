@@ -34,21 +34,21 @@
             this.DepositeButton = new System.Windows.Forms.Button();
             this.WithdrawlButton = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this._accountNumber = new System.Windows.Forms.Label();
+            this._balance = new System.Windows.Forms.Label();
+            this.label = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.CloseAccountButton = new System.Windows.Forms.Button();
             this.SaveAccountButton = new System.Windows.Forms.Button();
             this._ledgers = new System.Windows.Forms.ListBox();
             this._accountName = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this._balance = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this._transferAccounts = new System.Windows.Forms.ComboBox();
             this._transferAmount = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.TransferButton = new System.Windows.Forms.Button();
-            this._transferAccounts = new System.Windows.Forms.ComboBox();
-            this._accountNumber = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -106,8 +106,8 @@
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this._accountNumber);
-            this.groupBox2.Controls.Add(this.label6);
             this.groupBox2.Controls.Add(this._balance);
+            this.groupBox2.Controls.Add(this.label);
             this.groupBox2.Controls.Add(this.label4);
             this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Controls.Add(this.CloseAccountButton);
@@ -122,10 +122,48 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Account Details";
             // 
+            // _accountNumber
+            // 
+            this._accountNumber.AutoSize = true;
+            this._accountNumber.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this._accountNumber.Location = new System.Drawing.Point(109, 78);
+            this._accountNumber.Name = "_accountNumber";
+            this._accountNumber.Size = new System.Drawing.Size(14, 13);
+            this._accountNumber.TabIndex = 28;
+            this._accountNumber.Text = "0";
+            // 
+            // _balance
+            // 
+            this._balance.AutoSize = true;
+            this._balance.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this._balance.Location = new System.Drawing.Point(109, 52);
+            this._balance.Name = "_balance";
+            this._balance.Size = new System.Drawing.Size(14, 13);
+            this._balance.TabIndex = 27;
+            this._balance.Text = "0";
+            // 
+            // label
+            // 
+            this.label.AutoSize = true;
+            this.label.Location = new System.Drawing.Point(9, 78);
+            this.label.Name = "label";
+            this.label.Size = new System.Drawing.Size(85, 13);
+            this.label.TabIndex = 25;
+            this.label.Text = "Account number";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(9, 52);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(88, 13);
+            this.label4.TabIndex = 23;
+            this.label4.Text = "Account balance";
+            // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(9, 115);
+            this.label2.Location = new System.Drawing.Point(9, 114);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(45, 13);
             this.label2.TabIndex = 22;
@@ -165,6 +203,7 @@
             this._accountName.Name = "_accountName";
             this._accountName.Size = new System.Drawing.Size(260, 20);
             this._accountName.TabIndex = 18;
+            this._accountName.TextChanged += new System.EventHandler(this._client_Changed);
             // 
             // label1
             // 
@@ -174,22 +213,6 @@
             this.label1.Size = new System.Drawing.Size(35, 13);
             this.label1.TabIndex = 17;
             this.label1.Text = "Name";
-            // 
-            // _balance
-            // 
-            this._balance.Location = new System.Drawing.Point(112, 49);
-            this._balance.Name = "_balance";
-            this._balance.Size = new System.Drawing.Size(260, 20);
-            this._balance.TabIndex = 24;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(9, 52);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(88, 13);
-            this.label4.TabIndex = 23;
-            this.label4.Text = "Account balance";
             // 
             // groupBox3
             // 
@@ -203,6 +226,14 @@
             this.groupBox3.TabIndex = 23;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Transer Money";
+            // 
+            // _transferAccounts
+            // 
+            this._transferAccounts.FormattingEnabled = true;
+            this._transferAccounts.Location = new System.Drawing.Point(146, 22);
+            this._transferAccounts.Name = "_transferAccounts";
+            this._transferAccounts.Size = new System.Drawing.Size(224, 21);
+            this._transferAccounts.TabIndex = 23;
             // 
             // _transferAmount
             // 
@@ -229,30 +260,6 @@
             this.TransferButton.Text = "Transfer";
             this.TransferButton.UseVisualStyleBackColor = true;
             // 
-            // _transferAccounts
-            // 
-            this._transferAccounts.FormattingEnabled = true;
-            this._transferAccounts.Location = new System.Drawing.Point(146, 22);
-            this._transferAccounts.Name = "_transferAccounts";
-            this._transferAccounts.Size = new System.Drawing.Size(224, 21);
-            this._transferAccounts.TabIndex = 23;
-            // 
-            // _accountNumber
-            // 
-            this._accountNumber.Location = new System.Drawing.Point(112, 75);
-            this._accountNumber.Name = "_accountNumber";
-            this._accountNumber.Size = new System.Drawing.Size(260, 20);
-            this._accountNumber.TabIndex = 26;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(9, 78);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(85, 13);
-            this.label6.TabIndex = 25;
-            this.label6.Text = "Account number";
-            // 
             // AccountDetails
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -261,6 +268,8 @@
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "AccountDetails";
             this.Text = "Account Details";
             this.groupBox1.ResumeLayout(false);
@@ -287,14 +296,14 @@
         private System.Windows.Forms.ListBox _ledgers;
         private System.Windows.Forms.TextBox _accountName;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox _balance;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.ComboBox _transferAccounts;
         private System.Windows.Forms.TextBox _transferAmount;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button TransferButton;
-        private System.Windows.Forms.TextBox _accountNumber;
-        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label;
+        private System.Windows.Forms.Label _balance;
+        private System.Windows.Forms.Label _accountNumber;
     }
 }

@@ -18,7 +18,7 @@ namespace Fohjin.DDD.Bus.Implementation
             handler.Handle(message);
         }
 
-        public void Publish<TMessage>(IEnumerable<TMessage> messages) where TMessage : IMessage
+        public void Publish(IEnumerable<IMessage> messages)
         {
             foreach (var message in messages)
             {

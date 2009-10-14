@@ -8,5 +8,6 @@ namespace Fohjin.DDD.BankApplication.Presenters
         void OpenSelectedAccount();
         void CreateNewAccountAndAttachToClient();
         void SaveClientChanges();
+        void FormElementGotChanged();
     }
 }

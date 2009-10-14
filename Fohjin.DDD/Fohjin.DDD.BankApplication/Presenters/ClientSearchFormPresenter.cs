@@ -31,10 +31,27 @@ namespace Fohjin.DDD.BankApplication.Presenters
             _clientDetailsPresenter.Display();
         }
 
+        public void Refresh()
+        {
+            LoadData();
+        }
+
         public void Display()
         {
+            LoadData();
+            try
+            {
+                _clientSearchFormView.ShowDialog();
+            }
+            finally
+            {
+                _clientSearchFormView.Dispose();
+            }
+        }
+
+        private void LoadData()
+        {
             _clientSearchFormView.Clients = _repository.GetByExample<Client>(null);
-            _clientSearchFormView.ShowDialog();
         }
     }
 }

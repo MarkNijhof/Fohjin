@@ -13,5 +13,10 @@ namespace Fohjin.DDD.BankApplication.Views
         decimal TransferAmount { get; set; }
         decimal Balance { get; set; }
         IEnumerable<Account> TransferAccounts { get; set; }
+        void SetIsNewAccount();
+        void SetIsClosedAccount();
+        void SetIsExistingAccount();
+        void EnableSaveButton();
+        void DisableSaveButton();
     }
 }

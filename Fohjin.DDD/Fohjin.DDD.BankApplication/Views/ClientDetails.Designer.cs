@@ -59,13 +59,15 @@
             this._clientName.Name = "_clientName";
             this._clientName.Size = new System.Drawing.Size(260, 20);
             this._clientName.TabIndex = 1;
+            this._clientName.TextChanged += new System.EventHandler(this._client_Changed);
             // 
             // _street
             // 
             this._street.Location = new System.Drawing.Point(112, 45);
             this._street.Name = "_street";
             this._street.Size = new System.Drawing.Size(205, 20);
-            this._street.TabIndex = 3;
+            this._street.TabIndex = 2;
+            this._street.TextChanged += new System.EventHandler(this._client_Changed);
             // 
             // label2
             // 
@@ -82,6 +84,7 @@
             this._city.Name = "_city";
             this._city.Size = new System.Drawing.Size(205, 20);
             this._city.TabIndex = 5;
+            this._city.TextChanged += new System.EventHandler(this._client_Changed);
             // 
             // label3
             // 
@@ -97,14 +100,16 @@
             this._streetNumber.Location = new System.Drawing.Point(323, 45);
             this._streetNumber.Name = "_streetNumber";
             this._streetNumber.Size = new System.Drawing.Size(49, 20);
-            this._streetNumber.TabIndex = 6;
+            this._streetNumber.TabIndex = 3;
+            this._streetNumber.TextChanged += new System.EventHandler(this._client_Changed);
             // 
             // _postalCode
             // 
             this._postalCode.Location = new System.Drawing.Point(112, 71);
             this._postalCode.Name = "_postalCode";
             this._postalCode.Size = new System.Drawing.Size(49, 20);
-            this._postalCode.TabIndex = 7;
+            this._postalCode.TabIndex = 4;
+            this._postalCode.TextChanged += new System.EventHandler(this._client_Changed);
             // 
             // label4
             // 
@@ -121,7 +126,7 @@
             this._accounts.Location = new System.Drawing.Point(12, 149);
             this._accounts.Name = "_accounts";
             this._accounts.Size = new System.Drawing.Size(360, 95);
-            this._accounts.TabIndex = 9;
+            this._accounts.TabIndex = 7;
             this._accounts.DoubleClick += new System.EventHandler(this._accounts_DoubleClick);
             // 
             // SaveClientButton
@@ -129,7 +134,7 @@
             this.SaveClientButton.Location = new System.Drawing.Point(242, 250);
             this.SaveClientButton.Name = "SaveClientButton";
             this.SaveClientButton.Size = new System.Drawing.Size(130, 23);
-            this.SaveClientButton.TabIndex = 10;
+            this.SaveClientButton.TabIndex = 9;
             this.SaveClientButton.Text = "Save Client";
             this.SaveClientButton.UseVisualStyleBackColor = true;
             this.SaveClientButton.Click += new System.EventHandler(this.SaveClientButton_Click);
@@ -139,7 +144,7 @@
             this.AddNewAccountButton.Location = new System.Drawing.Point(106, 250);
             this.AddNewAccountButton.Name = "AddNewAccountButton";
             this.AddNewAccountButton.Size = new System.Drawing.Size(130, 23);
-            this.AddNewAccountButton.TabIndex = 10;
+            this.AddNewAccountButton.TabIndex = 8;
             this.AddNewAccountButton.Text = "Add new Account";
             this.AddNewAccountButton.UseVisualStyleBackColor = true;
             this.AddNewAccountButton.Click += new System.EventHandler(this.AddNewAccountButton_Click);
@@ -149,7 +154,8 @@
             this._phoneNumber.Location = new System.Drawing.Point(112, 97);
             this._phoneNumber.Name = "_phoneNumber";
             this._phoneNumber.Size = new System.Drawing.Size(260, 20);
-            this._phoneNumber.TabIndex = 12;
+            this._phoneNumber.TabIndex = 6;
+            this._phoneNumber.TextChanged += new System.EventHandler(this._client_Changed);
             // 
             // label5
             // 

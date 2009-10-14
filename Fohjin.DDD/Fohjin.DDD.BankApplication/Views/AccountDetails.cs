@@ -44,6 +44,37 @@ namespace Fohjin.DDD.BankApplication.Views
             set { _transferAccounts.DataSource = value; }
         }
 
+        public void SetIsNewAccount()
+        {
+            CloseAccountButton.Enabled = false;
+            groupBox1.Enabled = false;
+            groupBox3.Enabled = false;
+        }
+
+        public void SetIsClosedAccount()
+        {
+            CloseAccountButton.Enabled = false;
+            groupBox1.Enabled = false;
+            groupBox3.Enabled = false;
+        }
+
+        public void SetIsExistingAccount()
+        {
+            CloseAccountButton.Enabled = true;
+            groupBox1.Enabled = true;
+            groupBox3.Enabled = true;
+        }
+
+        public void EnableSaveButton()
+        {
+            SaveAccountButton.Enabled = true;
+        }
+
+        public void DisableSaveButton()
+        {
+            SaveAccountButton.Enabled = false;
+        }
+
         public decimal Amount
         {
             get { return Convert.ToDecimal(_amount.Text); }
@@ -85,6 +116,11 @@ namespace Fohjin.DDD.BankApplication.Views
         private void WithdrawlButton_Click(object sender, EventArgs e)
         {
             _presenter.InitiateWithdrawl();
+        }
+
+        private void _client_Changed(object sender, EventArgs e)
+        {
+            _presenter.FormElementGotChanged();
         }
     }
 }

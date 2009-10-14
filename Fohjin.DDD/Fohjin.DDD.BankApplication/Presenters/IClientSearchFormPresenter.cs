@@ -4,5 +4,6 @@ namespace Fohjin.DDD.BankApplication.Presenters
     {
         void CreateNewClient();
         void OpenSelectedClient();
+        void Refresh();
     }
 }

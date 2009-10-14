@@ -77,9 +77,34 @@ namespace Fohjin.DDD.BankApplication.Views
             return (Account)_accounts.SelectedItem;
         }
 
+        public void SetIsNewClient()
+        {
+            AddNewAccountButton.Enabled = false;
+        }
+
+        public void SetIsExistingClient()
+        {
+            AddNewAccountButton.Enabled = true;
+        }
+
+        public void EnableSaveButton()
+        {
+            SaveClientButton.Enabled = true;
+        }
+
+        public void DisableSaveButton()
+        {
+            SaveClientButton.Enabled = false;
+        }
+
         private void _accounts_DoubleClick(object sender, EventArgs e)
         {
             _presenter.OpenSelectedAccount();
+        }
+
+        private void _client_Changed(object sender, EventArgs e)
+        {
+            _presenter.FormElementGotChanged();
         }
     }
 }

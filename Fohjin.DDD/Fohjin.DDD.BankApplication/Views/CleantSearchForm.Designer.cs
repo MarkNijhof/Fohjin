@@ -31,6 +31,7 @@
             this._clients = new System.Windows.Forms.ListBox();
             this.label1 = new System.Windows.Forms.Label();
             this.CreateNewClientButton = new System.Windows.Forms.Button();
+            this.RefreshButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // _clients
@@ -61,11 +62,22 @@
             this.CreateNewClientButton.UseVisualStyleBackColor = true;
             this.CreateNewClientButton.Click += new System.EventHandler(this.CreateNewClientButton_Click);
             // 
+            // RefreshButton
+            // 
+            this.RefreshButton.Location = new System.Drawing.Point(106, 126);
+            this.RefreshButton.Name = "RefreshButton";
+            this.RefreshButton.Size = new System.Drawing.Size(130, 23);
+            this.RefreshButton.TabIndex = 3;
+            this.RefreshButton.Text = "Refesh data";
+            this.RefreshButton.UseVisualStyleBackColor = true;
+            this.RefreshButton.Click += new System.EventHandler(this.RefreshButton_Click);
+            // 
             // ClientSearchForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(384, 159);
+            this.Controls.Add(this.RefreshButton);
             this.Controls.Add(this.CreateNewClientButton);
             this.Controls.Add(this.label1);
             this.Controls.Add(this._clients);
@@ -84,5 +96,6 @@
         private System.Windows.Forms.ListBox _clients;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button CreateNewClientButton;
+        private System.Windows.Forms.Button RefreshButton;
     }
 }

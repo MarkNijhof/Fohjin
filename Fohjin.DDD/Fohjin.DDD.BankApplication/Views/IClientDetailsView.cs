@@ -14,5 +14,9 @@ namespace Fohjin.DDD.BankApplication.Views
         IEnumerable<Account> Accounts { get; set; }
         string PhoneNumber { get; set; }
         Account GetSelectedAccount();
+        void SetIsNewClient();
+        void SetIsExistingClient();
+        void EnableSaveButton();
+        void DisableSaveButton();
     }
 }

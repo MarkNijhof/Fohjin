@@ -40,5 +40,10 @@ namespace Fohjin.DDD.BankApplication.Views
         {
             _presenter.OpenSelectedClient();
         }
+
+        private void RefreshButton_Click(object sender, EventArgs e)
+        {
+            _presenter.Refresh();
+        }
     }
 }

@@ -9,5 +9,6 @@ namespace Fohjin.DDD.BankApplication.Presenters
         void SaveAccountDetails();
         void InitiateDeposite();
         void InitiateWithdrawl();
+        void FormElementGotChanged();
     }
 }
