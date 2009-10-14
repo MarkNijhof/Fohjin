@@ -39,7 +39,7 @@ namespace Test.Fohjin.DDD.Reporting.Infrastructure
         [Test]
         public void Will_be_able_to_save_and_retrieve_a_client_details_dto()
         {
-            var clientDetailsDto = new ClientDetails(Guid.NewGuid(), "Mark Nijhof", "Street", "123", "5006", "Bergen");
+            var clientDetailsDto = new ClientDetails(Guid.NewGuid(), "Mark Nijhof", "Street", "123", "5006", "Bergen", "123456789");
             _repository.Save(clientDetailsDto);
             var sut = _repository.GetByExample<ClientDetails>(new {ClientName = "Mark Nijhof"}).FirstOrDefault();
 
@@ -49,30 +49,34 @@ namespace Test.Fohjin.DDD.Reporting.Infrastructure
             Assert.That(sut.StreetNumber, Is.EqualTo(clientDetailsDto.StreetNumber));
             Assert.That(sut.PostalCode, Is.EqualTo(clientDetailsDto.PostalCode));
             Assert.That(sut.City, Is.EqualTo(clientDetailsDto.City));
+            Assert.That(sut.PhoneNumber, Is.EqualTo(clientDetailsDto.PhoneNumber));
         }
 
         [Test]
         public void Will_be_able_to_save_and_retrieve_an_account_dto()
         {
-            var accountDto = new Account(Guid.NewGuid(), Guid.NewGuid(), "Account Name");
+            var accountDto = new Account(Guid.NewGuid(), Guid.NewGuid(), "Account Name", "1234567890");
             _repository.Save(accountDto);
             var sut = _repository.GetByExample<Account>(new { Name = "Account Name" }).FirstOrDefault();
 
             Assert.That(sut.Id, Is.EqualTo(accountDto.Id));
             Assert.That(sut.ClientDetailsId, Is.EqualTo(accountDto.ClientDetailsId));
             Assert.That(sut.Name, Is.EqualTo(accountDto.Name));
+            Assert.That(sut.AccountNumber, Is.EqualTo(accountDto.AccountNumber));
         }
 
         [Test]
         public void Will_be_able_to_save_and_retrieve_an_account_details_dto()
         {
-            var accountDetailsDto = new AccountDetails(Guid.NewGuid(), Guid.NewGuid(), "Account Name");
+            var accountDetailsDto = new AccountDetails(Guid.NewGuid(), Guid.NewGuid(), "Account Name", 10.5M, "1234567890");
             _repository.Save(accountDetailsDto);
             var sut = _repository.GetByExample<AccountDetails>(new { AccountName = "Account Name" }).FirstOrDefault();
 
             Assert.That(sut.Id, Is.EqualTo(accountDetailsDto.Id));
             Assert.That(sut.ClientId, Is.EqualTo(accountDetailsDto.ClientId));
             Assert.That(sut.AccountName, Is.EqualTo(accountDetailsDto.AccountName));
+            Assert.That(sut.Balance, Is.EqualTo(accountDetailsDto.Balance));
+            Assert.That(sut.AccountNumber, Is.EqualTo(accountDetailsDto.AccountNumber));
         }
 
         [Test]
@@ -102,7 +106,7 @@ namespace Test.Fohjin.DDD.Reporting.Infrastructure
         public void When_calling_GetByExample_it_will_return_a_list_with_dtos_matching_the_example_inclusing_child_objects()
         {
             var AccountId = Guid.NewGuid();
-            _repository.Save(new AccountDetails(AccountId, Guid.NewGuid(), "Account Name"));
+            _repository.Save(new AccountDetails(AccountId, Guid.NewGuid(), "Account Name", 10.5M, "1234567890"));
 
             _repository.Save(new Ledger(Guid.NewGuid(), AccountId, "Action 1", 12.3M));
             _repository.Save(new Ledger(Guid.NewGuid(), AccountId, "Action 2", 24.6M));

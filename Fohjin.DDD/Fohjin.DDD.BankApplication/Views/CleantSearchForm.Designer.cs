@@ -40,7 +40,7 @@
             this._clients.Name = "_clients";
             this._clients.Size = new System.Drawing.Size(360, 95);
             this._clients.TabIndex = 0;
-            this._clients.SelectedIndexChanged += new System.EventHandler(this._clients_SelectedIndexChanged);
+            this._clients.DoubleClick += new System.EventHandler(this._clients_DoubleClick);
             // 
             // label1
             // 

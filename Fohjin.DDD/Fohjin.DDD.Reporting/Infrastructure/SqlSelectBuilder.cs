@@ -6,13 +6,13 @@ namespace Fohjin.DDD.Reporting.Infrastructure
 {
     public interface ISqlSelectBuilder 
     {
-        string CreateSqlSelectStatementFromDto<TDto>() where TDto : class;
+        string CreateSqlSelectStatementFromDto<TDto>() ;
         string CreateSqlSelectStatementFromDto<TDto>(IEnumerable<KeyValuePair<string, object>> example) where TDto : class;
     }
 
     public class SqlSelectBuilder : ISqlSelectBuilder
     {
-        public string CreateSqlSelectStatementFromDto<TDto>() where TDto : class
+        public string CreateSqlSelectStatementFromDto<TDto>() 
         {
             return string.Format("{0};", GetSelectString<TDto>());
         }

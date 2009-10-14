@@ -26,16 +26,40 @@ namespace Fohjin.DDD.BankApplication.Views
             set { _accountName.Text = value; }
         }
 
+        public string AccountNumber
+        {
+            get { return _accountNumber.Text; }
+            set { _accountNumber.Text = value; }
+        }
+
         public IEnumerable<Ledger> Ledgers
         {
             get { return (IEnumerable<Ledger>)_ledgers.DataSource; }
             set { _ledgers.DataSource = value; }
         }
 
-        public string Amount
+        public IEnumerable<Account> TransferAccounts
         {
-            get { return _amount.Text; }
-            set { _amount.Text = value; }
+            get { return (IEnumerable<Account>)_transferAccounts.DataSource; }
+            set { _transferAccounts.DataSource = value; }
+        }
+
+        public decimal Amount
+        {
+            get { return Convert.ToDecimal(_amount.Text); }
+            set { _amount.Text = value.ToString(); }
+        }
+
+        public decimal TransferAmount
+        {
+            get { return Convert.ToDecimal(_transferAmount.Text); }
+            set { _transferAmount.Text = value.ToString(); }
+        }
+
+        public decimal Balance
+        {
+            get { return Convert.ToDecimal(_balance.Text); }
+            set { _balance.Text = value.ToString(); }
         }
 
         public void SetPresenter(IAccountDetailsPresenter accountDetailsPresenter)

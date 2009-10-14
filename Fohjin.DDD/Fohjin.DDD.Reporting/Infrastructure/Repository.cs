@@ -22,6 +22,9 @@ namespace Fohjin.DDD.Reporting.Infrastructure
 
         public IEnumerable<TDto> GetByExample<TDto>(object example) where TDto : class
         {
+            if (example == null)
+                return GetByExample<TDto>(new Dictionary<string, object>());
+
             var exampleData = new Dictionary<string, object>();
 
             example.GetType().GetProperties().Where(Where).ToList().ForEach(x => exampleData.Add(x.Name, x.GetValue(example, new object[] { })));
@@ -29,7 +32,7 @@ namespace Fohjin.DDD.Reporting.Infrastructure
             return GetByExample<TDto>(exampleData);
         }
 
-        public IEnumerable<TDto> GetByExample<TDto>(IEnumerable<KeyValuePair<string, object>> example) where TDto : class
+        public IEnumerable<TDto> GetByExample<TDto>(IDictionary<string, object> example) where TDto : class
         {
             List<TDto> dtos;
             var dtoType = typeof(TDto);

@@ -78,11 +78,6 @@
     <Compile Include="ValueObjects\PhoneNumber.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="sqlite3.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Fohjin.DDD.Events\Fohjin.DDD.Events.csproj">
       <Project>{CFB4C037-822D-470E-8A01-832957D193C9}</Project>
       <Name>Fohjin.DDD.Events</Name>

@@ -36,7 +36,7 @@ namespace Fohjin.DDD.BankApplication.Views
             _presenter.CreateNewClient();
         }
 
-        private void _clients_SelectedIndexChanged(object sender, EventArgs e)
+        private void _clients_DoubleClick(object sender, EventArgs e)
         {
             _presenter.OpenSelectedClient();
         }

@@ -15,11 +15,6 @@ namespace Fohjin.DDD.BankApplication.Views
             InitializeComponent();
         }
 
-        private void _accounts_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            _presenter.OpenSelectedAccount();
-        }
-
         private void AddNewAccountButton_Click(object sender, EventArgs e)
         {
             _presenter.CreateNewAccountAndAttachToClient();
@@ -80,6 +75,11 @@ namespace Fohjin.DDD.BankApplication.Views
         public Account GetSelectedAccount()
         {
             return (Account)_accounts.SelectedItem;
+        }
+
+        private void _accounts_DoubleClick(object sender, EventArgs e)
+        {
+            _presenter.OpenSelectedAccount();
         }
     }
 }

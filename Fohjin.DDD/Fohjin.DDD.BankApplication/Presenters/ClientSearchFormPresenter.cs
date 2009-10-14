@@ -1,4 +1,6 @@
 using Fohjin.DDD.BankApplication.Views;
+using Fohjin.DDD.Reporting.Dto;
+using Fohjin.DDD.Reporting.Infrastructure;
 
 namespace Fohjin.DDD.BankApplication.Presenters
 {
@@ -6,16 +8,19 @@ namespace Fohjin.DDD.BankApplication.Presenters
     {
         private readonly IClientSearchFormView _clientSearchFormView;
         private readonly IClientDetailsPresenter _clientDetailsPresenter;
+        private readonly IRepository _repository;
 
-        public ClientSearchFormPresenter(IClientSearchFormView clientSearchFormView, IClientDetailsPresenter clientDetailsPresenter)
+        public ClientSearchFormPresenter(IClientSearchFormView clientSearchFormView, IClientDetailsPresenter clientDetailsPresenter, IRepository repository)
         {
             _clientSearchFormView = clientSearchFormView;
             _clientDetailsPresenter = clientDetailsPresenter;
+            _repository = repository;
             _clientSearchFormView.SetPresenter(this);
         }
 
         public void CreateNewClient()
         {
+            _clientDetailsPresenter.SetClient(null);
             _clientDetailsPresenter.Display();
         }
 
@@ -28,6 +33,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
 
         public void Display()
         {
+            _clientSearchFormView.Clients = _repository.GetByExample<Client>(null);
             _clientSearchFormView.ShowDialog();
         }
     }

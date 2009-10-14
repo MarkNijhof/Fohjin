@@ -122,7 +122,7 @@
             this._accounts.Name = "_accounts";
             this._accounts.Size = new System.Drawing.Size(360, 95);
             this._accounts.TabIndex = 9;
-            this._accounts.SelectedIndexChanged += new System.EventHandler(this._accounts_SelectedIndexChanged);
+            this._accounts.DoubleClick += new System.EventHandler(this._accounts_DoubleClick);
             // 
             // SaveClientButton
             // 
