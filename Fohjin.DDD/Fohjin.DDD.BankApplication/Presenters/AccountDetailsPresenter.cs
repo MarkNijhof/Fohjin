@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Fohjin.DDD.BankApplication.Views;
 using Fohjin.DDD.Bus;
@@ -28,6 +29,9 @@ namespace Fohjin.DDD.BankApplication.Presenters
         public void Display()
         {
             _accountDetailsView.DisableSaveButton();
+            _accountDetailsView.DisableDepositeButton();
+            _accountDetailsView.DisableWithdrawlButton();
+            _accountDetailsView.DisableTransferButton();
 
             if (_account == null)
             {
@@ -62,7 +66,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
             if (_accountDetails == null)
                 return;
 
-            _bus.Publish(new CloseAnAccountCommand(_account.Id));
+            _bus.Publish(new CloseAccountCommand(_account.Id));
         }
 
         public void SaveAccountDetails()
@@ -83,19 +87,68 @@ namespace Fohjin.DDD.BankApplication.Presenters
                     _accountDetailsView.AccountName));
         }
 
-        public void InitiateDeposite()
+        public void PreformCashDeposite()
         {
             if (_accountDetails == null)
                 return;
+
+            if (AmountIsValid())
+                _bus.Publish(new CashDepositeCommand(
+                    _accountDetails.Id,
+                    _accountDetailsView.Amount));
         }
 
-        public void InitiateWithdrawl()
+        public void PreformCashWithdrawl()
         {
             if (_accountDetails == null)
                 return;
+
+            if (AmountIsValid())
+                _bus.Publish(new CashWithdrawlCommand(
+                    _accountDetails.Id,
+                    _accountDetailsView.Amount));
+        }
+
+        public void PreformTransfer()
+        {
+            if (_accountDetails == null)
+                return;
+
+            if (TransferAmountIsValid())
+                _bus.Publish(new TransferMoneyToAnOtherAccountCommand(
+                    _accountDetails.Id,
+                    _accountDetailsView.TransferAmount,
+                    _accountDetailsView.GetSelectedTransferAccount().AccountNumber));
         }
 
         public void FormElementGotChanged()
+        {
+            ManageSaveButton();
+            ManageTransferButton();
+            ManageCashTransferButtons();
+        }
+
+        private void ManageCashTransferButtons()
+        {
+            _accountDetailsView.DisableDepositeButton();
+            _accountDetailsView.DisableWithdrawlButton();
+
+            if (!AmountIsValid())
+                return;
+
+            _accountDetailsView.EnableDepositeButton();
+            _accountDetailsView.EnableWithdrawlButton();
+        }
+
+        private void ManageTransferButton()
+        {
+            _accountDetailsView.DisableTransferButton();
+
+            if (TransferAmountIsValid())
+                _accountDetailsView.EnableTransferButton();
+        }
+
+        private void ManageSaveButton()
         {
             _accountDetailsView.DisableSaveButton();
 
@@ -118,6 +171,16 @@ namespace Fohjin.DDD.BankApplication.Presenters
         private bool AccountNameHasChanged()
         {
             return _accountDetailsView.AccountName != _accountDetails.AccountName;
+        }
+
+        private bool AmountIsValid()
+        {
+            return _accountDetailsView.Amount > decimal.Zero;
+        }
+
+        private bool TransferAmountIsValid()
+        {
+            return _accountDetailsView.TransferAmount > decimal.Zero;
         }
     }
 }

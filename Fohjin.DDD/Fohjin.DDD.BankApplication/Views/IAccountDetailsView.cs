@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Fohjin.DDD.BankApplication.Presenters;
 using Fohjin.DDD.Reporting.Dto;
@@ -18,5 +19,12 @@ namespace Fohjin.DDD.BankApplication.Views
         void SetIsExistingAccount();
         void EnableSaveButton();
         void DisableSaveButton();
+        void EnableWithdrawlButton();
+        void DisableWithdrawlButton();
+        void EnableDepositeButton();
+        void DisableDepositeButton();
+        void EnableTransferButton();
+        void DisableTransferButton();
+        Account GetSelectedTransferAccount();
     }
 }

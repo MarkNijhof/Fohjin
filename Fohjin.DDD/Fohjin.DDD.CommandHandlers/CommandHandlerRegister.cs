@@ -11,9 +11,9 @@ namespace Fohjin.DDD.CommandHandlers
             ForRequestedType<ICommandHandler<ClientPhoneNumberIsChangedCommand>>().TheDefaultIsConcreteType<ClientPhoneNumberIsChangedCommandHandler>();
 
             ForRequestedType<ICommandHandler<AddNewAccountToClientCommand>>().TheDefaultIsConcreteType<AddNewAccountToClientCommandHandler>();
-            ForRequestedType<ICommandHandler<MakeADepositeOnAnAccountCommand>>().TheDefaultIsConcreteType<MakeADepositeOnAnAccountCommandHandler>();
-            ForRequestedType<ICommandHandler<MakeAWithdrawlFromAnAccountCommand>>().TheDefaultIsConcreteType<MakeAWithdrawlFromAnAccountCommandHandler>();
-            ForRequestedType<ICommandHandler<CloseAnAccountCommand>>().TheDefaultIsConcreteType<CloseAnAccountCommandHandler>();
+            ForRequestedType<ICommandHandler<CashDepositeCommand>>().TheDefaultIsConcreteType<MakeADepositeOnAnAccountCommandHandler>();
+            ForRequestedType<ICommandHandler<CashWithdrawlCommand>>().TheDefaultIsConcreteType<MakeAWithdrawlFromAnAccountCommandHandler>();
+            ForRequestedType<ICommandHandler<CloseAccountCommand>>().TheDefaultIsConcreteType<CloseAnAccountCommandHandler>();
         }
     }
 }

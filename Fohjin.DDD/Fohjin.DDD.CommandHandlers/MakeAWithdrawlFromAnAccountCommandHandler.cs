@@ -5,7 +5,7 @@ using Fohjin.EventStorage;
 
 namespace Fohjin.DDD.CommandHandlers
 {
-    public class MakeAWithdrawlFromAnAccountCommandHandler : ICommandHandler<MakeAWithdrawlFromAnAccountCommand>
+    public class MakeAWithdrawlFromAnAccountCommandHandler : ICommandHandler<CashWithdrawlCommand>
     {
         private readonly IRepository<ActiveAccount> _repository;
 
@@ -14,7 +14,7 @@ namespace Fohjin.DDD.CommandHandlers
             _repository = repository;
         }
 
-        public void Execute(MakeAWithdrawlFromAnAccountCommand command)
+        public void Execute(CashWithdrawlCommand command)
         {
             var activeAccount = _repository.GetById(command.Id);
 

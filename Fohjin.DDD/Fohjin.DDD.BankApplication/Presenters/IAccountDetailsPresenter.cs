@@ -7,8 +7,9 @@ namespace Fohjin.DDD.BankApplication.Presenters
         void SetAccount(Account account);
         void CloseTheAccount();
         void SaveAccountDetails();
-        void InitiateDeposite();
-        void InitiateWithdrawl();
+        void PreformCashDeposite();
+        void PreformCashWithdrawl();
         void FormElementGotChanged();
+        void PreformTransfer();
     }
 }

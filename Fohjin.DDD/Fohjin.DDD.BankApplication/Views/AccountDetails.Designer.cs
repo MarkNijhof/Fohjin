@@ -65,7 +65,7 @@
             this.groupBox1.Size = new System.Drawing.Size(380, 56);
             this.groupBox1.TabIndex = 19;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Manually Transer Money";
+            this.groupBox1.Text = "Cash Mutations";
             // 
             // _amount
             // 
@@ -73,6 +73,7 @@
             this._amount.Name = "_amount";
             this._amount.Size = new System.Drawing.Size(64, 20);
             this._amount.TabIndex = 22;
+            this._amount.TextChanged += new System.EventHandler(this._client_Changed);
             // 
             // label3
             // 
@@ -230,10 +231,11 @@
             // _transferAccounts
             // 
             this._transferAccounts.FormattingEnabled = true;
-            this._transferAccounts.Location = new System.Drawing.Point(146, 22);
+            this._transferAccounts.Location = new System.Drawing.Point(146, 21);
             this._transferAccounts.Name = "_transferAccounts";
             this._transferAccounts.Size = new System.Drawing.Size(224, 21);
             this._transferAccounts.TabIndex = 23;
+            this._transferAccounts.TextChanged += new System.EventHandler(this._client_Changed);
             // 
             // _transferAmount
             // 
@@ -241,6 +243,7 @@
             this._transferAmount.Name = "_transferAmount";
             this._transferAmount.Size = new System.Drawing.Size(64, 20);
             this._transferAmount.TabIndex = 22;
+            this._transferAmount.TextChanged += new System.EventHandler(this._client_Changed);
             // 
             // label5
             // 
@@ -259,6 +262,7 @@
             this.TransferButton.TabIndex = 19;
             this.TransferButton.Text = "Transfer";
             this.TransferButton.UseVisualStyleBackColor = true;
+            this.TransferButton.Click += new System.EventHandler(this.TransferButton_Click);
             // 
             // AccountDetails
             // 

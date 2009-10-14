@@ -1,10 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using Fohjin.DDD.BankApplication.Presenters;
 using Fohjin.DDD.Reporting.Dto;
@@ -75,21 +70,56 @@ namespace Fohjin.DDD.BankApplication.Views
             SaveAccountButton.Enabled = false;
         }
 
+        public void EnableWithdrawlButton()
+        {
+            WithdrawlButton.Enabled = true;
+        }
+
+        public void DisableWithdrawlButton()
+        {
+            WithdrawlButton.Enabled = false;
+        }
+
+        public void EnableDepositeButton()
+        {
+            DepositeButton.Enabled = true;
+        }
+
+        public void DisableDepositeButton()
+        {
+            DepositeButton.Enabled = false;
+        }
+
+        public void EnableTransferButton()
+        {
+            TransferButton.Enabled = true;
+        }
+
+        public void DisableTransferButton()
+        {
+            TransferButton.Enabled = false;
+        }
+
+        public Account GetSelectedTransferAccount()
+        {
+            return (Account)_transferAccounts.SelectedItem;
+        }
+
         public decimal Amount
         {
-            get { return Convert.ToDecimal(_amount.Text); }
+            get { return string.IsNullOrEmpty(_amount.Text) ? 0 : Convert.ToDecimal(_amount.Text); }
             set { _amount.Text = value.ToString(); }
         }
 
         public decimal TransferAmount
         {
-            get { return Convert.ToDecimal(_transferAmount.Text); }
+            get { return string.IsNullOrEmpty(_transferAmount.Text) ? 0 : Convert.ToDecimal(_transferAmount.Text); }
             set { _transferAmount.Text = value.ToString(); }
         }
 
         public decimal Balance
         {
-            get { return Convert.ToDecimal(_balance.Text); }
+            get { return string.IsNullOrEmpty(_balance.Text) ? 0 : Convert.ToDecimal(_balance.Text); }
             set { _balance.Text = value.ToString(); }
         }
 
@@ -110,17 +140,22 @@ namespace Fohjin.DDD.BankApplication.Views
 
         private void DepositeButton_Click(object sender, EventArgs e)
         {
-            _presenter.InitiateDeposite();
+            _presenter.PreformCashDeposite();
         }
 
         private void WithdrawlButton_Click(object sender, EventArgs e)
         {
-            _presenter.InitiateWithdrawl();
+            _presenter.PreformCashWithdrawl();
         }
 
         private void _client_Changed(object sender, EventArgs e)
         {
             _presenter.FormElementGotChanged();
+        }
+
+        private void TransferButton_Click(object sender, EventArgs e)
+        {
+            _presenter.PreformTransfer();
         }
     }
 }
