@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Fohjin.DDD.CommandHandlers;
 using StructureMap;
 
 namespace Fohjin.DDD.Bus.Implementation
@@ -12,10 +13,10 @@ namespace Fohjin.DDD.Bus.Implementation
             _container = container;
         }
 
-        public void Publish<TMessage>(TMessage message) where TMessage : IMessage
+        public void Publish<TMessage>(TMessage message) where TMessage : class, IMessage
         {
-            var handler = _container.GetInstance<IHandler<TMessage>>();
-            handler.Handle(message);
+            var handler = _container.GetInstance<ICommandHandler<TMessage>>();
+            handler.Execute(message);
         }
 
         public void Publish(IEnumerable<IMessage> messages)
