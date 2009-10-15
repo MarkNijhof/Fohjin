@@ -69,6 +69,10 @@
     <Compile Include="Reporting\Infrastructure\TestDtoCase1.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Fohjin.DDD.CommandHandlers\Fohjin.DDD.CommandHandlers.csproj">
+      <Project>{7757DA0F-CD51-4753-95C8-8632177AA60E}</Project>
+      <Name>Fohjin.DDD.CommandHandlers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Fohjin.DDD.Configuration\Fohjin.DDD.Configuration.csproj">
       <Project>{CF50373D-3EB9-492D-A88F-70D7D6756DFF}</Project>
       <Name>Fohjin.DDD.Configuration</Name>

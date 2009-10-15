@@ -1,9 +1,10 @@
 using System;
 using System.Linq;
+using Fohjin.DDD.CommandHandlers;
 using Fohjin.DDD.Commands;
 using StructureMap.Configuration.DSL;
 
-namespace Fohjin.DDD.CommandHandlers
+namespace Fohjin.DDD.Configuration
 {
     public class CommandHandlerRegister : Registry
     {
@@ -22,15 +23,6 @@ namespace Fohjin.DDD.CommandHandlers
                 ForRequestedType(typeof (ICommandHandler<>).MakeGenericType(type))
                     .TheDefaultIsConcreteType(handlerType);
             }
-
-
-            //ForRequestedType<ICommandHandler<ClientHasMovedCommand>>().TheDefaultIsConcreteType<ClientHasMovedCommandHandler>();
-            //ForRequestedType<ICommandHandler<ClientPhoneNumberIsChangedCommand>>().TheDefaultIsConcreteType<ClientPhoneNumberIsChangedCommandHandler>();
-
-            //ForRequestedType<ICommandHandler<AddNewAccountToClientCommand>>().TheDefaultIsConcreteType<AddNewAccountToClientCommandHandler>();
-            //ForRequestedType<ICommandHandler<CashDepositeCommand>>().TheDefaultIsConcreteType<CashDepositeCommandHandler>();
-            //ForRequestedType<ICommandHandler<CashWithdrawlCommand>>().TheDefaultIsConcreteType<CashWithdrawlCommandHandler>();
-            //ForRequestedType<ICommandHandler<CloseAccountCommand>>().TheDefaultIsConcreteType<CloseAnAccountCommandHandler>();
         }
     }
 }

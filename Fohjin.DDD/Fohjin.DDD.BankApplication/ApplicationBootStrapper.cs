@@ -1,4 +1,3 @@
-using Fohjin.DDD.CommandHandlers;
 using Fohjin.DDD.Configuration;
 using StructureMap;
 

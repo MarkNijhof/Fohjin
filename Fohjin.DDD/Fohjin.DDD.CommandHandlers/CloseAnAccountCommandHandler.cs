@@ -4,11 +4,11 @@ using Fohjin.EventStorage;
 
 namespace Fohjin.DDD.CommandHandlers
 {
-    public class CloseAnAccountCommandHandler : ICommandHandler<CloseAccountCommand>
+    public class CloseAccountCommandHandler : ICommandHandler<CloseAccountCommand>
     {
         private readonly IRepository<ActiveAccount> _repository;
 
-        public CloseAnAccountCommandHandler(IRepository<ActiveAccount> repository)
+        public CloseAccountCommandHandler(IRepository<ActiveAccount> repository)
         {
             _repository = repository;
         }

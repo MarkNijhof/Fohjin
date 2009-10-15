@@ -49,15 +49,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccountNameGotChangedCommandHandler.cs" />
     <Compile Include="AddNewAccountToClientCommandHandler.cs" />
+    <Compile Include="ClientChangedTheirNameCommandHandler.cs" />
+    <Compile Include="ClientCreatedCommand.cs" />
     <Compile Include="ClientHasMovedCommandHandler.cs" />
     <Compile Include="ClientPhoneNumberIsChangedCommandHandler.cs" />
     <Compile Include="CloseAnAccountCommandHandler.cs" />
-    <Compile Include="CommandHandlerRegister.cs" />
     <Compile Include="ICommandHandler.cs" />
     <Compile Include="CashDepositeCommandHandler.cs" />
     <Compile Include="CashWithdrawlCommandHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TransferMoneyToAnOtherAccountCommandHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Fohjin.DDD.Bus\Fohjin.DDD.Bus.csproj">

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Fohjin.DDD.CommandHandlers;
 using Fohjin.DDD.Domain;
 using Fohjin.DDD.Events;
 using NUnit.Framework;
@@ -9,6 +10,37 @@ namespace Test.Fohjin.DDD.Domain
 {
     [TestFixture]
     public abstract class AggregateRootTestFixture<TAggregateRoot> where TAggregateRoot : IEventProvider, new()
+    {
+        protected TAggregateRoot aggregateRoot;
+        protected Exception caught;
+        protected IEnumerable<IDomainEvent> events;
+
+        protected abstract IEnumerable<IDomainEvent> Given();
+        protected abstract void When();
+
+        [SetUp]
+        public void Setup()
+        {
+            caught = null;
+            aggregateRoot = new TAggregateRoot();
+            aggregateRoot.LoadFromHistory(Given());
+
+            try
+            {
+                When();
+                events = aggregateRoot.GetChanges();
+            }
+            catch (Exception e)
+            {
+                caught = e;
+            }
+        }
+    }
+
+    [TestFixture]
+    public abstract class AggregateRootUsingCommandHandlerTestFixture<TAggregateRoot, TCommandHandler> 
+        where TAggregateRoot : IEventProvider, new()
+        where TCommandHandler : ICommandHandler, new()
     {
         protected TAggregateRoot aggregateRoot;
         protected Exception caught;
