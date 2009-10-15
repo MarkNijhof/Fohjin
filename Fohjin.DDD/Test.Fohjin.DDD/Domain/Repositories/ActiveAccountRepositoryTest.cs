@@ -12,23 +12,23 @@ using NUnit.Framework.SyntaxHelpers;
 
 namespace Test.Fohjin.DDD.Domain.Repositories
 {
-    public class Repository
-    {
-        private const string dataBaseFile = "domainDataBase.db3";
+    //public class RepositorySetup
+    //{
+    //    private const string dataBaseFile = "domainDataBase.db3";
 
-        public static Storage Storage;
+    //    public static Storage Storage;
 
-        public static Repository<ActiveAccount> Setup()
-        {
-            new DomainDatabaseBootStrapper().ReCreateDatabaseSchema();
+    //    public static Repository Setup()
+    //    {
+    //        new DomainDatabaseBootStrapper().ReCreateDatabaseSchema();
 
-            var sqliteConnectionString = string.Format("Data Source={0}", dataBaseFile);
+    //        var sqliteConnectionString = string.Format("Data Source={0}", dataBaseFile);
 
-            Storage = new Storage(sqliteConnectionString, new BinaryFormatter());
+    //        Storage = new Storage(sqliteConnectionString, new BinaryFormatter());
 
-            return new Repository<ActiveAccount>(Storage, Storage);
-        }
-    }
+    //        return new Repository(Storage, Storage);
+    //    }
+    //}
 
     //public class When_calling_Save : AggregateRootTestFixture<ActiveAccount>
     //{
@@ -79,7 +79,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
     {
         private const string dataBaseFile = "domainDataBase.db3";
 
-        private IRepository<ActiveAccount> _repository;
+        private IRepository _repository;
         private Storage _storage;
 
         [SetUp]
@@ -91,7 +91,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
 
             _storage = new Storage(sqliteConnectionString, new BinaryFormatter());
 
-            _repository = new Repository<ActiveAccount>(_storage, _storage);
+            _repository = new Repository(_storage, _storage);
         }
 
         [Test]
@@ -312,7 +312,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
 
             _repository.Save(activeAccount);
 
-            var sut = _repository.GetById(activeAccount.Id);
+            var sut = _repository.GetById<ActiveAccount>(activeAccount.Id);
 
             try
             {
@@ -344,7 +344,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
 
             _repository.Save(activeAccount);
 
-            var sut = _repository.GetById(activeAccount.Id);
+            var sut = _repository.GetById<ActiveAccount>(activeAccount.Id);
 
             try
             {
@@ -377,7 +377,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
 
             _repository.Save(activeAccount);
 
-            var sut = _repository.GetById(activeAccount.Id);
+            var sut = _repository.GetById<ActiveAccount>(activeAccount.Id);
 
             try
             {

@@ -7,16 +7,16 @@ namespace Fohjin.DDD.CommandHandlers
 {
     public class ClientPhoneNumberIsChangedCommandHandler : ICommandHandler<ClientPhoneNumberIsChangedCommand>
     {
-        private readonly IRepository<Client> _repository;
+        private readonly IRepository _repository;
 
-        public ClientPhoneNumberIsChangedCommandHandler(IRepository<Client> repository)
+        public ClientPhoneNumberIsChangedCommandHandler(IRepository repository)
         {
             _repository = repository;
         }
 
         public void Execute(ClientPhoneNumberIsChangedCommand command)
         {
-            var client = _repository.GetById(command.Id);
+            var client = _repository.GetById<Client>(command.Id);
 
             client.UpdatePhoneNumber(new PhoneNumber(command.PhoneNumber));
 

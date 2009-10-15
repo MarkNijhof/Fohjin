@@ -39,10 +39,6 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Data.SQLite, Version=1.0.65.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Lib\sqlite\System.Data.SQLite.dll</HintPath>
-    </Reference>
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -74,7 +70,7 @@
     <Compile Include="ValueObjects\Address.cs" />
     <Compile Include="ValueObjects\Amount.cs" />
     <Compile Include="ValueObjects\Balance.cs" />
-    <Compile Include="ValueObjects\Name.cs" />
+    <Compile Include="ValueObjects\ClientName.cs" />
     <Compile Include="ValueObjects\PhoneNumber.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -7,13 +7,11 @@ namespace Fohjin.DDD.CommandHandlers
 {
     public class AddNewAccountToClientCommandHandler : ICommandHandler<AddNewAccountToClientCommand>
     {
-        private readonly IRepository<ActiveAccount> _activeAccountRepository;
-        private readonly IRepository<Client> _clientRepository;
+        private readonly IRepository _repository;
 
-        public AddNewAccountToClientCommandHandler(IRepository<ActiveAccount> activeAccountRepository, IRepository<Client> clientRepository)
+        public AddNewAccountToClientCommandHandler(IRepository activeAccountRepository)
         {
-            _activeAccountRepository = activeAccountRepository;
-            _clientRepository = clientRepository;
+            _repository = activeAccountRepository;
         }
 
         public void Execute(AddNewAccountToClientCommand command)
@@ -21,11 +19,11 @@ namespace Fohjin.DDD.CommandHandlers
             var activeAccount = new ActiveAccount();
             activeAccount.Create(command.AccountId, new AccountName(command.AccountName));
 
-            var client = _clientRepository.GetById(command.Id);
+            var client = _repository.GetById<Client>(command.Id);
             client.AddAccount(command.AccountId);
 
-            _activeAccountRepository.Save(activeAccount);
-            _clientRepository.Save(client);
+            _repository.Save(activeAccount);
+            _repository.Save(client);
         }
     }
 }

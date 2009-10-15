@@ -5,7 +5,7 @@ using Fohjin.DDD.Domain.Entities.Mementos;
 
 namespace Fohjin.EventStorage
 {
-    public class Repository<TAggregate> : IRepository<TAggregate> where TAggregate : IOrginator, IEventProvider, new()
+    public class Repository : IRepository
     {
         private readonly IDomainEventStorage _domainEventStorage;
         private readonly ISnapShotStorage _snapShotStorage;
@@ -16,7 +16,7 @@ namespace Fohjin.EventStorage
             _domainEventStorage = domainEventStorage;
         }
 
-        public TAggregate GetById(Guid id) 
+        public TAggregate GetById<TAggregate>(Guid id) where TAggregate : IOrginator, IEventProvider, new()
         {
             var activeAccount = new TAggregate();
 
@@ -27,7 +27,7 @@ namespace Fohjin.EventStorage
             return activeAccount;
         }
 
-        public void Save(TAggregate activeAccount)
+        public void Save<TAggregate>(TAggregate activeAccount) where TAggregate : IOrginator, IEventProvider, new()
         {
             var entity = (IEventProvider) activeAccount;
 

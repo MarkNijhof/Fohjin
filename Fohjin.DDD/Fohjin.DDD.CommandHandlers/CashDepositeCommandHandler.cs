@@ -7,16 +7,16 @@ namespace Fohjin.DDD.CommandHandlers
 {
     public class CashDepositeCommandHandler : ICommandHandler<CashDepositeCommand>
     {
-        private readonly IRepository<ActiveAccount> _repository;
+        private readonly IRepository _repository;
 
-        public CashDepositeCommandHandler(IRepository<ActiveAccount> repository)
+        public CashDepositeCommandHandler(IRepository repository)
         {
             _repository = repository;
         }
 
         public void Execute(CashDepositeCommand command)
         {
-            var activeAccount = _repository.GetById(command.Id);
+            var activeAccount = _repository.GetById<ActiveAccount>(command.Id);
 
             activeAccount.Deposite(new Amount(command.Amount));
 

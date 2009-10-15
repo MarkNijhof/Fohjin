@@ -6,16 +6,16 @@ namespace Fohjin.DDD.CommandHandlers
 {
     public class CloseAccountCommandHandler : ICommandHandler<CloseAccountCommand>
     {
-        private readonly IRepository<ActiveAccount> _repository;
+        private readonly IRepository _repository;
 
-        public CloseAccountCommandHandler(IRepository<ActiveAccount> repository)
+        public CloseAccountCommandHandler(IRepository repository)
         {
             _repository = repository;
         }
 
         public void Execute(CloseAccountCommand command)
         {
-            var activeAccount = _repository.GetById(command.Id);
+            var activeAccount = _repository.GetById<ActiveAccount>(command.Id);
 
             activeAccount.Close();
 
