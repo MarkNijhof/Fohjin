@@ -15,16 +15,6 @@ namespace Fohjin.DDD.BankApplication.Views
             InitializeComponent();
         }
 
-        private void AddNewAccountButton_Click(object sender, EventArgs e)
-        {
-            _presenter.CreateNewAccountAndAttachToClient();
-        }
-
-        private void SaveClientButton_Click(object sender, EventArgs e)
-        {
-            _presenter.SaveClientChanges();
-        }
-
         public string ClientName
         {
             get { return _clientName.Text; }
@@ -79,22 +69,22 @@ namespace Fohjin.DDD.BankApplication.Views
 
         public void SetIsNewClient()
         {
-            AddNewAccountButton.Enabled = false;
+            addNewAccountToolStripMenuItem.Enabled = false;
         }
 
         public void SetIsExistingClient()
         {
-            AddNewAccountButton.Enabled = true;
+            addNewAccountToolStripMenuItem.Enabled = true;
         }
 
         public void EnableSaveButton()
         {
-            SaveClientButton.Enabled = true;
+            createToolStripMenuItem.Enabled = true;
         }
 
         public void DisableSaveButton()
         {
-            SaveClientButton.Enabled = false;
+            createToolStripMenuItem.Enabled = false;
         }
 
         private void _accounts_DoubleClick(object sender, EventArgs e)
@@ -105,6 +95,16 @@ namespace Fohjin.DDD.BankApplication.Views
         private void _client_Changed(object sender, EventArgs e)
         {
             _presenter.FormElementGotChanged();
+        }
+
+        private void addNewAccountToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _presenter.CreateNewAccountAndAttachToClient();
+        }
+
+        private void createToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _presenter.SaveClientChanges();
         }
     }
 }

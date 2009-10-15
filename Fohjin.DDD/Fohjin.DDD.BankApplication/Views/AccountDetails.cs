@@ -41,33 +41,33 @@ namespace Fohjin.DDD.BankApplication.Views
 
         public void SetIsNewAccount()
         {
-            CloseAccountButton.Enabled = false;
+            closeAccountToolStripMenuItem.Enabled = false;
             groupBox1.Enabled = false;
             groupBox3.Enabled = false;
         }
 
         public void SetIsClosedAccount()
         {
-            CloseAccountButton.Enabled = false;
+            closeAccountToolStripMenuItem.Enabled = false;
             groupBox1.Enabled = false;
             groupBox3.Enabled = false;
         }
 
         public void SetIsExistingAccount()
         {
-            CloseAccountButton.Enabled = true;
+            closeAccountToolStripMenuItem.Enabled = true;
             groupBox1.Enabled = true;
             groupBox3.Enabled = true;
         }
 
         public void EnableSaveButton()
         {
-            SaveAccountButton.Enabled = true;
+            changeAccountNameToolStripMenuItem.Enabled = true;
         }
 
         public void DisableSaveButton()
         {
-            SaveAccountButton.Enabled = false;
+            changeAccountNameToolStripMenuItem.Enabled = false;
         }
 
         public void EnableWithdrawlButton()
@@ -128,16 +128,6 @@ namespace Fohjin.DDD.BankApplication.Views
             _presenter = accountDetailsPresenter;
         }
 
-        private void CloseAccountButton_Click(object sender, EventArgs e)
-        {
-            _presenter.CloseTheAccount();
-        }
-
-        private void SaveAccountButton_Click(object sender, EventArgs e)
-        {
-            _presenter.SaveAccountDetails();
-        }
-
         private void DepositeButton_Click(object sender, EventArgs e)
         {
             _presenter.PreformCashDeposite();
@@ -156,6 +146,16 @@ namespace Fohjin.DDD.BankApplication.Views
         private void TransferButton_Click(object sender, EventArgs e)
         {
             _presenter.PreformTransfer();
+        }
+
+        private void closeAccountToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _presenter.CloseTheAccount();
+        }
+
+        private void changeAccountNameToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _presenter.SaveAccountDetails();
         }
     }
 }

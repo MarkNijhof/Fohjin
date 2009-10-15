@@ -33,7 +33,6 @@ namespace Fohjin.DDD.BankApplication.Views
 
         private void CreateNewClientButton_Click(object sender, EventArgs e)
         {
-            _presenter.CreateNewClient();
         }
 
         private void _clients_DoubleClick(object sender, EventArgs e)
@@ -42,6 +41,15 @@ namespace Fohjin.DDD.BankApplication.Views
         }
 
         private void RefreshButton_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void addANewClientToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _presenter.CreateNewClient();
+        }
+
+        private void refreshExistingClientsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             _presenter.Refresh();
         }
