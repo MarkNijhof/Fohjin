@@ -91,12 +91,42 @@ namespace Fohjin.DDD.BankApplication.Views
             return (Account)_accounts.SelectedItem;
         }
 
-        public void SetIsNewClient()
+        public void DisableAddNewAccountMenu()
         {
             addNewAccountToolStripMenuItem.Enabled = false;
         }
 
-        public void SetIsExistingClient()
+        public void EnableClientHasMovedMenu()
+        {
+            hasMovedToolStripMenuItem.Enabled = true;
+        }
+
+        public void DisableClientHasMovedMenu()
+        {
+            hasMovedToolStripMenuItem.Enabled = false;
+        }
+
+        public void EnableNameChangedMenu()
+        {
+            nameChangedToolStripMenuItem.Enabled = true;
+        }
+
+        public void DisableNameChangedMenu()
+        {
+            nameChangedToolStripMenuItem.Enabled = false;
+        }
+
+        public void EnablePhoneNumberChangedMenu()
+        {
+            changedHisPhoneNumberToolStripMenuItem.Enabled = true;
+        }
+
+        public void DisablePhoneNumberChangedMenu()
+        {
+            changedHisPhoneNumberToolStripMenuItem.Enabled = false;
+        }
+
+        public void EnableAddNewAccountMenu()
         {
             addNewAccountToolStripMenuItem.Enabled = true;
         }

@@ -20,7 +20,16 @@ namespace Fohjin.DDD.BankApplication.Views
 
         IEnumerable<Account> Accounts { get; set; }
         Account GetSelectedAccount();
-        void SetIsExistingClient();
+        
+        void EnableAddNewAccountMenu();
+        void DisableAddNewAccountMenu();
+        void EnableClientHasMovedMenu();
+        void DisableClientHasMovedMenu();
+        void EnableNameChangedMenu();
+        void DisableNameChangedMenu();
+        void EnablePhoneNumberChangedMenu();
+        void DisablePhoneNumberChangedMenu();
+
         void EnableSaveButton();
         void DisableSaveButton();
         void EnableOverviewPanel();

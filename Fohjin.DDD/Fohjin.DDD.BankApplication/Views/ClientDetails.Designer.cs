@@ -30,9 +30,9 @@
         {
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.clientToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.nameChangedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hasMovedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.hasMovedToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.changedHisPhonenumberToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.changedHisPhoneNumberToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.accountsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addNewAccountToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -96,33 +96,33 @@
             // clientToolStripMenuItem
             // 
             this.clientToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.nameChangedToolStripMenuItem,
             this.hasMovedToolStripMenuItem,
-            this.hasMovedToolStripMenuItem1,
-            this.changedHisPhonenumberToolStripMenuItem});
+            this.changedHisPhoneNumberToolStripMenuItem});
             this.clientToolStripMenuItem.Name = "clientToolStripMenuItem";
             this.clientToolStripMenuItem.Size = new System.Drawing.Size(50, 20);
             this.clientToolStripMenuItem.Text = "Client";
+            // 
+            // nameChangedToolStripMenuItem
+            // 
+            this.nameChangedToolStripMenuItem.Name = "nameChangedToolStripMenuItem";
+            this.nameChangedToolStripMenuItem.Size = new System.Drawing.Size(219, 22);
+            this.nameChangedToolStripMenuItem.Text = "Got his name changed";
+            this.nameChangedToolStripMenuItem.Click += new System.EventHandler(this.nameChangeToolStripMenuItem_Click);
             // 
             // hasMovedToolStripMenuItem
             // 
             this.hasMovedToolStripMenuItem.Name = "hasMovedToolStripMenuItem";
             this.hasMovedToolStripMenuItem.Size = new System.Drawing.Size(219, 22);
-            this.hasMovedToolStripMenuItem.Text = "Got his name changed";
-            this.hasMovedToolStripMenuItem.Click += new System.EventHandler(this.nameChangeToolStripMenuItem_Click);
+            this.hasMovedToolStripMenuItem.Text = "Has moved";
+            this.hasMovedToolStripMenuItem.Click += new System.EventHandler(this.hasMovedToolStripMenuItem_Click);
             // 
-            // hasMovedToolStripMenuItem1
+            // changedHisPhoneNumberToolStripMenuItem
             // 
-            this.hasMovedToolStripMenuItem1.Name = "hasMovedToolStripMenuItem1";
-            this.hasMovedToolStripMenuItem1.Size = new System.Drawing.Size(219, 22);
-            this.hasMovedToolStripMenuItem1.Text = "Has moved";
-            this.hasMovedToolStripMenuItem1.Click += new System.EventHandler(this.hasMovedToolStripMenuItem_Click);
-            // 
-            // changedHisPhonenumberToolStripMenuItem
-            // 
-            this.changedHisPhonenumberToolStripMenuItem.Name = "changedHisPhonenumberToolStripMenuItem";
-            this.changedHisPhonenumberToolStripMenuItem.Size = new System.Drawing.Size(219, 22);
-            this.changedHisPhonenumberToolStripMenuItem.Text = "Changed his phonenumber";
-            this.changedHisPhonenumberToolStripMenuItem.Click += new System.EventHandler(this.changedHisPhonenumberToolStripMenuItem_Click);
+            this.changedHisPhoneNumberToolStripMenuItem.Name = "changedHisPhoneNumberToolStripMenuItem";
+            this.changedHisPhoneNumberToolStripMenuItem.Size = new System.Drawing.Size(219, 22);
+            this.changedHisPhoneNumberToolStripMenuItem.Text = "Changed his phonenumber";
+            this.changedHisPhoneNumberToolStripMenuItem.Click += new System.EventHandler(this.changedHisPhonenumberToolStripMenuItem_Click);
             // 
             // accountsToolStripMenuItem
             // 
@@ -521,9 +521,9 @@
 
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem clientToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem nameChangedToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem hasMovedToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem hasMovedToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem changedHisPhonenumberToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem changedHisPhoneNumberToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem accountsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addNewAccountToolStripMenuItem;
         private System.Windows.Forms.TabControl tabControl1;
