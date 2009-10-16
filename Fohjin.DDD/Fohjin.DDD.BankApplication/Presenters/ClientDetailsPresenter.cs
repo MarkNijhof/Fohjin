@@ -31,6 +31,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
         public void Display()
         {
             _clientDetailsView.DisableSaveButton();
+            _clientDetailsView.EnableOverviewPanel();
 
             if (_client == null)
             {
@@ -42,7 +43,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
                 _clientDetailsView.City = string.Empty;
                 _clientDetailsView.PhoneNumber = string.Empty;
                 _clientDetailsView.Accounts = null;
-                _clientDetailsView.SetIsNewClient();
+                _clientDetailsView.EnableClientNamePanel();
                 _clientDetailsView.ShowDialog();
                 return;
             }
@@ -56,6 +57,12 @@ namespace Fohjin.DDD.BankApplication.Presenters
             _clientDetailsView.PhoneNumber = _clientDetails.PhoneNumber;
             _clientDetailsView.Accounts = _clientDetails.Accounts;
             _clientDetailsView.SetIsExistingClient();
+
+            _clientDetailsView.ClientNameLabel = _clientDetails.ClientName;
+            _clientDetailsView.PhoneNumberLabel = _clientDetails.PhoneNumber;
+            _clientDetailsView.AddressLine1Label = string.Format("{0} {1}", _clientDetails.Street, _clientDetails.StreetNumber);
+            _clientDetailsView.AddressLine2Label = string.Format("{0} {1}", _clientDetails.PostalCode, _clientDetails.City);
+
             _clientDetailsView.ShowDialog();
         }
 
@@ -71,7 +78,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
             _accountDetailsPresenter.Display();
         }
 
-        public void CreateNewAccountAndAttachToClient()
+        public void CreateNewAccount()
         {
             _accountDetailsPresenter.SetAccount(null);
             _accountDetailsPresenter.Display();
@@ -134,6 +141,56 @@ namespace Fohjin.DDD.BankApplication.Presenters
                 _clientDetailsView.EnableSaveButton();
                 return;
             }
+        }
+
+        public void SaveNewClientName()
+        {
+            _bus.Publish(new ClientChangedTheirNameCommand(
+                _clientDetails.Id,
+                _clientDetailsView.ClientName));
+
+            _clientDetailsView.EnableOverviewPanel();
+        }
+
+        public void SaveNewPhoneNumber()
+        {
+            _bus.Publish(new ClientPhoneNumberIsChangedCommand(
+                _clientDetails.Id,
+                _clientDetailsView.PhoneNumber));
+
+            _clientDetailsView.EnableOverviewPanel();
+        }
+
+        public void SaveNewAddress()
+        {
+            _bus.Publish(new ClientHasMovedCommand(
+                _clientDetails.Id,
+                _clientDetailsView.Street,
+                _clientDetailsView.StreetNumber,
+                _clientDetailsView.PostalCode,
+                _clientDetailsView.City));
+
+            _clientDetailsView.EnableOverviewPanel();
+        }
+
+        public void Cancel()
+        {
+            _clientDetailsView.EnableOverviewPanel();
+        }
+
+        public void InitialeClientHasMoved()
+        {
+            _clientDetailsView.EnableAddressPanel();
+        }
+
+        public void InitialeClientNameChange()
+        {
+            _clientDetailsView.EnableClientNamePanel();
+        }
+
+        public void InitialeClientPhoneNumberChanged()
+        {
+            _clientDetailsView.EnablePhoneNumberPanel();
         }
 
         private bool FormIsValid()

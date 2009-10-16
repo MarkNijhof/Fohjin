@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Forms;
 using Fohjin.DDD.BankApplication.Presenters;
 using Fohjin.DDD.Reporting.Dto;
@@ -13,6 +14,9 @@ namespace Fohjin.DDD.BankApplication.Views
         public ClientDetails()
         {
             InitializeComponent();
+            tabControl1.Appearance = TabAppearance.FlatButtons;
+            tabControl1.ItemSize = new Size(0, 1);
+            tabControl1.SizeMode = TabSizeMode.Fixed;
         }
 
         public string ClientName
@@ -57,6 +61,26 @@ namespace Fohjin.DDD.BankApplication.Views
             set { _phoneNumber.Text = value; }
         }
 
+        public string ClientNameLabel
+        {
+            set { _clientNameLabel.Text = value; }
+        }
+
+        public string AddressLine1Label
+        {
+            set { _addressLine1Label.Text = value; }
+        }
+
+        public string AddressLine2Label
+        {
+            set { _addressLine2Label.Text = value; }
+        }
+
+        public string PhoneNumberLabel
+        {
+            set { _phoneNumberLabel.Text = value; }
+        }
+
         public void SetPresenter(IClientDetailsPresenter clientDetailsPresenter)
         {
             _presenter = clientDetailsPresenter;
@@ -79,12 +103,36 @@ namespace Fohjin.DDD.BankApplication.Views
 
         public void EnableSaveButton()
         {
-            createToolStripMenuItem.Enabled = true;
+            _addressSaveButton.Enabled = true;
+            _phoneNumberSaveButton.Enabled = true;
+            _clientNameSaveButton.Enabled = true;
         }
 
         public void DisableSaveButton()
         {
-            createToolStripMenuItem.Enabled = false;
+            _addressSaveButton.Enabled = false;
+            _phoneNumberSaveButton.Enabled = false;
+            _clientNameSaveButton.Enabled = false;
+        }
+
+        public void EnableOverviewPanel()
+        {
+            tabControl1.SelectedIndex = 0;
+        }
+
+        public void EnableAddressPanel()
+        {
+            tabControl1.SelectedIndex = 1;
+        }
+
+        public void EnablePhoneNumberPanel()
+        {
+            tabControl1.SelectedIndex = 2;
+        }
+
+        public void EnableClientNamePanel()
+        {
+            tabControl1.SelectedIndex = 3;
         }
 
         private void _accounts_DoubleClick(object sender, EventArgs e)
@@ -99,12 +147,42 @@ namespace Fohjin.DDD.BankApplication.Views
 
         private void addNewAccountToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            _presenter.CreateNewAccountAndAttachToClient();
+            _presenter.CreateNewAccount();
         }
 
-        private void createToolStripMenuItem_Click(object sender, EventArgs e)
+        private void CancelButton_Click(object sender, EventArgs e)
         {
-            _presenter.SaveClientChanges();
+            _presenter.Cancel();
+        }
+
+        private void _clientNameSaveButton_Click(object sender, EventArgs e)
+        {
+            _presenter.SaveNewClientName();
+        }
+
+        private void _phoneNumberSaveButton_Click(object sender, EventArgs e)
+        {
+            _presenter.SaveNewPhoneNumber();
+        }
+
+        private void _addressSaveButton_Click(object sender, EventArgs e)
+        {
+            _presenter.SaveNewAddress();
+        }
+
+        private void nameChangeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _presenter.InitialeClientNameChange();
+        }
+
+        private void hasMovedToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _presenter.InitialeClientHasMoved();
+        }
+
+        private void changedHisPhonenumberToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _presenter.InitialeClientPhoneNumberChanged();
         }
     }
 }

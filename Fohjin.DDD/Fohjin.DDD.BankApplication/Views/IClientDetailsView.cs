@@ -11,12 +11,21 @@ namespace Fohjin.DDD.BankApplication.Views
         string StreetNumber { get; set; }
         string PostalCode { get; set; }
         string City { get; set; }
-        IEnumerable<Account> Accounts { get; set; }
         string PhoneNumber { get; set; }
+        
+        string ClientNameLabel { set; }
+        string AddressLine1Label { set; }
+        string AddressLine2Label { set; }
+        string PhoneNumberLabel { set; }
+
+        IEnumerable<Account> Accounts { get; set; }
         Account GetSelectedAccount();
-        void SetIsNewClient();
         void SetIsExistingClient();
         void EnableSaveButton();
         void DisableSaveButton();
+        void EnableOverviewPanel();
+        void EnableAddressPanel();
+        void EnableClientNamePanel();
+        void EnablePhoneNumberPanel();
     }
 }
