@@ -43,48 +43,19 @@ namespace Fohjin.DDD.BankApplication.Presenters
                 _editStep = 1;
                 _createNewProcess = true;
                 _clientDetails = new ClientDetails(Guid.NewGuid(), string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty);
-                _clientDetailsView.ClientName = string.Empty;
-                _clientDetailsView.Street = string.Empty;
-                _clientDetailsView.StreetNumber = string.Empty;
-                _clientDetailsView.PostalCode = string.Empty;
-                _clientDetailsView.City = string.Empty;
-                _clientDetailsView.PhoneNumber = string.Empty;
-                _clientDetailsView.Accounts = null;
+                ResetForm();
                 _clientDetailsView.EnableClientNamePanel();
                 _clientDetailsView.ShowDialog();
                 return;
             }
 
             _clientDetails = _repository.GetByExample<ClientDetails>(new { _client.Id }).FirstOrDefault();
-            EnableAllMenuButtons();
 
             SetClientDetailsData();
+            SetReadOnlyData();
 
-            _clientDetailsView.ClientNameLabel = _clientDetails.ClientName;
-            _clientDetailsView.PhoneNumberLabel = _clientDetails.PhoneNumber;
-            _clientDetailsView.AddressLine1Label = string.Format("{0} {1}", _clientDetails.Street, _clientDetails.StreetNumber);
-            _clientDetailsView.AddressLine2Label = string.Format("{0} {1}", _clientDetails.PostalCode, _clientDetails.City);
-
+            EnableAllMenuButtons();
             _clientDetailsView.ShowDialog();
-        }
-
-        private void DisableAllMenuButtons() 
-        {
-            _clientDetailsView.DisableAddNewAccountMenu();
-            _clientDetailsView.DisableClientHasMovedMenu();
-            _clientDetailsView.DisableNameChangedMenu();
-            _clientDetailsView.DisablePhoneNumberChangedMenu();
-        }
-
-        private void SetClientDetailsData()
-        {
-            _clientDetailsView.ClientName = _clientDetails.ClientName;
-            _clientDetailsView.Street = _clientDetails.Street;
-            _clientDetailsView.StreetNumber = _clientDetails.StreetNumber;
-            _clientDetailsView.PostalCode = _clientDetails.PostalCode;
-            _clientDetailsView.City = _clientDetails.City;
-            _clientDetailsView.PhoneNumber = _clientDetails.PhoneNumber;
-            _clientDetailsView.Accounts = _clientDetails.Accounts;
         }
 
         public void SetClient(Client client)
@@ -112,7 +83,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
             if (!FormIsValid())
                 return;
 
-            if (_clientDetails == null)
+            if (_createNewProcess)
             {
                 _clientDetailsView.EnableSaveButton();
                 return;
@@ -248,14 +219,6 @@ namespace Fohjin.DDD.BankApplication.Presenters
             SetClientDetailsData();
         }
 
-        private void EnableAllMenuButtons() 
-        {
-            _clientDetailsView.EnableAddNewAccountMenu();
-            _clientDetailsView.EnableClientHasMovedMenu();
-            _clientDetailsView.EnableNameChangedMenu();
-            _clientDetailsView.EnablePhoneNumberChangedMenu();
-        }
-
         public void InitialeClientHasMoved()
         {
             _editStep = 1;
@@ -277,8 +240,57 @@ namespace Fohjin.DDD.BankApplication.Presenters
             _clientDetailsView.EnablePhoneNumberPanel();
         }
 
+        private void SetReadOnlyData() 
+        {
+            _clientDetailsView.ClientNameLabel = _clientDetails.ClientName;
+            _clientDetailsView.PhoneNumberLabel = _clientDetails.PhoneNumber;
+            _clientDetailsView.AddressLine1Label = string.Format("{0} {1}", _clientDetails.Street, _clientDetails.StreetNumber);
+            _clientDetailsView.AddressLine2Label = string.Format("{0} {1}", _clientDetails.PostalCode, _clientDetails.City);
+        }
+
+        private void ResetForm() 
+        {
+            _clientDetailsView.ClientName = string.Empty;
+            _clientDetailsView.Street = string.Empty;
+            _clientDetailsView.StreetNumber = string.Empty;
+            _clientDetailsView.PostalCode = string.Empty;
+            _clientDetailsView.City = string.Empty;
+            _clientDetailsView.PhoneNumber = string.Empty;
+            _clientDetailsView.Accounts = null;
+        }
+
+        private void DisableAllMenuButtons() 
+        {
+            _clientDetailsView.DisableAddNewAccountMenu();
+            _clientDetailsView.DisableClientHasMovedMenu();
+            _clientDetailsView.DisableNameChangedMenu();
+            _clientDetailsView.DisablePhoneNumberChangedMenu();
+        }
+
+        private void SetClientDetailsData()
+        {
+            _clientDetailsView.ClientName = _clientDetails.ClientName;
+            _clientDetailsView.Street = _clientDetails.Street;
+            _clientDetailsView.StreetNumber = _clientDetails.StreetNumber;
+            _clientDetailsView.PostalCode = _clientDetails.PostalCode;
+            _clientDetailsView.City = _clientDetails.City;
+            _clientDetailsView.PhoneNumber = _clientDetails.PhoneNumber;
+            _clientDetailsView.Accounts = _clientDetails.Accounts;
+        }
+
+        private void EnableAllMenuButtons() 
+        {
+            _clientDetailsView.EnableAddNewAccountMenu();
+            _clientDetailsView.EnableClientHasMovedMenu();
+            _clientDetailsView.EnableNameChangedMenu();
+            _clientDetailsView.EnablePhoneNumberChangedMenu();
+        }
+
         private bool FormIsValid()
         {
+            if (_editStep == 0)
+                return true;
+
             if (_editStep == 1)
                 return !string.IsNullOrEmpty(_clientDetailsView.ClientName);
 
@@ -292,7 +304,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
             if (_editStep == 3)
                 return !string.IsNullOrEmpty(_clientDetailsView.PhoneNumber);
 
-            return false;
+            throw new Exception("Edit step was not properly initialized!");
         }
 
         private bool FormHasChanged()
