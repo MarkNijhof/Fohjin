@@ -61,7 +61,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommandHandlers\Client_command_handlers.cs" />
+    <Compile Include="Commands\Client_created_command.cs" />
     <Compile Include="Configuration\DatabaseBootStrapperTest.cs" />
     <Compile Include="Domain\AggregateRootTestExtensions.cs" />
     <Compile Include="Domain\CommandHandlerTestFixture.cs" />
