@@ -61,6 +61,12 @@ namespace Fohjin.DDD.BankApplication.Views
             set { _phoneNumber.Text = value; }
         }
 
+        public string NewAccountName
+        {
+            get { return _newAccountName.Text; }
+            set { _newAccountName.Text = value; }
+        }
+
         public string ClientNameLabel
         {
             set { _clientNameLabel.Text = value; }
@@ -136,6 +142,7 @@ namespace Fohjin.DDD.BankApplication.Views
             _addressSaveButton.Enabled = true;
             _phoneNumberSaveButton.Enabled = true;
             _clientNameSaveButton.Enabled = true;
+            _newAccountCreateButton.Enabled = true;
         }
 
         public void DisableSaveButton()
@@ -143,6 +150,7 @@ namespace Fohjin.DDD.BankApplication.Views
             _addressSaveButton.Enabled = false;
             _phoneNumberSaveButton.Enabled = false;
             _clientNameSaveButton.Enabled = false;
+            _newAccountCreateButton.Enabled = false;
         }
 
         public void EnableOverviewPanel()
@@ -165,6 +173,11 @@ namespace Fohjin.DDD.BankApplication.Views
             tabControl1.SelectedIndex = 3;
         }
 
+        public void EnableAddNewAccountPanel()
+        {
+            tabControl1.SelectedIndex = 4;
+        }
+
         private void _accounts_DoubleClick(object sender, EventArgs e)
         {
             _presenter.OpenSelectedAccount();
@@ -177,7 +190,7 @@ namespace Fohjin.DDD.BankApplication.Views
 
         private void addNewAccountToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            _presenter.CreateNewAccount();
+            _presenter.InitiateAddNewAccount();
         }
 
         private void CancelButton_Click(object sender, EventArgs e)
@@ -202,17 +215,27 @@ namespace Fohjin.DDD.BankApplication.Views
 
         private void nameChangeToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            _presenter.InitialeClientNameChange();
+            _presenter.InitiateClientNameChange();
         }
 
         private void hasMovedToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            _presenter.InitialeClientHasMoved();
+            _presenter.InitiateClientHasMoved();
         }
 
         private void changedHisPhonenumberToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            _presenter.InitialeClientPhoneNumberChanged();
+            _presenter.InitiateClientPhoneNumberChanged();
+        }
+
+        private void NewAccountCancelButton_Click(object sender, EventArgs e)
+        {
+            _presenter.Cancel();
+        }
+
+        private void NewAccountCreateButton_Click(object sender, EventArgs e)
+        {
+            _presenter.CreateNewAccount();
         }
     }
 }

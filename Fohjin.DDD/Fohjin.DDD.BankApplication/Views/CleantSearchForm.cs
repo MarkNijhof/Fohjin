@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Forms;
 using Fohjin.DDD.BankApplication.Presenters;
 using Fohjin.DDD.Reporting.Dto;
@@ -13,6 +14,9 @@ namespace Fohjin.DDD.BankApplication.Views
         public ClientSearchForm()
         {
             InitializeComponent();
+            tabControl1.Appearance = TabAppearance.FlatButtons;
+            tabControl1.ItemSize = new Size(0, 1);
+            tabControl1.SizeMode = TabSizeMode.Fixed;
         }
 
         public IEnumerable<Client> Clients
@@ -31,17 +35,9 @@ namespace Fohjin.DDD.BankApplication.Views
             return (Client)_clients.SelectedItem;
         }
 
-        private void CreateNewClientButton_Click(object sender, EventArgs e)
-        {
-        }
-
         private void _clients_DoubleClick(object sender, EventArgs e)
         {
             _presenter.OpenSelectedClient();
-        }
-
-        private void RefreshButton_Click(object sender, EventArgs e)
-        {
         }
 
         private void addANewClientToolStripMenuItem_Click(object sender, EventArgs e)

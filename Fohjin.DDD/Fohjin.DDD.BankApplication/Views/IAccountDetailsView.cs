@@ -6,24 +6,28 @@ namespace Fohjin.DDD.BankApplication.Views
 {
     public interface IAccountDetailsView : IView<IAccountDetailsPresenter>
     {
+        string AccountNameLabel { set; }
+        string AccountNumberLabel { set; }
+        decimal BalanceLabel { set; }
         string AccountName { get; set; }
-        string AccountNumber { get; set; }
+
         IEnumerable<Ledger> Ledgers { get; set; }
-        decimal Amount { get; set; }
-        decimal TransferAmount { get; set; }
-        decimal Balance { get; set; }
         IEnumerable<Account> TransferAccounts { get; set; }
-        void SetIsNewAccount();
-        void SetIsClosedAccount();
-        void SetIsExistingAccount();
+        Account GetSelectedTransferAccount();
+
+        decimal DepositeAmount { get; set; }
+        decimal WithdrawlAmount { get; set; }
+        decimal TransferAmount { get; set; }
+
         void EnableSaveButton();
         void DisableSaveButton();
-        void EnableWithdrawlButton();
-        void DisableWithdrawlButton();
-        void EnableDepositeButton();
-        void DisableDepositeButton();
-        void EnableTransferButton();
-        void DisableTransferButton();
-        Account GetSelectedTransferAccount();
+        void EnableMenuButtons();
+        void DisableMenuButtons();
+
+        void EnableDetailsPanel();
+        void EnableAccountNameChangePanel();
+        void EnableDepositePanel();
+        void EnableWithdrawlPanel();
+        void EnableTransferPanel();
     }
 }

@@ -6,10 +6,18 @@ namespace Fohjin.DDD.BankApplication.Presenters
     {
         void SetAccount(Account account);
         void CloseTheAccount();
-        void SaveAccountDetails();
-        void PreformCashDeposite();
-        void PreformCashWithdrawl();
         void FormElementGotChanged();
-        void PreformTransfer();
+
+        void Cancel();
+        
+        void InitiateAccountNameChange();
+        void InitiateMoneyDeposite();
+        void InitiateMoneyWithdrawl();
+        void InitiateMoneyTransfer();
+
+        void ChangeAccountName();
+        void DepositeMoney();
+        void WithdrawlMoney();
+        void TransferMoney();
     }
 }

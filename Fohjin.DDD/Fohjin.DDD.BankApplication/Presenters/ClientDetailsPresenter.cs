@@ -12,6 +12,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
     public class ClientDetailsPresenter : IClientDetailsPresenter
     {
         private bool _createNewProcess;
+        private bool _addNewAccountProcess;
         private int _editStep;
         private Client _client;
         private ClientDetails _clientDetails;
@@ -24,6 +25,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
         {
             _editStep = 0;
             _createNewProcess = false;
+            _addNewAccountProcess = false;
             _clientDetailsView = clientDetailsView;
             _accountDetailsPresenter = accountDetailsPresenter;
             _bus = bus;
@@ -35,8 +37,8 @@ namespace Fohjin.DDD.BankApplication.Presenters
         {
             _createNewProcess = false;
             _clientDetailsView.DisableSaveButton();
-            _clientDetailsView.EnableOverviewPanel();
             DisableAllMenuButtons();
+            _clientDetailsView.EnableOverviewPanel();
 
             if (_client == null)
             {
@@ -70,12 +72,6 @@ namespace Fohjin.DDD.BankApplication.Presenters
             _accountDetailsPresenter.Display();
         }
 
-        public void CreateNewAccount()
-        {
-            _accountDetailsPresenter.SetAccount(null);
-            _accountDetailsPresenter.Display();
-        }
-
         public void FormElementGotChanged()
         {
             _clientDetailsView.DisableSaveButton();
@@ -84,6 +80,12 @@ namespace Fohjin.DDD.BankApplication.Presenters
                 return;
 
             if (_createNewProcess)
+            {
+                _clientDetailsView.EnableSaveButton();
+                return;
+            }
+
+            if (_addNewAccountProcess)
             {
                 _clientDetailsView.EnableSaveButton();
                 return;
@@ -206,6 +208,18 @@ namespace Fohjin.DDD.BankApplication.Presenters
             _clientDetailsView.EnableOverviewPanel();
         }
 
+        public void CreateNewAccount()
+        {
+            _bus.Publish(new AddNewAccountToClientCommand(
+                Guid.NewGuid(),
+                _clientDetails.Id,
+                _clientDetailsView.NewAccountName));
+
+            _addNewAccountProcess = false;
+            EnableAllMenuButtons();
+            _clientDetailsView.EnableOverviewPanel();
+        }
+
         public void Cancel()
         {
             if (_createNewProcess)
@@ -214,30 +228,43 @@ namespace Fohjin.DDD.BankApplication.Presenters
                 return;
             }
 
+            _addNewAccountProcess = false;
             EnableAllMenuButtons();
             _clientDetailsView.EnableOverviewPanel();
+            _clientDetailsView.DisableSaveButton();
             SetClientDetailsData();
         }
 
-        public void InitialeClientHasMoved()
+        public void InitiateClientHasMoved()
         {
             _editStep = 1;
             DisableAllMenuButtons();
             _clientDetailsView.EnableAddressPanel();
         }
 
-        public void InitialeClientNameChange()
+        public void InitiateClientPhoneNumberChanged()
+        {
+            _editStep = 2;
+            DisableAllMenuButtons();
+            _clientDetailsView.EnablePhoneNumberPanel();
+        }
+
+        public void InitiateClientNameChange()
         {
             _editStep = 3;
             DisableAllMenuButtons();
             _clientDetailsView.EnableClientNamePanel();
         }
 
-        public void InitialeClientPhoneNumberChanged()
+        public void InitiateAddNewAccount()
         {
-            _editStep = 2;
+            _editStep = 4;
+            _addNewAccountProcess = true;
+
+            _clientDetailsView.NewAccountName = string.Empty;
+
             DisableAllMenuButtons();
-            _clientDetailsView.EnablePhoneNumberPanel();
+            _clientDetailsView.EnableAddNewAccountPanel();
         }
 
         private void SetReadOnlyData() 
@@ -303,6 +330,10 @@ namespace Fohjin.DDD.BankApplication.Presenters
 
             if (_editStep == 3)
                 return !string.IsNullOrEmpty(_clientDetailsView.PhoneNumber);
+
+            if (_editStep == 4)
+                return 
+                    !string.IsNullOrEmpty(_clientDetailsView.NewAccountName);
 
             throw new Exception("Edit step was not properly initialized!");
         }

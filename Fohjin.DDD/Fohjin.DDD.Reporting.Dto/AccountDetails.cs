@@ -12,13 +12,13 @@ namespace Fohjin.DDD.Reporting.Dto
         public decimal Balance { get; set; }
         public string AccountNumber { get; private set; }
 
-        public AccountDetails(Guid id, Guid clientId, string accountName, decimal amount, string accountNumber)
+        public AccountDetails(Guid id, Guid clientId, string accountName, decimal balance, string accountNumber)
         {
             Id = id;
             ClientId = clientId;
             Ledgers = new List<Ledger>();
             AccountName = accountName;
-            Balance = amount;
+            Balance = balance;
             AccountNumber = accountNumber;
         }
     }

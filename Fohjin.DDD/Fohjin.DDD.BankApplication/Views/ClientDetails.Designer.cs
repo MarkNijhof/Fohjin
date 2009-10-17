@@ -69,6 +69,11 @@
             this._clientNameSaveButton = new System.Windows.Forms.Button();
             this._clientNameGroupBox = new System.Windows.Forms.GroupBox();
             this._clientName = new System.Windows.Forms.TextBox();
+            this._addNewAccount = new System.Windows.Forms.TabPage();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this._newAccountName = new System.Windows.Forms.TextBox();
+            this._newAccountCancelButton = new System.Windows.Forms.Button();
+            this._newAccountCreateButton = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this._detailsTab.SuspendLayout();
@@ -80,6 +85,8 @@
             this._phoneNumberGroupBox.SuspendLayout();
             this._clientNameTab.SuspendLayout();
             this._clientNameGroupBox.SuspendLayout();
+            this._addNewAccount.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -145,11 +152,12 @@
             this.tabControl1.Controls.Add(this._addressTab);
             this.tabControl1.Controls.Add(this._phoneNumberTab);
             this.tabControl1.Controls.Add(this._clientNameTab);
+            this.tabControl1.Controls.Add(this._addNewAccount);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 24);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(306, 242);
+            this.tabControl1.Size = new System.Drawing.Size(306, 256);
             this.tabControl1.TabIndex = 19;
             // 
             // _detailsTab
@@ -159,7 +167,7 @@
             this._detailsTab.Location = new System.Drawing.Point(4, 22);
             this._detailsTab.Name = "_detailsTab";
             this._detailsTab.Padding = new System.Windows.Forms.Padding(3);
-            this._detailsTab.Size = new System.Drawing.Size(298, 216);
+            this._detailsTab.Size = new System.Drawing.Size(298, 230);
             this._detailsTab.TabIndex = 0;
             this._detailsTab.Text = "tabPage1";
             this._detailsTab.UseVisualStyleBackColor = true;
@@ -167,7 +175,7 @@
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this._accounts);
-            this.groupBox1.Location = new System.Drawing.Point(6, 91);
+            this.groupBox1.Location = new System.Drawing.Point(6, 103);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(285, 119);
             this.groupBox1.TabIndex = 20;
@@ -194,7 +202,7 @@
             this.groupBox2.Controls.Add(this.label1);
             this.groupBox2.Location = new System.Drawing.Point(6, 6);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(285, 79);
+            this.groupBox2.Size = new System.Drawing.Size(285, 91);
             this.groupBox2.TabIndex = 19;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Client details";
@@ -203,7 +211,7 @@
             // 
             this._addressLine2Label.AutoSize = true;
             this._addressLine2Label.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this._addressLine2Label.Location = new System.Drawing.Point(94, 59);
+            this._addressLine2Label.Location = new System.Drawing.Point(94, 67);
             this._addressLine2Label.Name = "_addressLine2Label";
             this._addressLine2Label.Size = new System.Drawing.Size(91, 13);
             this._addressLine2Label.TabIndex = 6;
@@ -213,7 +221,7 @@
             // 
             this._addressLine1Label.AutoSize = true;
             this._addressLine1Label.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this._addressLine1Label.Location = new System.Drawing.Point(94, 46);
+            this._addressLine1Label.Location = new System.Drawing.Point(94, 54);
             this._addressLine1Label.Name = "_addressLine1Label";
             this._addressLine1Label.Size = new System.Drawing.Size(91, 13);
             this._addressLine1Label.TabIndex = 5;
@@ -223,7 +231,7 @@
             // 
             this._phoneNumberLabel.AutoSize = true;
             this._phoneNumberLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this._phoneNumberLabel.Location = new System.Drawing.Point(94, 33);
+            this._phoneNumberLabel.Location = new System.Drawing.Point(94, 37);
             this._phoneNumberLabel.Name = "_phoneNumberLabel";
             this._phoneNumberLabel.Size = new System.Drawing.Size(90, 13);
             this._phoneNumberLabel.TabIndex = 4;
@@ -242,7 +250,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(7, 46);
+            this.label5.Location = new System.Drawing.Point(7, 54);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(48, 13);
             this.label5.TabIndex = 2;
@@ -251,7 +259,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(7, 33);
+            this.label4.Location = new System.Drawing.Point(7, 37);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(79, 13);
             this.label4.TabIndex = 1;
@@ -274,14 +282,15 @@
             this._addressTab.Location = new System.Drawing.Point(4, 22);
             this._addressTab.Name = "_addressTab";
             this._addressTab.Padding = new System.Windows.Forms.Padding(3);
-            this._addressTab.Size = new System.Drawing.Size(298, 216);
+            this._addressTab.Size = new System.Drawing.Size(298, 230);
             this._addressTab.TabIndex = 1;
             this._addressTab.Text = "tabPage2";
             this._addressTab.UseVisualStyleBackColor = true;
             // 
             // _addressCancelButton
             // 
-            this._addressCancelButton.Location = new System.Drawing.Point(139, 190);
+            this._addressCancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this._addressCancelButton.Location = new System.Drawing.Point(139, 204);
             this._addressCancelButton.Name = "_addressCancelButton";
             this._addressCancelButton.Size = new System.Drawing.Size(75, 23);
             this._addressCancelButton.TabIndex = 16;
@@ -291,7 +300,8 @@
             // 
             // _addressSaveButton
             // 
-            this._addressSaveButton.Location = new System.Drawing.Point(220, 190);
+            this._addressSaveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this._addressSaveButton.Location = new System.Drawing.Point(220, 204);
             this._addressSaveButton.Name = "_addressSaveButton";
             this._addressSaveButton.Size = new System.Drawing.Size(75, 23);
             this._addressSaveButton.TabIndex = 15;
@@ -391,14 +401,15 @@
             this._phoneNumberTab.Controls.Add(this._phoneNumberGroupBox);
             this._phoneNumberTab.Location = new System.Drawing.Point(4, 22);
             this._phoneNumberTab.Name = "_phoneNumberTab";
-            this._phoneNumberTab.Size = new System.Drawing.Size(298, 216);
+            this._phoneNumberTab.Size = new System.Drawing.Size(298, 230);
             this._phoneNumberTab.TabIndex = 2;
             this._phoneNumberTab.Text = "tabPage3";
             this._phoneNumberTab.UseVisualStyleBackColor = true;
             // 
             // _phoneNumberCancelButton
             // 
-            this._phoneNumberCancelButton.Location = new System.Drawing.Point(139, 190);
+            this._phoneNumberCancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this._phoneNumberCancelButton.Location = new System.Drawing.Point(139, 204);
             this._phoneNumberCancelButton.Name = "_phoneNumberCancelButton";
             this._phoneNumberCancelButton.Size = new System.Drawing.Size(75, 23);
             this._phoneNumberCancelButton.TabIndex = 19;
@@ -408,7 +419,8 @@
             // 
             // _phoneNumberSaveButton
             // 
-            this._phoneNumberSaveButton.Location = new System.Drawing.Point(220, 190);
+            this._phoneNumberSaveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this._phoneNumberSaveButton.Location = new System.Drawing.Point(220, 204);
             this._phoneNumberSaveButton.Name = "_phoneNumberSaveButton";
             this._phoneNumberSaveButton.Size = new System.Drawing.Size(75, 23);
             this._phoneNumberSaveButton.TabIndex = 18;
@@ -441,14 +453,15 @@
             this._clientNameTab.Controls.Add(this._clientNameGroupBox);
             this._clientNameTab.Location = new System.Drawing.Point(4, 22);
             this._clientNameTab.Name = "_clientNameTab";
-            this._clientNameTab.Size = new System.Drawing.Size(298, 216);
+            this._clientNameTab.Size = new System.Drawing.Size(298, 230);
             this._clientNameTab.TabIndex = 3;
             this._clientNameTab.Text = "tabPage4";
             this._clientNameTab.UseVisualStyleBackColor = true;
             // 
             // _clientNameCancelButton
             // 
-            this._clientNameCancelButton.Location = new System.Drawing.Point(139, 190);
+            this._clientNameCancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this._clientNameCancelButton.Location = new System.Drawing.Point(139, 204);
             this._clientNameCancelButton.Name = "_clientNameCancelButton";
             this._clientNameCancelButton.Size = new System.Drawing.Size(75, 23);
             this._clientNameCancelButton.TabIndex = 18;
@@ -458,7 +471,8 @@
             // 
             // _clientNameSaveButton
             // 
-            this._clientNameSaveButton.Location = new System.Drawing.Point(220, 190);
+            this._clientNameSaveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this._clientNameSaveButton.Location = new System.Drawing.Point(220, 204);
             this._clientNameSaveButton.Name = "_clientNameSaveButton";
             this._clientNameSaveButton.Size = new System.Drawing.Size(75, 23);
             this._clientNameSaveButton.TabIndex = 17;
@@ -484,11 +498,63 @@
             this._clientName.TabIndex = 9;
             this._clientName.TextChanged += new System.EventHandler(this._client_Changed);
             // 
+            // _addNewAccount
+            // 
+            this._addNewAccount.Controls.Add(this._newAccountCancelButton);
+            this._addNewAccount.Controls.Add(this._newAccountCreateButton);
+            this._addNewAccount.Controls.Add(this.groupBox3);
+            this._addNewAccount.Location = new System.Drawing.Point(4, 22);
+            this._addNewAccount.Name = "_addNewAccount";
+            this._addNewAccount.Size = new System.Drawing.Size(298, 230);
+            this._addNewAccount.TabIndex = 4;
+            this._addNewAccount.Text = "tabPage5";
+            this._addNewAccount.UseVisualStyleBackColor = true;
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this._newAccountName);
+            this.groupBox3.Location = new System.Drawing.Point(6, 6);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(285, 47);
+            this.groupBox3.TabIndex = 17;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Specify the name of the new account";
+            // 
+            // _newAccountName
+            // 
+            this._newAccountName.Location = new System.Drawing.Point(6, 19);
+            this._newAccountName.Name = "_newAccountName";
+            this._newAccountName.Size = new System.Drawing.Size(273, 20);
+            this._newAccountName.TabIndex = 9;
+            this._newAccountName.TextChanged += new System.EventHandler(this._client_Changed);
+            // 
+            // _newAccountCancelButton
+            // 
+            this._newAccountCancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this._newAccountCancelButton.Location = new System.Drawing.Point(139, 204);
+            this._newAccountCancelButton.Name = "_newAccountCancelButton";
+            this._newAccountCancelButton.Size = new System.Drawing.Size(75, 23);
+            this._newAccountCancelButton.TabIndex = 20;
+            this._newAccountCancelButton.Text = "Cancel";
+            this._newAccountCancelButton.UseVisualStyleBackColor = true;
+            this._newAccountCancelButton.Click += new System.EventHandler(this.NewAccountCancelButton_Click);
+            // 
+            // _newAccountCreateButton
+            // 
+            this._newAccountCreateButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this._newAccountCreateButton.Location = new System.Drawing.Point(220, 204);
+            this._newAccountCreateButton.Name = "_newAccountCreateButton";
+            this._newAccountCreateButton.Size = new System.Drawing.Size(75, 23);
+            this._newAccountCreateButton.TabIndex = 19;
+            this._newAccountCreateButton.Text = "Create";
+            this._newAccountCreateButton.UseVisualStyleBackColor = true;
+            this._newAccountCreateButton.Click += new System.EventHandler(this.NewAccountCreateButton_Click);
+            // 
             // ClientDetails
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(306, 266);
+            this.ClientSize = new System.Drawing.Size(306, 280);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
@@ -512,6 +578,9 @@
             this._clientNameTab.ResumeLayout(false);
             this._clientNameGroupBox.ResumeLayout(false);
             this._clientNameGroupBox.PerformLayout();
+            this._addNewAccount.ResumeLayout(false);
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -560,5 +629,10 @@
         private System.Windows.Forms.Button _phoneNumberSaveButton;
         private System.Windows.Forms.Button _clientNameCancelButton;
         private System.Windows.Forms.Button _clientNameSaveButton;
+        private System.Windows.Forms.TabPage _addNewAccount;
+        private System.Windows.Forms.Button _newAccountCancelButton;
+        private System.Windows.Forms.Button _newAccountCreateButton;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.TextBox _newAccountName;
     }
 }

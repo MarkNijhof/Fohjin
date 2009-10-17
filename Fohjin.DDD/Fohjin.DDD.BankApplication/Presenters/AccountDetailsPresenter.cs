@@ -11,6 +11,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
 {
     public class AccountDetailsPresenter : IAccountDetailsPresenter
     {
+        private int _editStep;
         private Account _account;
         private AccountDetails _accountDetails;
         private readonly IAccountDetailsView _accountDetailsView;
@@ -19,6 +20,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
 
         public AccountDetailsPresenter(IAccountDetailsView accountDetailsView, ICommandBus bus, IRepository repository)
         {
+            _editStep = 0;
             _accountDetailsView = accountDetailsView;
             _bus = bus;
             _repository = repository;
@@ -28,30 +30,16 @@ namespace Fohjin.DDD.BankApplication.Presenters
         public void Display()
         {
             _accountDetailsView.DisableSaveButton();
-            _accountDetailsView.DisableDepositeButton();
-            _accountDetailsView.DisableWithdrawlButton();
-            _accountDetailsView.DisableTransferButton();
-
-            if (_account == null)
-            {
-                _accountDetails = null;
-                _accountDetailsView.AccountName = string.Empty;
-                _accountDetailsView.AccountNumber = string.Empty;
-                _accountDetailsView.Balance = 0;
-                _accountDetailsView.Ledgers = null;
-                _accountDetailsView.TransferAccounts = null;
-                _accountDetailsView.SetIsNewAccount();
-                _accountDetailsView.ShowDialog();
-                return;
-            }
+            _accountDetailsView.EnableMenuButtons();
+            _accountDetailsView.EnableDetailsPanel();
 
             _accountDetails = _repository.GetByExample<AccountDetails>(new { _account.Id }).FirstOrDefault();
             _accountDetailsView.AccountName = _accountDetails.AccountName;
-            _accountDetailsView.AccountNumber = _accountDetails.AccountNumber;
-            _accountDetailsView.Balance = _accountDetails.Balance;
+            _accountDetailsView.AccountNameLabel = _accountDetails.AccountName;
+            _accountDetailsView.AccountNumberLabel = _accountDetails.AccountNumber;
+            _accountDetailsView.BalanceLabel = _accountDetails.Balance;
             _accountDetailsView.Ledgers = _accountDetails.Ledgers;
             _accountDetailsView.TransferAccounts = _repository.GetByExample<Account>(null).ToList().Where(x => x.Id != _accountDetails.Id).ToList();
-            _accountDetailsView.SetIsExistingAccount();
             _accountDetailsView.ShowDialog();
         }
 
@@ -68,118 +56,152 @@ namespace Fohjin.DDD.BankApplication.Presenters
             _bus.Publish(new CloseAccountCommand(_account.Id));
         }
 
-        public void SaveAccountDetails()
+        public void Cancel()
         {
-            if (_accountDetails == null)
-            {
-                _bus.Publish(new AddNewAccountToClientCommand(
-                    Guid.NewGuid(),
-                    _account.ClientDetailsId, 
-                    _accountDetailsView.AccountName));
-                _accountDetailsView.Close();
-                return;
-            }
-
-            if (AccountNameHasChanged())
-                _bus.Publish(new AccountNameGotChangedCommand(
-                    _accountDetails.Id,
-                    _accountDetailsView.AccountName));
+            _editStep = 0;
+            _accountDetailsView.EnableDetailsPanel();
+            _accountDetailsView.DisableSaveButton();
+            _accountDetailsView.EnableMenuButtons();
         }
 
-        public void PreformCashDeposite()
+        public void InitiateMoneyDeposite()
         {
-            if (_accountDetails == null)
-                return;
-
-            if (AmountIsValid())
-                _bus.Publish(new CashDepositeCommand(
-                    _accountDetails.Id,
-                    _accountDetailsView.Amount));
+            _editStep = 1;
+            _accountDetailsView.DepositeAmount = 0M;
+            _accountDetailsView.DisableMenuButtons();
+            _accountDetailsView.EnableDepositePanel();
         }
 
-        public void PreformCashWithdrawl()
+        public void InitiateMoneyWithdrawl()
         {
-            if (_accountDetails == null)
-                return;
-
-            if (AmountIsValid())
-                _bus.Publish(new CashWithdrawlCommand(
-                    _accountDetails.Id,
-                    _accountDetailsView.Amount));
+            _editStep = 2;
+            _accountDetailsView.WithdrawlAmount = 0M;
+            _accountDetailsView.DisableMenuButtons();
+            _accountDetailsView.EnableWithdrawlPanel();
         }
 
-        public void PreformTransfer()
+        public void InitiateMoneyTransfer()
         {
-            if (_accountDetails == null)
-                return;
+            _editStep = 3;
+            _accountDetailsView.TransferAmount = 0M;
+            _accountDetailsView.DisableMenuButtons();
+            _accountDetailsView.EnableTransferPanel();
+        }
 
-            if (TransferAmountIsValid())
-                _bus.Publish(new TransferMoneyToAnOtherAccountCommand(
-                    _accountDetails.Id,
-                    _accountDetailsView.TransferAmount,
-                    _accountDetailsView.GetSelectedTransferAccount().AccountNumber));
+        public void InitiateAccountNameChange()
+        {
+            _editStep = 4;
+            _accountDetailsView.AccountName = _accountDetails.AccountName;
+            _accountDetailsView.DisableMenuButtons();
+            _accountDetailsView.EnableAccountNameChangePanel();
+        }
+
+        public void ChangeAccountName()
+        {
+            _bus.Publish(new AccountNameGotChangedCommand(
+                _accountDetails.Id,
+                _accountDetailsView.AccountName));
+
+            _accountDetails = new AccountDetails(
+                _accountDetails.Id,
+                _accountDetails.ClientId,
+                _accountDetailsView.AccountName,
+                _accountDetails.Balance,
+                _accountDetails.AccountNumber);
+
+            _accountDetailsView.EnableMenuButtons();
+            _accountDetailsView.EnableDetailsPanel();
+        }
+
+        public void DepositeMoney()
+        {
+            _bus.Publish(new CashDepositeCommand(
+                _accountDetails.Id,
+                _accountDetailsView.DepositeAmount));
+
+            _accountDetailsView.DepositeAmount = 0;
+            _accountDetailsView.EnableMenuButtons();
+            _accountDetailsView.EnableDetailsPanel();
+        }
+
+        public void WithdrawlMoney()
+        {
+            _bus.Publish(new CashWithdrawlCommand(
+                _accountDetails.Id,
+                _accountDetailsView.WithdrawlAmount));
+
+            _accountDetailsView.WithdrawlAmount = 0;
+            _accountDetailsView.EnableMenuButtons();
+            _accountDetailsView.EnableDetailsPanel();
+        }
+
+        public void TransferMoney()
+        {
+            _bus.Publish(new TransferMoneyToAnOtherAccountCommand(
+                _accountDetails.Id,
+                _accountDetailsView.TransferAmount,
+                _accountDetailsView.GetSelectedTransferAccount().AccountNumber));
+
+            _accountDetailsView.TransferAmount = 0;
+            _accountDetailsView.EnableMenuButtons();
+            _accountDetailsView.EnableDetailsPanel();
         }
 
         public void FormElementGotChanged()
         {
-            ManageSaveButton();
-            ManageTransferButton();
-            ManageCashTransferButtons();
-        }
-
-        private void ManageCashTransferButtons()
-        {
-            _accountDetailsView.DisableDepositeButton();
-            _accountDetailsView.DisableWithdrawlButton();
-
-            if (!AmountIsValid())
-                return;
-
-            _accountDetailsView.EnableDepositeButton();
-            _accountDetailsView.EnableWithdrawlButton();
-        }
-
-        private void ManageTransferButton()
-        {
-            _accountDetailsView.DisableTransferButton();
-
-            if (TransferAmountIsValid())
-                _accountDetailsView.EnableTransferButton();
-        }
-
-        private void ManageSaveButton()
-        {
             _accountDetailsView.DisableSaveButton();
 
-            if (string.IsNullOrEmpty(_accountDetailsView.AccountName))
+            if (!FormIsValid())
                 return;
 
-            if (_accountDetails == null)
+            if (FormHasChanged())
             {
                 _accountDetailsView.EnableSaveButton();
                 return;
             }
+        }
 
-            if (AccountNameHasChanged())
-            {
-                _accountDetailsView.EnableSaveButton();
-                return;
-            }
+        private bool FormIsValid()
+        {
+            if (_editStep == 0 || 
+                _editStep == 1 || 
+                _editStep == 2 || 
+                _editStep == 3)
+                return true;
+
+            if (_editStep == 4)
+                return !string.IsNullOrEmpty(_accountDetailsView.AccountName);
+
+            throw new Exception("Edit step was not properly initialized!");
+        }
+
+        private bool FormHasChanged()
+        {
+            return
+                AccountNameHasChanged() ||
+                DepositeAmountHasChanged() ||
+                WithdrawlAmountHasChanged() ||
+                TransferAmountHasChanged();
+        }
+
+        private bool TransferAmountHasChanged()
+        {
+            return _accountDetailsView.TransferAmount > decimal.Zero;
+        }
+
+        private bool WithdrawlAmountHasChanged()
+        {
+            return _accountDetailsView.WithdrawlAmount > decimal.Zero;
+        }
+
+        private bool DepositeAmountHasChanged()
+        {
+            return _accountDetailsView.DepositeAmount > decimal.Zero;
         }
 
         private bool AccountNameHasChanged()
         {
             return _accountDetailsView.AccountName != _accountDetails.AccountName;
-        }
-
-        private bool AmountIsValid()
-        {
-            return _accountDetailsView.Amount > decimal.Zero;
-        }
-
-        private bool TransferAmountIsValid()
-        {
-            return _accountDetailsView.TransferAmount > decimal.Zero;
         }
     }
 }

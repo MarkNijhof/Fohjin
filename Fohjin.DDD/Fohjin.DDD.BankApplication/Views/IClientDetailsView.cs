@@ -12,6 +12,7 @@ namespace Fohjin.DDD.BankApplication.Views
         string PostalCode { get; set; }
         string City { get; set; }
         string PhoneNumber { get; set; }
+        string NewAccountName { get; set; }
         
         string ClientNameLabel { set; }
         string AddressLine1Label { set; }
@@ -36,5 +37,6 @@ namespace Fohjin.DDD.BankApplication.Views
         void EnableAddressPanel();
         void EnableClientNamePanel();
         void EnablePhoneNumberPanel();
+        void EnableAddNewAccountPanel();
     }
 }
