@@ -9,7 +9,7 @@ namespace Test.Fohjin.DDD.Domain
     public class ThenAttribute : TestAttribute { }
     public class SpecificationAttribute : TestFixtureAttribute { }
 
-    public static class AggregateRootTestExtensions
+    public static class TestExtensions
     {
         public static IDomainEvent Number(this IEnumerable<IDomainEvent> events, int value)
         {
