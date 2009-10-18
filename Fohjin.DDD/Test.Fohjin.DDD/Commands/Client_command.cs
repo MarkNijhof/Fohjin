@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Fohjin.DDD.CommandHandlers;
 using Fohjin.DDD.Commands;
 using Fohjin.DDD.Domain.Entities;
+using Fohjin.DDD.Domain.Exceptions;
 using Fohjin.DDD.Events;
 using Fohjin.DDD.Events.Client;
 using Test.Fohjin.DDD.Domain;
@@ -51,11 +52,11 @@ namespace Test.Fohjin.DDD.Commands
         }
     }
 
-    public class When_providing_a_client_phone_number_is_changed_command : CommandTestFixture<ClientPhoneNumberIsChangedCommand, ClientPhoneNumberIsChangedCommandHandler, Client>
+    public class When_providing_a_client_phone_number_is_changed_command_on_a_created_client : CommandTestFixture<ClientPhoneNumberIsChangedCommand, ClientPhoneNumberIsChangedCommandHandler, Client>
     {
         protected override IEnumerable<IDomainEvent> Given()
         {
-            return new List<IDomainEvent>();
+            yield return DomainEvent.Set(new NewClientCreatedEvent(Guid.NewGuid(), "Mark Nijhof", "Welhavens gate", "49b", "5006", "Bergen", "95009937")).ToVersion(1);
         }
 
         protected override ClientPhoneNumberIsChangedCommand When()
@@ -76,11 +77,36 @@ namespace Test.Fohjin.DDD.Commands
         }
     }
 
-    public class When_providing_a_client_changed_their_name_command : CommandTestFixture<ClientChangedTheirNameCommand, ClientChangedTheirNameCommandHandler, Client>
+    public class When_providing_a_client_phone_number_is_changed_command_on_a_not_created_client : CommandTestFixture<ClientPhoneNumberIsChangedCommand, ClientPhoneNumberIsChangedCommandHandler, Client>
     {
         protected override IEnumerable<IDomainEvent> Given()
         {
             return new List<IDomainEvent>();
+        }
+
+        protected override ClientPhoneNumberIsChangedCommand When()
+        {
+            return new ClientPhoneNumberIsChangedCommand(Guid.NewGuid(), "95009937");
+        }
+
+        [Then]
+        public void Then_it_will_throw_a_client_was_not_created_exception()
+        {
+            caught.WillBeOfType<ClientWasNotCreatedException>();
+        }
+
+        [Then]
+        public void Then_the_throw_exception_message_will_be()
+        {
+            caught.Message.WillBe("The Client is not created and no opperations can be executed on it");
+        }
+    }
+
+    public class When_providing_a_client_changed_their_name_command_on_a_created_client : CommandTestFixture<ClientChangedTheirNameCommand, ClientChangedTheirNameCommandHandler, Client>
+    {
+        protected override IEnumerable<IDomainEvent> Given()
+        {
+            yield return DomainEvent.Set(new NewClientCreatedEvent(Guid.NewGuid(), "Mark Nijhof", "Welhavens gate", "49b", "5006", "Bergen", "95009937")).ToVersion(1);
         }
 
         protected override ClientChangedTheirNameCommand When()
@@ -101,7 +127,32 @@ namespace Test.Fohjin.DDD.Commands
         }
     }
 
-    public class When_providing_a_client_has_moved_command : CommandTestFixture<ClientHasMovedCommand, ClientHasMovedCommandHandler, Client>
+    public class When_providing_a_client_changed_their_name_command_on_a_not_created_client : CommandTestFixture<ClientChangedTheirNameCommand, ClientChangedTheirNameCommandHandler, Client>
+    {
+        protected override IEnumerable<IDomainEvent> Given()
+        {
+            return new List<IDomainEvent>();
+        }
+
+        protected override ClientChangedTheirNameCommand When()
+        {
+            return new ClientChangedTheirNameCommand(Guid.NewGuid(), "Mark Nijhof");
+        }
+
+        [Then]
+        public void Then_it_will_throw_a_client_was_not_created_exception()
+        {
+            caught.WillBeOfType<ClientWasNotCreatedException>();
+        }
+
+        [Then]
+        public void Then_the_throw_exception_message_will_be()
+        {
+            caught.Message.WillBe("The Client is not created and no opperations can be executed on it");
+        }
+    }
+
+    public class When_providing_a_client_has_moved_command_on_a_created_client : CommandTestFixture<ClientHasMovedCommand, ClientHasMovedCommandHandler, Client>
     {
         protected override IEnumerable<IDomainEvent> Given()
         {
@@ -126,6 +177,31 @@ namespace Test.Fohjin.DDD.Commands
             events.Last<ClientHasMovedEvent>().StreetNumber.WillBe("49b");
             events.Last<ClientHasMovedEvent>().PostalCode.WillBe("5006");
             events.Last<ClientHasMovedEvent>().City.WillBe("Bergen");
+        }
+    }
+
+    public class When_providing_a_client_has_moved_command_on_a_not_created_client : CommandTestFixture<ClientHasMovedCommand, ClientHasMovedCommandHandler, Client>
+    {
+        protected override IEnumerable<IDomainEvent> Given()
+        {
+            return new List<IDomainEvent>();
+        }
+
+        protected override ClientHasMovedCommand When()
+        {
+            return new ClientHasMovedCommand(Guid.NewGuid(), "Welhavens gate", "49b", "5006", "Bergen");
+        }
+
+        [Then]
+        public void Then_it_will_throw_a_client_was_not_created_exception()
+        {
+            caught.WillBeOfType<ClientWasNotCreatedException>();
+        }
+
+        [Then]
+        public void Then_the_throw_exception_message_will_be()
+        {
+            caught.Message.WillBe("The Client is not created and no opperations can be executed on it");
         }
     }
 
@@ -157,6 +233,31 @@ namespace Test.Fohjin.DDD.Commands
         public void Then_the_generated_new_client_created_event_will_contain_the_id_of_the_account()
         {
             events.Last<AccountWasAssignedToClientEvent>().AccountId.WillNotBe(new Guid());
+        }
+    }
+
+    public class When_providing_an_add_new_account_to_client_command_on_a_not_created_client : CommandTestFixture<AddNewAccountToClientCommand, AddNewAccountToClientCommandHandler, Client>
+    {
+        protected override IEnumerable<IDomainEvent> Given()
+        {
+            return new List<IDomainEvent>();
+        }
+
+        protected override AddNewAccountToClientCommand When()
+        {
+            return new AddNewAccountToClientCommand(Guid.NewGuid(), "New Account");
+        }
+
+        [Then]
+        public void Then_it_will_throw_a_client_was_not_created_exception()
+        {
+            caught.WillBeOfType<ClientWasNotCreatedException>();
+        }
+
+        [Then]
+        public void Then_the_throw_exception_message_will_be()
+        {
+            caught.Message.WillBe("The Client is not created and no opperations can be executed on it");
         }
     }
 }
