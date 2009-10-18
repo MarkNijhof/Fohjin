@@ -61,10 +61,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands\Client_created_command.cs" />
+    <Compile Include="Commands\Client_command.cs" />
     <Compile Include="Configuration\DatabaseBootStrapperTest.cs" />
     <Compile Include="Domain\AggregateRootTestExtensions.cs" />
-    <Compile Include="Domain\CommandHandlerTestFixture.cs" />
+    <Compile Include="Domain\CommandTestFixture.cs" />
     <Compile Include="Domain\Entities\ActiveAccountTest.cs" />
     <Compile Include="Domain\Repositories\ActiveAccountRepositoryTest.cs" />
     <Compile Include="Domain\AggregateRootTestFixture.cs" />

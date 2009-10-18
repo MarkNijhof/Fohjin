@@ -16,14 +16,14 @@ namespace Fohjin.DDD.CommandHandlers
 
         public void Execute(AddNewAccountToClientCommand command)
         {
-            var activeAccount = new ActiveAccount();
-            activeAccount.Create(command.AccountId, new AccountName(command.AccountName));
+            //var activeAccount = new ActiveAccount();
+            //activeAccount.Create(command.AccountId, new AccountName(command.AccountName));
 
-            var client = _repository.GetById<Client>(command.Id);
-            client.AddAccount(command.AccountId);
+            //var client = _repository.GetById<Client>(command.Id);
+            //client.AddAccount(command.AccountId);
 
-            _repository.Save(activeAccount);
-            _repository.Save(client);
+            //_repository.Save(activeAccount);
+            //_repository.Save(client);
         }
     }
 }

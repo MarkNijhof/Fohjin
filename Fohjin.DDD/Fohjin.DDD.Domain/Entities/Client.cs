@@ -32,22 +32,17 @@ namespace Fohjin.DDD.Domain.Entities
 
         public void UpdatePhoneNumber(PhoneNumber phoneNumber)
         {
-            
+            Apply(new ClientPhoneNumberWasChangedEvent(Guid.NewGuid(), phoneNumber.Number));
+        }
+
+        public void UpdateClientName(ClientName clientName)
+        {
+            Apply(new ClientNameWasChangedEvent(Guid.NewGuid(), clientName.Name));
         }
 
         public void ClientMoved(Address newAddress)
         {
-            
-        }
-
-        public void AddAccount(Guid accountId)
-        {
-            
-        }
-
-        public void RemoveAccount(Guid accountId)
-        {
-            
+            Apply(new ClientHasMovedEvent(Guid.NewGuid(), newAddress.Street, newAddress.StreetNumber, newAddress.PostalCode, newAddress.City));
         }
 
         public IMemento CreateMemento()
@@ -63,6 +58,9 @@ namespace Fohjin.DDD.Domain.Entities
         private void registerEvents()
         {
             RegisterEvent<NewClientCreatedEvent>(onNewClientCreated);
+            RegisterEvent<ClientPhoneNumberWasChangedEvent>(onClientPhoneNumberWasChanged);
+            RegisterEvent<ClientNameWasChangedEvent>(onClientNameWasChanged);
+            RegisterEvent<ClientHasMovedEvent>(onNewClientMoved);
         }
 
         private void onNewClientCreated(NewClientCreatedEvent newClientCreatedEvent)
@@ -71,6 +69,21 @@ namespace Fohjin.DDD.Domain.Entities
             _clientName = new ClientName(newClientCreatedEvent.ClientName);
             _address = new Address(newClientCreatedEvent.Street, newClientCreatedEvent.StreetNumber, newClientCreatedEvent.PostalCode, newClientCreatedEvent.City);
             _phoneNumber = new PhoneNumber(newClientCreatedEvent.PhoneNumber);
+        }
+
+        private void onClientPhoneNumberWasChanged(ClientPhoneNumberWasChangedEvent clientPhoneNumberWasChangedEvent)
+        {
+            _phoneNumber = new PhoneNumber(clientPhoneNumberWasChangedEvent.PhoneNumber);
+        }
+
+        private void onClientNameWasChanged(ClientNameWasChangedEvent clientNameWasChangedEvent)
+        {
+            _clientName = new ClientName(clientNameWasChangedEvent.ClientName);
+        }
+
+        private void onNewClientMoved(ClientHasMovedEvent clientHasMovedEvent)
+        {
+            _address = new Address(clientHasMovedEvent.Street, clientHasMovedEvent.StreetNumber, clientHasMovedEvent.PostalCode, clientHasMovedEvent.City);
         }
     }
 }
