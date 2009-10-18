@@ -7,6 +7,7 @@ using Fohjin.DDD.Domain.Entities;
 using Fohjin.DDD.Events;
 using Fohjin.DDD.Events.Client;
 using Test.Fohjin.DDD.Domain;
+using DomainEvent=Test.Fohjin.DDD.Domain.DomainEvent;
 
 namespace Test.Fohjin.DDD.Commands
 {
@@ -115,16 +116,47 @@ namespace Test.Fohjin.DDD.Commands
         [Then]
         public void Then_it_will_generate_a_client_has_moved_event()
         {
-            events.Last().WillBeOfType<ClientHasMovedCommand>();
+            events.Last().WillBeOfType<ClientHasMovedEvent>();
         }
 
         [Then]
         public void Then_the_generated_new_client_created_event_will_contain_the_address()
         {
-            events.Last<ClientHasMovedCommand>().Street.WillBe("Welhavens gate");
-            events.Last<ClientHasMovedCommand>().StreetNumber.WillBe("49b");
-            events.Last<ClientHasMovedCommand>().PostalCode.WillBe("5006");
-            events.Last<ClientHasMovedCommand>().City.WillBe("Bergen");
+            events.Last<ClientHasMovedEvent>().Street.WillBe("Welhavens gate");
+            events.Last<ClientHasMovedEvent>().StreetNumber.WillBe("49b");
+            events.Last<ClientHasMovedEvent>().PostalCode.WillBe("5006");
+            events.Last<ClientHasMovedEvent>().City.WillBe("Bergen");
+        }
+    }
+
+    public class When_providing_an_add_new_account_to_client_command_on_a_created_client : CommandTestFixture<AddNewAccountToClientCommand, AddNewAccountToClientCommandHandler, Client>
+    {
+        protected override IEnumerable<IDomainEvent> Given()
+        {
+            yield return DomainEvent.Set(new NewClientCreatedEvent(Guid.NewGuid(), "Mark Nijhof", "Welhavens gate", "49b", "5006", "Bergen", "95009937")).ToVersion(1);
+        }
+
+        protected override AddNewAccountToClientCommand When()
+        {
+            return new AddNewAccountToClientCommand(Guid.NewGuid(), "New Account");
+        }
+
+        [Then]
+        public void Then_it_will_generate_a_client_has_moved_event()
+        {
+            events.Last().WillBeOfType<AccountWasAssignedToClientEvent>();
+        }
+
+        [Then]
+        public void Then_the_generated_new_client_created_event_will_contain_the_id_of_the_client_it_will_be_assigned_too()
+        {
+            events.Last<AccountWasAssignedToClientEvent>().ClientId.WillBe(aggregateRoot.Id);
+        }
+
+        [Then]
+        public void Then_the_generated_new_client_created_event_will_contain_the_id_of_the_account()
+        {
+            events.Last<AccountWasAssignedToClientEvent>().AccountId.WillNotBe(new Guid());
         }
     }
 }

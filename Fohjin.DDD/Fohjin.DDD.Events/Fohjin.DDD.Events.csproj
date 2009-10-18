@@ -49,10 +49,12 @@
     <Compile Include="ActiveAccount\AccountCreatedEvent.cs" />
     <Compile Include="ActiveAccount\DepositeEvent.cs" />
     <Compile Include="ActiveAccount\WithdrawlEvent.cs" />
+    <Compile Include="Client\AccountWasAssignedToClientEvent.cs" />
     <Compile Include="Client\ClientHasMovedEvent.cs" />
     <Compile Include="Client\ClientNameWasChangedEvent.cs" />
     <Compile Include="Client\ClientPhoneNumberWasChangedEvent.cs" />
     <Compile Include="Client\NewClientCreatedEvent.cs" />
+    <Compile Include="DomainEvent.cs" />
     <Compile Include="IDomainEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

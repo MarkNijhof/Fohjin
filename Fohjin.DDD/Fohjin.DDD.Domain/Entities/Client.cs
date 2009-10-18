@@ -32,17 +32,26 @@ namespace Fohjin.DDD.Domain.Entities
 
         public void UpdatePhoneNumber(PhoneNumber phoneNumber)
         {
-            Apply(new ClientPhoneNumberWasChangedEvent(Guid.NewGuid(), phoneNumber.Number));
+            Apply(new ClientPhoneNumberWasChangedEvent(Id, phoneNumber.Number));
         }
 
         public void UpdateClientName(ClientName clientName)
         {
-            Apply(new ClientNameWasChangedEvent(Guid.NewGuid(), clientName.Name));
+            Apply(new ClientNameWasChangedEvent(Id, clientName.Name));
         }
 
         public void ClientMoved(Address newAddress)
         {
-            Apply(new ClientHasMovedEvent(Guid.NewGuid(), newAddress.Street, newAddress.StreetNumber, newAddress.PostalCode, newAddress.City));
+            Apply(new ClientHasMovedEvent(Id, newAddress.Street, newAddress.StreetNumber, newAddress.PostalCode, newAddress.City));
+        }
+
+        public ActiveAccount CreateNewAccount(string accountName)
+        {
+            ActiveAccount activeAccount = ActiveAccount.CreateNew(accountName);
+
+            Apply(new AccountWasAssignedToClientEvent(Id, activeAccount.Id));
+
+            return activeAccount;
         }
 
         public IMemento CreateMemento()
@@ -61,6 +70,12 @@ namespace Fohjin.DDD.Domain.Entities
             RegisterEvent<ClientPhoneNumberWasChangedEvent>(onClientPhoneNumberWasChanged);
             RegisterEvent<ClientNameWasChangedEvent>(onClientNameWasChanged);
             RegisterEvent<ClientHasMovedEvent>(onNewClientMoved);
+            RegisterEvent<AccountWasAssignedToClientEvent>(onAccountWasAssignedToClient);
+        }
+
+        private void onAccountWasAssignedToClient(AccountWasAssignedToClientEvent accountWasAssignedToClientEvent)
+        {
+            _accounts.Add(accountWasAssignedToClientEvent.AccountId);
         }
 
         private void onNewClientCreated(NewClientCreatedEvent newClientCreatedEvent)

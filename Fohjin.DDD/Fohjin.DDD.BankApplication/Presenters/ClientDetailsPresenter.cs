@@ -211,7 +211,6 @@ namespace Fohjin.DDD.BankApplication.Presenters
         public void CreateNewAccount()
         {
             _bus.Publish(new AddNewAccountToClientCommand(
-                Guid.NewGuid(),
                 _clientDetails.Id,
                 _clientDetailsView.NewAccountName));
 

@@ -8,42 +8,6 @@ using Fohjin.DDD.Events.ActiveAccount;
 
 namespace Test.Fohjin.DDD.Domain.Entities
 {
-    public class When_calling_Create_on_ActiveAccount : AggregateRootTestFixture<ActiveAccount>
-    {
-        protected override IEnumerable<IDomainEvent> Given()
-        {
-            return new List<IDomainEvent>();
-        }
-
-        protected override void When()
-        {
-            aggregateRoot.Create(Guid.NewGuid(), new AccountName("AccountName"));
-        }
-
-        [Then]
-        public void Then_it_will_generate_an_account_created_event()
-        {
-            events.Last().WillBeOfType<AccountCreatedEvent>();
-        }
-    }
-    public class When_calling_Create_on_ActiveAccount_twice : AggregateRootTestFixture<ActiveAccount>
-    {
-        protected override IEnumerable<IDomainEvent> Given()
-        {
-            yield return new AccountCreatedEvent(Guid.NewGuid(), "AccountName");
-        }
-
-        protected override void When()
-        {
-            aggregateRoot.Create(Guid.NewGuid(), new AccountName("AccountName"));
-        }
-
-        [Then]
-        public void Then_it_will_throw_an_exception()
-        {
-            caught.WillBeOfType<Exception>();
-        }
-    }
     public class When_calling_Close_on_a_not_created_ActiveAccount : AggregateRootTestFixture<ActiveAccount>
     {
         protected override IEnumerable<IDomainEvent> Given()

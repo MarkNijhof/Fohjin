@@ -1,6 +1,5 @@
 using Fohjin.DDD.Commands;
 using Fohjin.DDD.Domain.Entities;
-using Fohjin.DDD.Domain.ValueObjects;
 using Fohjin.EventStorage;
 
 namespace Fohjin.DDD.CommandHandlers
@@ -16,14 +15,11 @@ namespace Fohjin.DDD.CommandHandlers
 
         public void Execute(AddNewAccountToClientCommand command)
         {
-            //var activeAccount = new ActiveAccount();
-            //activeAccount.Create(command.AccountId, new AccountName(command.AccountName));
+            var client = _repository.GetById<Client>(command.Id);
+            ActiveAccount activeAccount = client.CreateNewAccount(command.AccountName);
 
-            //var client = _repository.GetById<Client>(command.Id);
-            //client.AddAccount(command.AccountId);
-
-            //_repository.Save(activeAccount);
-            //_repository.Save(client);
+            _repository.Save(activeAccount);
+            _repository.Save(client);
         }
     }
 }

@@ -27,6 +27,10 @@ namespace Test.Fohjin.DDD.Domain
         {
             Assert.AreEqual(value, source);
         }
+        public static void WillNotBe(this object source, object value)
+        {
+            Assert.AreNotEqual(value, source);
+        }
         public static void WithMessage(this Exception theException, string message)
         {
             Assert.AreEqual(message, theException.Message);

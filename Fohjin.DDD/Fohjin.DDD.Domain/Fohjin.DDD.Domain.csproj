@@ -51,11 +51,6 @@
   <ItemGroup>
     <Compile Include="BaseAggregateRoot.cs" />
     <Compile Include="Entities\ActiveAccount.cs" />
-    <Compile Include="Entities\ActiveAccountStates\ActiveAccountState.cs" />
-    <Compile Include="Entities\ActiveAccountStates\ClosedState.cs" />
-    <Compile Include="Entities\ActiveAccountStates\CreatedState.cs" />
-    <Compile Include="Entities\ActiveAccountStates\IActiveAccountState.cs" />
-    <Compile Include="Entities\ActiveAccountStates\InValidState.cs" />
     <Compile Include="Entities\Client.cs" />
     <Compile Include="Entities\ClosedAccount.cs" />
     <Compile Include="Entities\IDomainAggregate.cs" />

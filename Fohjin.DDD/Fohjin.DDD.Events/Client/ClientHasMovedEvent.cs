@@ -3,11 +3,8 @@ using System;
 namespace Fohjin.DDD.Events.Client
 {
     [Serializable]
-    public class ClientHasMovedEvent : IDomainEvent
+    public class ClientHasMovedEvent : DomainEvent
     {
-        public Guid Id { get; private set; }
-        int IDomainEvent.Version { get; set; }
-
         public Guid ClientId { get; private set; }
         public string Street { get; private set; }
         public string StreetNumber { get; private set; }
@@ -16,7 +13,6 @@ namespace Fohjin.DDD.Events.Client
 
         public ClientHasMovedEvent(Guid clientId, string street, string streetNumber, string postalCode, string city)
         {
-            Id = Guid.NewGuid();
             ClientId = clientId;
             Street = street;
             StreetNumber = streetNumber;

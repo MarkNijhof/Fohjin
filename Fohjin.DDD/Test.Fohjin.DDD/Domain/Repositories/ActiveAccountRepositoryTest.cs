@@ -97,8 +97,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
         [Test]
         public void When_calling_Save_it_will_add_the_domain_events_to_the_domain_event_storage()
         {
-            var activeAccount = new ActiveAccount();
-            activeAccount.Create(Guid.NewGuid(), new AccountName("AccountName"));
+            var activeAccount = ActiveAccount.CreateNew("AccountName");
             activeAccount.Deposite(new Amount(1));
             activeAccount.Deposite(new Amount(1));
 
@@ -111,8 +110,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
         [Test]
         public void When_calling_Save_it_will_reset_the_domain_events()
         {
-            var activeAccount = new ActiveAccount();
-            activeAccount.Create(Guid.NewGuid(), new AccountName("AccountName"));
+            var activeAccount = ActiveAccount.CreateNew("AccountName");
             activeAccount.Deposite(new Amount(1));
             activeAccount.Deposite(new Amount(1));
 
@@ -126,8 +124,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
         [Test]
         public void When_calling_Save_after_more_than_9_events_a_new_snap_shot_will_be_created_9_events_will_not()
         {
-            var activeAccount = new ActiveAccount();
-            activeAccount.Create(Guid.NewGuid(), new AccountName("AccountName"));
+            var activeAccount = ActiveAccount.CreateNew("AccountName");
             activeAccount.Deposite(new Amount(1));
             activeAccount.Deposite(new Amount(1));
             activeAccount.Deposite(new Amount(1));
@@ -145,8 +142,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
         [Test]
         public void When_calling_Save_after_more_than_9_events_a_new_snap_shot_will_be_created_10_events()
         {
-            var activeAccount = new ActiveAccount();
-            activeAccount.Create(Guid.NewGuid(), new AccountName("AccountName"));
+            var activeAccount = ActiveAccount.CreateNew("AccountName");
             activeAccount.Deposite(new Amount(1));
             activeAccount.Deposite(new Amount(1));
             activeAccount.Deposite(new Amount(1));
@@ -168,8 +164,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
         [Test]
         public void When_calling_Save_after_more_than_9_events_a_new_snap_shot_will_be_created_11_events()
         {
-            var activeAccount = new ActiveAccount();
-            activeAccount.Create(Guid.NewGuid(), new AccountName("AccountName"));
+            var activeAccount = ActiveAccount.CreateNew("AccountName");
             activeAccount.Deposite(new Amount(1));
             activeAccount.Deposite(new Amount(1));
             activeAccount.Deposite(new Amount(1));
@@ -192,8 +187,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
         [Test]
         public void When_calling_Save_after_more_than_9_events_after_the_last_snap_shot_a_new_snapshot_will_be_created_10_events_after_last_snapshot()
         {
-            var activeAccount = new ActiveAccount();
-            activeAccount.Create(Guid.NewGuid(), new AccountName("AccountName"));
+            var activeAccount = ActiveAccount.CreateNew("AccountName");
             activeAccount.Deposite(new Amount(1));
             activeAccount.Deposite(new Amount(1));
             activeAccount.Deposite(new Amount(1));
@@ -230,8 +224,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
         [Test]
         public void When_calling_Save_after_more_than_9_events_after_the_last_snap_shot_a_new_snapshot_will_be_created_10_events_after_last_snapshot_9_events_after_last_snapshot()
         {
-            var activeAccount = new ActiveAccount();
-            activeAccount.Create(Guid.NewGuid(), new AccountName("AccountName"));
+            var activeAccount = ActiveAccount.CreateNew("AccountName");
             activeAccount.Deposite(new Amount(1));
             activeAccount.Deposite(new Amount(1));
             activeAccount.Deposite(new Amount(1));
@@ -265,8 +258,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
         [Test]
         public void When_calling_Save_after_more_than_9_events_after_the_last_snap_shot_a_new_snapshot_will_be_created_10_events_after_last_snapshot_9_events_after_last_snapshot_verify_all_event_counts()
         {
-            var activeAccount = new ActiveAccount();
-            activeAccount.Create(Guid.NewGuid(), new AccountName("AccountName"));
+            var activeAccount = ActiveAccount.CreateNew("AccountName");
             activeAccount.Deposite(new Amount(1));
             activeAccount.Deposite(new Amount(1));
             activeAccount.Deposite(new Amount(1));
@@ -299,8 +291,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
         [ExpectedException(typeof(Exception))]
         public void When_calling_GetById_after_9_events_a_new_ActiveAcount_will_be_populated()
         {
-            var activeAccount = new ActiveAccount();
-            activeAccount.Create(Guid.NewGuid(), new AccountName("AccountName"));
+            var activeAccount = ActiveAccount.CreateNew("AccountName");
             activeAccount.Deposite(new Amount(1));
             activeAccount.Deposite(new Amount(2));
             activeAccount.Deposite(new Amount(3));
@@ -330,8 +321,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
         [ExpectedException(typeof(Exception))]
         public void When_calling_GetById_after_every_10_events_a_new_snap_shot_will_be_created()
         {
-            var activeAccount = new ActiveAccount();
-            activeAccount.Create(Guid.NewGuid(), new AccountName("AccountName"));
+            var activeAccount = ActiveAccount.CreateNew("AccountName");
             activeAccount.Deposite(new Amount(1));
             activeAccount.Deposite(new Amount(2));
             activeAccount.Deposite(new Amount(3));
@@ -362,8 +352,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
         [ExpectedException(typeof(Exception))]
         public void When_calling_GetById_after_every_10_events_a_new_snap_shot_will_be_created_11_events()
         {
-            var activeAccount = new ActiveAccount();
-            activeAccount.Create(Guid.NewGuid(), new AccountName("AccountName"));
+            var activeAccount = ActiveAccount.CreateNew("AccountName");
             activeAccount.Deposite(new Amount(1));
             activeAccount.Deposite(new Amount(2));
             activeAccount.Deposite(new Amount(3));

@@ -2,6 +2,7 @@ using System;
 
 namespace Fohjin.DDD.Commands
 {
+    [Serializable]
     public class CashDepositeCommand : Command
     {
         public decimal Amount { get; private set; }

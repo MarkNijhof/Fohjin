@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Fohjin.DDD.Domain.Entities.ActiveAccountStates;
 using Fohjin.DDD.Domain.Entities.Mementos;
 using Fohjin.DDD.Domain.ValueObjects;
-using Fohjin.DDD.Events;
 using Fohjin.DDD.Events.ActiveAccount;
 
 namespace Fohjin.DDD.Domain.Entities
@@ -14,7 +12,7 @@ namespace Fohjin.DDD.Domain.Entities
         private AccountName _accountName;
         private Balance _balance;
         private readonly List<Ledger> _ledgers;
-        private IActiveAccountState _state;
+        private bool _closed;
 
         public ActiveAccount()
         {
@@ -24,40 +22,73 @@ namespace Fohjin.DDD.Domain.Entities
             _accountName = new AccountName(string.Empty);
             _balance = new Balance();
             _ledgers = new List<Ledger>();
-            _state = new InValidState(Apply, () => Id, () => _accountName, () => _balance, () => _ledgers);
+            _closed = false;
 
             registerEvents();
         }
 
-        public void Create(Guid id, AccountName accountName)
+        public ActiveAccount(string accountName) : this()
         {
-            _state.Create(id, accountName);
+            Apply(new AccountCreatedEvent(Guid.NewGuid(), accountName));
         }
 
         public ClosedAccount Close()
         {
-            return _state.Close();
+            if (Id == new Guid())
+                throw new Exception("The ActiveAcount is not created and no opperations can be executed on it");
+
+            if (_closed)
+                throw new Exception("The ActiveAcount is closed and no opperations can be executed on it");
+
+            var closedAccount = new ClosedAccount(Id, _ledgers);
+            Apply(new AccountClosedEvent());
+            return closedAccount;
         }
 
         public void Withdrawl(Amount amount)
         {
-            _state.Withdrawl(amount);
+            if (Id == new Guid())
+                throw new Exception("The ActiveAcount is not created and no opperations can be executed on it");
+
+            if (_closed)
+                throw new Exception("The ActiveAcount is closed and no opperations can be executed on it");
+
+            if (_balance.WithdrawlWillResultInNegativeBalance(amount))
+                throw new Exception(string.Format("The amount {0} is larger than your current balance {1}", (decimal)amount, (decimal)_balance));
+
+            var newBalance = _balance.Withdrawl(amount);
+
+            Apply(new WithdrawlEvent(newBalance, amount));
         }
 
         public void Deposite(Amount amount)
         {
-            _state.Deposite(amount);
+            if (Id == new Guid())
+                throw new Exception("The ActiveAcount is not created and no opperations can be executed on it");
+
+            if (_closed)
+                throw new Exception("The ActiveAcount is closed and no opperations can be executed on it");
+
+            var newBalance = _balance.Deposite(amount);
+
+            Apply(new DepositeEvent(newBalance, amount));
+        }
+
+        public static ActiveAccount CreateNew(string accountName)
+        {
+            return new ActiveAccount(accountName);
         }
 
         IMemento IOrginator.CreateMemento()
         {
-            return new ActiveAccountMemento(Id, Version, _accountName.Name, _balance, _ledgers, _state);
+            return new ActiveAccountMemento(Id, Version, _accountName.Name, _balance, _ledgers, _closed);
         }
 
         void IOrginator.SetMemento(IMemento memento)
         {
             var accountMemento = (ActiveAccountMemento) memento;
             Id = accountMemento.Id;
+            _closed = accountMemento.Closed;
             Version = accountMemento.Version;
             _balance = accountMemento.Balance;
             _accountName = new AccountName(accountMemento.AccountName);
@@ -66,14 +97,6 @@ namespace Fohjin.DDD.Domain.Entities
             {
                 _ledgers.Add(InstantiateClassFromStringValue<Ledger>(mutation.Key, new Amount(mutation.Value)));
             }
-
-            Func<Guid> idFunc = () => Id;
-            Func<AccountName> accountNameFunc = () => _accountName;
-            Func<Balance> balanceFunc = () => _balance;
-            Func<List<Ledger>> ledgersFunc = () => _ledgers;
-            Action<IDomainEvent> applyAction = x => Apply(x);
-
-            _state = InstantiateClassFromStringValue<IActiveAccountState>(accountMemento.State, applyAction, idFunc, accountNameFunc, balanceFunc, ledgersFunc);
         }
 
         private TRequestedType InstantiateClassFromStringValue<TRequestedType>(string className, params object[] constructorArguments)
@@ -98,12 +121,11 @@ namespace Fohjin.DDD.Domain.Entities
         private void onAccountCreated(AccountCreatedEvent accountCreatedEvent)
         {
             Id = accountCreatedEvent.AccountId;
-            _state = new CreatedState(Apply, () => Id, () => _accountName, () => _balance, () => _ledgers);
         }
 
         private void onAccountClosed(AccountClosedEvent accountClosedEvent)
         {
-            _state = new ClosedState(Apply, () => Id, () => _accountName, () => _balance, () => _ledgers);
+            _closed = true;
         }
 
         private void onWithdrawl(WithdrawlEvent withdrawlEvent)
