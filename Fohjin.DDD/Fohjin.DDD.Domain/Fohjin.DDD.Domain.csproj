@@ -56,6 +56,7 @@
     <Compile Include="Entities\IDomainAggregate.cs" />
     <Compile Include="Entities\Ledger.cs" />
     <Compile Include="Entities\Mementos\ActiveAccountMemento.cs" />
+    <Compile Include="Entities\Mementos\ClientMemento.cs" />
     <Compile Include="Exceptions\ClientWasNotCreatedException.cs" />
     <Compile Include="IEventProvider.cs" />
     <Compile Include="Entities\Mementos\IMomento.cs" />

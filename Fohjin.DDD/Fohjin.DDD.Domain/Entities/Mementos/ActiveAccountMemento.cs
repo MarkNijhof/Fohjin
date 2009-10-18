@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Fohjin.DDD.Domain.ValueObjects;
 
 namespace Fohjin.DDD.Domain.Entities.Mementos
 {
@@ -14,7 +13,7 @@ namespace Fohjin.DDD.Domain.Entities.Mementos
         internal Guid Id { get; private set; }
         internal string AccountName { get; private set; }
 
-        public ActiveAccountMemento(Guid id, int version, string accountName, Balance balance, List<Ledger> mutations, bool closed)
+        public ActiveAccountMemento(Guid id, int version, string accountName, decimal balance, List<Ledger> mutations, bool closed)
         {
             Id = id;
             Version = version;

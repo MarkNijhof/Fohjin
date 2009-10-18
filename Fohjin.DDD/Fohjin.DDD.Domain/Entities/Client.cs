@@ -26,7 +26,7 @@ namespace Fohjin.DDD.Domain.Entities
             Apply(new NewClientCreatedEvent(Guid.NewGuid(), clientName.Name, address.Street, address.StreetNumber, address.PostalCode, address.City, phoneNumber.Number));
         }
 
-        public static Client CreateClient(ClientName clientName, Address address, PhoneNumber phoneNumber)
+        public static Client CreateNew(ClientName clientName, Address address, PhoneNumber phoneNumber)
         {
             return new Client(clientName, address, phoneNumber);
         }
@@ -69,12 +69,18 @@ namespace Fohjin.DDD.Domain.Entities
 
         public IMemento CreateMemento()
         {
-            throw new NotImplementedException();
+            return new ClientMemento(Id, Version, _clientName.Name, _address.Street, _address.StreetNumber, _address.PostalCode, _address.City, _phoneNumber.Number, _accounts);
         }
 
         public void SetMemento(IMemento memento)
         {
-            throw new NotImplementedException();
+            var clientMemento = (ClientMemento)memento;
+            Id = clientMemento.Id;
+            Version = clientMemento.Version;
+            _clientName = new ClientName(clientMemento.ClientName);
+            _address = new Address(clientMemento.Street, clientMemento.StreetNumber, clientMemento.PostalCode, clientMemento.City);
+            _phoneNumber = new PhoneNumber(clientMemento.PhoneNumber);
+            _accounts.AddRange(clientMemento.Accounts);
         }
 
         private void registerEvents()

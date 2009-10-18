@@ -16,7 +16,7 @@ namespace Fohjin.DDD.CommandHandlers
 
         public void Execute(ClientCreatedCommand command)
         {
-            var client = Client.CreateClient(new ClientName(command.ClientName), new Address(command.Street, command.StreetNumber, command.PostalCode, command.City), new PhoneNumber(command.PhoneNumber));
+            var client = Client.CreateNew(new ClientName(command.ClientName), new Address(command.Street, command.StreetNumber, command.PostalCode, command.City), new PhoneNumber(command.PhoneNumber));
             _repository.Save(client);
         }
     }

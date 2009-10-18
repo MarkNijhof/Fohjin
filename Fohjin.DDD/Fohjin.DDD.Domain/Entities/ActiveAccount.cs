@@ -88,8 +88,8 @@ namespace Fohjin.DDD.Domain.Entities
         {
             var accountMemento = (ActiveAccountMemento) memento;
             Id = accountMemento.Id;
-            _closed = accountMemento.Closed;
             Version = accountMemento.Version;
+            _closed = accountMemento.Closed;
             _balance = accountMemento.Balance;
             _accountName = new AccountName(accountMemento.AccountName);
 

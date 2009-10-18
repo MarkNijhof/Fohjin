@@ -12,68 +12,6 @@ using NUnit.Framework.SyntaxHelpers;
 
 namespace Test.Fohjin.DDD.Domain.Repositories
 {
-    //public class RepositorySetup
-    //{
-    //    private const string dataBaseFile = "domainDataBase.db3";
-
-    //    public static Storage Storage;
-
-    //    public static Repository Setup()
-    //    {
-    //        new DomainDatabaseBootStrapper().ReCreateDatabaseSchema();
-
-    //        var sqliteConnectionString = string.Format("Data Source={0}", dataBaseFile);
-
-    //        Storage = new Storage(sqliteConnectionString, new BinaryFormatter());
-
-    //        return new Repository(Storage, Storage);
-    //    }
-    //}
-
-    //public class When_calling_Save : AggregateRootTestFixture<ActiveAccount>
-    //{
-    //    private Repository<ActiveAccount> repository;
-    //    private Guid _guid;
-
-    //    protected override IEnumerable<IDomainEvent> Given()
-    //    {
-    //        repository = Repository.Setup();
-    //        _guid = Guid.NewGuid();
-    //        yield return new AccountCreatedEvent(_guid);
-    //        yield return new DepositeEvent(10, 10);
-    //        yield return new DepositeEvent(20, 10);
-    //    }
-
-    //    protected override void When()
-    //    {
-    //        repository.Save(aggregateRoot);
-    //    }
-
-    //    [Then]
-    //    public void test()
-    //    {
-    //        caught.WillBe(null);
-    //    }
-
-    //    [Then]
-    //    public void Then_it_will_clear_the_events_from_the_aggregate_root()
-    //    {
-    //        events.CountIs(0);
-    //    }
-
-    //    [Then]
-    //    public void Then_it_will_add_the_domain_events_to_the_domain_event_storage()
-    //    {
-    //        Repository.Storage.GetAllEvents(_guid).CountIs(3);
-    //    }
-
-    //    [Then]
-    //    public void Then_it_will_not_create_a_snapshot()
-    //    {
-    //        Repository.SnapShotStorage.GetSnapShot(_guid).WillBe(null);
-    //    }
-    //}
-
     [TestFixture]
     public class ActiveAccountRepositoryTest
     {
