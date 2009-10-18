@@ -10,7 +10,7 @@ using Test.Fohjin.DDD.Domain;
 
 namespace Test.Fohjin.DDD.Commands
 {
-    public class When_providing_a_client_created_command_on_an_uncreated_client : CommandTestFixture<ClientCreatedCommand, ClientCreatedCommandHandler, Client>
+    public class When_providing_a_client_created_command : CommandTestFixture<ClientCreatedCommand, ClientCreatedCommandHandler, Client>
     {
         protected override IEnumerable<IDomainEvent> Given()
         {
@@ -50,7 +50,7 @@ namespace Test.Fohjin.DDD.Commands
         }
     }
 
-    public class When_providing_a_client_phone_number_is_changed_command_on_an_uncreated_client : CommandTestFixture<ClientPhoneNumberIsChangedCommand, ClientPhoneNumberIsChangedCommandHandler, Client>
+    public class When_providing_a_client_phone_number_is_changed_command : CommandTestFixture<ClientPhoneNumberIsChangedCommand, ClientPhoneNumberIsChangedCommandHandler, Client>
     {
         protected override IEnumerable<IDomainEvent> Given()
         {
@@ -75,7 +75,7 @@ namespace Test.Fohjin.DDD.Commands
         }
     }
 
-    public class When_providing_a_client_changed_their_name_command_on_an_uncreated_client : CommandTestFixture<ClientChangedTheirNameCommand, ClientChangedTheirNameCommandHandler, Client>
+    public class When_providing_a_client_changed_their_name_command : CommandTestFixture<ClientChangedTheirNameCommand, ClientChangedTheirNameCommandHandler, Client>
     {
         protected override IEnumerable<IDomainEvent> Given()
         {
@@ -100,7 +100,7 @@ namespace Test.Fohjin.DDD.Commands
         }
     }
 
-    public class When_providing_a_client_created_command_on_a_created_client : CommandTestFixture<ClientHasMovedCommand, ClientHasMovedCommandHandler, Client>
+    public class When_providing_a_client_has_moved_command : CommandTestFixture<ClientHasMovedCommand, ClientHasMovedCommandHandler, Client>
     {
         protected override IEnumerable<IDomainEvent> Given()
         {

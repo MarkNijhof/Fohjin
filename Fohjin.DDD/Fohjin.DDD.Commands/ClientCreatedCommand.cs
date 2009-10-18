@@ -2,6 +2,7 @@ using System;
 
 namespace Fohjin.DDD.Commands
 {
+    [Serializable]
     public class ClientCreatedCommand : Command
     {
         public string ClientName { get; private set; }
