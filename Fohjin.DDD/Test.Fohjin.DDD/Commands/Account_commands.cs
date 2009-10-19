@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using Fohjin.DDD.CommandHandlers;
 using Fohjin.DDD.Commands;
+using Fohjin.DDD.Domain;
 using Fohjin.DDD.Domain.Entities;
 using Fohjin.DDD.Domain.Exceptions;
 using Fohjin.DDD.Events;
@@ -14,6 +15,7 @@ namespace Test.Fohjin.DDD.Commands
 {
     public class When_calling_Create_New_on_ActiveAccount : AggregateRootTestFixture<ActiveAccount>
     {
+        private string _ticks;
         protected override IEnumerable<IDomainEvent> Given()
         {
             return new List<IDomainEvent>();
@@ -21,7 +23,10 @@ namespace Test.Fohjin.DDD.Commands
 
         protected override void When()
         {
+            SystemDateTime.Now = () => new DateTime(2009, 1, 1, 1, 1, 1, 1);
+            _ticks = SystemDateTime.Now().Ticks.ToString();
             aggregateRoot = ActiveAccount.CreateNew("New Account");
+            SystemDateTime.Reset();
         }
 
         [Then]
@@ -34,6 +39,12 @@ namespace Test.Fohjin.DDD.Commands
         public void Then_the_generated_new_account_created_event_will_contain_the_name_of_the_new_account()
         {
             events.Last<AccountCreatedEvent>().AccountName.WillBe("New Account");
+        }
+
+        [Then]
+        public void Then_the_generated_new_account_created_event_will_contain_the_number_of_the_new_account()
+        {
+            events.Last<AccountCreatedEvent>().AccountNumber.WillBe(_ticks);
         }
     }
 
@@ -60,7 +71,7 @@ namespace Test.Fohjin.DDD.Commands
     {
         protected override IEnumerable<IDomainEvent> Given()
         {
-            yield return DomainEvent.Set(new AccountCreatedEvent(Guid.NewGuid(), "AccountName")).ToVersion(1);
+            yield return DomainEvent.Set(new AccountCreatedEvent(Guid.NewGuid(), "AccountName", "1234567890")).ToVersion(1);
         }
 
         protected override CloseAccountCommand When()
@@ -79,7 +90,7 @@ namespace Test.Fohjin.DDD.Commands
     {
         protected override IEnumerable<IDomainEvent> Given()
         {
-            yield return DomainEvent.Set(new AccountCreatedEvent(Guid.NewGuid(), "AccountName")).ToVersion(1);
+            yield return DomainEvent.Set(new AccountCreatedEvent(Guid.NewGuid(), "AccountName", "1234567890")).ToVersion(1);
             yield return DomainEvent.Set(new AccountClosedEvent()).ToVersion(2);
         }
 
@@ -118,7 +129,7 @@ namespace Test.Fohjin.DDD.Commands
     {
         protected override IEnumerable<IDomainEvent> Given()
         {
-            yield return DomainEvent.Set(new AccountCreatedEvent(Guid.NewGuid(), "AccountName")).ToVersion(1);
+            yield return DomainEvent.Set(new AccountCreatedEvent(Guid.NewGuid(), "AccountName", "1234567890")).ToVersion(1);
             yield return DomainEvent.Set(new AccountClosedEvent()).ToVersion(2);
         }
 
@@ -138,7 +149,7 @@ namespace Test.Fohjin.DDD.Commands
     {
         protected override IEnumerable<IDomainEvent> Given()
         {
-            yield return DomainEvent.Set(new AccountCreatedEvent(Guid.NewGuid(), "AccountName")).ToVersion(1);
+            yield return DomainEvent.Set(new AccountCreatedEvent(Guid.NewGuid(), "AccountName", "1234567890")).ToVersion(1);
             yield return DomainEvent.Set(new DepositeEvent(10, 10)).ToVersion(2);
         }
 
@@ -189,7 +200,7 @@ namespace Test.Fohjin.DDD.Commands
     {
         protected override IEnumerable<IDomainEvent> Given()
         {
-            yield return DomainEvent.Set(new AccountCreatedEvent(Guid.NewGuid(), "AccountName")).ToVersion(1);
+            yield return DomainEvent.Set(new AccountCreatedEvent(Guid.NewGuid(), "AccountName", "1234567890")).ToVersion(1);
             yield return DomainEvent.Set(new AccountClosedEvent()).ToVersion(2);
         }
 
@@ -209,7 +220,7 @@ namespace Test.Fohjin.DDD.Commands
     {
         protected override IEnumerable<IDomainEvent> Given()
         {
-            yield return DomainEvent.Set(new AccountCreatedEvent(Guid.NewGuid(), "AccountName")).ToVersion(1);
+            yield return DomainEvent.Set(new AccountCreatedEvent(Guid.NewGuid(), "AccountName", "1234567890")).ToVersion(1);
         }
 
         protected override CashWithdrawlCommand When()
@@ -234,7 +245,7 @@ namespace Test.Fohjin.DDD.Commands
     {
         protected override IEnumerable<IDomainEvent> Given()
         {
-            yield return DomainEvent.Set(new AccountCreatedEvent(Guid.NewGuid(), "AccountName")).ToVersion(1);
+            yield return DomainEvent.Set(new AccountCreatedEvent(Guid.NewGuid(), "AccountName", "1234567890")).ToVersion(1);
             yield return DomainEvent.Set(new DepositeEvent(20, 20)).ToVersion(1);
         }
 
@@ -285,7 +296,7 @@ namespace Test.Fohjin.DDD.Commands
     {
         protected override IEnumerable<IDomainEvent> Given()
         {
-            yield return DomainEvent.Set(new AccountCreatedEvent(Guid.NewGuid(), "AccountName")).ToVersion(1);
+            yield return DomainEvent.Set(new AccountCreatedEvent(Guid.NewGuid(), "AccountName", "1234567890")).ToVersion(1);
         }
 
         protected override AccountNameGotChangedCommand When()
@@ -310,7 +321,7 @@ namespace Test.Fohjin.DDD.Commands
     {
         protected override IEnumerable<IDomainEvent> Given()
         {
-            yield return DomainEvent.Set(new AccountCreatedEvent(Guid.NewGuid(), "AccountName")).ToVersion(1);
+            yield return DomainEvent.Set(new AccountCreatedEvent(Guid.NewGuid(), "AccountName", "1234567890")).ToVersion(1);
             yield return DomainEvent.Set(new AccountClosedEvent()).ToVersion(2);
         }
 
@@ -349,7 +360,7 @@ namespace Test.Fohjin.DDD.Commands
     {
         protected override IEnumerable<IDomainEvent> Given()
         {
-            yield return DomainEvent.Set(new AccountCreatedEvent(Guid.NewGuid(), "AccountName")).ToVersion(1);
+            yield return DomainEvent.Set(new AccountCreatedEvent(Guid.NewGuid(), "AccountName", "1234567890")).ToVersion(1);
         }
 
         protected override TransferMoneyToAnOtherAccountCommand When()
@@ -366,7 +377,7 @@ namespace Test.Fohjin.DDD.Commands
         [Then]
         public void Then_it_will_throw_an_exception_with_a_specified_message()
         {
-            caught.WithMessage(string.Format("The amount {0} is larger than your current balance {1}", 1, 0));
+            caught.WithMessage(string.Format("The amount {0} is larger than your current balance {1}", 10.0M, 0));
         }
     }
 
@@ -374,7 +385,7 @@ namespace Test.Fohjin.DDD.Commands
     {
         protected override IEnumerable<IDomainEvent> Given()
         {
-            yield return DomainEvent.Set(new AccountCreatedEvent(Guid.NewGuid(), "AccountName")).ToVersion(1);
+            yield return DomainEvent.Set(new AccountCreatedEvent(Guid.NewGuid(), "AccountName", "1234567890")).ToVersion(1);
             yield return DomainEvent.Set(new DepositeEvent(20, 20)).ToVersion(1);
         }
 
@@ -386,25 +397,25 @@ namespace Test.Fohjin.DDD.Commands
         [Then]
         public void Then_it_will_generate_an_account_created_event()
         {
-            events.Last().WillBeOfType<MoneyTransferedFromAnOtherAccountEvent>();
+            events.Last().WillBeOfType<MoneyTransferedToAnOtherAccountEvent>();
         }
 
         [Then]
         public void Then_it_will_generate_an_deposite_event_with_the_expected_ammount()
         {
-            events.Last<MoneyTransferedFromAnOtherAccountEvent>().Amount.WillBe(5.0M);
+            events.Last<MoneyTransferedToAnOtherAccountEvent>().Amount.WillBe(5.0M);
         }
 
         [Then]
         public void Then_it_will_generate_an_deposite_event_with_the_expected_balance()
         {
-            events.Last<MoneyTransferedFromAnOtherAccountEvent>().Balance.WillBe(15.0M);
+            events.Last<MoneyTransferedToAnOtherAccountEvent>().Balance.WillBe(15.0M);
         }
 
         [Then]
         public void Then_it_will_generate_an_deposite_event_with_the_expected_other_account()
         {
-            events.Last<MoneyTransferedFromAnOtherAccountEvent>().OtherAccount.WillBe("1234567890");
+            events.Last<MoneyTransferedToAnOtherAccountEvent>().OtherAccount.WillBe("1234567890");
         }
     }
 
@@ -412,7 +423,7 @@ namespace Test.Fohjin.DDD.Commands
     {
         protected override IEnumerable<IDomainEvent> Given()
         {
-            yield return DomainEvent.Set(new AccountCreatedEvent(Guid.NewGuid(), "AccountName")).ToVersion(1);
+            yield return DomainEvent.Set(new AccountCreatedEvent(Guid.NewGuid(), "AccountName", "1234567890")).ToVersion(1);
             yield return DomainEvent.Set(new AccountClosedEvent()).ToVersion(2);
         }
 
@@ -451,7 +462,7 @@ namespace Test.Fohjin.DDD.Commands
     {
         protected override IEnumerable<IDomainEvent> Given()
         {
-            yield return DomainEvent.Set(new AccountCreatedEvent(Guid.NewGuid(), "AccountName")).ToVersion(1);
+            yield return DomainEvent.Set(new AccountCreatedEvent(Guid.NewGuid(), "AccountName", "1234567890")).ToVersion(1);
             yield return DomainEvent.Set(new DepositeEvent(20, 20)).ToVersion(1);
         }
 
@@ -489,7 +500,7 @@ namespace Test.Fohjin.DDD.Commands
     {
         protected override IEnumerable<IDomainEvent> Given()
         {
-            yield return DomainEvent.Set(new AccountCreatedEvent(Guid.NewGuid(), "AccountName")).ToVersion(1);
+            yield return DomainEvent.Set(new AccountCreatedEvent(Guid.NewGuid(), "AccountName", "1234567890")).ToVersion(1);
             yield return DomainEvent.Set(new AccountClosedEvent()).ToVersion(2);
         }
 

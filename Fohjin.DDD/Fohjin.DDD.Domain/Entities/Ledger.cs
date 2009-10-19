@@ -31,4 +31,24 @@ namespace Fohjin.DDD.Domain.Entities
     {
         public DebitMutation(Amount amount) : base(amount) {}
     }
+
+    public class CreditTransfer : Ledger
+    {
+        public string Account { get; private set; }
+
+        public CreditTransfer(Amount amount, string account) : base(amount)
+        {
+            Account = account;
+        }
+    }
+
+    public class DebitTransfer : Ledger
+    {
+        public string Account { get; private set; }
+
+        public DebitTransfer(Amount amount, string account) : base(amount)
+        {
+            Account = account;
+        }
+    }
 }

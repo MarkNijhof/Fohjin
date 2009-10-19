@@ -5,6 +5,7 @@ using Fohjin.DDD.Configuration;
 using Fohjin.DDD.Domain;
 using Fohjin.DDD.Domain.Entities;
 using Fohjin.DDD.Domain.Entities.Mementos;
+using Fohjin.DDD.Domain.Exceptions;
 using Fohjin.DDD.Domain.ValueObjects;
 using Fohjin.EventStorage;
 using NUnit.Framework;
@@ -226,7 +227,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
         }
 
         [Test]
-        [ExpectedException(typeof(Exception))]
+        [ExpectedException(typeof(AccountBalanceIsToLowException))]
         public void When_calling_GetById_after_9_events_a_new_ActiveAcount_will_be_populated()
         {
             var activeAccount = ActiveAccount.CreateNew("AccountName");
@@ -256,7 +257,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
         }
 
         [Test]
-        [ExpectedException(typeof(Exception))]
+        [ExpectedException(typeof(AccountBalanceIsToLowException))]
         public void When_calling_GetById_after_every_10_events_a_new_snap_shot_will_be_created()
         {
             var activeAccount = ActiveAccount.CreateNew("AccountName");
@@ -287,7 +288,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
         }
 
         [Test]
-        [ExpectedException(typeof(Exception))]
+        [ExpectedException(typeof(AccountBalanceIsToLowException))]
         public void When_calling_GetById_after_every_10_events_a_new_snap_shot_will_be_created_11_events()
         {
             var activeAccount = ActiveAccount.CreateNew("AccountName");

@@ -11,6 +11,7 @@ namespace Fohjin.DDD.Domain.Entities
     public class ActiveAccount : BaseAggregateRoot, IOrginator
     {
         private AccountName _accountName;
+        private AccountNumber _accountNumber;
         private Balance _balance;
         private readonly List<Ledger> _ledgers;
         private bool _closed;
@@ -21,6 +22,7 @@ namespace Fohjin.DDD.Domain.Entities
             Version = 0;
             EventVersion = 0;
             _accountName = new AccountName(string.Empty);
+            _accountNumber = new AccountNumber(string.Empty);
             _balance = new Balance();
             _ledgers = new List<Ledger>();
             _closed = false;
@@ -30,7 +32,19 @@ namespace Fohjin.DDD.Domain.Entities
 
         public ActiveAccount(string accountName) : this()
         {
-            Apply(new AccountCreatedEvent(Guid.NewGuid(), accountName));
+            var accountNumber = SystemDateTime.Now().Ticks.ToString();
+            Apply(new AccountCreatedEvent(Guid.NewGuid(), accountName, accountNumber));
+        }
+
+        public void ChangeAccountName(AccountName accountName)
+        {
+            if (Id == new Guid())
+                throw new AccountWasNotCreatedException("The ActiveAcount is not created and no opperations can be executed on it");
+
+            if (_closed)
+                throw new AccountWasClosedException("The ActiveAcount is closed and no opperations can be executed on it");
+
+            Apply(new AccountNameGotChangedEvent(accountName.Name));
         }
 
         public ClosedAccount Close()
@@ -55,7 +69,7 @@ namespace Fohjin.DDD.Domain.Entities
                 throw new AccountWasClosedException("The ActiveAcount is closed and no opperations can be executed on it");
 
             if (_balance.WithdrawlWillResultInNegativeBalance(amount))
-                throw new Exception(string.Format("The amount {0} is larger than your current balance {1}", (decimal)amount, (decimal)_balance));
+                throw new AccountBalanceIsToLowException(string.Format("The amount {0} is larger than your current balance {1}", (decimal)amount, (decimal)_balance));
 
             var newBalance = _balance.Withdrawl(amount);
 
@@ -75,6 +89,35 @@ namespace Fohjin.DDD.Domain.Entities
             Apply(new DepositeEvent(newBalance, amount));
         }
 
+        public void ReceiveTransferFrom(AccountNumber accountNumber, Amount amount)
+        {
+            if (Id == new Guid())
+                throw new AccountWasNotCreatedException("The ActiveAcount is not created and no opperations can be executed on it");
+
+            if (_closed)
+                throw new AccountWasClosedException("The ActiveAcount is closed and no opperations can be executed on it");
+
+            var newBalance = _balance.Deposite(amount);
+
+            Apply(new MoneyTransferedFromAnOtherAccountEvent(amount, newBalance, accountNumber.Number));
+        }
+
+        public void SendTransferTo(AccountNumber accountNumber, Amount amount)
+        {
+            if (Id == new Guid())
+                throw new AccountWasNotCreatedException("The ActiveAcount is not created and no opperations can be executed on it");
+
+            if (_closed)
+                throw new AccountWasClosedException("The ActiveAcount is closed and no opperations can be executed on it");
+
+            if (_balance.WithdrawlWillResultInNegativeBalance(amount))
+                throw new AccountBalanceIsToLowException(string.Format("The amount {0} is larger than your current balance {1}", (decimal)amount, (decimal)_balance));
+
+            var newBalance = _balance.Withdrawl(amount);
+
+            Apply(new MoneyTransferedToAnOtherAccountEvent(amount, newBalance, accountNumber.Number));
+        }
+
         public static ActiveAccount CreateNew(string accountName)
         {
             return new ActiveAccount(accountName);
@@ -82,7 +125,7 @@ namespace Fohjin.DDD.Domain.Entities
 
         IMemento IOrginator.CreateMemento()
         {
-            return new ActiveAccountMemento(Id, Version, _accountName.Name, _balance, _ledgers, _closed);
+            return new ActiveAccountMemento(Id, Version, _accountName.Name, _accountNumber.Number, _balance, _ledgers, _closed);
         }
 
         void IOrginator.SetMemento(IMemento memento)
@@ -90,9 +133,10 @@ namespace Fohjin.DDD.Domain.Entities
             var accountMemento = (ActiveAccountMemento) memento;
             Id = accountMemento.Id;
             Version = accountMemento.Version;
-            _closed = accountMemento.Closed;
-            _balance = accountMemento.Balance;
             _accountName = new AccountName(accountMemento.AccountName);
+            _accountNumber = new AccountNumber(accountMemento.AccountNumber);
+            _balance = accountMemento.Balance;
+            _closed = accountMemento.Closed;
 
             foreach (var mutation in accountMemento.Mutations)
             {
@@ -117,11 +161,33 @@ namespace Fohjin.DDD.Domain.Entities
             RegisterEvent<AccountClosedEvent>(onAccountClosed);
             RegisterEvent<WithdrawlEvent>(onWithdrawl);
             RegisterEvent<DepositeEvent>(onDeposite);
+            RegisterEvent<AccountNameGotChangedEvent>(onAccountNameGotChanged);
+            RegisterEvent<MoneyTransferedFromAnOtherAccountEvent>(onMoneyTransferedFromAnOtherAccount);
+            RegisterEvent<MoneyTransferedToAnOtherAccountEvent>(onMoneyTransferedToAnOtherAccount);
+        }
+
+        private void onMoneyTransferedToAnOtherAccount(MoneyTransferedToAnOtherAccountEvent moneyTransferedToAnOtherAccountEvent)
+        {
+            _ledgers.Add(new CreditTransfer(moneyTransferedToAnOtherAccountEvent.Amount, moneyTransferedToAnOtherAccountEvent.OtherAccount));
+            _balance = moneyTransferedToAnOtherAccountEvent.Balance;
+        }
+
+        private void onMoneyTransferedFromAnOtherAccount(MoneyTransferedFromAnOtherAccountEvent moneyTransferedFromAnOtherAccountEvent)
+        {
+            _ledgers.Add(new DebitTransfer(moneyTransferedFromAnOtherAccountEvent.Amount, moneyTransferedFromAnOtherAccountEvent.OtherAccount));
+            _balance = moneyTransferedFromAnOtherAccountEvent.Balance;
+        }
+
+        private void onAccountNameGotChanged(AccountNameGotChangedEvent accountNameGotChangedEvent)
+        {
+            _accountName = new AccountName(accountNameGotChangedEvent.AccountName);
         }
 
         private void onAccountCreated(AccountCreatedEvent accountCreatedEvent)
         {
             Id = accountCreatedEvent.AccountId;
+            _accountName = new AccountName(accountCreatedEvent.AccountName);
+            _accountNumber = new AccountNumber(accountCreatedEvent.AccountNumber);
         }
 
         private void onAccountClosed(AccountClosedEvent accountClosedEvent)
