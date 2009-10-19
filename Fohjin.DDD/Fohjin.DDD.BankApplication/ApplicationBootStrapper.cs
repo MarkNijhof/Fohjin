@@ -16,6 +16,7 @@ namespace Fohjin.DDD.BankApplication
                 x.AddRegistry<DomainRegistry>();
                 x.AddRegistry<ReportingRegistry>();
                 x.AddRegistry<CommandHandlerRegister>();
+                x.AddRegistry<EventHandlerRegister>();
             });
             ObjectFactory.AssertConfigurationIsValid();
 

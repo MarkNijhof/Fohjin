@@ -14,6 +14,7 @@ namespace Test.Fohjin.DDD.Configuration
             {
                 x.AddRegistry<DomainRegistry>();
                 x.AddRegistry<CommandHandlerRegister>();
+                x.AddRegistry<EventHandlerRegister>();
                 x.AddRegistry<ReportingRegistry>();
             });
 

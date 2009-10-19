@@ -54,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommandHandlerRegister.cs" />
+    <Compile Include="EventHandlerRegister.cs" />
     <Compile Include="ReportingDatabaseBootStrapper.cs" />
     <Compile Include="DomainDatabaseBootStrapper.cs" />
     <Compile Include="DomainRegistry.cs" />
@@ -80,6 +81,10 @@
     <ProjectReference Include="..\Fohjin.DDD.Domain\Fohjin.DDD.Domain.csproj">
       <Project>{0FB24C8F-FA8C-409E-A71C-8580F7D78474}</Project>
       <Name>Fohjin.DDD.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fohjin.DDD.EventHandlers\Fohjin.DDD.EventHandlers.csproj">
+      <Project>{2A96D452-7D1D-4118-B3D4-8EF543D1FBCB}</Project>
+      <Name>Fohjin.DDD.EventHandlers</Name>
     </ProjectReference>
     <ProjectReference Include="..\Fohjin.DDD.Events\Fohjin.DDD.Events.csproj">
       <Project>{CFB4C037-822D-470E-8A01-832957D193C9}</Project>

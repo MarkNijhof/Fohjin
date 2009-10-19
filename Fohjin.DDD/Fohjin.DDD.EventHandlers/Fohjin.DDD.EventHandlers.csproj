@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{0FB24C8F-FA8C-409E-A71C-8580F7D78474}</ProjectGuid>
+    <ProjectGuid>{2A96D452-7D1D-4118-B3D4-8EF543D1FBCB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Fohjin.DDD.Domain</RootNamespace>
-    <AssemblyName>Fohjin.DDD.Domain</AssemblyName>
+    <RootNamespace>Fohjin.DDD.EventHandlers</RootNamespace>
+    <AssemblyName>Fohjin.DDD.EventHandlers</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -31,10 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="StructureMap, Version=2.5.3.0, Culture=neutral, PublicKeyToken=e60ad81abae3c223, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Lib\StructureMap\StructureMap.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -49,40 +45,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BaseAggregateRoot.cs" />
-    <Compile Include="Entities\ActiveAccount.cs" />
-    <Compile Include="Entities\Client.cs" />
-    <Compile Include="Entities\ClosedAccount.cs" />
-    <Compile Include="Entities\IDomainAggregate.cs" />
-    <Compile Include="Entities\Ledger.cs" />
-    <Compile Include="Entities\Mementos\ActiveAccountMemento.cs" />
-    <Compile Include="Entities\Mementos\ClientMemento.cs" />
-    <Compile Include="Exceptions\AccountBalanceIsToLowException.cs" />
-    <Compile Include="Exceptions\AccountWasClosedException.cs" />
-    <Compile Include="Exceptions\AccountWasNotCreatedException.cs" />
-    <Compile Include="Exceptions\ClientWasNotCreatedException.cs" />
-    <Compile Include="Exceptions\DomainEventWasNotRegisteredException.cs" />
-    <Compile Include="IEventProvider.cs" />
-    <Compile Include="Entities\Mementos\IMomento.cs" />
-    <Compile Include="Entities\Mementos\IOrginator.cs" />
+    <Compile Include="IEventHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SystemDateTime.cs" />
-    <Compile Include="ValueObjects\AccountName.cs" />
-    <Compile Include="ValueObjects\AccountNumber.cs" />
-    <Compile Include="ValueObjects\Address.cs" />
-    <Compile Include="ValueObjects\Amount.cs" />
-    <Compile Include="ValueObjects\Balance.cs" />
-    <Compile Include="ValueObjects\ClientName.cs" />
-    <Compile Include="ValueObjects\PhoneNumber.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Fohjin.DDD.Bus\Fohjin.DDD.Bus.csproj">
       <Project>{14C6E3E5-D4D0-4811-BBBC-89A5FF7BF41F}</Project>
       <Name>Fohjin.DDD.Bus</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Fohjin.DDD.Events\Fohjin.DDD.Events.csproj">
-      <Project>{CFB4C037-822D-470E-8A01-832957D193C9}</Project>
-      <Name>Fohjin.DDD.Events</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

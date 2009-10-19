@@ -18,7 +18,10 @@ namespace Fohjin.DDD.Configuration
                 var commandName = type.Name;
                 var handlerType = handlerTypes.SingleOrDefault(x => x.Name == string.Format("{0}Handler", commandName));
 
-                ForRequestedType(typeof (ICommandHandler<>).MakeGenericType(type))
+                if (handlerType == null)
+                    throw new Exception(string.Format("No command handler found for command '{0}' expected '{1}.{2}Handler'", type.FullName, typeof(ICommandHandler<>).Namespace, commandName));
+
+                ForRequestedType(typeof(ICommandHandler<>).MakeGenericType(type))
                     .TheDefaultIsConcreteType(handlerType);
             }
         }
