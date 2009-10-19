@@ -9,11 +9,6 @@ namespace Fohjin.DDD.Domain.ValueObjects
             _decimalAmount = decimalAmount;
         }
 
-        public decimal GetDecimal()
-        {
-            return _decimalAmount;
-        }
-
         public Amount Substract(Amount amount)
         {
             var newDecimalAmount = _decimalAmount - amount._decimalAmount;

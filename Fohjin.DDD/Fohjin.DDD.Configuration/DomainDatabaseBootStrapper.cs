@@ -6,7 +6,7 @@ namespace Fohjin.DDD.Configuration
 {
     public class DomainDatabaseBootStrapper
     {
-        private const string dataBaseFile = "domainDataBase.db3";
+        public const string dataBaseFile = "domainDataBase.db3";
 
         public static void BootStrap()
         {

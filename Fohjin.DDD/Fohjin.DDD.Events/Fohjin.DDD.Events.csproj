@@ -47,7 +47,10 @@
   <ItemGroup>
     <Compile Include="ActiveAccount\AccountClosedEvent.cs" />
     <Compile Include="ActiveAccount\AccountCreatedEvent.cs" />
+    <Compile Include="ActiveAccount\AccountNameGotChangedEvent.cs" />
     <Compile Include="ActiveAccount\DepositeEvent.cs" />
+    <Compile Include="ActiveAccount\MoneyTransferedFromAnOtherAccountEvent.cs" />
+    <Compile Include="ActiveAccount\MoneyTransferedToAnOtherAccountEvent.cs" />
     <Compile Include="ActiveAccount\WithdrawlEvent.cs" />
     <Compile Include="Client\AccountWasAssignedToClientEvent.cs" />
     <Compile Include="Client\ClientHasMovedEvent.cs" />

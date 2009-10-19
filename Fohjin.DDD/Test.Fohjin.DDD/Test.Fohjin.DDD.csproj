@@ -65,6 +65,8 @@
     <Compile Include="Commands\All_commands_must_be_Serializable.cs" />
     <Compile Include="Commands\Client_command.cs" />
     <Compile Include="Configuration\DatabaseBootStrapperTest.cs" />
+    <Compile Include="Configuration\ReportingBootStrapperTest.cs" />
+    <Compile Include="Configuration\StructureMapTest.cs" />
     <Compile Include="Domain\Repositories\ClientRepositoryTest.cs" />
     <Compile Include="Domain\TestExtensions.cs" />
     <Compile Include="Domain\CommandTestFixture.cs" />

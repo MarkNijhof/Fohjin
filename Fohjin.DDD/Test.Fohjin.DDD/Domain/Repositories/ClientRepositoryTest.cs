@@ -223,5 +223,64 @@ namespace Test.Fohjin.DDD.Domain.Repositories
             Assert.That(_storage.GetEventsSinceLastSnapShot(client.Id).Count(), Is.EqualTo(9));
             Assert.That(_storage.GetAllEvents(client.Id).Count(), Is.EqualTo(19));
         }
+
+
+
+        [Test]
+        public void When_calling_GetById_after_9_events_a_new_Client_will_be_populated()
+        {
+            var client = Client.CreateNew(new ClientName("New Client"), new Address("Street", "123", "5000", "Bergen"), new PhoneNumber("1234567890"));
+            client.UpdatePhoneNumber(new PhoneNumber("1234567890"));
+            client.UpdatePhoneNumber(new PhoneNumber("1234567890"));
+            client.UpdatePhoneNumber(new PhoneNumber("1234567890"));
+            client.UpdatePhoneNumber(new PhoneNumber("1234567890"));
+            client.UpdatePhoneNumber(new PhoneNumber("1234567890"));
+            client.UpdatePhoneNumber(new PhoneNumber("1234567890"));
+            client.UpdatePhoneNumber(new PhoneNumber("1234567890"));
+            client.UpdatePhoneNumber(new PhoneNumber("0987654321"));
+
+            _repository.Save(client);
+
+            _repository.GetById<Client>(client.Id);
+        }
+
+        [Test]
+        public void When_calling_GetById_after_every_10_events_a_new_snap_shot_will_be_created()
+        {
+            var client = Client.CreateNew(new ClientName("New Client"), new Address("Street", "123", "5000", "Bergen"), new PhoneNumber("1234567890"));
+            client.UpdatePhoneNumber(new PhoneNumber("1234567890"));
+            client.UpdatePhoneNumber(new PhoneNumber("1234567890"));
+            client.UpdatePhoneNumber(new PhoneNumber("1234567890"));
+            client.UpdatePhoneNumber(new PhoneNumber("1234567890"));
+            client.UpdatePhoneNumber(new PhoneNumber("1234567890"));
+            client.UpdatePhoneNumber(new PhoneNumber("1234567890"));
+            client.UpdatePhoneNumber(new PhoneNumber("1234567890"));
+            client.UpdatePhoneNumber(new PhoneNumber("1234567890"));
+            client.UpdatePhoneNumber(new PhoneNumber("0987654321"));
+
+            _repository.Save(client);
+
+            _repository.GetById<Client>(client.Id);
+        }
+
+        [Test]
+        public void When_calling_GetById_after_every_10_events_a_new_snap_shot_will_be_created_11_events()
+        {
+            var client = Client.CreateNew(new ClientName("New Client"), new Address("Street", "123", "5000", "Bergen"), new PhoneNumber("1234567890"));
+            client.UpdatePhoneNumber(new PhoneNumber("1234567890"));
+            client.UpdatePhoneNumber(new PhoneNumber("1234567890"));
+            client.UpdatePhoneNumber(new PhoneNumber("1234567890"));
+            client.UpdatePhoneNumber(new PhoneNumber("1234567890"));
+            client.UpdatePhoneNumber(new PhoneNumber("1234567890"));
+            client.UpdatePhoneNumber(new PhoneNumber("1234567890"));
+            client.UpdatePhoneNumber(new PhoneNumber("1234567890"));
+            client.UpdatePhoneNumber(new PhoneNumber("1234567890"));
+            client.UpdatePhoneNumber(new PhoneNumber("1234567890"));
+            client.UpdatePhoneNumber(new PhoneNumber("0987654321"));
+
+            _repository.Save(client);
+
+            _repository.GetById<Client>(client.Id);
+        }
     }
 }

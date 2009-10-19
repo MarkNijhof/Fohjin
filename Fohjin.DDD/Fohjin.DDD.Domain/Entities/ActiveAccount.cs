@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Fohjin.DDD.Domain.Entities.Mementos;
+using Fohjin.DDD.Domain.Exceptions;
 using Fohjin.DDD.Domain.ValueObjects;
 using Fohjin.DDD.Events.ActiveAccount;
 
@@ -35,10 +36,10 @@ namespace Fohjin.DDD.Domain.Entities
         public ClosedAccount Close()
         {
             if (Id == new Guid())
-                throw new Exception("The ActiveAcount is not created and no opperations can be executed on it");
+                throw new AccountWasNotCreatedException("The ActiveAcount is not created and no opperations can be executed on it");
 
             if (_closed)
-                throw new Exception("The ActiveAcount is closed and no opperations can be executed on it");
+                throw new AccountWasClosedException("The ActiveAcount is closed and no opperations can be executed on it");
 
             var closedAccount = new ClosedAccount(Id, _ledgers);
             Apply(new AccountClosedEvent());
@@ -48,10 +49,10 @@ namespace Fohjin.DDD.Domain.Entities
         public void Withdrawl(Amount amount)
         {
             if (Id == new Guid())
-                throw new Exception("The ActiveAcount is not created and no opperations can be executed on it");
+                throw new AccountWasNotCreatedException("The ActiveAcount is not created and no opperations can be executed on it");
 
             if (_closed)
-                throw new Exception("The ActiveAcount is closed and no opperations can be executed on it");
+                throw new AccountWasClosedException("The ActiveAcount is closed and no opperations can be executed on it");
 
             if (_balance.WithdrawlWillResultInNegativeBalance(amount))
                 throw new Exception(string.Format("The amount {0} is larger than your current balance {1}", (decimal)amount, (decimal)_balance));
@@ -64,10 +65,10 @@ namespace Fohjin.DDD.Domain.Entities
         public void Deposite(Amount amount)
         {
             if (Id == new Guid())
-                throw new Exception("The ActiveAcount is not created and no opperations can be executed on it");
+                throw new AccountWasNotCreatedException("The ActiveAcount is not created and no opperations can be executed on it");
 
             if (_closed)
-                throw new Exception("The ActiveAcount is closed and no opperations can be executed on it");
+                throw new AccountWasClosedException("The ActiveAcount is closed and no opperations can be executed on it");
 
             var newBalance = _balance.Deposite(amount);
 

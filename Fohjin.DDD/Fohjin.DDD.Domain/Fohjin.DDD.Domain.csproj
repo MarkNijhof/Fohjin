@@ -57,12 +57,14 @@
     <Compile Include="Entities\Ledger.cs" />
     <Compile Include="Entities\Mementos\ActiveAccountMemento.cs" />
     <Compile Include="Entities\Mementos\ClientMemento.cs" />
+    <Compile Include="Exceptions\AccountBalanceIsToLowException.cs" />
+    <Compile Include="Exceptions\AccountWasClosedException.cs" />
+    <Compile Include="Exceptions\AccountWasNotCreatedException.cs" />
     <Compile Include="Exceptions\ClientWasNotCreatedException.cs" />
     <Compile Include="IEventProvider.cs" />
     <Compile Include="Entities\Mementos\IMomento.cs" />
     <Compile Include="Entities\Mementos\IOrginator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TypeExtension.cs" />
     <Compile Include="ValueObjects\AccountName.cs" />
     <Compile Include="ValueObjects\Address.cs" />
     <Compile Include="ValueObjects\Amount.cs" />

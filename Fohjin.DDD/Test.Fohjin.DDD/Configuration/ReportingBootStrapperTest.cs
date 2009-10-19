@@ -5,26 +5,26 @@ using NUnit.Framework;
 namespace Test.Fohjin.DDD.Configuration
 {
     [TestFixture]
-    public class DatabaseBootStrapperTest
+    public class ReportingBootStrapperTest
     {
         [Test]
         public void Will_be_able_to_create_the_database_schema_in_sqlite_when_no_file_exists()
         {
-            File.Delete(DomainDatabaseBootStrapper.dataBaseFile);
+            File.Delete(ReportingDatabaseBootStrapper.dataBaseFile);
 
-            DomainDatabaseBootStrapper.BootStrap();
+            ReportingDatabaseBootStrapper.BootStrap();
         }
 
         [Test]
         public void Will_be_able_to_create_the_database_schema_in_sqlite()
         {
-            new DomainDatabaseBootStrapper().CreateDatabaseSchemaIfNeeded();
+            new ReportingDatabaseBootStrapper().CreateDatabaseSchemaIfNeeded();
         }
-
+        
         [Test]
         public void Will_be_able_to_re_create_the_database_schema_in_sqlite()
         {
-            new DomainDatabaseBootStrapper().ReCreateDatabaseSchema();
+            new ReportingDatabaseBootStrapper().ReCreateDatabaseSchema();
         }
     }
 }
