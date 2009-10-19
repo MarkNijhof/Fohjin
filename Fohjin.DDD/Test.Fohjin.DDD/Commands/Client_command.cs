@@ -7,8 +7,6 @@ using Fohjin.DDD.Domain.Entities;
 using Fohjin.DDD.Domain.Exceptions;
 using Fohjin.DDD.Events;
 using Fohjin.DDD.Events.Client;
-using Test.Fohjin.DDD.Domain;
-using DomainEvent=Test.Fohjin.DDD.Domain.DomainEvent;
 
 namespace Test.Fohjin.DDD.Commands
 {
@@ -56,7 +54,7 @@ namespace Test.Fohjin.DDD.Commands
     {
         protected override IEnumerable<IDomainEvent> Given()
         {
-            yield return DomainEvent.Set(new NewClientCreatedEvent(Guid.NewGuid(), "Mark Nijhof", "Welhavens gate", "49b", "5006", "Bergen", "95009937")).ToVersion(1);
+            yield return PrepareDomainEvent.Set(new NewClientCreatedEvent(Guid.NewGuid(), "Mark Nijhof", "Welhavens gate", "49b", "5006", "Bergen", "95009937")).ToVersion(1);
         }
 
         protected override ClientPhoneNumberIsChangedCommand When()
@@ -106,7 +104,7 @@ namespace Test.Fohjin.DDD.Commands
     {
         protected override IEnumerable<IDomainEvent> Given()
         {
-            yield return DomainEvent.Set(new NewClientCreatedEvent(Guid.NewGuid(), "Mark Nijhof", "Welhavens gate", "49b", "5006", "Bergen", "95009937")).ToVersion(1);
+            yield return PrepareDomainEvent.Set(new NewClientCreatedEvent(Guid.NewGuid(), "Mark Nijhof", "Welhavens gate", "49b", "5006", "Bergen", "95009937")).ToVersion(1);
         }
 
         protected override ClientChangedTheirNameCommand When()
@@ -156,7 +154,7 @@ namespace Test.Fohjin.DDD.Commands
     {
         protected override IEnumerable<IDomainEvent> Given()
         {
-            yield return DomainEvent.Set(new NewClientCreatedEvent(Guid.NewGuid(), "Mark Nijhof", "Welhavens gate", "49b", "5006", "Bergen", "95009937")).ToVersion(1);
+            yield return PrepareDomainEvent.Set(new NewClientCreatedEvent(Guid.NewGuid(), "Mark Nijhof", "Welhavens gate", "49b", "5006", "Bergen", "95009937")).ToVersion(1);
         }
 
         protected override ClientHasMovedCommand When()
@@ -209,7 +207,7 @@ namespace Test.Fohjin.DDD.Commands
     {
         protected override IEnumerable<IDomainEvent> Given()
         {
-            yield return DomainEvent.Set(new NewClientCreatedEvent(Guid.NewGuid(), "Mark Nijhof", "Welhavens gate", "49b", "5006", "Bergen", "95009937")).ToVersion(1);
+            yield return PrepareDomainEvent.Set(new NewClientCreatedEvent(Guid.NewGuid(), "Mark Nijhof", "Welhavens gate", "49b", "5006", "Bergen", "95009937")).ToVersion(1);
         }
 
         protected override AddNewAccountToClientCommand When()

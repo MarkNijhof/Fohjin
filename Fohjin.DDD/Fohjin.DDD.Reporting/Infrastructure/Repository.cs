@@ -22,14 +22,9 @@ namespace Fohjin.DDD.Reporting.Infrastructure
 
         public IEnumerable<TDto> GetByExample<TDto>(object example) where TDto : class
         {
-            if (example == null)
-                return GetByExample<TDto>(new Dictionary<string, object>());
-
-            var exampleData = new Dictionary<string, object>();
-
-            example.GetType().GetProperties().Where(Where).ToList().ForEach(x => exampleData.Add(x.Name, x.GetValue(example, new object[] { })));
-
-            return GetByExample<TDto>(exampleData);
+            return example == null 
+                ? GetByExample<TDto>(new Dictionary<string, object>()) 
+                : GetByExample<TDto>(GetPropertyInformation(example));
         }
 
         public IEnumerable<TDto> GetByExample<TDto>(IDictionary<string, object> example) where TDto : class
@@ -109,11 +104,7 @@ namespace Fohjin.DDD.Reporting.Infrastructure
 
         public void Save<TDto>(TDto dto) where TDto : class
         {
-            var exampleData = new Dictionary<string, object>();
-
-            dto.GetType().GetProperties().Where(Where).ToList().ForEach(x => exampleData.Add(x.Name, x.GetValue(dto, new object[] { })));
-
-            Save<TDto>(exampleData);
+            Save<TDto>(GetPropertyInformation(dto));
         }
 
         public void Save<TDto>(IEnumerable<KeyValuePair<string, object>> dto) where TDto : class
@@ -151,6 +142,14 @@ namespace Fohjin.DDD.Reporting.Infrastructure
             dtoType.GetProperties().Where(Where).ToList().ForEach(x => constructorArguments.Add(sqLiteDataReader[x.Name]));
 
             return (TDto)dtoConstructor.Invoke(constructorArguments.ToArray());
+        }
+
+        private static Dictionary<string, object> GetPropertyInformation(object example)
+        {
+            var exampleData = new Dictionary<string, object>();
+
+            example.GetType().GetProperties().Where(Where).ToList().ForEach(x => exampleData.Add(x.Name, x.GetValue(example, new object[] { })));
+            return exampleData;
         }
 
         private static void AddParameters(SQLiteCommand sqliteCommand, IEnumerable<KeyValuePair<string, object>> example)

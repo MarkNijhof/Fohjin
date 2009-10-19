@@ -4,7 +4,7 @@ using Fohjin.DDD.Domain;
 using Fohjin.DDD.Events;
 using NUnit.Framework;
 
-namespace Test.Fohjin.DDD.Domain
+namespace Test.Fohjin.DDD
 {
     [Specification]
     public abstract class AggregateRootTestFixture<TAggregateRoot> where TAggregateRoot : IEventProvider, new()

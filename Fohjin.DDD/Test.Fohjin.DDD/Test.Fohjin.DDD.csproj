@@ -67,12 +67,12 @@
     <Compile Include="Configuration\DatabaseBootStrapperTest.cs" />
     <Compile Include="Configuration\ReportingBootStrapperTest.cs" />
     <Compile Include="Configuration\StructureMapTest.cs" />
+    <Compile Include="Domain\Entities\BaseAggregateTest.cs" />
     <Compile Include="Domain\Repositories\ClientRepositoryTest.cs" />
-    <Compile Include="Domain\TestExtensions.cs" />
-    <Compile Include="Domain\CommandTestFixture.cs" />
-    <Compile Include="Domain\Entities\ActiveAccountTest.cs" />
+    <Compile Include="TestExtensions.cs" />
+    <Compile Include="CommandTestFixture.cs" />
     <Compile Include="Domain\Repositories\ActiveAccountRepositoryTest.cs" />
-    <Compile Include="Domain\AggregateRootTestFixture.cs" />
+    <Compile Include="AggregateRootTestFixture.cs" />
     <Compile Include="Events\All_domain_events_must_be_Serializable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reporting\Infrastructure\RepositoryTest.cs" />

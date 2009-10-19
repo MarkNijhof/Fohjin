@@ -30,6 +30,11 @@ namespace Fohjin.DDD.Domain.Entities
             registerEvents();
         }
 
+        public static ActiveAccount CreateNew(string accountName)
+        {
+            return new ActiveAccount(accountName);
+        }
+
         public ActiveAccount(string accountName) : this()
         {
             var accountNumber = SystemDateTime.Now().Ticks.ToString();
@@ -38,22 +43,14 @@ namespace Fohjin.DDD.Domain.Entities
 
         public void ChangeAccountName(AccountName accountName)
         {
-            if (Id == new Guid())
-                throw new AccountWasNotCreatedException("The ActiveAcount is not created and no opperations can be executed on it");
-
-            if (_closed)
-                throw new AccountWasClosedException("The ActiveAcount is closed and no opperations can be executed on it");
+            Guard();
 
             Apply(new AccountNameGotChangedEvent(accountName.Name));
         }
 
         public ClosedAccount Close()
         {
-            if (Id == new Guid())
-                throw new AccountWasNotCreatedException("The ActiveAcount is not created and no opperations can be executed on it");
-
-            if (_closed)
-                throw new AccountWasClosedException("The ActiveAcount is closed and no opperations can be executed on it");
+            Guard();
 
             var closedAccount = new ClosedAccount(Id, _ledgers);
             Apply(new AccountClosedEvent());
@@ -62,14 +59,9 @@ namespace Fohjin.DDD.Domain.Entities
 
         public void Withdrawl(Amount amount)
         {
-            if (Id == new Guid())
-                throw new AccountWasNotCreatedException("The ActiveAcount is not created and no opperations can be executed on it");
+            Guard();
 
-            if (_closed)
-                throw new AccountWasClosedException("The ActiveAcount is closed and no opperations can be executed on it");
-
-            if (_balance.WithdrawlWillResultInNegativeBalance(amount))
-                throw new AccountBalanceIsToLowException(string.Format("The amount {0} is larger than your current balance {1}", (decimal)amount, (decimal)_balance));
+            IsBalanceHighEnough(amount);
 
             var newBalance = _balance.Withdrawl(amount);
 
@@ -78,11 +70,7 @@ namespace Fohjin.DDD.Domain.Entities
 
         public void Deposite(Amount amount)
         {
-            if (Id == new Guid())
-                throw new AccountWasNotCreatedException("The ActiveAcount is not created and no opperations can be executed on it");
-
-            if (_closed)
-                throw new AccountWasClosedException("The ActiveAcount is closed and no opperations can be executed on it");
+            Guard();
 
             var newBalance = _balance.Deposite(amount);
 
@@ -91,11 +79,7 @@ namespace Fohjin.DDD.Domain.Entities
 
         public void ReceiveTransferFrom(AccountNumber accountNumber, Amount amount)
         {
-            if (Id == new Guid())
-                throw new AccountWasNotCreatedException("The ActiveAcount is not created and no opperations can be executed on it");
-
-            if (_closed)
-                throw new AccountWasClosedException("The ActiveAcount is closed and no opperations can be executed on it");
+            Guard();
 
             var newBalance = _balance.Deposite(amount);
 
@@ -104,23 +88,37 @@ namespace Fohjin.DDD.Domain.Entities
 
         public void SendTransferTo(AccountNumber accountNumber, Amount amount)
         {
-            if (Id == new Guid())
-                throw new AccountWasNotCreatedException("The ActiveAcount is not created and no opperations can be executed on it");
+            Guard();
 
-            if (_closed)
-                throw new AccountWasClosedException("The ActiveAcount is closed and no opperations can be executed on it");
-
-            if (_balance.WithdrawlWillResultInNegativeBalance(amount))
-                throw new AccountBalanceIsToLowException(string.Format("The amount {0} is larger than your current balance {1}", (decimal)amount, (decimal)_balance));
+            IsBalanceHighEnough(amount);
 
             var newBalance = _balance.Withdrawl(amount);
 
             Apply(new MoneyTransferedToAnOtherAccountEvent(amount, newBalance, accountNumber.Number));
         }
 
-        public static ActiveAccount CreateNew(string accountName)
+        private void Guard()
         {
-            return new ActiveAccount(accountName);
+            IsAccountCreated();
+            IsAccountClosed();
+        }
+
+        private void IsAccountCreated()
+        {
+            if (Id == new Guid())
+                throw new AccountWasNotCreatedException("The ActiveAcount is not created and no opperations can be executed on it");
+        }
+
+        private void IsAccountClosed()
+        {
+            if (_closed)
+                throw new AccountWasClosedException("The ActiveAcount is closed and no opperations can be executed on it");
+        }
+
+        private void IsBalanceHighEnough(Amount amount)
+        {
+            if (_balance.WithdrawlWillResultInNegativeBalance(amount))
+                throw new AccountBalanceIsToLowException(string.Format("The amount {0} is larger than your current balance {1}", (decimal)amount, (decimal)_balance));
         }
 
         IMemento IOrginator.CreateMemento()

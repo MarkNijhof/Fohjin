@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using Fohjin.DDD.Events;
 using NUnit.Framework;
 
 namespace Test.Fohjin.DDD.Events
@@ -11,7 +10,7 @@ namespace Test.Fohjin.DDD.Events
         [Test]
         public void All_domain_events_will_have_the_Serializable_attribute_assigned()
         {
-            var domainEventTypes = typeof(DomainEvent).Assembly.GetExportedTypes().Where(x => x.BaseType == typeof(DomainEvent)).ToList();
+            var domainEventTypes = typeof(global::Fohjin.DDD.Events.DomainEvent).Assembly.GetExportedTypes().Where(x => x.BaseType == typeof(global::Fohjin.DDD.Events.DomainEvent)).ToList();
             foreach (var domainEventType in domainEventTypes)
             {
                 if (domainEventType.IsSerializable)

@@ -61,6 +61,7 @@
     <Compile Include="Exceptions\AccountWasClosedException.cs" />
     <Compile Include="Exceptions\AccountWasNotCreatedException.cs" />
     <Compile Include="Exceptions\ClientWasNotCreatedException.cs" />
+    <Compile Include="Exceptions\DomainEventWasNotRegisteredException.cs" />
     <Compile Include="IEventProvider.cs" />
     <Compile Include="Entities\Mementos\IMomento.cs" />
     <Compile Include="Entities\Mementos\IOrginator.cs" />

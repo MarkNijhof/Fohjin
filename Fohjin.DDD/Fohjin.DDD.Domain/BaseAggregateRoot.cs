@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Fohjin.DDD.Domain.Exceptions;
 using Fohjin.DDD.Events;
 
 namespace Fohjin.DDD.Domain
@@ -64,7 +65,7 @@ namespace Fohjin.DDD.Domain
         private void apply(Type eventType, object domainEvent)
         {
             if (!_events.ContainsKey(eventType))
-                throw new Exception(string.Format("The requested event {0} is not registered", eventType));
+                throw new DomainEventWasNotRegisteredException(string.Format("The requested event '{0}' is not registered", eventType.FullName));
 
             _events[eventType].DynamicInvoke(new[] { domainEvent });
         }

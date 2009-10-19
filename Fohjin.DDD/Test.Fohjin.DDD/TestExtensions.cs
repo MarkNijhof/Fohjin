@@ -4,9 +4,10 @@ using System.Linq;
 using Fohjin.DDD.Events;
 using NUnit.Framework;
 
-namespace Test.Fohjin.DDD.Domain
+namespace Test.Fohjin.DDD
 {
     public class ThenAttribute : TestAttribute { }
+
     public class SpecificationAttribute : TestFixtureAttribute { }
 
     public static class TestExtensions

@@ -12,7 +12,7 @@ using Moq;
 using NUnit.Framework;
 using StructureMap;
 
-namespace Test.Fohjin.DDD.Domain
+namespace Test.Fohjin.DDD
 {
     [Specification]
     public abstract class CommandTestFixture<TCommand, TCommandHandler, TAggregateRoot> 
@@ -80,7 +80,7 @@ namespace Test.Fohjin.DDD.Domain
 
     public class NullException : Exception {}
 
-    public class DomainEvent
+    public class PrepareDomainEvent
     {
         public static EventVersionSetter Set(IDomainEvent domainEvent)
         {
