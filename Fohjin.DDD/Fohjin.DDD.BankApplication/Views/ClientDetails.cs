@@ -2,21 +2,48 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
-using Fohjin.DDD.BankApplication.Presenters;
 using Fohjin.DDD.Reporting.Dto;
 
 namespace Fohjin.DDD.BankApplication.Views
 {
     public partial class ClientDetails : Form, IClientDetailsView
     {
-        private IClientDetailsPresenter _presenter;
-
         public ClientDetails()
         {
             InitializeComponent();
             tabControl1.Appearance = TabAppearance.FlatButtons;
             tabControl1.ItemSize = new Size(0, 1);
             tabControl1.SizeMode = TabSizeMode.Fixed;
+            RegisterCLientEvents();
+        }
+
+        public event Action OnOpenSelectedAccount;
+        public event Action OnFormElementGotChanged;
+        public event Action OnCancel;
+        public event Action OnSaveNewClientName;
+        public event Action OnSaveNewPhoneNumber;
+        public event Action OnSaveNewAddress;
+        public event Action OnInitiateClientHasMoved;
+        public event Action OnInitiateClientNameChange;
+        public event Action OnInitiateClientPhoneNumberChanged;
+        public event Action OnInitiateAddNewAccount;
+        public event Action OnCreateNewAccount;
+
+        private void RegisterCLientEvents()
+        {
+            nameChangedToolStripMenuItem.Click += (e, s) => OnInitiateClientNameChange();
+            hasMovedToolStripMenuItem.Click += (e, s) => OnInitiateClientHasMoved();
+            changedHisPhoneNumberToolStripMenuItem.Click += (e, s) => OnInitiateClientPhoneNumberChanged();
+            addNewAccountToolStripMenuItem.Click += (e, s) => OnInitiateAddNewAccount();
+            _newAccountCreateButton.Click += (e, s) => OnCreateNewAccount();
+            _newAccountCancelButton.Click += (e, s) => OnCancel();
+            _clientNameSaveButton.Click += (e, s) => OnSaveNewClientName();
+            _clientNameCancelButton.Click += (e, s) => OnCancel();
+            _accounts.DoubleClick += (e, s) => OnOpenSelectedAccount();
+            _addressCancelButton.Click += (e, s) => OnCancel();
+            _addressSaveButton.Click += (e, s) => OnSaveNewAddress();
+            _phoneNumberCancelButton.Click += (e, s) => OnCancel();
+            _phoneNumberSaveButton.Click += (e, s) => OnSaveNewPhoneNumber();
         }
 
         public string ClientName
@@ -85,11 +112,6 @@ namespace Fohjin.DDD.BankApplication.Views
         public string PhoneNumberLabel
         {
             set { _phoneNumberLabel.Text = value; }
-        }
-
-        public void SetPresenter(IClientDetailsPresenter clientDetailsPresenter)
-        {
-            _presenter = clientDetailsPresenter;
         }
 
         public Account GetSelectedAccount()
@@ -178,64 +200,10 @@ namespace Fohjin.DDD.BankApplication.Views
             tabControl1.SelectedIndex = 4;
         }
 
-        private void _accounts_DoubleClick(object sender, EventArgs e)
-        {
-            _presenter.OpenSelectedAccount();
-        }
-
         private void _client_Changed(object sender, EventArgs e)
         {
-            _presenter.FormElementGotChanged();
-        }
-
-        private void addNewAccountToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            _presenter.InitiateAddNewAccount();
-        }
-
-        private void CancelButton_Click(object sender, EventArgs e)
-        {
-            _presenter.Cancel();
-        }
-
-        private void _clientNameSaveButton_Click(object sender, EventArgs e)
-        {
-            _presenter.SaveNewClientName();
-        }
-
-        private void _phoneNumberSaveButton_Click(object sender, EventArgs e)
-        {
-            _presenter.SaveNewPhoneNumber();
-        }
-
-        private void _addressSaveButton_Click(object sender, EventArgs e)
-        {
-            _presenter.SaveNewAddress();
-        }
-
-        private void nameChangeToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            _presenter.InitiateClientNameChange();
-        }
-
-        private void hasMovedToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            _presenter.InitiateClientHasMoved();
-        }
-
-        private void changedHisPhonenumberToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            _presenter.InitiateClientPhoneNumberChanged();
-        }
-
-        private void NewAccountCancelButton_Click(object sender, EventArgs e)
-        {
-            _presenter.Cancel();
-        }
-
-        private void NewAccountCreateButton_Click(object sender, EventArgs e)
-        {
-            _presenter.CreateNewAccount();
+            if (OnFormElementGotChanged != null)
+                OnFormElementGotChanged();
         }
     }
 }

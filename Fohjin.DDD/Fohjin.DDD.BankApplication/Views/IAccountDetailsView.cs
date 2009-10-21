@@ -1,10 +1,9 @@
 using System.Collections.Generic;
-using Fohjin.DDD.BankApplication.Presenters;
 using Fohjin.DDD.Reporting.Dto;
 
 namespace Fohjin.DDD.BankApplication.Views
 {
-    public interface IAccountDetailsView : IView<IAccountDetailsPresenter>
+    public interface IAccountDetailsView : IView
     {
         string AccountNameLabel { set; }
         string AccountNumberLabel { set; }
@@ -29,5 +28,20 @@ namespace Fohjin.DDD.BankApplication.Views
         void EnableDepositePanel();
         void EnableWithdrawlPanel();
         void EnableTransferPanel();
+
+        event Action OnCloseTheAccount;
+        event Action OnFormElementGotChanged;
+
+        event Action OnCancel;
+
+        event Action OnInitiateAccountNameChange;
+        event Action OnInitiateMoneyDeposite;
+        event Action OnInitiateMoneyWithdrawl;
+        event Action OnInitiateMoneyTransfer;
+
+        event Action OnChangeAccountName;
+        event Action OnDepositeMoney;
+        event Action OnWithdrawlMoney;
+        event Action OnTransferMoney;
     }
 }

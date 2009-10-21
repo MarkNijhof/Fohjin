@@ -1,4 +1,6 @@
-﻿namespace Fohjin.DDD.BankApplication.Views
+﻿using System.Windows.Forms;
+
+namespace Fohjin.DDD.BankApplication.Views
 {
     partial class AccountDetails
     {
@@ -49,19 +51,19 @@
             this.label8 = new System.Windows.Forms.Label();
             this._depositeTab = new System.Windows.Forms.TabPage();
             this._phoneNumberGroupBox = new System.Windows.Forms.GroupBox();
-            this._depositeAmount = new System.Windows.Forms.MaskedTextBox();
+            this._depositeAmount = new System.Windows.Forms.TextBox();
             this._depositeCancelButton = new System.Windows.Forms.Button();
             this._depositeButton = new System.Windows.Forms.Button();
             this._withdrawlTab = new System.Windows.Forms.TabPage();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this._withdrawlAmount = new System.Windows.Forms.MaskedTextBox();
+            this._withdrawlAmount = new System.Windows.Forms.TextBox();
             this._withdrawlCancelButton = new System.Windows.Forms.Button();
             this._withdrawlButton = new System.Windows.Forms.Button();
             this._transferTab = new System.Windows.Forms.TabPage();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this._transferAccounts = new System.Windows.Forms.ComboBox();
             this.label12 = new System.Windows.Forms.Label();
-            this._transferAmount = new System.Windows.Forms.MaskedTextBox();
+            this._transferAmount = new System.Windows.Forms.TextBox();
             this.label13 = new System.Windows.Forms.Label();
             this._transferCancelButton = new System.Windows.Forms.Button();
             this._transferButton = new System.Windows.Forms.Button();
@@ -84,6 +86,15 @@
             this._nameChangeTab.SuspendLayout();
             this.groupBox7.SuspendLayout();
             this.SuspendLayout();
+
+            this._depositeAmount.TextChanged += new System.EventHandler(_depositeAmount_TextChanged);
+            this._withdrawlAmount.TextChanged += new System.EventHandler(_depositeAmount_TextChanged);
+            this._transferAmount.TextChanged += new System.EventHandler(_depositeAmount_TextChanged);
+            this._accountName.TextChanged += new System.EventHandler(_depositeAmount_TextChanged);
+            this._transferAccounts.SelectedIndexChanged += new System.EventHandler(_depositeAmount_TextChanged);
+            this._depositeAmount.KeyPress += new KeyPressEventHandler(_amount_KeyPress);
+            this._withdrawlAmount.KeyPress += new KeyPressEventHandler(_amount_KeyPress);
+            this._transferAmount.KeyPress += new KeyPressEventHandler(_amount_KeyPress);
             // 
             // menuStrip1
             // 
@@ -110,14 +121,12 @@
             this.changeAccountNameToolStripMenuItem.Name = "changeAccountNameToolStripMenuItem";
             this.changeAccountNameToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
             this.changeAccountNameToolStripMenuItem.Text = "Change account name";
-            this.changeAccountNameToolStripMenuItem.Click += new System.EventHandler(this.changeAccountNameToolStripMenuItem_Click);
             // 
             // closeAccountToolStripMenuItem
             // 
             this.closeAccountToolStripMenuItem.Name = "closeAccountToolStripMenuItem";
             this.closeAccountToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
             this.closeAccountToolStripMenuItem.Text = "Close account";
-            this.closeAccountToolStripMenuItem.Click += new System.EventHandler(this.closeAccountToolStripMenuItem_Click);
             // 
             // transferToolStripMenuItem
             // 
@@ -134,21 +143,18 @@
             this.makeCashMutationToolStripMenuItem.Name = "makeCashMutationToolStripMenuItem";
             this.makeCashMutationToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
             this.makeCashMutationToolStripMenuItem.Text = "Make cash deposite";
-            this.makeCashMutationToolStripMenuItem.Click += new System.EventHandler(this.makeCashMutationToolStripMenuItem_Click);
             // 
             // makeCashWithdrawlToolStripMenuItem
             // 
             this.makeCashWithdrawlToolStripMenuItem.Name = "makeCashWithdrawlToolStripMenuItem";
             this.makeCashWithdrawlToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
             this.makeCashWithdrawlToolStripMenuItem.Text = "Make cash withdrawl";
-            this.makeCashWithdrawlToolStripMenuItem.Click += new System.EventHandler(this.makeCashWithdrawlToolStripMenuItem_Click);
             // 
             // transferMoneyToolStripMenuItem
             // 
             this.transferMoneyToolStripMenuItem.Name = "transferMoneyToolStripMenuItem";
             this.transferMoneyToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
             this.transferMoneyToolStripMenuItem.Text = "Transfer money";
-            this.transferMoneyToolStripMenuItem.Click += new System.EventHandler(this.transferMoneyToolStripMenuItem_Click);
             // 
             // tabControl1
             // 
@@ -292,13 +298,10 @@
             // _depositeAmount
             // 
             this._depositeAmount.Location = new System.Drawing.Point(6, 19);
-            this._depositeAmount.Mask = "999,999.00";
             this._depositeAmount.Name = "_depositeAmount";
             this._depositeAmount.Size = new System.Drawing.Size(273, 20);
             this._depositeAmount.TabIndex = 9;
-            this._depositeAmount.Text = "     000";
-            this._depositeAmount.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this._amount_KeyPress);
-            this._depositeAmount.TextChanged += new System.EventHandler(this._client_Changed);
+            this._depositeAmount.Text = "000";
             // 
             // _depositeCancelButton
             // 
@@ -309,7 +312,6 @@
             this._depositeCancelButton.TabIndex = 18;
             this._depositeCancelButton.Text = "Cancel";
             this._depositeCancelButton.UseVisualStyleBackColor = true;
-            this._depositeCancelButton.Click += new System.EventHandler(this.CancelButton_Click);
             // 
             // _depositeButton
             // 
@@ -320,7 +322,6 @@
             this._depositeButton.TabIndex = 17;
             this._depositeButton.Text = "Deposite";
             this._depositeButton.UseVisualStyleBackColor = true;
-            this._depositeButton.Click += new System.EventHandler(this._depositeButton_Click);
             // 
             // _withdrawlTab
             // 
@@ -347,13 +348,10 @@
             // _withdrawlAmount
             // 
             this._withdrawlAmount.Location = new System.Drawing.Point(6, 19);
-            this._withdrawlAmount.Mask = "999,999.00";
             this._withdrawlAmount.Name = "_withdrawlAmount";
             this._withdrawlAmount.Size = new System.Drawing.Size(273, 20);
             this._withdrawlAmount.TabIndex = 9;
-            this._withdrawlAmount.Text = "     000";
-            this._withdrawlAmount.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this._amount_KeyPress);
-            this._withdrawlAmount.TextChanged += new System.EventHandler(this._client_Changed);
+            this._withdrawlAmount.Text = "000";
             // 
             // _withdrawlCancelButton
             // 
@@ -364,7 +362,6 @@
             this._withdrawlCancelButton.TabIndex = 18;
             this._withdrawlCancelButton.Text = "Cancel";
             this._withdrawlCancelButton.UseVisualStyleBackColor = true;
-            this._withdrawlCancelButton.Click += new System.EventHandler(this.CancelButton_Click);
             // 
             // _withdrawlButton
             // 
@@ -375,7 +372,6 @@
             this._withdrawlButton.TabIndex = 17;
             this._withdrawlButton.Text = "Withdrawl";
             this._withdrawlButton.UseVisualStyleBackColor = true;
-            this._withdrawlButton.Click += new System.EventHandler(this._withdrawlButton_Click);
             // 
             // _transferTab
             // 
@@ -409,7 +405,6 @@
             this._transferAccounts.Name = "_transferAccounts";
             this._transferAccounts.Size = new System.Drawing.Size(273, 21);
             this._transferAccounts.TabIndex = 24;
-            this._transferAccounts.SelectedIndexChanged += new System.EventHandler(this._client_Changed);
             // 
             // label12
             // 
@@ -423,13 +418,10 @@
             // _transferAmount
             // 
             this._transferAmount.Location = new System.Drawing.Point(6, 33);
-            this._transferAmount.Mask = "999999.00";
             this._transferAmount.Name = "_transferAmount";
             this._transferAmount.Size = new System.Drawing.Size(273, 20);
             this._transferAmount.TabIndex = 7;
-            this._transferAmount.Text = "     000";
-            this._transferAmount.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this._amount_KeyPress);
-            this._transferAmount.TextChanged += new System.EventHandler(this._client_Changed);
+            this._transferAmount.Text = "0";
             // 
             // label13
             // 
@@ -449,7 +441,6 @@
             this._transferCancelButton.TabIndex = 18;
             this._transferCancelButton.Text = "Cancel";
             this._transferCancelButton.UseVisualStyleBackColor = true;
-            this._transferCancelButton.Click += new System.EventHandler(this.CancelButton_Click);
             // 
             // _transferButton
             // 
@@ -460,7 +451,6 @@
             this._transferButton.TabIndex = 17;
             this._transferButton.Text = "Transfer";
             this._transferButton.UseVisualStyleBackColor = true;
-            this._transferButton.Click += new System.EventHandler(this._transferButton_Click);
             // 
             // _nameChangeTab
             // 
@@ -490,7 +480,6 @@
             this._accountName.Name = "_accountName";
             this._accountName.Size = new System.Drawing.Size(273, 20);
             this._accountName.TabIndex = 9;
-            this._accountName.TextChanged += new System.EventHandler(this._client_Changed);
             // 
             // _newAccountNameCancelButton
             // 
@@ -501,7 +490,6 @@
             this._newAccountNameCancelButton.TabIndex = 18;
             this._newAccountNameCancelButton.Text = "Cancel";
             this._newAccountNameCancelButton.UseVisualStyleBackColor = true;
-            this._newAccountNameCancelButton.Click += new System.EventHandler(this.CancelButton_Click);
             // 
             // _newAccountNameSaveButton
             // 
@@ -512,7 +500,6 @@
             this._newAccountNameSaveButton.TabIndex = 17;
             this._newAccountNameSaveButton.Text = "Save";
             this._newAccountNameSaveButton.UseVisualStyleBackColor = true;
-            this._newAccountNameSaveButton.Click += new System.EventHandler(this._newAccountNameSaveButton_Click);
             // 
             // AccountDetails
             // 
@@ -585,12 +572,12 @@
         private System.Windows.Forms.Button _depositeButton;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.MaskedTextBox _transferAmount;
+        private System.Windows.Forms.TextBox _transferAmount;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.GroupBox _phoneNumberGroupBox;
-        private System.Windows.Forms.MaskedTextBox _depositeAmount;
+        private System.Windows.Forms.TextBox _depositeAmount;
         private System.Windows.Forms.GroupBox groupBox6;
-        private System.Windows.Forms.MaskedTextBox _withdrawlAmount;
+        private System.Windows.Forms.TextBox _withdrawlAmount;
         private System.Windows.Forms.GroupBox groupBox7;
         private System.Windows.Forms.TextBox _accountName;
         private System.Windows.Forms.ComboBox _transferAccounts;

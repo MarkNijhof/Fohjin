@@ -67,14 +67,12 @@
             this.addANewClientToolStripMenuItem.Name = "addANewClientToolStripMenuItem";
             this.addANewClientToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
             this.addANewClientToolStripMenuItem.Text = "Add a new client";
-            this.addANewClientToolStripMenuItem.Click += new System.EventHandler(this.addANewClientToolStripMenuItem_Click);
             // 
             // refreshExistingClientsToolStripMenuItem
             // 
             this.refreshExistingClientsToolStripMenuItem.Name = "refreshExistingClientsToolStripMenuItem";
             this.refreshExistingClientsToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
             this.refreshExistingClientsToolStripMenuItem.Text = "Refresh existing clients";
-            this.refreshExistingClientsToolStripMenuItem.Click += new System.EventHandler(this.refreshExistingClientsToolStripMenuItem_Click);
             // 
             // tabControl1
             // 
@@ -125,7 +123,6 @@
             this._clients.Name = "_clients";
             this._clients.Size = new System.Drawing.Size(273, 95);
             this._clients.TabIndex = 7;
-            this._clients.DoubleClick += new System.EventHandler(this._clients_DoubleClick);
             // 
             // ClientSearchForm
             // 

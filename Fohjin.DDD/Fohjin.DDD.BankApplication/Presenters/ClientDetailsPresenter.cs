@@ -30,7 +30,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
             _accountDetailsPresenter = accountDetailsPresenter;
             _bus = bus;
             _repository = repository;
-            _clientDetailsView.SetPresenter(this);
+            EventLinker.Link(clientDetailsView, this);
         }
 
         public void Display()

@@ -24,7 +24,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
             _accountDetailsView = accountDetailsView;
             _bus = bus;
             _repository = repository;
-            _accountDetailsView.SetPresenter(this);
+            EventLinker.Link(accountDetailsView, this);
         }
 
         public void Display()

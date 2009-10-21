@@ -72,6 +72,7 @@
     <Compile Include="Views\AccountDetails.Designer.cs">
       <DependentUpon>AccountDetails.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\ActionDelegate.cs" />
     <Compile Include="Views\ClientDetails.cs">
       <SubType>Form</SubType>
     </Compile>

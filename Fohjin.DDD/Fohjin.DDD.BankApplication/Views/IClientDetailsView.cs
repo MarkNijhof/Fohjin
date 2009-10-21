@@ -1,10 +1,9 @@
 using System.Collections.Generic;
-using Fohjin.DDD.BankApplication.Presenters;
 using Fohjin.DDD.Reporting.Dto;
 
 namespace Fohjin.DDD.BankApplication.Views
 {
-    public interface IClientDetailsView : IView<IClientDetailsPresenter>
+    public interface IClientDetailsView : IView
     {
         string ClientName { get; set; }
         string Street { get; set; }
@@ -38,5 +37,17 @@ namespace Fohjin.DDD.BankApplication.Views
         void EnableClientNamePanel();
         void EnablePhoneNumberPanel();
         void EnableAddNewAccountPanel();
+
+        event Action OnOpenSelectedAccount;
+        event Action OnFormElementGotChanged;
+        event Action OnCancel;
+        event Action OnSaveNewClientName;
+        event Action OnSaveNewPhoneNumber;
+        event Action OnSaveNewAddress;
+        event Action OnInitiateClientHasMoved;
+        event Action OnInitiateClientNameChange;
+        event Action OnInitiateClientPhoneNumberChanged;
+        event Action OnInitiateAddNewAccount;
+        event Action OnCreateNewAccount;
     }
 }

@@ -2,21 +2,48 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
-using Fohjin.DDD.BankApplication.Presenters;
 using Fohjin.DDD.Reporting.Dto;
 
 namespace Fohjin.DDD.BankApplication.Views
 {
     public partial class AccountDetails : Form, IAccountDetailsView
     {
-        private IAccountDetailsPresenter _presenter;
-
         public AccountDetails()
         {
             InitializeComponent();
             tabControl1.Appearance = TabAppearance.FlatButtons;
             tabControl1.ItemSize = new Size(0, 1);
             tabControl1.SizeMode = TabSizeMode.Fixed;
+            RegisterCLientEvents();
+        }
+
+        public event Action OnCloseTheAccount;
+        public event Action OnFormElementGotChanged;
+        public event Action OnCancel;
+        public event Action OnInitiateAccountNameChange;
+        public event Action OnInitiateMoneyDeposite;
+        public event Action OnInitiateMoneyWithdrawl;
+        public event Action OnInitiateMoneyTransfer;
+        public event Action OnChangeAccountName;
+        public event Action OnDepositeMoney;
+        public event Action OnWithdrawlMoney;
+        public event Action OnTransferMoney;
+
+        private void RegisterCLientEvents()
+        {
+            changeAccountNameToolStripMenuItem.Click += (e, s) => OnInitiateAccountNameChange();
+            closeAccountToolStripMenuItem.Click += (e, s) => OnCloseTheAccount();
+            makeCashMutationToolStripMenuItem.Click += (e, s) => OnInitiateMoneyDeposite();
+            makeCashWithdrawlToolStripMenuItem.Click += (e, s) => OnInitiateMoneyDeposite();
+            transferMoneyToolStripMenuItem.Click += (e, s) => OnInitiateMoneyTransfer();
+            _depositeCancelButton.Click += (e, s) => OnCancel();
+            _depositeButton.Click += (e, s) => OnDepositeMoney();
+            _withdrawlCancelButton.Click += (e, s) => OnCancel();
+            _withdrawlButton.Click += (e, s) => OnWithdrawlMoney();
+            _transferCancelButton.Click += (e, s) => OnCancel();
+            _transferButton.Click += (e, s) => OnTransferMoney();
+            _newAccountNameCancelButton.Click += (e, s) => OnCancel();
+            _newAccountNameSaveButton.Click += (e, s) => OnChangeAccountName();
         }
 
         public string AccountNameLabel
@@ -134,69 +161,15 @@ namespace Fohjin.DDD.BankApplication.Views
             set { _accountName.Text = value; }
         }
 
-        public void SetPresenter(IAccountDetailsPresenter accountDetailsPresenter)
-        {
-            _presenter = accountDetailsPresenter;
-        }
-
-        private void _client_Changed(object sender, EventArgs e)
-        {
-            _presenter.FormElementGotChanged();
-        }
-
-        private void CancelButton_Click(object sender, EventArgs e)
-        {
-            _presenter.Cancel();
-        }
-
-        private void closeAccountToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            _presenter.CloseTheAccount();
-        }
-
-        private void changeAccountNameToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            _presenter.InitiateAccountNameChange();
-        }
-
-        private void makeCashMutationToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            _presenter.InitiateMoneyDeposite();
-        }
-
-        private void makeCashWithdrawlToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            _presenter.InitiateMoneyWithdrawl();
-        }
-
-        private void transferMoneyToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            _presenter.InitiateMoneyTransfer();
-        }
-
-        private void _newAccountNameSaveButton_Click(object sender, EventArgs e)
-        {
-            _presenter.ChangeAccountName();
-        }
-
-        private void _transferButton_Click(object sender, EventArgs e)
-        {
-            _presenter.TransferMoney();
-        }
-
-        private void _withdrawlButton_Click(object sender, EventArgs e)
-        {
-            _presenter.WithdrawlMoney();
-        }
-
-        private void _depositeButton_Click(object sender, EventArgs e)
-        {
-            _presenter.DepositeMoney();
-        }
-
         private void _amount_KeyPress(object sender, KeyPressEventArgs e)
         {
             e.Handled = InputIsDecimal();
+        }
+
+        private void _depositeAmount_TextChanged(object sender, EventArgs e)
+        {
+            if (OnFormElementGotChanged != null)
+               OnFormElementGotChanged();
         }
 
         private bool InputIsDecimal()
@@ -206,7 +179,6 @@ namespace Fohjin.DDD.BankApplication.Views
                 Decimal.TryParse(_depositeAmount.Text, out value) &&
                 Decimal.TryParse(_withdrawlAmount.Text, out value) &&
                 Decimal.TryParse(_transferAmount.Text, out value);
-
         }
     }
 }

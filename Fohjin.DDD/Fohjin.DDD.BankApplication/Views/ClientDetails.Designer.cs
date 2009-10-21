@@ -115,21 +115,18 @@
             this.nameChangedToolStripMenuItem.Name = "nameChangedToolStripMenuItem";
             this.nameChangedToolStripMenuItem.Size = new System.Drawing.Size(219, 22);
             this.nameChangedToolStripMenuItem.Text = "Got his name changed";
-            this.nameChangedToolStripMenuItem.Click += new System.EventHandler(this.nameChangeToolStripMenuItem_Click);
             // 
             // hasMovedToolStripMenuItem
             // 
             this.hasMovedToolStripMenuItem.Name = "hasMovedToolStripMenuItem";
             this.hasMovedToolStripMenuItem.Size = new System.Drawing.Size(219, 22);
             this.hasMovedToolStripMenuItem.Text = "Has moved";
-            this.hasMovedToolStripMenuItem.Click += new System.EventHandler(this.hasMovedToolStripMenuItem_Click);
             // 
             // changedHisPhoneNumberToolStripMenuItem
             // 
             this.changedHisPhoneNumberToolStripMenuItem.Name = "changedHisPhoneNumberToolStripMenuItem";
             this.changedHisPhoneNumberToolStripMenuItem.Size = new System.Drawing.Size(219, 22);
             this.changedHisPhoneNumberToolStripMenuItem.Text = "Changed his phonenumber";
-            this.changedHisPhoneNumberToolStripMenuItem.Click += new System.EventHandler(this.changedHisPhonenumberToolStripMenuItem_Click);
             // 
             // accountsToolStripMenuItem
             // 
@@ -144,7 +141,6 @@
             this.addNewAccountToolStripMenuItem.Name = "addNewAccountToolStripMenuItem";
             this.addNewAccountToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
             this.addNewAccountToolStripMenuItem.Text = "Add new account";
-            this.addNewAccountToolStripMenuItem.Click += new System.EventHandler(this.addNewAccountToolStripMenuItem_Click);
             // 
             // tabControl1
             // 
@@ -189,7 +185,6 @@
             this._accounts.Name = "_accounts";
             this._accounts.Size = new System.Drawing.Size(273, 95);
             this._accounts.TabIndex = 7;
-            this._accounts.DoubleClick += new System.EventHandler(this._accounts_DoubleClick);
             // 
             // groupBox2
             // 
@@ -296,7 +291,6 @@
             this._addressCancelButton.TabIndex = 16;
             this._addressCancelButton.Text = "Cancel";
             this._addressCancelButton.UseVisualStyleBackColor = true;
-            this._addressCancelButton.Click += new System.EventHandler(this.CancelButton_Click);
             // 
             // _addressSaveButton
             // 
@@ -307,7 +301,6 @@
             this._addressSaveButton.TabIndex = 15;
             this._addressSaveButton.Text = "Save";
             this._addressSaveButton.UseVisualStyleBackColor = true;
-            this._addressSaveButton.Click += new System.EventHandler(this._addressSaveButton_Click);
             // 
             // _addressGroupBox
             // 
@@ -415,7 +408,6 @@
             this._phoneNumberCancelButton.TabIndex = 19;
             this._phoneNumberCancelButton.Text = "Cancel";
             this._phoneNumberCancelButton.UseVisualStyleBackColor = true;
-            this._phoneNumberCancelButton.Click += new System.EventHandler(this.CancelButton_Click);
             // 
             // _phoneNumberSaveButton
             // 
@@ -426,7 +418,6 @@
             this._phoneNumberSaveButton.TabIndex = 18;
             this._phoneNumberSaveButton.Text = "Save";
             this._phoneNumberSaveButton.UseVisualStyleBackColor = true;
-            this._phoneNumberSaveButton.Click += new System.EventHandler(this._phoneNumberSaveButton_Click);
             // 
             // _phoneNumberGroupBox
             // 
@@ -467,7 +458,6 @@
             this._clientNameCancelButton.TabIndex = 18;
             this._clientNameCancelButton.Text = "Cancel";
             this._clientNameCancelButton.UseVisualStyleBackColor = true;
-            this._clientNameCancelButton.Click += new System.EventHandler(this.CancelButton_Click);
             // 
             // _clientNameSaveButton
             // 
@@ -478,7 +468,6 @@
             this._clientNameSaveButton.TabIndex = 17;
             this._clientNameSaveButton.Text = "Save";
             this._clientNameSaveButton.UseVisualStyleBackColor = true;
-            this._clientNameSaveButton.Click += new System.EventHandler(this._clientNameSaveButton_Click);
             // 
             // _clientNameGroupBox
             // 
@@ -537,7 +526,6 @@
             this._newAccountCancelButton.TabIndex = 20;
             this._newAccountCancelButton.Text = "Cancel";
             this._newAccountCancelButton.UseVisualStyleBackColor = true;
-            this._newAccountCancelButton.Click += new System.EventHandler(this.NewAccountCancelButton_Click);
             // 
             // _newAccountCreateButton
             // 
@@ -548,7 +536,6 @@
             this._newAccountCreateButton.TabIndex = 19;
             this._newAccountCreateButton.Text = "Create";
             this._newAccountCreateButton.UseVisualStyleBackColor = true;
-            this._newAccountCreateButton.Click += new System.EventHandler(this.NewAccountCreateButton_Click);
             // 
             // ClientDetails
             // 

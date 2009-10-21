@@ -15,7 +15,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
             _clientSearchFormView = clientSearchFormView;
             _clientDetailsPresenter = clientDetailsPresenter;
             _repository = repository;
-            _clientSearchFormView.SetPresenter(this);
+            EventLinker.Link(clientSearchFormView, this);
         }
 
         public void CreateNewClient()
