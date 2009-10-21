@@ -1,0 +1,21 @@
+using Fohjin.DDD.Bus;
+using Fohjin.DDD.Commands;
+using Fohjin.DDD.Events.ActiveAccount;
+
+namespace Fohjin.DDD.EventHandlers
+{
+    public class MoneyTransferedReceivedFromAnOtherAccountEventHandler : IEventHandler<MoneyTransferedToAnOtherAccountEvent>
+    {
+        private readonly ICommandBus _bus;
+
+        public MoneyTransferedReceivedFromAnOtherAccountEventHandler(ICommandBus bus)
+        {
+            _bus = bus;
+        }
+
+        public void Execute(MoneyTransferedToAnOtherAccountEvent theEvent)
+        {
+            _bus.Publish(new TransferMoneyFromAnOtherAccountCommand(theEvent.AggregateId, theEvent.Amount, theEvent.OtherAccount));
+        }
+    }
+}
