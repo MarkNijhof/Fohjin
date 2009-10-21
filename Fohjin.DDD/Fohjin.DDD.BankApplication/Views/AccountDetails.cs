@@ -163,22 +163,14 @@ namespace Fohjin.DDD.BankApplication.Views
 
         private void _amount_KeyPress(object sender, KeyPressEventArgs e)
         {
-            e.Handled = InputIsDecimal();
+            decimal value;
+            e.Handled = !Decimal.TryParse(e.KeyChar.ToString(), out value);
         }
 
         private void _depositeAmount_TextChanged(object sender, EventArgs e)
         {
             if (OnFormElementGotChanged != null)
                OnFormElementGotChanged();
-        }
-
-        private bool InputIsDecimal()
-        {
-            decimal value;
-            return
-                Decimal.TryParse(_depositeAmount.Text, out value) &&
-                Decimal.TryParse(_withdrawlAmount.Text, out value) &&
-                Decimal.TryParse(_transferAmount.Text, out value);
         }
     }
 }

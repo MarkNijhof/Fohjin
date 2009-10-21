@@ -9,7 +9,7 @@ using ClientDetails=Fohjin.DDD.Reporting.Dto.ClientDetails;
 
 namespace Fohjin.DDD.BankApplication.Presenters
 {
-    public class ClientDetailsPresenter : IClientDetailsPresenter
+    public class ClientDetailsPresenter : Presenter<IClientDetailsView>, IClientDetailsPresenter
     {
         private bool _createNewProcess;
         private bool _addNewAccountProcess;
@@ -21,7 +21,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
         private readonly ICommandBus _bus;
         private readonly IRepository _repository;
 
-        public ClientDetailsPresenter(IClientDetailsView clientDetailsView, IAccountDetailsPresenter accountDetailsPresenter, ICommandBus bus, IRepository repository)
+        public ClientDetailsPresenter(IClientDetailsView clientDetailsView, IAccountDetailsPresenter accountDetailsPresenter, ICommandBus bus, IRepository repository) : base(clientDetailsView)
         {
             _editStep = 0;
             _createNewProcess = false;
@@ -30,7 +30,6 @@ namespace Fohjin.DDD.BankApplication.Presenters
             _accountDetailsPresenter = accountDetailsPresenter;
             _bus = bus;
             _repository = repository;
-            EventLinker.Link(clientDetailsView, this);
         }
 
         public void Display()

@@ -9,7 +9,7 @@ using AccountDetails=Fohjin.DDD.Reporting.Dto.AccountDetails;
 
 namespace Fohjin.DDD.BankApplication.Presenters
 {
-    public class AccountDetailsPresenter : IAccountDetailsPresenter
+    public class AccountDetailsPresenter : Presenter<IAccountDetailsView>, IAccountDetailsPresenter
     {
         private int _editStep;
         private Account _account;
@@ -18,13 +18,12 @@ namespace Fohjin.DDD.BankApplication.Presenters
         private readonly ICommandBus _bus;
         private readonly IRepository _repository;
 
-        public AccountDetailsPresenter(IAccountDetailsView accountDetailsView, ICommandBus bus, IRepository repository)
+        public AccountDetailsPresenter(IAccountDetailsView accountDetailsView, ICommandBus bus, IRepository repository) : base(accountDetailsView)
         {
             _editStep = 0;
             _accountDetailsView = accountDetailsView;
             _bus = bus;
             _repository = repository;
-            EventLinker.Link(accountDetailsView, this);
         }
 
         public void Display()

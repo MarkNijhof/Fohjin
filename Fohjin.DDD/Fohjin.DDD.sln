@@ -29,6 +29,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fohjin.DDD.Reporting.Dto", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fohjin.DDD.EventHandlers", "Fohjin.DDD.EventHandlers\Fohjin.DDD.EventHandlers.csproj", "{2A96D452-7D1D-4118-B3D4-8EF543D1FBCB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.Fohjin.DDD.BankApplication", "Test.Fohjin.DDD.BankApplication\Test.Fohjin.DDD.BankApplication.csproj", "{7C9431D6-5C3D-4EF6-B07D-A2B41C666208}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -91,6 +93,10 @@ Global
 		{2A96D452-7D1D-4118-B3D4-8EF543D1FBCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2A96D452-7D1D-4118-B3D4-8EF543D1FBCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2A96D452-7D1D-4118-B3D4-8EF543D1FBCB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C9431D6-5C3D-4EF6-B07D-A2B41C666208}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C9431D6-5C3D-4EF6-B07D-A2B41C666208}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C9431D6-5C3D-4EF6-B07D-A2B41C666208}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C9431D6-5C3D-4EF6-B07D-A2B41C666208}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

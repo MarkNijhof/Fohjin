@@ -4,18 +4,17 @@ using Fohjin.DDD.Reporting.Infrastructure;
 
 namespace Fohjin.DDD.BankApplication.Presenters
 {
-    public class ClientSearchFormPresenter : IClientSearchFormPresenter
+    public class ClientSearchFormPresenter : Presenter<IClientSearchFormView>, IClientSearchFormPresenter
     {
         private readonly IClientSearchFormView _clientSearchFormView;
         private readonly IClientDetailsPresenter _clientDetailsPresenter;
         private readonly IRepository _repository;
 
-        public ClientSearchFormPresenter(IClientSearchFormView clientSearchFormView, IClientDetailsPresenter clientDetailsPresenter, IRepository repository)
+        public ClientSearchFormPresenter(IClientSearchFormView clientSearchFormView, IClientDetailsPresenter clientDetailsPresenter, IRepository repository) : base(clientSearchFormView)
         {
             _clientSearchFormView = clientSearchFormView;
             _clientDetailsPresenter = clientDetailsPresenter;
             _repository = repository;
-            EventLinker.Link(clientSearchFormView, this);
         }
 
         public void CreateNewClient()
