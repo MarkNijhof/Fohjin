@@ -83,7 +83,7 @@ namespace Fohjin.DDD.Domain.Entities
 
             var newBalance = _balance.Deposite(amount);
 
-            Apply(new MoneyTransferedFromAnOtherAccountEvent(amount, newBalance, accountNumber.Number));
+            Apply(new MoneyTransferedFromAnOtherAccountEvent(newBalance, amount, accountNumber.Number));
         }
 
         public void SendTransferTo(AccountNumber accountNumber, Amount amount)
@@ -94,7 +94,7 @@ namespace Fohjin.DDD.Domain.Entities
 
             var newBalance = _balance.Withdrawl(amount);
 
-            Apply(new MoneyTransferedToAnOtherAccountEvent(amount, newBalance, accountNumber.Number));
+            Apply(new MoneyTransferedToAnOtherAccountEvent(newBalance, amount, accountNumber.Number));
         }
 
         private void Guard()

@@ -8,6 +8,6 @@ namespace Fohjin.DDD.Bus
     public interface IBus
     {
         void Publish<TMessage>(TMessage message) where TMessage : class, IMessage;
-        void Publish(IEnumerable<IMessage> messages);
+        void PublishMultiple<TMessage>(IEnumerable<TMessage> messages) where TMessage : class, IMessage;
     }
 }

@@ -70,6 +70,7 @@
     <Compile Include="Domain\Entities\BaseAggregateTest.cs" />
     <Compile Include="Domain\Repositories\ClientRepositoryTest.cs" />
     <Compile Include="Events\Account_events.cs" />
+    <Compile Include="Events\Client_events.cs" />
     <Compile Include="EventTestFixture.cs" />
     <Compile Include="Reporting\Infrastructure\SqlUpdateBuilderTest.cs" />
     <Compile Include="TestExtensions.cs" />

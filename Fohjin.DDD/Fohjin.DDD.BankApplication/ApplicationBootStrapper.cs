@@ -7,8 +7,10 @@ namespace Fohjin.DDD.BankApplication
     {
         public void BootStrapTheApplication()
         {
-            new DomainDatabaseBootStrapper().ReCreateDatabaseSchema();
-            new ReportingDatabaseBootStrapper().ReCreateDatabaseSchema();
+            DomainDatabaseBootStrapper.BootStrap();
+            ReportingDatabaseBootStrapper.BootStrap();
+            //new DomainDatabaseBootStrapper().ReCreateDatabaseSchema();
+            //new ReportingDatabaseBootStrapper().ReCreateDatabaseSchema();
 
             ObjectFactory.Initialize(x =>
             {
@@ -20,7 +22,7 @@ namespace Fohjin.DDD.BankApplication
             });
             ObjectFactory.AssertConfigurationIsValid();
 
-            ExampleDataBootStrapper.BootStrap();
+            //ExampleDataBootStrapper.BootStrap();
         }
 
         public static void BootStrap()

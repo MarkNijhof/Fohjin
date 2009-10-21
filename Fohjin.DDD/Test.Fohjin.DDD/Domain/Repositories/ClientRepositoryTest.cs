@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
+using Fohjin.DDD.Bus;
 using Fohjin.DDD.Configuration;
 using Fohjin.DDD.Contracts;
 using Fohjin.DDD.Domain;
@@ -7,6 +8,7 @@ using Fohjin.DDD.Domain.Entities;
 using Fohjin.DDD.Domain.Entities.Mementos;
 using Fohjin.DDD.Domain.ValueObjects;
 using Fohjin.DDD.EventStore.SQLite;
+using Moq;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 
@@ -29,7 +31,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
 
             _storage = new Storage(sqliteConnectionString, new BinaryFormatter());
 
-            _repository = new SQLiteDomainRepository(_storage, _storage);
+            _repository = new SQLiteDomainRepository(_storage, _storage, new Mock<IEventBus>().Object);
         }
 
         [Test]

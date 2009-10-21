@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Fohjin.DDD.Bus;
 using Fohjin.DDD.Contracts;
 using Fohjin.DDD.Domain;
 using Fohjin.DDD.Domain.Entities.Mementos;
@@ -8,12 +9,14 @@ namespace Fohjin.DDD.EventStore.SQLite
 {
     public class SQLiteDomainRepository : IDomainRepository
     {
+        private readonly IEventBus _bus;
         private readonly IDomainEventStorage _domainEventStorage;
         private readonly ISnapShotStorage _snapShotStorage;
 
-        public SQLiteDomainRepository(IDomainEventStorage domainEventStorage, ISnapShotStorage snapShotStorage)
+        public SQLiteDomainRepository(IDomainEventStorage domainEventStorage, ISnapShotStorage snapShotStorage, IEventBus bus)
         {
             _snapShotStorage = snapShotStorage;
+            _bus = bus;
             _domainEventStorage = domainEventStorage;
         }
 
@@ -35,6 +38,8 @@ namespace Fohjin.DDD.EventStore.SQLite
             _domainEventStorage.Save(entity);
 
             _snapShotStorage.SaveShapShot(entity);
+
+            _bus.PublishMultiple(entity.GetChanges());
 
             entity.Clear();
         }
