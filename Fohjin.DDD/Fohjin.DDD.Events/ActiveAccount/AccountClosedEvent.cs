@@ -3,5 +3,7 @@ using System;
 namespace Fohjin.DDD.Events.ActiveAccount
 {
     [Serializable]
-    public class AccountClosedEvent : DomainEvent { }
+    public class AccountClosedEvent : DomainEvent
+    {
+    }
 }

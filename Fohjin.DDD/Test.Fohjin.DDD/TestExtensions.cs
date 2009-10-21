@@ -32,6 +32,14 @@ namespace Test.Fohjin.DDD
         {
             Assert.AreNotEqual(value, source);
         }
+        public static void WillBeSimuliar(this object source, object value)
+        {
+            Assert.AreEqual(value.ToString(), source.ToString());
+        }
+        public static void WillNotBeSimuliar(this object source, object value)
+        {
+            Assert.AreNotEqual(value.ToString(), source.ToString());
+        }
         public static void WithMessage(this Exception theException, string message)
         {
             Assert.AreEqual(message, theException.Message);

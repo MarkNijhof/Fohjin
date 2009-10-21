@@ -6,6 +6,7 @@ namespace Fohjin.DDD.Events
     public class DomainEvent : IDomainEvent
     {
         public Guid Id { get; private set; }
+        public Guid EntityId { get; set; }
         int IDomainEvent.Version { get; set; }
 
         public DomainEvent()

@@ -23,7 +23,7 @@ namespace Test.Fohjin.DDD.Commands
         {
             SystemDateTime.Now = () => new DateTime(2009, 1, 1, 1, 1, 1, 1);
             _ticks = SystemDateTime.Now().Ticks.ToString();
-            aggregateRoot = ActiveAccount.CreateNew("New Account");
+            aggregateRoot = ActiveAccount.CreateNew(Guid.NewGuid(), "New Account");
             SystemDateTime.Reset();
         }
 
@@ -69,7 +69,7 @@ namespace Test.Fohjin.DDD.Commands
     {
         protected override IEnumerable<IDomainEvent> Given()
         {
-            yield return PrepareDomainEvent.Set(new AccountCreatedEvent(Guid.NewGuid(), "AccountName", "1234567890")).ToVersion(1);
+            yield return PrepareDomainEvent.Set(new AccountCreatedEvent(Guid.NewGuid(), Guid.NewGuid(), "AccountName", "1234567890")).ToVersion(1);
         }
 
         protected override CloseAccountCommand When()
@@ -88,7 +88,7 @@ namespace Test.Fohjin.DDD.Commands
     {
         protected override IEnumerable<IDomainEvent> Given()
         {
-            yield return PrepareDomainEvent.Set(new AccountCreatedEvent(Guid.NewGuid(), "AccountName", "1234567890")).ToVersion(1);
+            yield return PrepareDomainEvent.Set(new AccountCreatedEvent(Guid.NewGuid(), Guid.NewGuid(), "AccountName", "1234567890")).ToVersion(1);
             yield return PrepareDomainEvent.Set(new AccountClosedEvent()).ToVersion(2);
         }
 
@@ -127,7 +127,7 @@ namespace Test.Fohjin.DDD.Commands
     {
         protected override IEnumerable<IDomainEvent> Given()
         {
-            yield return PrepareDomainEvent.Set(new AccountCreatedEvent(Guid.NewGuid(), "AccountName", "1234567890")).ToVersion(1);
+            yield return PrepareDomainEvent.Set(new AccountCreatedEvent(Guid.NewGuid(), Guid.NewGuid(), "AccountName", "1234567890")).ToVersion(1);
             yield return PrepareDomainEvent.Set(new AccountClosedEvent()).ToVersion(2);
         }
 
@@ -147,7 +147,7 @@ namespace Test.Fohjin.DDD.Commands
     {
         protected override IEnumerable<IDomainEvent> Given()
         {
-            yield return PrepareDomainEvent.Set(new AccountCreatedEvent(Guid.NewGuid(), "AccountName", "1234567890")).ToVersion(1);
+            yield return PrepareDomainEvent.Set(new AccountCreatedEvent(Guid.NewGuid(), Guid.NewGuid(), "AccountName", "1234567890")).ToVersion(1);
             yield return PrepareDomainEvent.Set(new DepositeEvent(10, 10)).ToVersion(2);
         }
 
@@ -198,7 +198,7 @@ namespace Test.Fohjin.DDD.Commands
     {
         protected override IEnumerable<IDomainEvent> Given()
         {
-            yield return PrepareDomainEvent.Set(new AccountCreatedEvent(Guid.NewGuid(), "AccountName", "1234567890")).ToVersion(1);
+            yield return PrepareDomainEvent.Set(new AccountCreatedEvent(Guid.NewGuid(), Guid.NewGuid(), "AccountName", "1234567890")).ToVersion(1);
             yield return PrepareDomainEvent.Set(new AccountClosedEvent()).ToVersion(2);
         }
 
@@ -218,7 +218,7 @@ namespace Test.Fohjin.DDD.Commands
     {
         protected override IEnumerable<IDomainEvent> Given()
         {
-            yield return PrepareDomainEvent.Set(new AccountCreatedEvent(Guid.NewGuid(), "AccountName", "1234567890")).ToVersion(1);
+            yield return PrepareDomainEvent.Set(new AccountCreatedEvent(Guid.NewGuid(), Guid.NewGuid(), "AccountName", "1234567890")).ToVersion(1);
         }
 
         protected override CashWithdrawlCommand When()
@@ -243,7 +243,7 @@ namespace Test.Fohjin.DDD.Commands
     {
         protected override IEnumerable<IDomainEvent> Given()
         {
-            yield return PrepareDomainEvent.Set(new AccountCreatedEvent(Guid.NewGuid(), "AccountName", "1234567890")).ToVersion(1);
+            yield return PrepareDomainEvent.Set(new AccountCreatedEvent(Guid.NewGuid(), Guid.NewGuid(), "AccountName", "1234567890")).ToVersion(1);
             yield return PrepareDomainEvent.Set(new DepositeEvent(20, 20)).ToVersion(1);
         }
 
@@ -294,7 +294,7 @@ namespace Test.Fohjin.DDD.Commands
     {
         protected override IEnumerable<IDomainEvent> Given()
         {
-            yield return PrepareDomainEvent.Set(new AccountCreatedEvent(Guid.NewGuid(), "AccountName", "1234567890")).ToVersion(1);
+            yield return PrepareDomainEvent.Set(new AccountCreatedEvent(Guid.NewGuid(), Guid.NewGuid(), "AccountName", "1234567890")).ToVersion(1);
         }
 
         protected override AccountNameGotChangedCommand When()
@@ -319,7 +319,7 @@ namespace Test.Fohjin.DDD.Commands
     {
         protected override IEnumerable<IDomainEvent> Given()
         {
-            yield return PrepareDomainEvent.Set(new AccountCreatedEvent(Guid.NewGuid(), "AccountName", "1234567890")).ToVersion(1);
+            yield return PrepareDomainEvent.Set(new AccountCreatedEvent(Guid.NewGuid(), Guid.NewGuid(), "AccountName", "1234567890")).ToVersion(1);
             yield return PrepareDomainEvent.Set(new AccountClosedEvent()).ToVersion(2);
         }
 
@@ -358,7 +358,7 @@ namespace Test.Fohjin.DDD.Commands
     {
         protected override IEnumerable<IDomainEvent> Given()
         {
-            yield return PrepareDomainEvent.Set(new AccountCreatedEvent(Guid.NewGuid(), "AccountName", "1234567890")).ToVersion(1);
+            yield return PrepareDomainEvent.Set(new AccountCreatedEvent(Guid.NewGuid(), Guid.NewGuid(), "AccountName", "1234567890")).ToVersion(1);
         }
 
         protected override TransferMoneyToAnOtherAccountCommand When()
@@ -383,7 +383,7 @@ namespace Test.Fohjin.DDD.Commands
     {
         protected override IEnumerable<IDomainEvent> Given()
         {
-            yield return PrepareDomainEvent.Set(new AccountCreatedEvent(Guid.NewGuid(), "AccountName", "1234567890")).ToVersion(1);
+            yield return PrepareDomainEvent.Set(new AccountCreatedEvent(Guid.NewGuid(), Guid.NewGuid(), "AccountName", "1234567890")).ToVersion(1);
             yield return PrepareDomainEvent.Set(new DepositeEvent(20, 20)).ToVersion(1);
         }
 
@@ -421,7 +421,7 @@ namespace Test.Fohjin.DDD.Commands
     {
         protected override IEnumerable<IDomainEvent> Given()
         {
-            yield return PrepareDomainEvent.Set(new AccountCreatedEvent(Guid.NewGuid(), "AccountName", "1234567890")).ToVersion(1);
+            yield return PrepareDomainEvent.Set(new AccountCreatedEvent(Guid.NewGuid(), Guid.NewGuid(), "AccountName", "1234567890")).ToVersion(1);
             yield return PrepareDomainEvent.Set(new AccountClosedEvent()).ToVersion(2);
         }
 
@@ -460,7 +460,7 @@ namespace Test.Fohjin.DDD.Commands
     {
         protected override IEnumerable<IDomainEvent> Given()
         {
-            yield return PrepareDomainEvent.Set(new AccountCreatedEvent(Guid.NewGuid(), "AccountName", "1234567890")).ToVersion(1);
+            yield return PrepareDomainEvent.Set(new AccountCreatedEvent(Guid.NewGuid(), Guid.NewGuid(), "AccountName", "1234567890")).ToVersion(1);
             yield return PrepareDomainEvent.Set(new DepositeEvent(20, 20)).ToVersion(1);
         }
 
@@ -498,7 +498,7 @@ namespace Test.Fohjin.DDD.Commands
     {
         protected override IEnumerable<IDomainEvent> Given()
         {
-            yield return PrepareDomainEvent.Set(new AccountCreatedEvent(Guid.NewGuid(), "AccountName", "1234567890")).ToVersion(1);
+            yield return PrepareDomainEvent.Set(new AccountCreatedEvent(Guid.NewGuid(), Guid.NewGuid(), "AccountName", "1234567890")).ToVersion(1);
             yield return PrepareDomainEvent.Set(new AccountClosedEvent()).ToVersion(2);
         }
 

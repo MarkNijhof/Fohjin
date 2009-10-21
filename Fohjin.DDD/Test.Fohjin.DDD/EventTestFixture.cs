@@ -20,6 +20,7 @@ namespace Test.Fohjin.DDD
         protected Exception caught;
         protected IEventHandler<TEvent> eventHandler;
 
+        protected abstract void MockSetup();
         protected abstract TEvent When();
 
         [SetUp]
@@ -32,6 +33,7 @@ namespace Test.Fohjin.DDD
 
             eventHandler = BuildCommandHandler();
 
+            MockSetup();
             try
             {
                 eventHandler.Execute(When());
@@ -58,14 +60,14 @@ namespace Test.Fohjin.DDD
                 if (parameter.ParameterType == typeof(IReportingRepository))
                 {
                     var repositoryMock = new Mock<IReportingRepository>();
-                    mocks.Add(parameter.ParameterType, repositoryMock.Object);
+                    mocks.Add(parameter.ParameterType, repositoryMock);
                     continue;
                 }
 
                 mocks.Add(parameter.ParameterType, CreateMock(parameter.ParameterType));
             }
 
-            return (IEventHandler<TEvent>)constructorInfo.Invoke(mocks.Values.ToArray());
+            return (IEventHandler<TEvent>)constructorInfo.Invoke(mocks.Values.Select(x => ((Mock)x).Object).ToArray());
         }
 
         private static object CreateMock(Type type)

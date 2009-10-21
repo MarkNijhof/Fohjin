@@ -6,12 +6,14 @@ namespace Fohjin.DDD.Events.ActiveAccount
     public class AccountCreatedEvent : DomainEvent
     {
         public Guid AccountId { get; private set; }
+        public Guid ClientId { get; private set; }
         public string AccountName { get; private set; }
         public string AccountNumber { get; private set; }
 
-        public AccountCreatedEvent(Guid accountId, string accountName, string accountNumber)
+        public AccountCreatedEvent(Guid accountId, Guid clientId, string accountName, string accountNumber)
         {
             AccountId = accountId;
+            ClientId = clientId;
             AccountName = accountName;
             AccountNumber = accountNumber;
         }

@@ -5,7 +5,7 @@ namespace Fohjin.DDD.EventHandlers
 {
     public class NewClientCreatedEventHandler : IEventHandler<NewClientCreatedEvent>
     {
-        public void Execute(NewClientCreatedEvent command)
+        public void Execute(NewClientCreatedEvent theEvent)
         {
             throw new NotImplementedException();
         }

@@ -33,37 +33,37 @@ namespace Fohjin.DDD.Domain.Entities
 
         public void UpdatePhoneNumber(PhoneNumber phoneNumber)
         {
-            IsAccountCreated();
+            IsClientCreated();
 
             Apply(new ClientPhoneNumberWasChangedEvent(Id, phoneNumber.Number));
         }
 
         public void UpdateClientName(ClientName clientName)
         {
-            IsAccountCreated();
+            IsClientCreated();
 
             Apply(new ClientNameWasChangedEvent(Id, clientName.Name));
         }
 
         public void ClientMoved(Address newAddress)
         {
-            IsAccountCreated();
+            IsClientCreated();
 
             Apply(new ClientHasMovedEvent(Id, newAddress.Street, newAddress.StreetNumber, newAddress.PostalCode, newAddress.City));
         }
 
         public ActiveAccount CreateNewAccount(string accountName)
         {
-            IsAccountCreated();
+            IsClientCreated();
 
-            var activeAccount = ActiveAccount.CreateNew(accountName);
+            var activeAccount = ActiveAccount.CreateNew(Id, accountName);
 
             Apply(new AccountWasAssignedToClientEvent(Id, activeAccount.Id));
 
             return activeAccount;
         }
 
-        private void IsAccountCreated()
+        private void IsClientCreated()
         {
             if (Id == new Guid())
                 throw new ClientWasNotCreatedException("The Client is not created and no opperations can be executed on it");

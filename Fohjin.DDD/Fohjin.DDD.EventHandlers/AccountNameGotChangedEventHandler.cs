@@ -5,7 +5,7 @@ namespace Fohjin.DDD.EventHandlers
 {
     public class AccountNameGotChangedEventHandler : IEventHandler<AccountNameGotChangedEvent>
     {
-        public void Execute(AccountNameGotChangedEvent command)
+        public void Execute(AccountNameGotChangedEvent theEvent)
         {
             throw new NotImplementedException();
         }

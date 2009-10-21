@@ -5,7 +5,7 @@ namespace Fohjin.DDD.EventHandlers
 {
     public class ClientHasMovedEventHandler : IEventHandler<ClientHasMovedEvent>
     {
-        public void Execute(ClientHasMovedEvent command)
+        public void Execute(ClientHasMovedEvent theEvent)
         {
             throw new NotImplementedException();
         }

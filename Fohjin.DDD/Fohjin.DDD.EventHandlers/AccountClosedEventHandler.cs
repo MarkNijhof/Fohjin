@@ -1,13 +1,22 @@
-using System;
 using Fohjin.DDD.Events.ActiveAccount;
+using Fohjin.DDD.Reporting.Dto;
+using Fohjin.DDD.Reporting.Infrastructure;
 
 namespace Fohjin.DDD.EventHandlers
 {
     public class AccountClosedEventHandler : IEventHandler<AccountClosedEvent>
     {
-        public void Execute(AccountClosedEvent command)
+        private readonly IReportingRepository _reportingRepository;
+
+        public AccountClosedEventHandler(IReportingRepository reportingRepository)
         {
-            throw new NotImplementedException();
+            _reportingRepository = reportingRepository;
+        }
+
+        public void Execute(AccountClosedEvent theEvent)
+        {
+            _reportingRepository.Update<Account>(new { Active = false }, new { Id = theEvent.EntityId });
+            _reportingRepository.Update<AccountDetails>(new { Active = false }, new { Id = theEvent.EntityId });
         }
     }
 }

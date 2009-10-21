@@ -65,14 +65,14 @@ namespace Test.Fohjin.DDD
                     var repositoryMock = new Mock<IDomainRepository>();
                     repositoryMock.Setup(x => x.GetById<TAggregateRoot>(It.IsAny<Guid>())).Returns(aggregateRoot);
                     repositoryMock.Setup(x => x.Save(It.IsAny<TAggregateRoot>())).Callback<TAggregateRoot>(x => aggregateRoot = x);
-                    mocks.Add(parameter.ParameterType, repositoryMock.Object);
+                    mocks.Add(parameter.ParameterType, repositoryMock);
                     continue;
                 }
 
                 mocks.Add(parameter.ParameterType, CreateMock(parameter.ParameterType));
             }
 
-            return (ICommandHandler<TCommand>)constructorInfo.Invoke(mocks.Values.ToArray());
+            return (ICommandHandler<TCommand>)constructorInfo.Invoke(mocks.Values.Select(x => ((Mock)x).Object).ToArray());
         }
 
         private static object CreateMock(Type type)

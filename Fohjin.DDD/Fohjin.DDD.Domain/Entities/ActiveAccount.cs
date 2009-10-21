@@ -30,15 +30,15 @@ namespace Fohjin.DDD.Domain.Entities
             registerEvents();
         }
 
-        public static ActiveAccount CreateNew(string accountName)
+        public static ActiveAccount CreateNew(Guid clientId, string accountName)
         {
-            return new ActiveAccount(accountName);
+            return new ActiveAccount(clientId, accountName);
         }
 
-        public ActiveAccount(string accountName) : this()
+        public ActiveAccount(Guid clientId, string accountName) : this()
         {
             var accountNumber = SystemDateTime.Now().Ticks.ToString();
-            Apply(new AccountCreatedEvent(Guid.NewGuid(), accountName, accountNumber));
+            Apply(new AccountCreatedEvent(Guid.NewGuid(), clientId, accountName, accountNumber));
         }
 
         public void ChangeAccountName(AccountName accountName)

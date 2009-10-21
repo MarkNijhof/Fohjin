@@ -28,6 +28,7 @@ namespace Fohjin.DDD.Domain
 
         protected void Apply<TEvent>(TEvent domainEvent) where TEvent : class, IDomainEvent
         {
+            domainEvent.EntityId = Id;
             domainEvent.Version = ++EventVersion;
             apply(domainEvent.GetType(), domainEvent);
             _appliedEvents.Add(domainEvent);
