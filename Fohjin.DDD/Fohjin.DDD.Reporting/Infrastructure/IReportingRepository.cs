@@ -2,9 +2,10 @@ using System.Collections.Generic;
 
 namespace Fohjin.DDD.Reporting.Infrastructure
 {
-    public interface IRepository 
+    public interface IReportingRepository 
     {
         IEnumerable<TDto> GetByExample<TDto>(object example) where TDto : class;
         void Save<TDto>(TDto dto) where TDto : class;
+        void Update<TDto>(object update, object where) where TDto : class;
     }
 }

@@ -49,10 +49,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Infrastructure\IRepository.cs" />
+    <Compile Include="Infrastructure\IReportingRepository.cs" />
     <Compile Include="Infrastructure\Repository.cs" />
     <Compile Include="Infrastructure\SqlCreateBuilder.cs" />
     <Compile Include="Infrastructure\SqlInsertBuilder.cs" />
+    <Compile Include="Infrastructure\SqlUpdateBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\ClientRepository.cs" />
     <Compile Include="Infrastructure\SqlSelectBuilder.cs" />

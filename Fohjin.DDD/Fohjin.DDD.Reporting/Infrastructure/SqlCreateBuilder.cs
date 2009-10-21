@@ -18,6 +18,7 @@ namespace Fohjin.DDD.Reporting.Infrastructure
         {
             _columnTypes = new Dictionary<Type, string>
             {
+                {typeof (bool), "bool"},
                 {typeof (Int32), "int"},
                 {typeof (string), "nvarchar(250)"},
                 {typeof (double), "numeric"},

@@ -10,7 +10,6 @@ using Fohjin.DDD.Events;
 using Fohjin.EventStorage;
 using Moq;
 using NUnit.Framework;
-using StructureMap;
 
 namespace Test.Fohjin.DDD
 {
@@ -20,6 +19,7 @@ namespace Test.Fohjin.DDD
         where TCommandHandler : class, ICommandHandler<TCommand>
         where TAggregateRoot : IOrginator, IEventProvider, new()
     {
+        private IDictionary<Type, object> mocks;
         protected TAggregateRoot aggregateRoot;
         protected ICommandHandler<TCommand> commandHandler;
         protected Exception caught;
@@ -31,7 +31,8 @@ namespace Test.Fohjin.DDD
         [SetUp]
         public void Setup()
         {
-            caught = new NullException();
+            mocks = new Dictionary<Type, object>();
+            caught = new ThereWasNoExceptionButOneWasExpectedException();
             aggregateRoot = new TAggregateRoot();
             aggregateRoot.LoadFromHistory(Given());
 
@@ -48,11 +49,14 @@ namespace Test.Fohjin.DDD
             }
         }
 
+        public Mock<TType> GetMock<TType>() where TType : class
+        {
+            return (Mock<TType>)mocks[typeof(TType)];
+        }
+
         private ICommandHandler<TCommand> BuildCommandHandler()
         {
             var constructorInfo = typeof(TCommandHandler).GetConstructors().First();
-
-            IContainer container = new Container();
 
             foreach (var parameter in constructorInfo.GetParameters())
             {
@@ -61,14 +65,14 @@ namespace Test.Fohjin.DDD
                     var repositoryMock = new Mock<IRepository>();
                     repositoryMock.Setup(x => x.GetById<TAggregateRoot>(It.IsAny<Guid>())).Returns(aggregateRoot);
                     repositoryMock.Setup(x => x.Save(It.IsAny<TAggregateRoot>())).Callback<TAggregateRoot>(x => aggregateRoot = x);
-                    container.Inject(parameter.ParameterType, repositoryMock.Object);
+                    mocks.Add(parameter.ParameterType, repositoryMock.Object);
                     continue;
                 }
 
-                container.Inject(parameter.ParameterType, CreateMock(parameter.ParameterType));
+                mocks.Add(parameter.ParameterType, CreateMock(parameter.ParameterType));
             }
 
-            return container.GetInstance<TCommandHandler>();
+            return (ICommandHandler<TCommand>)constructorInfo.Invoke(mocks.Values.ToArray());
         }
 
         private static object CreateMock(Type type)
@@ -78,7 +82,7 @@ namespace Test.Fohjin.DDD
         }
     }
 
-    public class NullException : Exception {}
+    public class ThereWasNoExceptionButOneWasExpectedException : Exception {}
 
     public class PrepareDomainEvent
     {

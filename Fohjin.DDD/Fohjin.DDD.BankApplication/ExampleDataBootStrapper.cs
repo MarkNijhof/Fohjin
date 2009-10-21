@@ -9,7 +9,7 @@ namespace Fohjin.DDD.BankApplication
     {
         public void BootStrapTheExampleData()
         {
-            var repository = ObjectFactory.GetInstance<IRepository>();
+            var repository = ObjectFactory.GetInstance<IReportingRepository>();
 
             var clientDto1 = new Client(Guid.NewGuid(), "Mark Nijhof");
             var clientDto2 = new Client(Guid.NewGuid(), "Mona Nijhof");
@@ -23,17 +23,17 @@ namespace Fohjin.DDD.BankApplication
             repository.Save(clientDetailsDto1);
             repository.Save(clientDetailsDto2);
 
-            var accountDto1 = new Account(Guid.NewGuid(), clientDto1.Id, "Private Account Mark Nijhof", "1122334455");
-            var accountDto2 = new Account(Guid.NewGuid(), clientDto1.Id, "Business Account Mark Nijhof", "5544332211");
-            var accountDto3 = new Account(Guid.NewGuid(), clientDto2.Id, "Private Account Mona Nijhof", "9977553311");
+            var accountDto1 = new Account(Guid.NewGuid(), clientDto1.Id, "Private Account Mark Nijhof", "1122334455", true);
+            var accountDto2 = new Account(Guid.NewGuid(), clientDto1.Id, "Business Account Mark Nijhof", "5544332211", true);
+            var accountDto3 = new Account(Guid.NewGuid(), clientDto2.Id, "Private Account Mona Nijhof", "9977553311", true);
 
             repository.Save(accountDto1);
             repository.Save(accountDto2);
             repository.Save(accountDto3);
 
-            var accountDetailsDto1 = new AccountDetails(accountDto1.Id, clientDto1.Id, "Private Account Mark Nijhof", 10.5M, "1122334455");
-            var accountDetailsDto2 = new AccountDetails(accountDto2.Id, clientDto1.Id, "Business Account Mark Nijhof", 10.5M, "5544332211");
-            var accountDetailsDto3 = new AccountDetails(accountDto3.Id, clientDto2.Id, "Private Account Mona Nijhof", 10.5M, "9977553311");
+            var accountDetailsDto1 = new AccountDetails(accountDto1.Id, clientDto1.Id, "Private Account Mark Nijhof", 10.5M, "1122334455", true);
+            var accountDetailsDto2 = new AccountDetails(accountDto2.Id, clientDto1.Id, "Business Account Mark Nijhof", 10.5M, "5544332211", true);
+            var accountDetailsDto3 = new AccountDetails(accountDto3.Id, clientDto2.Id, "Private Account Mona Nijhof", 10.5M, "9977553311", true);
 
             repository.Save(accountDetailsDto1);
             repository.Save(accountDetailsDto2);

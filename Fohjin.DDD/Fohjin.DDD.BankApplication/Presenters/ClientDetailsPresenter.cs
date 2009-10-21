@@ -19,9 +19,9 @@ namespace Fohjin.DDD.BankApplication.Presenters
         private readonly IClientDetailsView _clientDetailsView;
         private readonly IAccountDetailsPresenter _accountDetailsPresenter;
         private readonly ICommandBus _bus;
-        private readonly IRepository _repository;
+        private readonly IReportingRepository _reportingRepository;
 
-        public ClientDetailsPresenter(IClientDetailsView clientDetailsView, IAccountDetailsPresenter accountDetailsPresenter, ICommandBus bus, IRepository repository) : base(clientDetailsView)
+        public ClientDetailsPresenter(IClientDetailsView clientDetailsView, IAccountDetailsPresenter accountDetailsPresenter, ICommandBus bus, IReportingRepository reportingRepository) : base(clientDetailsView)
         {
             _editStep = 0;
             _createNewProcess = false;
@@ -29,7 +29,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
             _clientDetailsView = clientDetailsView;
             _accountDetailsPresenter = accountDetailsPresenter;
             _bus = bus;
-            _repository = repository;
+            _reportingRepository = reportingRepository;
         }
 
         public void Display()
@@ -50,7 +50,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
                 return;
             }
 
-            _clientDetails = _repository.GetByExample<ClientDetails>(new { _client.Id }).FirstOrDefault();
+            _clientDetails = _reportingRepository.GetByExample<ClientDetails>(new { _client.Id }).FirstOrDefault();
 
             SetClientDetailsData();
             SetReadOnlyData();

@@ -8,13 +8,13 @@ namespace Fohjin.DDD.BankApplication.Presenters
     {
         private readonly IClientSearchFormView _clientSearchFormView;
         private readonly IClientDetailsPresenter _clientDetailsPresenter;
-        private readonly IRepository _repository;
+        private readonly IReportingRepository _reportingRepository;
 
-        public ClientSearchFormPresenter(IClientSearchFormView clientSearchFormView, IClientDetailsPresenter clientDetailsPresenter, IRepository repository) : base(clientSearchFormView)
+        public ClientSearchFormPresenter(IClientSearchFormView clientSearchFormView, IClientDetailsPresenter clientDetailsPresenter, IReportingRepository reportingRepository) : base(clientSearchFormView)
         {
             _clientSearchFormView = clientSearchFormView;
             _clientDetailsPresenter = clientDetailsPresenter;
-            _repository = repository;
+            _reportingRepository = reportingRepository;
         }
 
         public void CreateNewClient()
@@ -50,7 +50,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
 
         private void LoadData()
         {
-            _clientSearchFormView.Clients = _repository.GetByExample<Client>(null);
+            _clientSearchFormView.Clients = _reportingRepository.GetByExample<Client>(null);
         }
     }
 }

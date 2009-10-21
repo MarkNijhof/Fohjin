@@ -2,8 +2,8 @@ using Fohjin.DDD.Bus;
 
 namespace Fohjin.DDD.EventHandlers
 {
-    public interface IEventHandler<TCommand> where TCommand : class, IMessage
+    public interface IEventHandler<TEvent> where TEvent : class, IMessage
     {
-        void Execute(TCommand command);
+        void Execute(TEvent theEvent);
     }
 }

@@ -12,8 +12,9 @@ namespace Fohjin.DDD.Configuration
             ForRequestedType<ISqlCreateBuilder>().TheDefault.Is.OfConcreteType<SqlCreateBuilder>();
             ForRequestedType<ISqlInsertBuilder>().TheDefault.Is.OfConcreteType<SqlInsertBuilder>();
             ForRequestedType<ISqlSelectBuilder>().TheDefault.Is.OfConcreteType<SqlSelectBuilder>();
+            ForRequestedType<ISqlUpdateBuilder>().TheDefault.Is.OfConcreteType<SqlUpdateBuilder>();
 
-            ForRequestedType<IRepository>().TheDefault.Is.OfConcreteType<Repository>()
+            ForRequestedType<IReportingRepository>().TheDefault.Is.OfConcreteType<Repository>()
                 .WithCtorArg("sqLiteConnectionString").EqualTo(sqLiteConnectionString);
         }
     }

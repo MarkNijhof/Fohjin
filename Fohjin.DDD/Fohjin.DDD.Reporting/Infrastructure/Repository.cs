@@ -7,17 +7,19 @@ using System.Reflection;
 
 namespace Fohjin.DDD.Reporting.Infrastructure
 {
-    public class Repository : IRepository
+    public class Repository : IReportingRepository
     {
         private readonly string _sqLiteConnectionString;
         private readonly ISqlSelectBuilder _sqlSelectBuilder;
         private readonly ISqlInsertBuilder _sqlInsertBuilder;
+        private readonly ISqlUpdateBuilder _sqlUpdateBuilder;
 
-        public Repository(string sqLiteConnectionString, ISqlSelectBuilder sqlSelectBuilder, ISqlInsertBuilder sqlInsertBuilder)
+        public Repository(string sqLiteConnectionString, ISqlSelectBuilder sqlSelectBuilder, ISqlInsertBuilder sqlInsertBuilder, ISqlUpdateBuilder sqlUpdateBuilder)
         {
             _sqLiteConnectionString = sqLiteConnectionString;
             _sqlSelectBuilder = sqlSelectBuilder;
             _sqlInsertBuilder = sqlInsertBuilder;
+            _sqlUpdateBuilder = sqlUpdateBuilder;
         }
 
         public IEnumerable<TDto> GetByExample<TDto>(object example) where TDto : class
@@ -52,6 +54,68 @@ namespace Fohjin.DDD.Reporting.Infrastructure
                 }
             }
             return dtos;
+        }
+
+        public void Save<TDto>(TDto dto) where TDto : class
+        {
+            Save<TDto>(GetPropertyInformation(dto));
+        }
+
+        public void Save<TDto>(IEnumerable<KeyValuePair<string, object>> dto) where TDto : class
+        {
+            var commandText = _sqlInsertBuilder.CreateSqlInsertStatementFromDto<TDto>();
+
+            using (var sqliteConnection = new SQLiteConnection(_sqLiteConnectionString))
+            {
+                sqliteConnection.Open();
+
+                using (var sqliteTransaction = sqliteConnection.BeginTransaction())
+                {
+                    try
+                    {
+                        using (var sqliteCommand = new SQLiteCommand(commandText, sqliteTransaction.Connection, sqliteTransaction))
+                        {
+                            AddParameters(sqliteCommand, dto);
+                            sqliteCommand.ExecuteNonQuery();
+                        }
+                        sqliteTransaction.Commit();
+                    }
+                    catch (Exception)
+                    {
+                        sqliteTransaction.Rollback();
+                        throw;
+                    }
+                }
+            }
+        }
+
+        public void Update<TDto>(object update, object where) where TDto : class
+        {
+            var commandText = _sqlUpdateBuilder.GetUpdateString<TDto>(update, where);
+
+            using (var sqliteConnection = new SQLiteConnection(_sqLiteConnectionString))
+            {
+                sqliteConnection.Open();
+
+                using (var sqliteTransaction = sqliteConnection.BeginTransaction())
+                {
+                    try
+                    {
+                        using (var sqliteCommand = new SQLiteCommand(commandText, sqliteTransaction.Connection, sqliteTransaction))
+                        {
+                            AddUpdateParameters(sqliteCommand, GetPropertyInformation(update));
+                            AddParameters(sqliteCommand, GetPropertyInformation(where));
+                            sqliteCommand.ExecuteNonQuery();
+                        }
+                        sqliteTransaction.Commit();
+                    }
+                    catch (Exception)
+                    {
+                        sqliteTransaction.Rollback();
+                        throw;
+                    }
+                }
+            }
         }
 
         private void GetChildren<TDto>(SQLiteTransaction sqliteTransaction, IEnumerable<TDto> dtos, Type dtoType) where TDto : class
@@ -102,39 +166,6 @@ namespace Fohjin.DDD.Reporting.Infrastructure
             return dtos;
         }
 
-        public void Save<TDto>(TDto dto) where TDto : class
-        {
-            Save<TDto>(GetPropertyInformation(dto));
-        }
-
-        public void Save<TDto>(IEnumerable<KeyValuePair<string, object>> dto) where TDto : class
-        {
-            var commandText = _sqlInsertBuilder.CreateSqlInsertStatementFromDto<TDto>();
-
-            using (var sqliteConnection = new SQLiteConnection(_sqLiteConnectionString))
-            {
-                sqliteConnection.Open();
-
-                using (var sqliteTransaction = sqliteConnection.BeginTransaction())
-                {
-                    try
-                    {
-                        using (var sqliteCommand = new SQLiteCommand(commandText, sqliteTransaction.Connection, sqliteTransaction))
-                        {
-                            AddParameters(sqliteCommand, dto);
-                            sqliteCommand.ExecuteNonQuery();
-                        }
-                        sqliteTransaction.Commit();
-                    }
-                    catch (Exception)
-                    {
-                        sqliteTransaction.Rollback();
-                        throw;
-                    }
-                }
-            }
-        }
-
         private static TDto BuildDto<TDto>(Type dtoType, ConstructorInfo dtoConstructor, IDataRecord sqLiteDataReader) where TDto : class
         {
             var constructorArguments = new List<object>();
@@ -158,6 +189,14 @@ namespace Fohjin.DDD.Reporting.Infrastructure
                 return;
 
             example.ToList().ForEach(x => sqliteCommand.Parameters.Add(new SQLiteParameter(string.Format("@{0}", x.Key.ToLower()), x.Value)));
+        }
+
+        private static void AddUpdateParameters(SQLiteCommand sqliteCommand, IEnumerable<KeyValuePair<string, object>> example)
+        {
+            if (example == null)
+                return;
+
+            example.ToList().ForEach(x => sqliteCommand.Parameters.Add(new SQLiteParameter(string.Format("@update_{0}", x.Key.ToLower()), x.Value)));
         }
 
         private static bool Where(PropertyInfo propertyInfo)

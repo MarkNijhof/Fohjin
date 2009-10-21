@@ -45,13 +45,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccountClosedEventHandler.cs" />
+    <Compile Include="AccountCreatedEventHandler.cs" />
+    <Compile Include="AccountNameGotChangedEventHandler.cs" />
+    <Compile Include="AccountWasAssignedToClientEventHandler.cs" />
+    <Compile Include="ClientHasMovedEventHandler.cs" />
+    <Compile Include="ClientNameWasChangedEventHandler.cs" />
+    <Compile Include="ClientPhoneNumberWasChangedEventHandler.cs" />
+    <Compile Include="DepositeEventHandler.cs" />
     <Compile Include="IEventHandler.cs" />
+    <Compile Include="MoneyTransferedFromAnOtherAccountEventHandler.cs" />
+    <Compile Include="MoneyTransferedToAnOtherAccountEventHandler.cs" />
+    <Compile Include="NewClientCreatedEventHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WithdrawlEventHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Fohjin.DDD.Bus\Fohjin.DDD.Bus.csproj">
       <Project>{14C6E3E5-D4D0-4811-BBBC-89A5FF7BF41F}</Project>
       <Name>Fohjin.DDD.Bus</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fohjin.DDD.Events\Fohjin.DDD.Events.csproj">
+      <Project>{CFB4C037-822D-470E-8A01-832957D193C9}</Project>
+      <Name>Fohjin.DDD.Events</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

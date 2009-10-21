@@ -19,7 +19,7 @@ namespace Test.Fohjin.DDD
         [SetUp]
         public void Setup()
         {
-            caught = null;
+            caught = new ThereWasNoExceptionButOneWasExpectedException();
             aggregateRoot = new TAggregateRoot();
             aggregateRoot.LoadFromHistory(Given());
 
