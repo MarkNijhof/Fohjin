@@ -18,8 +18,11 @@ namespace Fohjin.DDD.Bus.Implementation
 
         public void Publish<TMessage>(TMessage message) where TMessage : class, IMessage
         {
-            var handler = _container.GetInstance<ICommandHandler<TMessage>>();
-            handler.Execute(message);
+            var eventHandlers = _container.GetAllInstances<ICommandHandler<TMessage>>();
+            foreach (var eventHandler in eventHandlers)
+            {
+                eventHandler.Execute(message);
+            }
         }
 
         public void PublishMultiple<TMessage>(IEnumerable<TMessage> messages) where TMessage : class, IMessage
