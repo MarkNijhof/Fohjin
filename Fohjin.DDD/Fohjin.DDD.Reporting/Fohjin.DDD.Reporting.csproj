@@ -50,7 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Infrastructure\IReportingRepository.cs" />
-    <Compile Include="Infrastructure\Repository.cs" />
+    <Compile Include="Infrastructure\SQLiteReportingRepository.cs" />
     <Compile Include="Infrastructure\SqlCreateBuilder.cs" />
     <Compile Include="Infrastructure\SqlInsertBuilder.cs" />
     <Compile Include="Infrastructure\SqlUpdateBuilder.cs" />

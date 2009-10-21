@@ -7,9 +7,9 @@ namespace Fohjin.DDD.CommandHandlers
 {
     public class CashDepositeCommandHandler : ICommandHandler<CashDepositeCommand>
     {
-        private readonly IRepository _repository;
+        private readonly IDomainRepository _repository;
 
-        public CashDepositeCommandHandler(IRepository repository)
+        public CashDepositeCommandHandler(IDomainRepository repository)
         {
             _repository = repository;
         }

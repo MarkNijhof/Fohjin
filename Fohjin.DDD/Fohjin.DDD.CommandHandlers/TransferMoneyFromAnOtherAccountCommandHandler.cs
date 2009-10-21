@@ -8,9 +8,9 @@ namespace Fohjin.DDD.CommandHandlers
 {
     public class TransferMoneyFromAnOtherAccountCommandHandler : ICommandHandler<TransferMoneyFromAnOtherAccountCommand>
     {
-        private readonly IRepository _repository;
+        private readonly IDomainRepository _repository;
 
-        public TransferMoneyFromAnOtherAccountCommandHandler(IRepository repository)
+        public TransferMoneyFromAnOtherAccountCommandHandler(IDomainRepository repository)
         {
             _repository = repository;
         }

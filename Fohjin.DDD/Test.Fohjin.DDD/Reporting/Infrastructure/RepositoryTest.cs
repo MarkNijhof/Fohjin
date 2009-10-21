@@ -11,7 +11,7 @@ namespace Test.Fohjin.DDD.Reporting.Infrastructure
     [TestFixture]
     public class RepositoryTest
     {
-        private Repository _repository;
+        private SQLiteReportingRepository _repository;
         private const string dataBaseFile = "reportingDataBase.db3";
 
         [SetUp]
@@ -21,7 +21,7 @@ namespace Test.Fohjin.DDD.Reporting.Infrastructure
             
             var sqliteConnectionString = string.Format("Data Source={0}", dataBaseFile);
 
-            _repository = new Repository(sqliteConnectionString, new SqlSelectBuilder(), new SqlInsertBuilder(), new SqlUpdateBuilder());
+            _repository = new SQLiteReportingRepository(sqliteConnectionString, new SqlSelectBuilder(), new SqlInsertBuilder(), new SqlUpdateBuilder());
         }
 
         [Test]

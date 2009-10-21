@@ -6,11 +6,11 @@ namespace Fohjin.DDD.CommandHandlers
 {
     public class AddNewAccountToClientCommandHandler : ICommandHandler<AddNewAccountToClientCommand>
     {
-        private readonly IRepository _repository;
+        private readonly IDomainRepository _repository;
 
-        public AddNewAccountToClientCommandHandler(IRepository activeAccountRepository)
+        public AddNewAccountToClientCommandHandler(IDomainRepository repository)
         {
-            _repository = activeAccountRepository;
+            _repository = repository;
         }
 
         public void Execute(AddNewAccountToClientCommand command)

@@ -16,7 +16,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
     {
         private const string dataBaseFile = "domainDataBase.db3";
 
-        private IRepository _repository;
+        private IDomainRepository _repository;
         private Storage _storage;
 
         [SetUp]
@@ -28,7 +28,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
 
             _storage = new Storage(sqliteConnectionString, new BinaryFormatter());
 
-            _repository = new Repository(_storage, _storage);
+            _repository = new SQLiteDomainRepository(_storage, _storage);
         }
 
         [Test]

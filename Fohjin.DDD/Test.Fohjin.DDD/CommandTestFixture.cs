@@ -60,9 +60,9 @@ namespace Test.Fohjin.DDD
 
             foreach (var parameter in constructorInfo.GetParameters())
             {
-                if (parameter.ParameterType == typeof(IRepository))
+                if (parameter.ParameterType == typeof(IDomainRepository))
                 {
-                    var repositoryMock = new Mock<IRepository>();
+                    var repositoryMock = new Mock<IDomainRepository>();
                     repositoryMock.Setup(x => x.GetById<TAggregateRoot>(It.IsAny<Guid>())).Returns(aggregateRoot);
                     repositoryMock.Setup(x => x.Save(It.IsAny<TAggregateRoot>())).Callback<TAggregateRoot>(x => aggregateRoot = x);
                     mocks.Add(parameter.ParameterType, repositoryMock.Object);

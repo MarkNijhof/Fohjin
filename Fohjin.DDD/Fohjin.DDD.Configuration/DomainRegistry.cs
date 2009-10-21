@@ -18,7 +18,7 @@ namespace Fohjin.DDD.Configuration
             ForRequestedType<IDomainEventStorage>().TheDefault.Is.OfConcreteType<Storage>().WithCtorArg("sqLiteConnectionString").EqualTo(sqLiteConnectionString);
             ForRequestedType<ISnapShotStorage>().TheDefault.Is.OfConcreteType<Storage>().WithCtorArg("sqLiteConnectionString").EqualTo(sqLiteConnectionString);
 
-            ForRequestedType<IRepository>().TheDefault.Is.OfConcreteType<Repository>();
+            ForRequestedType<IDomainRepository>().TheDefault.Is.OfConcreteType<SQLiteDomainRepository>();
         }
     }
 }

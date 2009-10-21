@@ -6,9 +6,9 @@ namespace Fohjin.DDD.CommandHandlers
 {
     public class CloseAccountCommandHandler : ICommandHandler<CloseAccountCommand>
     {
-        private readonly IRepository _repository;
+        private readonly IDomainRepository _repository;
 
-        public CloseAccountCommandHandler(IRepository repository)
+        public CloseAccountCommandHandler(IDomainRepository repository)
         {
             _repository = repository;
         }
