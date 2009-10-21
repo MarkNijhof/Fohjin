@@ -21,7 +21,7 @@ namespace Fohjin.DDD.Reporting.Dto
 
         public override string ToString()
         {
-            return Name;
+            return string.Format("{0} - ({1})", AccountNumber, Name);
         }
     }
 }

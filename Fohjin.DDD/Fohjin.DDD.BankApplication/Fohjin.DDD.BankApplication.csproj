@@ -57,7 +57,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationBootStrapper.cs" />
-    <Compile Include="ExampleDataBootStrapper.cs" />
     <Compile Include="ApplicationRegistry.cs" />
     <Compile Include="Presenters\AccountDetailsPresenter.cs" />
     <Compile Include="Presenters\ClientDetailsPresenter.cs" />

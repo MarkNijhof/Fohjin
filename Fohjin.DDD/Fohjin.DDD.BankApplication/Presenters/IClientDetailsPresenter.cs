@@ -16,5 +16,6 @@ namespace Fohjin.DDD.BankApplication.Presenters
         void InitiateClientPhoneNumberChanged();
         void InitiateAddNewAccount();
         void CreateNewAccount();
+        void Refresh();
     }
 }

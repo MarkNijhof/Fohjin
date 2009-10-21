@@ -32,6 +32,12 @@ namespace Fohjin.DDD.BankApplication.Presenters
             _accountDetailsView.EnableMenuButtons();
             _accountDetailsView.EnableDetailsPanel();
 
+            LoadData();
+            _accountDetailsView.ShowDialog();
+        }
+
+        private void LoadData()
+        {
             _accountDetails = _reportingRepository.GetByExample<AccountDetails>(new { _account.Id }).FirstOrDefault();
             _accountDetailsView.AccountName = _accountDetails.AccountName;
             _accountDetailsView.AccountNameLabel = _accountDetails.AccountName;
@@ -39,7 +45,6 @@ namespace Fohjin.DDD.BankApplication.Presenters
             _accountDetailsView.BalanceLabel = _accountDetails.Balance;
             _accountDetailsView.Ledgers = _accountDetails.Ledgers;
             _accountDetailsView.TransferAccounts = _reportingRepository.GetByExample<Account>(null).ToList().Where(x => x.Id != _accountDetails.Id).ToList();
-            _accountDetailsView.ShowDialog();
         }
 
         public void SetAccount(Account account)
@@ -153,6 +158,11 @@ namespace Fohjin.DDD.BankApplication.Presenters
             _accountDetailsView.TransferAmount = 0;
             _accountDetailsView.EnableMenuButtons();
             _accountDetailsView.EnableDetailsPanel();
+        }
+
+        public void Refresh()
+        {
+            LoadData();
         }
 
         public void FormElementGotChanged()

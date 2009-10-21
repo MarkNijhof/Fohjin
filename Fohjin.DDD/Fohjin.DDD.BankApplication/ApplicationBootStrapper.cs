@@ -9,8 +9,6 @@ namespace Fohjin.DDD.BankApplication
         {
             DomainDatabaseBootStrapper.BootStrap();
             ReportingDatabaseBootStrapper.BootStrap();
-            //new DomainDatabaseBootStrapper().ReCreateDatabaseSchema();
-            //new ReportingDatabaseBootStrapper().ReCreateDatabaseSchema();
 
             ObjectFactory.Initialize(x =>
             {
@@ -21,8 +19,6 @@ namespace Fohjin.DDD.BankApplication
                 x.AddRegistry<EventHandlerRegister>();
             });
             ObjectFactory.AssertConfigurationIsValid();
-
-            //ExampleDataBootStrapper.BootStrap();
         }
 
         public static void BootStrap()

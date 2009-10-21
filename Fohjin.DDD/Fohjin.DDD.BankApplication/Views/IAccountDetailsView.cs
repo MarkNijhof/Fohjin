@@ -43,5 +43,6 @@ namespace Fohjin.DDD.BankApplication.Views
         event Action OnDepositeMoney;
         event Action OnWithdrawlMoney;
         event Action OnTransferMoney;
+        event Action OnRefresh;
     }
 }

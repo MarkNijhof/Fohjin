@@ -70,10 +70,11 @@
             this._clientNameGroupBox = new System.Windows.Forms.GroupBox();
             this._clientName = new System.Windows.Forms.TextBox();
             this._addNewAccount = new System.Windows.Forms.TabPage();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this._newAccountName = new System.Windows.Forms.TextBox();
             this._newAccountCancelButton = new System.Windows.Forms.Button();
             this._newAccountCreateButton = new System.Windows.Forms.Button();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this._newAccountName = new System.Windows.Forms.TextBox();
+            this._refreshButton = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this._detailsTab.SuspendLayout();
@@ -499,24 +500,6 @@
             this._addNewAccount.Text = "tabPage5";
             this._addNewAccount.UseVisualStyleBackColor = true;
             // 
-            // groupBox3
-            // 
-            this.groupBox3.Controls.Add(this._newAccountName);
-            this.groupBox3.Location = new System.Drawing.Point(6, 6);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(285, 47);
-            this.groupBox3.TabIndex = 17;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Specify the name of the new account";
-            // 
-            // _newAccountName
-            // 
-            this._newAccountName.Location = new System.Drawing.Point(6, 19);
-            this._newAccountName.Name = "_newAccountName";
-            this._newAccountName.Size = new System.Drawing.Size(273, 20);
-            this._newAccountName.TabIndex = 9;
-            this._newAccountName.TextChanged += new System.EventHandler(this._client_Changed);
-            // 
             // _newAccountCancelButton
             // 
             this._newAccountCancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -537,11 +520,39 @@
             this._newAccountCreateButton.Text = "Create";
             this._newAccountCreateButton.UseVisualStyleBackColor = true;
             // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this._newAccountName);
+            this.groupBox3.Location = new System.Drawing.Point(6, 6);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(285, 47);
+            this.groupBox3.TabIndex = 17;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Specify the name of the new account";
+            // 
+            // _newAccountName
+            // 
+            this._newAccountName.Location = new System.Drawing.Point(6, 19);
+            this._newAccountName.Name = "_newAccountName";
+            this._newAccountName.Size = new System.Drawing.Size(273, 20);
+            this._newAccountName.TabIndex = 9;
+            this._newAccountName.TextChanged += new System.EventHandler(this._client_Changed);
+            // 
+            // _refreshButton
+            // 
+            this._refreshButton.Location = new System.Drawing.Point(231, 0);
+            this._refreshButton.Name = "_refreshButton";
+            this._refreshButton.Size = new System.Drawing.Size(75, 23);
+            this._refreshButton.TabIndex = 24;
+            this._refreshButton.Text = "Refresh";
+            this._refreshButton.UseVisualStyleBackColor = true;
+            // 
             // ClientDetails
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(306, 280);
+            this.Controls.Add(this._refreshButton);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
@@ -621,5 +632,6 @@
         private System.Windows.Forms.Button _newAccountCreateButton;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.TextBox _newAccountName;
+        private System.Windows.Forms.Button _refreshButton;
     }
 }

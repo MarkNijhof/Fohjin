@@ -19,5 +19,6 @@ namespace Fohjin.DDD.BankApplication.Presenters
         void DepositeMoney();
         void WithdrawlMoney();
         void TransferMoney();
+        void Refresh();
     }
 }

@@ -50,13 +50,18 @@ namespace Fohjin.DDD.BankApplication.Presenters
                 return;
             }
 
+            LoadData();
+
+            EnableAllMenuButtons();
+            _clientDetailsView.ShowDialog();
+        }
+
+        private void LoadData()
+        {
             _clientDetails = _reportingRepository.GetByExample<ClientDetails>(new { _client.Id }).FirstOrDefault();
 
             SetClientDetailsData();
             SetReadOnlyData();
-
-            EnableAllMenuButtons();
-            _clientDetailsView.ShowDialog();
         }
 
         public void SetClient(Client client)
@@ -216,6 +221,11 @@ namespace Fohjin.DDD.BankApplication.Presenters
             _addNewAccountProcess = false;
             EnableAllMenuButtons();
             _clientDetailsView.EnableOverviewPanel();
+        }
+
+        public void Refresh()
+        {
+            LoadData();
         }
 
         public void Cancel()

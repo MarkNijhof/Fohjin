@@ -28,6 +28,7 @@ namespace Fohjin.DDD.BankApplication.Views
         public event Action OnInitiateClientPhoneNumberChanged;
         public event Action OnInitiateAddNewAccount;
         public event Action OnCreateNewAccount;
+        public event Action OnRefresh;
 
         private void RegisterCLientEvents()
         {
@@ -44,6 +45,7 @@ namespace Fohjin.DDD.BankApplication.Views
             _addressSaveButton.Click += (e, s) => OnSaveNewAddress();
             _phoneNumberCancelButton.Click += (e, s) => OnCancel();
             _phoneNumberSaveButton.Click += (e, s) => OnSaveNewPhoneNumber();
+            _refreshButton.Click += (e, s) => OnRefresh();
         }
 
         public string ClientName
