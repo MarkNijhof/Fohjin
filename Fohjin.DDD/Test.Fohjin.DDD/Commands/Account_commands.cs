@@ -8,6 +8,9 @@ using Fohjin.DDD.Domain.Entities;
 using Fohjin.DDD.Domain.Exceptions;
 using Fohjin.DDD.Events;
 using Fohjin.DDD.Events.ActiveAccount;
+using Fohjin.DDD.Reporting.Dto;
+using Fohjin.DDD.Reporting.Infrastructure;
+using Moq;
 
 namespace Test.Fohjin.DDD.Commands
 {
@@ -446,6 +449,10 @@ namespace Test.Fohjin.DDD.Commands
 
         protected override TransferMoneyFromAnOtherAccountCommand When()
         {
+            GetMock<IReportingRepository>()
+                .Setup(x => x.GetByExample<Account>(It.IsAny<object>()))
+                .Returns(new List<Account> { new Account(Guid.NewGuid(), Guid.NewGuid(), "AccountName", "1234567890", true) });
+
             return new TransferMoneyFromAnOtherAccountCommand(Guid.NewGuid(), 10.0M, "1234567890");
         }
 
@@ -466,6 +473,10 @@ namespace Test.Fohjin.DDD.Commands
 
         protected override TransferMoneyFromAnOtherAccountCommand When()
         {
+            GetMock<IReportingRepository>()
+                .Setup(x => x.GetByExample<Account>(It.IsAny<object>()))
+                .Returns(new List<Account> { new Account(Guid.NewGuid(), Guid.NewGuid(), "AccountName", "1234567890", true) });
+
             return new TransferMoneyFromAnOtherAccountCommand(Guid.NewGuid(), 5.0M, "1234567890");
         }
 
@@ -504,6 +515,10 @@ namespace Test.Fohjin.DDD.Commands
 
         protected override TransferMoneyFromAnOtherAccountCommand When()
         {
+            GetMock<IReportingRepository>()
+                .Setup(x => x.GetByExample<Account>(It.IsAny<object>()))
+                .Returns(new List<Account> {new Account(Guid.NewGuid(), Guid.NewGuid(), "AccountName", "1234567890", true)});
+
             return new TransferMoneyFromAnOtherAccountCommand(Guid.NewGuid(), 10.0M, "1234567890");
         }
 

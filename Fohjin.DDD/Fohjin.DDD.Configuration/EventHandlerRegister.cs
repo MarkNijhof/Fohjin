@@ -16,24 +16,28 @@ namespace Fohjin.DDD.Configuration
             var eventHandlers = GetEventHandlers();
 
             var stringBuilder = new StringBuilder();
-            foreach (var command in events)
+            foreach (var theEvent in events)
             {
-                if (!eventHandlers.ContainsKey(command))
+                if (!eventHandlers.ContainsKey(theEvent))
                 {
-                    stringBuilder.AppendLine(string.Format("No event handler found for event '{0}'", command.FullName));
+                    stringBuilder.AppendLine(string.Format("No event handler found for event '{0}'", theEvent.FullName));
                     continue;
                 }
 
-                ForRequestedType(typeof(IEventHandler<>).MakeGenericType(command))
-                    .TheDefaultIsConcreteType(eventHandlers[command]);
+                foreach (var eventHandler in eventHandlers[theEvent])
+                {
+                    ForRequestedType(typeof(IEventHandler<>).MakeGenericType(theEvent))
+                        .TheDefaultIsConcreteType(eventHandler)
+                        .WithName(eventHandler.Name);
+                }
             }
             if (stringBuilder.Length > 0)
                 throw new Exception(string.Format("\n\nEvent handler exceptions:\n{0}\n", stringBuilder));
         }
 
-        private static IDictionary<Type, Type> GetEventHandlers()
+        private static IDictionary<Type, IList<Type>> GetEventHandlers()
         {
-            IDictionary<Type, Type> commands = new Dictionary<Type, Type>();
+            var commands = new Dictionary<Type, IList<Type>>();
             typeof(IEventHandler<>)
                 .Assembly
                 .GetExportedTypes()
@@ -43,16 +47,18 @@ namespace Fohjin.DDD.Configuration
             return commands;
         }
 
-        private static void AddItem(ICollection<KeyValuePair<Type, Type>> dictionary, Type type)
+        private static void AddItem(IDictionary<Type, IList<Type>> dictionary, Type type)
         {
-            dictionary
-                .Add(new KeyValuePair<Type, Type>(
-                    type.GetInterfaces()
-                        .Where(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IEventHandler<>))
-                        .First()
-                        .GetGenericArguments()
-                        .First(),
-                    type));
+            var theEvent = type.GetInterfaces()
+                .Where(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof (IEventHandler<>))
+                .First()
+                .GetGenericArguments()
+                .First();
+
+            if (!dictionary.ContainsKey(theEvent))
+                dictionary.Add(theEvent, new List<Type>());
+
+            dictionary[theEvent].Add(type);
         }
 
         private static List<Type> GetEvents()

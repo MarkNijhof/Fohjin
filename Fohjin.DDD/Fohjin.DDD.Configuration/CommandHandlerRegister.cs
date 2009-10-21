@@ -24,16 +24,20 @@ namespace Fohjin.DDD.Configuration
                     continue;
                 }
 
-                ForRequestedType(typeof(ICommandHandler<>).MakeGenericType(command))
-                    .TheDefaultIsConcreteType(commandHandlers[command]);
+                foreach (var commandHandler in commandHandlers[command])
+                {
+                    ForRequestedType(typeof(ICommandHandler<>).MakeGenericType(command))
+                        .TheDefaultIsConcreteType(commandHandler)
+                        .WithName(commandHandler.Name);
+                }
             }
             if (stringBuilder.Length > 0)
                 throw new Exception(string.Format("\n\nCommand handler exceptions:\n{0}\n", stringBuilder));
         }
 
-        private static IDictionary<Type, Type> GetCommandHandlers()
+        private static IDictionary<Type, IList<Type>> GetCommandHandlers()
         {
-            IDictionary<Type, Type> commands = new Dictionary<Type, Type>();
+            IDictionary<Type, IList<Type>> commands = new Dictionary<Type, IList<Type>>();
             typeof(ICommandHandler<>)
                 .Assembly
                 .GetExportedTypes()
@@ -43,16 +47,18 @@ namespace Fohjin.DDD.Configuration
             return commands;
         }
 
-        private static void AddItem(ICollection<KeyValuePair<Type, Type>> dictionary, Type type)
+        private static void AddItem(IDictionary<Type, IList<Type>> dictionary, Type type)
         {
-            dictionary
-                .Add(new KeyValuePair<Type, Type>(
-                    type.GetInterfaces()
-                        .Where(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof (ICommandHandler<>))
-                        .First()
-                        .GetGenericArguments()
-                        .First(), 
-                    type));
+            var command = type.GetInterfaces()
+                .Where(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(ICommandHandler<>))
+                .First()
+                .GetGenericArguments()
+                .First();
+
+            if (!dictionary.ContainsKey(command))
+                dictionary.Add(command, new List<Type>());
+
+            dictionary[command].Add(type);
         }
 
         private static List<Type> GetCommands()

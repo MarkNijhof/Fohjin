@@ -88,6 +88,14 @@
       <Project>{CFB4C037-822D-470E-8A01-832957D193C9}</Project>
       <Name>Fohjin.DDD.Events</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Fohjin.DDD.Reporting.Dto\Fohjin.DDD.Reporting.Dto.csproj">
+      <Project>{44666AF0-AC7A-486E-AD1F-49FD0573ED43}</Project>
+      <Name>Fohjin.DDD.Reporting.Dto</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fohjin.DDD.Reporting\Fohjin.DDD.Reporting.csproj">
+      <Project>{0E86D5C6-929D-4304-A00D-ADC9FB2AFE77}</Project>
+      <Name>Fohjin.DDD.Reporting</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
