@@ -133,4 +133,69 @@ namespace Test.Fohjin.DDD.Events
             _save_account_details.Balance.WillBe(0.0M);
         }
     }
+
+    public class Providing_an_account_name_got_changed_event : EventTestFixture<AccountNameGotChangedEvent, AccountNameGotChangedEventHandler>
+    {
+        private static Guid _guid;
+        private object _update_account;
+        private object _where_account;
+        private object _update_account_details;
+        private object _where_account_details;
+
+        protected override void MockSetup()
+        {
+            GetMock<IReportingRepository>()
+                .Setup(x => x.Update<Account>(It.IsAny<object>(), It.IsAny<object>()))
+                .Callback<object, object>((u, w) => { _update_account = u; _where_account = w; });
+
+            GetMock<IReportingRepository>()
+                .Setup(x => x.Update<AccountDetails>(It.IsAny<object>(), It.IsAny<object>()))
+                .Callback<object, object>((u, w) => { _update_account_details = u; _where_account_details = w; });
+        }
+
+        protected override AccountNameGotChangedEvent When()
+        {
+            var accountNameGotChangedEvent = new AccountNameGotChangedEvent("New Account Name") { EntityId = Guid.NewGuid() };
+            _guid = accountNameGotChangedEvent.EntityId;
+            return accountNameGotChangedEvent;
+        }
+
+        [Then]
+        public void Then_it_will_call_the_repository_is_called_to_update_the_account_dto()
+        {
+            GetMock<IReportingRepository>()
+                .Verify(x => x.Update<Account>(It.IsAny<object>(), It.IsAny<object>()));
+        }
+
+        [Then]
+        public void Then_it_will_call_the_repository_is_called_to_update_the_account_details_dto()
+        {
+            GetMock<IReportingRepository>()
+                .Verify(x => x.Update<AccountDetails>(It.IsAny<object>(), It.IsAny<object>()));
+        }
+
+        [Then]
+        public void Then_it_will_call_the_repository_with_the_correct_values_to_update_the_account()
+        {
+            _update_account.WillBeSimuliar(new { Name = "New Account Name" }.ToString());
+        }
+
+        [Then]
+        public void Then_it_will_call_the_repository_with_the_correct_values_to_update_the_account_details()
+        {
+            _update_account_details.WillBeSimuliar(new { AccountName = "New Account Name" }.ToString());
+        }
+
+        [Then]
+        public void Then_it_will_call_the_repository_with_the_correct_where_statement_for_the_account()
+        {
+            _where_account.WillBeSimuliar(new { Id = _guid });
+        }
+
+        [Then]
+        public void Then_it_will_call_the_repository_with_the_correct_where_statement_for_the_account_details()
+        {
+            _where_account_details.WillBeSimuliar(new { Id = _guid });
+        }
+    }
 }
