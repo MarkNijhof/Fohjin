@@ -48,7 +48,7 @@
     <Compile Include="AccountClosedEventHandler.cs" />
     <Compile Include="AccountCreatedEventHandler.cs" />
     <Compile Include="AccountNameGotChangedEventHandler.cs" />
-    <Compile Include="AccountWasAssignedToClientEventHandler.cs" />
+    <Compile Include="ClientGotAnAccountAssignedEventHandler.cs" />
     <Compile Include="ClientHasMovedEventHandler.cs" />
     <Compile Include="ClientNameWasChangedEventHandler.cs" />
     <Compile Include="ClientPhoneNumberWasChangedEventHandler.cs" />

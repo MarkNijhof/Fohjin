@@ -52,7 +52,7 @@
     <Compile Include="ActiveAccount\MoneyTransferedFromAnOtherAccountEvent.cs" />
     <Compile Include="ActiveAccount\MoneyTransferedToAnOtherAccountEvent.cs" />
     <Compile Include="ActiveAccount\WithdrawlEvent.cs" />
-    <Compile Include="Client\AccountWasAssignedToClientEvent.cs" />
+    <Compile Include="Client\ClientGotAnAccountAssignedEvent.cs" />
     <Compile Include="Client\ClientHasMovedEvent.cs" />
     <Compile Include="Client\ClientNameWasChangedEvent.cs" />
     <Compile Include="Client\ClientPhoneNumberWasChangedEvent.cs" />

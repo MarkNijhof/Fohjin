@@ -35,21 +35,21 @@ namespace Fohjin.DDD.Domain.Entities
         {
             IsClientCreated();
 
-            Apply(new ClientPhoneNumberWasChangedEvent(Id, phoneNumber.Number));
+            Apply(new ClientPhoneNumberWasChangedEvent(phoneNumber.Number));
         }
 
         public void UpdateClientName(ClientName clientName)
         {
             IsClientCreated();
 
-            Apply(new ClientNameWasChangedEvent(Id, clientName.Name));
+            Apply(new ClientNameWasChangedEvent(clientName.Name));
         }
 
         public void ClientMoved(Address newAddress)
         {
             IsClientCreated();
 
-            Apply(new ClientHasMovedEvent(Id, newAddress.Street, newAddress.StreetNumber, newAddress.PostalCode, newAddress.City));
+            Apply(new ClientHasMovedEvent(newAddress.Street, newAddress.StreetNumber, newAddress.PostalCode, newAddress.City));
         }
 
         public ActiveAccount CreateNewAccount(string accountName)
@@ -58,7 +58,7 @@ namespace Fohjin.DDD.Domain.Entities
 
             var activeAccount = ActiveAccount.CreateNew(Id, accountName);
 
-            Apply(new AccountWasAssignedToClientEvent(Id, activeAccount.Id));
+            Apply(new ClientGotAnAccountAssignedEvent(activeAccount.Id));
 
             return activeAccount;
         }
@@ -91,12 +91,12 @@ namespace Fohjin.DDD.Domain.Entities
             RegisterEvent<ClientPhoneNumberWasChangedEvent>(onClientPhoneNumberWasChanged);
             RegisterEvent<ClientNameWasChangedEvent>(onClientNameWasChanged);
             RegisterEvent<ClientHasMovedEvent>(onNewClientMoved);
-            RegisterEvent<AccountWasAssignedToClientEvent>(onAccountWasAssignedToClient);
+            RegisterEvent<ClientGotAnAccountAssignedEvent>(onAccountWasAssignedToClient);
         }
 
-        private void onAccountWasAssignedToClient(AccountWasAssignedToClientEvent accountWasAssignedToClientEvent)
+        private void onAccountWasAssignedToClient(ClientGotAnAccountAssignedEvent clientGotAnAccountAssignedEvent)
         {
-            _accounts.Add(accountWasAssignedToClientEvent.AccountId);
+            _accounts.Add(clientGotAnAccountAssignedEvent.AccountId);
         }
 
         private void onNewClientCreated(NewClientCreatedEvent newClientCreatedEvent)

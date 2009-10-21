@@ -218,19 +218,19 @@ namespace Test.Fohjin.DDD.Commands
         [Then]
         public void Then_it_will_generate_a_client_has_moved_event()
         {
-            events.Last().WillBeOfType<AccountWasAssignedToClientEvent>();
+            events.Last().WillBeOfType<ClientGotAnAccountAssignedEvent>();
         }
 
         [Then]
         public void Then_the_generated_new_client_created_event_will_contain_the_id_of_the_client_it_will_be_assigned_too()
         {
-            events.Last<AccountWasAssignedToClientEvent>().ClientId.WillBe(aggregateRoot.Id);
+            events.Last<ClientGotAnAccountAssignedEvent>().AggregateId.WillBe(aggregateRoot.Id);
         }
 
         [Then]
         public void Then_the_generated_new_client_created_event_will_contain_the_id_of_the_account()
         {
-            events.Last<AccountWasAssignedToClientEvent>().AccountId.WillNotBe(new Guid());
+            events.Last<ClientGotAnAccountAssignedEvent>().AccountId.WillNotBe(new Guid());
         }
     }
 

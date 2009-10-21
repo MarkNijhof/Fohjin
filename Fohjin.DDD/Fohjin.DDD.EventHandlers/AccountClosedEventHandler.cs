@@ -15,8 +15,8 @@ namespace Fohjin.DDD.EventHandlers
 
         public void Execute(AccountClosedEvent theEvent)
         {
-            _reportingRepository.Update<Account>(new { Active = false }, new { Id = theEvent.EntityId });
-            _reportingRepository.Update<AccountDetails>(new { Active = false }, new { Id = theEvent.EntityId });
+            _reportingRepository.Update<Account>(new { Active = false }, new { Id = theEvent.AggregateId });
+            _reportingRepository.Update<AccountDetails>(new { Active = false }, new { Id = theEvent.AggregateId });
         }
     }
 }
