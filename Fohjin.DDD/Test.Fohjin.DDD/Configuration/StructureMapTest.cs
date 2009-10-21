@@ -13,9 +13,9 @@ namespace Test.Fohjin.DDD.Configuration
             ObjectFactory.Initialize(x =>
             {
                 x.AddRegistry<DomainRegistry>();
+                x.AddRegistry<ReportingRegistry>();
                 x.AddRegistry<CommandHandlerRegister>();
                 x.AddRegistry<EventHandlerRegister>();
-                x.AddRegistry<ReportingRegistry>();
             });
 
             ObjectFactory.AssertConfigurationIsValid();

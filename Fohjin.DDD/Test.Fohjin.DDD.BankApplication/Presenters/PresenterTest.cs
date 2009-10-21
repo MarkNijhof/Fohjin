@@ -51,6 +51,7 @@ namespace Test.Fohjin.DDD.BankApplication.Presenters
             OnTest();
         }
 
+        // IView Interface plumbing
         public void Dispose()
         {
             throw new NotImplementedException();
