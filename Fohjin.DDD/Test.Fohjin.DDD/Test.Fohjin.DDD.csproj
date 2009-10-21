@@ -101,6 +101,10 @@
       <Project>{CF50373D-3EB9-492D-A88F-70D7D6756DFF}</Project>
       <Name>Fohjin.DDD.Configuration</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Fohjin.DDD.Contracts\Fohjin.DDD.Contracts.csproj">
+      <Project>{F18EACDA-7B90-4244-B5B8-9B764F46FF60}</Project>
+      <Name>Fohjin.DDD.Contracts</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Fohjin.DDD.Domain\Fohjin.DDD.Domain.csproj">
       <Project>{0FB24C8F-FA8C-409E-A71C-8580F7D78474}</Project>
       <Name>Fohjin.DDD.Domain</Name>
@@ -108,6 +112,10 @@
     <ProjectReference Include="..\Fohjin.DDD.EventHandlers\Fohjin.DDD.EventHandlers.csproj">
       <Project>{2A96D452-7D1D-4118-B3D4-8EF543D1FBCB}</Project>
       <Name>Fohjin.DDD.EventHandlers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fohjin.DDD.EventStore.SQLite\Fohjin.DDD.EventStore.SQLite.csproj">
+      <Project>{8DE1C044-594E-4A85-8244-FE059BF4825B}</Project>
+      <Name>Fohjin.DDD.EventStore.SQLite</Name>
     </ProjectReference>
     <ProjectReference Include="..\Fohjin.DDD.Events\Fohjin.DDD.Events.csproj">
       <Project>{CFB4C037-822D-470E-8A01-832957D193C9}</Project>
@@ -120,10 +128,6 @@
     <ProjectReference Include="..\Fohjin.DDD.Reporting\Fohjin.DDD.Reporting.csproj">
       <Project>{0E86D5C6-929D-4304-A00D-ADC9FB2AFE77}</Project>
       <Name>Fohjin.DDD.Reporting</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Fohjin.EventStorage\Fohjin.EventStorage.csproj">
-      <Project>{E5EF4E56-6807-4B55-B28F-50A60F0C3B8A}</Project>
-      <Name>Fohjin.EventStorage</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

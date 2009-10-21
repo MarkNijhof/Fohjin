@@ -2,12 +2,13 @@ using System;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using Fohjin.DDD.Configuration;
+using Fohjin.DDD.Contracts;
 using Fohjin.DDD.Domain;
 using Fohjin.DDD.Domain.Entities;
 using Fohjin.DDD.Domain.Entities.Mementos;
 using Fohjin.DDD.Domain.Exceptions;
 using Fohjin.DDD.Domain.ValueObjects;
-using Fohjin.EventStorage;
+using Fohjin.DDD.EventStore.SQLite;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 

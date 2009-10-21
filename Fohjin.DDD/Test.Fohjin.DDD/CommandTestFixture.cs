@@ -4,10 +4,10 @@ using System.Linq;
 using Fohjin.DDD.Bus;
 using Fohjin.DDD.CommandHandlers;
 using Fohjin.DDD.Commands;
+using Fohjin.DDD.Contracts;
 using Fohjin.DDD.Domain;
 using Fohjin.DDD.Domain.Entities.Mementos;
 using Fohjin.DDD.Events;
-using Fohjin.EventStorage;
 using Moq;
 using NUnit.Framework;
 

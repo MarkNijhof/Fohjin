@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{F18EACDA-7B90-4244-B5B8-9B764F46FF60}</ProjectGuid>
+    <ProjectGuid>{8DE1C044-594E-4A85-8244-FE059BF4825B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Fohjin.DDD.Contracts</RootNamespace>
-    <AssemblyName>Fohjin.DDD.Contracts</AssemblyName>
+    <RootNamespace>Fohjin.DDD.EventStore.SQLite</RootNamespace>
+    <AssemblyName>Fohjin.DDD.EventStore.SQLite</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -35,6 +35,10 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Data.SQLite, Version=1.0.65.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\sqlite\bin\x64\System.Data.SQLite.DLL</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -45,13 +49,31 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IDomainRepository.cs" />
+    <Compile Include="IDomainEventStorage.cs" />
+    <Compile Include="ISerializer.cs" />
+    <Compile Include="ISnapShot.cs" />
+    <Compile Include="ISnapShotStorage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SnapShot.cs" />
+    <Compile Include="SQLiteDomainRepository.cs" />
+    <Compile Include="Storage.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Fohjin.DDD.Bus\Fohjin.DDD.Bus.csproj">
+      <Project>{14C6E3E5-D4D0-4811-BBBC-89A5FF7BF41F}</Project>
+      <Name>Fohjin.DDD.Bus</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fohjin.DDD.Contracts\Fohjin.DDD.Contracts.csproj">
+      <Project>{F18EACDA-7B90-4244-B5B8-9B764F46FF60}</Project>
+      <Name>Fohjin.DDD.Contracts</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Fohjin.DDD.Domain\Fohjin.DDD.Domain.csproj">
       <Project>{0FB24C8F-FA8C-409E-A71C-8580F7D78474}</Project>
       <Name>Fohjin.DDD.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fohjin.DDD.Events\Fohjin.DDD.Events.csproj">
+      <Project>{CFB4C037-822D-470E-8A01-832957D193C9}</Project>
+      <Name>Fohjin.DDD.Events</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

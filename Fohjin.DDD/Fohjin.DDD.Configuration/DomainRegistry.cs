@@ -2,7 +2,8 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using Fohjin.DDD.Bus;
 using Fohjin.DDD.Bus.Implementation;
-using Fohjin.EventStorage;
+using Fohjin.DDD.Contracts;
+using Fohjin.DDD.EventStore.SQLite;
 using StructureMap.Configuration.DSL;
 
 namespace Fohjin.DDD.Configuration

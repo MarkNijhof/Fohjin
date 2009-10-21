@@ -1,7 +1,7 @@
 using Fohjin.DDD.Commands;
+using Fohjin.DDD.Contracts;
 using Fohjin.DDD.Domain.Entities;
 using Fohjin.DDD.Domain.ValueObjects;
-using Fohjin.EventStorage;
 
 namespace Fohjin.DDD.CommandHandlers
 {
