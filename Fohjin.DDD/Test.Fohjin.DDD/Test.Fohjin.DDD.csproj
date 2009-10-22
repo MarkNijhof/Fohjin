@@ -63,7 +63,8 @@
   <ItemGroup>
     <Compile Include="Commands\Account_commands.cs" />
     <Compile Include="Commands\All_commands_must_be_Serializable.cs" />
-    <Compile Include="Commands\Client_command.cs" />
+    <Compile Include="Commands\Client_commands.cs" />
+    <Compile Include="Commands\ClosedAccount_commands.cs" />
     <Compile Include="Configuration\DatabaseBootStrapperTest.cs" />
     <Compile Include="Configuration\ReportingBootStrapperTest.cs" />
     <Compile Include="Configuration\StructureMapTest.cs" />
@@ -72,6 +73,7 @@
     <Compile Include="Events\Account_events.cs" />
     <Compile Include="Events\Back_into_the_domain.cs" />
     <Compile Include="Events\Client_events.cs" />
+    <Compile Include="Events\ClosedAccount_events.cs" />
     <Compile Include="EventTestFixture.cs" />
     <Compile Include="Reporting\Infrastructure\SqlDeleteBuilderTest.cs" />
     <Compile Include="Reporting\Infrastructure\SqlUpdateBuilderTest.cs" />

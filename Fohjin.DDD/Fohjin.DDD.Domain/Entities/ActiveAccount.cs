@@ -10,6 +10,7 @@ namespace Fohjin.DDD.Domain.Entities
 {
     public class ActiveAccount : BaseAggregateRoot, IOrginator
     {
+        private Guid _clientId;
         private AccountName _accountName;
         private AccountNumber _accountNumber;
         private Balance _balance;
@@ -30,15 +31,15 @@ namespace Fohjin.DDD.Domain.Entities
             registerEvents();
         }
 
-        public static ActiveAccount CreateNew(Guid clientId, string accountName)
-        {
-            return new ActiveAccount(clientId, accountName);
-        }
-
-        public ActiveAccount(Guid clientId, string accountName) : this()
+        private ActiveAccount(Guid clientId, string accountName) : this()
         {
             var accountNumber = SystemDateTime.Now().Ticks.ToString();
             Apply(new AccountCreatedEvent(Guid.NewGuid(), clientId, accountName, accountNumber));
+        }
+
+        public static ActiveAccount CreateNew(Guid clientId, string accountName)
+        {
+            return new ActiveAccount(clientId, accountName);
         }
 
         public void ChangeAccountName(AccountName accountName)
@@ -52,7 +53,7 @@ namespace Fohjin.DDD.Domain.Entities
         {
             Guard();
 
-            var closedAccount = new ClosedAccount(Id, _ledgers);
+            var closedAccount = ClosedAccount.CreateNew(Id, _clientId, _ledgers, _accountName, _accountNumber);
             Apply(new AccountClosedEvent());
             return closedAccount;
         }
@@ -138,7 +139,10 @@ namespace Fohjin.DDD.Domain.Entities
 
             foreach (var ledger in accountMemento.Ledgers)
             {
-                _ledgers.Add(InstantiateClassFromStringValue<Ledger>(ledger.Key, new Amount(ledger.Value)));
+                var split = ledger.Value.Split(new[] { '|' });
+                var amount = new Amount(Convert.ToDecimal(split[0]));
+                var account = new AccountNumber(split[1]);
+                _ledgers.Add(InstantiateClassFromStringValue<Ledger>(ledger.Key, amount, account));
             }
         }
 
@@ -166,13 +170,13 @@ namespace Fohjin.DDD.Domain.Entities
 
         private void onMoneyTransferedToAnOtherAccount(MoneyTransferedToAnOtherAccountEvent moneyTransferedToAnOtherAccountEvent)
         {
-            _ledgers.Add(new CreditTransfer(moneyTransferedToAnOtherAccountEvent.Amount, moneyTransferedToAnOtherAccountEvent.OtherAccount));
+            _ledgers.Add(new CreditTransfer(moneyTransferedToAnOtherAccountEvent.Amount, new AccountNumber(moneyTransferedToAnOtherAccountEvent.OtherAccount)));
             _balance = moneyTransferedToAnOtherAccountEvent.Balance;
         }
 
         private void onMoneyTransferedFromAnOtherAccount(MoneyTransferedFromAnOtherAccountEvent moneyTransferedFromAnOtherAccountEvent)
         {
-            _ledgers.Add(new DebitTransfer(moneyTransferedFromAnOtherAccountEvent.Amount, moneyTransferedFromAnOtherAccountEvent.OtherAccount));
+            _ledgers.Add(new DebitTransfer(moneyTransferedFromAnOtherAccountEvent.Amount, new AccountNumber(moneyTransferedFromAnOtherAccountEvent.OtherAccount)));
             _balance = moneyTransferedFromAnOtherAccountEvent.Balance;
         }
 
@@ -184,6 +188,7 @@ namespace Fohjin.DDD.Domain.Entities
         private void onAccountCreated(AccountCreatedEvent accountCreatedEvent)
         {
             Id = accountCreatedEvent.AccountId;
+            _clientId = accountCreatedEvent.ClientId;
             _accountName = new AccountName(accountCreatedEvent.AccountName);
             _accountNumber = new AccountNumber(accountCreatedEvent.AccountNumber);
         }
@@ -195,13 +200,13 @@ namespace Fohjin.DDD.Domain.Entities
 
         private void onWithdrawl(WithdrawlEvent withdrawlEvent)
         {
-            _ledgers.Add(new DebitMutation(withdrawlEvent.Amount));
+            _ledgers.Add(new DebitMutation(withdrawlEvent.Amount, new AccountNumber(string.Empty)));
             _balance = withdrawlEvent.Balance;
         }
 
         private void onDeposite(DepositeEvent depositeEvent)
         {
-            _ledgers.Add(new CreditMutation(depositeEvent.Amount));
+            _ledgers.Add(new CreditMutation(depositeEvent.Amount, new AccountNumber(string.Empty)));
             _balance = depositeEvent.Balance;
         }
     }

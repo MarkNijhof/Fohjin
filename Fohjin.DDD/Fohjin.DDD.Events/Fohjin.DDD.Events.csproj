@@ -57,6 +57,7 @@
     <Compile Include="Client\ClientNameWasChangedEvent.cs" />
     <Compile Include="Client\ClientPhoneNumberWasChangedEvent.cs" />
     <Compile Include="Client\NewClientCreatedEvent.cs" />
+    <Compile Include="ClosedAccount\ClosedAccountCreatedEvent.cs" />
     <Compile Include="DomainEvent.cs" />
     <Compile Include="IDomainEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

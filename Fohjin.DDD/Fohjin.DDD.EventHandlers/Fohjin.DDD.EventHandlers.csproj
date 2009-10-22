@@ -52,6 +52,7 @@
     <Compile Include="ClientHasMovedEventHandler.cs" />
     <Compile Include="ClientNameWasChangedEventHandler.cs" />
     <Compile Include="ClientPhoneNumberWasChangedEventHandler.cs" />
+    <Compile Include="ClosedAccountCreatedEventHandler.cs" />
     <Compile Include="DepositeEventHandler.cs" />
     <Compile Include="IEventHandler.cs" />
     <Compile Include="MoneyTransferedFromAnOtherAccountEventHandler.cs" />

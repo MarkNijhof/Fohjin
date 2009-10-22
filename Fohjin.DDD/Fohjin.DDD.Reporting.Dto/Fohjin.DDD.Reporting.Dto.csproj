@@ -48,7 +48,7 @@
     <Compile Include="AccountDetails.cs" />
     <Compile Include="Account.cs" />
     <Compile Include="ClosedAccount.cs" />
-    <Compile Include="ClosedClientDetails.cs" />
+    <Compile Include="ClosedAccountDetails.cs" />
     <Compile Include="Ledger.cs" />
     <Compile Include="ClientDetails.cs" />
     <Compile Include="Client.cs" />
