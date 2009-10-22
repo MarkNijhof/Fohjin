@@ -54,7 +54,6 @@ namespace Test.Fohjin.DDD.Events
             _save_account.ClientDetailsId.WillBe(_clientId);
             _save_account.Name.WillBe("New Account");
             _save_account.AccountNumber.WillBe("1234567890");
-            _save_account.Active.WillBe(true);
         }
 
         [Then]
@@ -64,7 +63,6 @@ namespace Test.Fohjin.DDD.Events
             _save_account_details.ClientId.WillBe(_clientId);
             _save_account_details.AccountName.WillBe("New Account");
             _save_account_details.AccountNumber.WillBe("1234567890");
-            _save_account_details.Active.WillBe(true);
             _save_account_details.Balance.WillBe(0.0M);
         }
     }

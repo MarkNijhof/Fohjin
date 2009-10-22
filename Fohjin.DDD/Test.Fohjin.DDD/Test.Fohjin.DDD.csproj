@@ -73,6 +73,7 @@
     <Compile Include="Events\Back_into_the_domain.cs" />
     <Compile Include="Events\Client_events.cs" />
     <Compile Include="EventTestFixture.cs" />
+    <Compile Include="Reporting\Infrastructure\SqlDeleteBuilderTest.cs" />
     <Compile Include="Reporting\Infrastructure\SqlUpdateBuilderTest.cs" />
     <Compile Include="TestExtensions.cs" />
     <Compile Include="CommandTestFixture.cs" />

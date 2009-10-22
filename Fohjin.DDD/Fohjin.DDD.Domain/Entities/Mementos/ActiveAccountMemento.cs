@@ -12,9 +12,9 @@ namespace Fohjin.DDD.Domain.Entities.Mementos
         internal string AccountNumber { get; set; }
         internal decimal Balance { get; private set; }
         internal bool Closed { get; private set; }
-        internal List<KeyValuePair<string, decimal>> Mutations { get; private set; }
+        internal List<KeyValuePair<string, decimal>> Ledgers { get; private set; }
 
-        public ActiveAccountMemento(Guid id, int version, string accountName, string accountNumber, decimal balance, List<Ledger> mutations, bool closed)
+        public ActiveAccountMemento(Guid id, int version, string accountName, string accountNumber, decimal balance, List<Ledger> ledgers, bool closed)
         {
             Id = id;
             Version = version;
@@ -22,8 +22,8 @@ namespace Fohjin.DDD.Domain.Entities.Mementos
             AccountNumber = accountNumber;
             Balance = balance;
             Closed = closed;
-            Mutations = new List<KeyValuePair<string, decimal>>();
-            mutations.ForEach(x => Mutations.Add(new KeyValuePair<string, decimal>(x.GetType().Name, x)));
+            Ledgers = new List<KeyValuePair<string, decimal>>();
+            ledgers.ForEach(x => Ledgers.Add(new KeyValuePair<string, decimal>(x.GetType().Name, x)));
         }
     }
 }

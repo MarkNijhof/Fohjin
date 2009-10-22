@@ -64,8 +64,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
                 _accountDetails.ClientId,
                 _accountDetails.AccountName,
                 _accountDetails.Balance,
-                _accountDetails.AccountNumber,
-                false);
+                _accountDetails.AccountNumber);
         }
 
         public void Cancel()
@@ -119,8 +118,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
                 _accountDetails.ClientId,
                 _accountDetailsView.AccountName,
                 _accountDetails.Balance,
-                _accountDetails.AccountNumber,
-                _accountDetails.Active);
+                _accountDetails.AccountNumber);
 
             _accountDetailsView.EnableMenuButtons();
             _accountDetailsView.EnableDetailsPanel();

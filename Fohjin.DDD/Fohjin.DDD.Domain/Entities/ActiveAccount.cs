@@ -136,9 +136,9 @@ namespace Fohjin.DDD.Domain.Entities
             _balance = accountMemento.Balance;
             _closed = accountMemento.Closed;
 
-            foreach (var mutation in accountMemento.Mutations)
+            foreach (var ledger in accountMemento.Ledgers)
             {
-                _ledgers.Add(InstantiateClassFromStringValue<Ledger>(mutation.Key, new Amount(mutation.Value)));
+                _ledgers.Add(InstantiateClassFromStringValue<Ledger>(ledger.Key, new Amount(ledger.Value)));
             }
         }
 

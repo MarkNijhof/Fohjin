@@ -16,7 +16,7 @@ namespace Fohjin.DDD.CommandHandlers
         public void Execute(AddNewAccountToClientCommand command)
         {
             var client = _repository.GetById<Client>(command.Id);
-            ActiveAccount activeAccount = client.CreateNewAccount(command.AccountName);
+            var activeAccount = client.CreateNewAccount(command.AccountName);
 
             _repository.Save(activeAccount);
             _repository.Save(client);

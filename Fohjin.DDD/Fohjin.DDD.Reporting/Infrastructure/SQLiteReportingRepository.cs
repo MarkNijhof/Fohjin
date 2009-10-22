@@ -13,13 +13,15 @@ namespace Fohjin.DDD.Reporting.Infrastructure
         private readonly ISqlSelectBuilder _sqlSelectBuilder;
         private readonly ISqlInsertBuilder _sqlInsertBuilder;
         private readonly ISqlUpdateBuilder _sqlUpdateBuilder;
+        private readonly ISqlDeleteBuilder _sqlDeleteBuilder;
 
-        public SQLiteReportingRepository(string sqLiteConnectionString, ISqlSelectBuilder sqlSelectBuilder, ISqlInsertBuilder sqlInsertBuilder, ISqlUpdateBuilder sqlUpdateBuilder)
+        public SQLiteReportingRepository(string sqLiteConnectionString, ISqlSelectBuilder sqlSelectBuilder, ISqlInsertBuilder sqlInsertBuilder, ISqlUpdateBuilder sqlUpdateBuilder, ISqlDeleteBuilder sqlDeleteBuilder)
         {
             _sqLiteConnectionString = sqLiteConnectionString;
             _sqlSelectBuilder = sqlSelectBuilder;
             _sqlInsertBuilder = sqlInsertBuilder;
             _sqlUpdateBuilder = sqlUpdateBuilder;
+            _sqlDeleteBuilder = sqlDeleteBuilder;
         }
 
         public IEnumerable<TDto> GetByExample<TDto>(object example) where TDto : class
@@ -105,6 +107,39 @@ namespace Fohjin.DDD.Reporting.Infrastructure
                         {
                             AddUpdateParameters(sqliteCommand, GetPropertyInformation(update));
                             AddParameters(sqliteCommand, GetPropertyInformation(where));
+                            sqliteCommand.ExecuteNonQuery();
+                        }
+                        sqliteTransaction.Commit();
+                    }
+                    catch (Exception)
+                    {
+                        sqliteTransaction.Rollback();
+                        throw;
+                    }
+                }
+            }
+        }
+
+        public void Delete<TDto>(object example) where TDto : class
+        {
+            Delete<TDto>(GetPropertyInformation(example));
+        }
+
+        public void Delete<TDto>(IEnumerable<KeyValuePair<string, object>> example) where TDto : class
+        {
+            var commandText = _sqlDeleteBuilder.CreateSqlDeleteStatementFromDto<TDto>(example);
+
+            using (var sqliteConnection = new SQLiteConnection(_sqLiteConnectionString))
+            {
+                sqliteConnection.Open();
+
+                using (var sqliteTransaction = sqliteConnection.BeginTransaction())
+                {
+                    try
+                    {
+                        using (var sqliteCommand = new SQLiteCommand(commandText, sqliteTransaction.Connection, sqliteTransaction))
+                        {
+                            AddParameters(sqliteCommand, example);
                             sqliteCommand.ExecuteNonQuery();
                         }
                         sqliteTransaction.Commit();

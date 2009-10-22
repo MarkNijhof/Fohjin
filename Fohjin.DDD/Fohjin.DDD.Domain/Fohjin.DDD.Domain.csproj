@@ -53,10 +53,10 @@
     <Compile Include="Entities\ActiveAccount.cs" />
     <Compile Include="Entities\Client.cs" />
     <Compile Include="Entities\ClosedAccount.cs" />
-    <Compile Include="Entities\IDomainAggregate.cs" />
     <Compile Include="Entities\Ledger.cs" />
     <Compile Include="Entities\Mementos\ActiveAccountMemento.cs" />
     <Compile Include="Entities\Mementos\ClientMemento.cs" />
+    <Compile Include="Entities\Mementos\ClosedAccountMemento.cs" />
     <Compile Include="Exceptions\AccountBalanceIsToLowException.cs" />
     <Compile Include="Exceptions\AccountWasClosedException.cs" />
     <Compile Include="Exceptions\AccountWasNotCreatedException.cs" />

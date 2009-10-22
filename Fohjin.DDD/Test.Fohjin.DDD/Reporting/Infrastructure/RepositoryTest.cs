@@ -21,7 +21,7 @@ namespace Test.Fohjin.DDD.Reporting.Infrastructure
             
             var sqliteConnectionString = string.Format("Data Source={0}", dataBaseFile);
 
-            _repository = new SQLiteReportingRepository(sqliteConnectionString, new SqlSelectBuilder(), new SqlInsertBuilder(), new SqlUpdateBuilder());
+            _repository = new SQLiteReportingRepository(sqliteConnectionString, new SqlSelectBuilder(), new SqlInsertBuilder(), new SqlUpdateBuilder(), new SqlDeleteBuilder());
         }
 
         [Test]
@@ -54,7 +54,7 @@ namespace Test.Fohjin.DDD.Reporting.Infrastructure
         [Test]
         public void Will_be_able_to_save_and_retrieve_an_account_dto()
         {
-            var accountDto = new Account(Guid.NewGuid(), Guid.NewGuid(), "Account Name", "1234567890", true);
+            var accountDto = new Account(Guid.NewGuid(), Guid.NewGuid(), "Account Name", "1234567890");
             _repository.Save(accountDto);
             var sut = _repository.GetByExample<Account>(new { Name = "Account Name" }).FirstOrDefault();
 
@@ -67,7 +67,7 @@ namespace Test.Fohjin.DDD.Reporting.Infrastructure
         [Test]
         public void Will_be_able_to_save_and_retrieve_an_account_details_dto()
         {
-            var accountDetailsDto = new AccountDetails(Guid.NewGuid(), Guid.NewGuid(), "Account Name", 10.5M, "1234567890", true);
+            var accountDetailsDto = new AccountDetails(Guid.NewGuid(), Guid.NewGuid(), "Account Name", 10.5M, "1234567890");
             _repository.Save(accountDetailsDto);
             var sut = _repository.GetByExample<AccountDetails>(new { AccountName = "Account Name" }).FirstOrDefault();
 
@@ -105,7 +105,7 @@ namespace Test.Fohjin.DDD.Reporting.Infrastructure
         public void When_calling_GetByExample_it_will_return_a_list_with_dtos_matching_the_example_inclusing_child_objects()
         {
             var AccountId = Guid.NewGuid();
-            _repository.Save(new AccountDetails(AccountId, Guid.NewGuid(), "Account Name", 10.5M, "1234567890", true));
+            _repository.Save(new AccountDetails(AccountId, Guid.NewGuid(), "Account Name", 10.5M, "1234567890"));
 
             _repository.Save(new Ledger(Guid.NewGuid(), AccountId, "Action 1", 12.3M));
             _repository.Save(new Ledger(Guid.NewGuid(), AccountId, "Action 2", 24.6M));
@@ -121,7 +121,7 @@ namespace Test.Fohjin.DDD.Reporting.Infrastructure
         }
 
         [Test]
-        public void When_be_able_to_update_an_already_saved_dto()
+        public void Will_be_able_to_update_an_already_saved_dto()
         {
             Guid guid = Guid.NewGuid();
             _repository.Save(new Client(guid, "Mark Nijhof"));
@@ -132,6 +132,19 @@ namespace Test.Fohjin.DDD.Reporting.Infrastructure
 
             Assert.That(sut.Count(), Is.EqualTo(1));
             Assert.That(sut.First().Name, Is.EqualTo("Mark Albert Nijhof"));
+        }
+
+        [Test]
+        public void Will_be_able_to_delete_an_already_saved_dto()
+        {
+            Guid guid = Guid.NewGuid();
+            _repository.Save(new Client(guid, "Mark Nijhof"));
+
+            _repository.Delete<Client>(new { Id = guid });
+
+            var sut = _repository.GetByExample<Client>(new { Id = guid });
+
+            Assert.That(sut.Count(), Is.EqualTo(0));
         }
     }
 }

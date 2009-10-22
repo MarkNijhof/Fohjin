@@ -17,8 +17,9 @@ namespace Fohjin.DDD.CommandHandlers
         {
             var activeAccount = _repository.GetById<ActiveAccount>(command.Id);
 
-            activeAccount.Close();
+            var closedAccount = activeAccount.Close();
 
+            _repository.Save(closedAccount);
             _repository.Save(activeAccount);
         }
     }

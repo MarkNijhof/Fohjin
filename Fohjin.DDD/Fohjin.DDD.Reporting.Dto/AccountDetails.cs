@@ -11,9 +11,8 @@ namespace Fohjin.DDD.Reporting.Dto
         public string AccountName { get; private set; }
         public decimal Balance { get; set; }
         public string AccountNumber { get; private set; }
-        public bool Active { get; private set; }
 
-        public AccountDetails(Guid id, Guid clientId, string accountName, decimal balance, string accountNumber, bool active)
+        public AccountDetails(Guid id, Guid clientId, string accountName, decimal balance, string accountNumber)
         {
             Id = id;
             ClientId = clientId;
@@ -21,7 +20,6 @@ namespace Fohjin.DDD.Reporting.Dto
             AccountName = accountName;
             Balance = balance;
             AccountNumber = accountNumber;
-            Active = active;
         }
     }
 }

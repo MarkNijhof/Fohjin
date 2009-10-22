@@ -16,6 +16,7 @@ namespace Fohjin.DDD.Configuration
             ForRequestedType<ISqlInsertBuilder>().TheDefault.Is.OfConcreteType<SqlInsertBuilder>();
             ForRequestedType<ISqlSelectBuilder>().TheDefault.Is.OfConcreteType<SqlSelectBuilder>();
             ForRequestedType<ISqlUpdateBuilder>().TheDefault.Is.OfConcreteType<SqlUpdateBuilder>();
+            ForRequestedType<ISqlDeleteBuilder>().TheDefault.Is.OfConcreteType<SqlDeleteBuilder>();
 
             ForRequestedType<IReportingRepository>().TheDefault.Is.OfConcreteType<SQLiteReportingRepository>()
                 .WithCtorArg("sqLiteConnectionString").EqualTo(sqLiteConnectionString);

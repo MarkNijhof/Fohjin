@@ -3,10 +3,12 @@ using System.Linq;
 using System.Collections.Generic;
 using Fohjin.DDD.CommandHandlers;
 using Fohjin.DDD.Commands;
+using Fohjin.DDD.Contracts;
 using Fohjin.DDD.Domain.Entities;
 using Fohjin.DDD.Domain.Exceptions;
 using Fohjin.DDD.Events;
 using Fohjin.DDD.Events.Client;
+using Moq;
 
 namespace Test.Fohjin.DDD.Commands
 {
@@ -232,6 +234,12 @@ namespace Test.Fohjin.DDD.Commands
         {
             events.Last<ClientGotAnAccountAssignedEvent>().AccountId.WillNotBe(new Guid());
         }
+
+        [Then]
+        public void Then_the_newly_created_account_will_be_saved()
+        {
+            GetMock<IDomainRepository>().Verify(x => x.Save(It.IsAny<ActiveAccount>()));
+        }
     }
 
     public class When_providing_an_add_new_account_to_client_command_on_a_not_created_client : CommandTestFixture<AddNewAccountToClientCommand, AddNewAccountToClientCommandHandler, Client>
@@ -256,6 +264,12 @@ namespace Test.Fohjin.DDD.Commands
         public void Then_the_throw_exception_message_will_be()
         {
             caught.Message.WillBe("The Client is not created and no opperations can be executed on it");
+        }
+
+        [Then]
+        public void Then_the_newly_created_account_will_be_not_saved()
+        {
+            GetMock<IDomainRepository>().Verify(x => x.Save(It.IsAny<ActiveAccount>()), Times.Never());
         }
     }
 }

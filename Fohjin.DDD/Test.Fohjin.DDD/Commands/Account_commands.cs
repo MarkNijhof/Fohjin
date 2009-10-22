@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.Generic;
 using Fohjin.DDD.CommandHandlers;
 using Fohjin.DDD.Commands;
+using Fohjin.DDD.Contracts;
 using Fohjin.DDD.Domain;
 using Fohjin.DDD.Domain.Entities;
 using Fohjin.DDD.Domain.Exceptions;
@@ -11,6 +12,7 @@ using Fohjin.DDD.Events.ActiveAccount;
 using Fohjin.DDD.Reporting.Dto;
 using Fohjin.DDD.Reporting.Infrastructure;
 using Moq;
+using ClosedAccount=Fohjin.DDD.Domain.Entities.ClosedAccount;
 
 namespace Test.Fohjin.DDD.Commands
 {
@@ -84,6 +86,12 @@ namespace Test.Fohjin.DDD.Commands
         public void Then_it_will_generate_an_account_created_event()
         {
             events.Last().WillBeOfType<AccountClosedEvent>();
+        }
+
+        [Then]
+        public void Then_the_newly_created_closed_account_will_be_saved()
+        {
+            GetMock<IDomainRepository>().Verify(x => x.Save(It.IsAny<ClosedAccount>()));
         }
     }
 
@@ -451,7 +459,7 @@ namespace Test.Fohjin.DDD.Commands
         {
             GetMock<IReportingRepository>()
                 .Setup(x => x.GetByExample<Account>(It.IsAny<object>()))
-                .Returns(new List<Account> { new Account(Guid.NewGuid(), Guid.NewGuid(), "AccountName", "1234567890", true) });
+                .Returns(new List<Account> { new Account(Guid.NewGuid(), Guid.NewGuid(), "AccountName", "1234567890") });
 
             return new TransferMoneyFromAnOtherAccountCommand(Guid.NewGuid(), 10.0M, "1234567890");
         }
@@ -475,7 +483,7 @@ namespace Test.Fohjin.DDD.Commands
         {
             GetMock<IReportingRepository>()
                 .Setup(x => x.GetByExample<Account>(It.IsAny<object>()))
-                .Returns(new List<Account> { new Account(Guid.NewGuid(), Guid.NewGuid(), "AccountName", "1234567890", true) });
+                .Returns(new List<Account> { new Account(Guid.NewGuid(), Guid.NewGuid(), "AccountName", "1234567890") });
 
             return new TransferMoneyFromAnOtherAccountCommand(Guid.NewGuid(), 5.0M, "1234567890");
         }
@@ -517,7 +525,7 @@ namespace Test.Fohjin.DDD.Commands
         {
             GetMock<IReportingRepository>()
                 .Setup(x => x.GetByExample<Account>(It.IsAny<object>()))
-                .Returns(new List<Account> {new Account(Guid.NewGuid(), Guid.NewGuid(), "AccountName", "1234567890", true)});
+                .Returns(new List<Account> {new Account(Guid.NewGuid(), Guid.NewGuid(), "AccountName", "1234567890")});
 
             return new TransferMoneyFromAnOtherAccountCommand(Guid.NewGuid(), 10.0M, "1234567890");
         }
