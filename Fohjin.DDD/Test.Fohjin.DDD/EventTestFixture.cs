@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Fohjin.DDD.Bus;
+using Fohjin.DDD.Contracts;
 using Fohjin.DDD.EventHandlers;
-using Fohjin.DDD.Reporting.Infrastructure;
 using Moq;
 using NUnit.Framework;
 

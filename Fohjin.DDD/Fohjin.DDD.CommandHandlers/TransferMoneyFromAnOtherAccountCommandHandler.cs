@@ -4,7 +4,6 @@ using Fohjin.DDD.Contracts;
 using Fohjin.DDD.Domain.Entities;
 using Fohjin.DDD.Domain.ValueObjects;
 using Fohjin.DDD.Reporting.Dto;
-using Fohjin.DDD.Reporting.Infrastructure;
 
 namespace Fohjin.DDD.CommandHandlers
 {

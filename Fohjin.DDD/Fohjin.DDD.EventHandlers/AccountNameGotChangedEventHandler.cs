@@ -1,6 +1,6 @@
+using Fohjin.DDD.Contracts;
 using Fohjin.DDD.Events.ActiveAccount;
 using Fohjin.DDD.Reporting.Dto;
-using Fohjin.DDD.Reporting.Infrastructure;
 
 namespace Fohjin.DDD.EventHandlers
 {

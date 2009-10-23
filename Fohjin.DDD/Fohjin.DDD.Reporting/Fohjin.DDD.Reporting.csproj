@@ -49,7 +49,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Infrastructure\IReportingRepository.cs" />
     <Compile Include="Infrastructure\SqlDeleteBuilder.cs" />
     <Compile Include="Infrastructure\SQLiteReportingRepository.cs" />
     <Compile Include="Infrastructure\SqlCreateBuilder.cs" />
@@ -60,6 +59,10 @@
     <Compile Include="Infrastructure\SqlSelectBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Fohjin.DDD.Contracts\Fohjin.DDD.Contracts.csproj">
+      <Project>{F18EACDA-7B90-4244-B5B8-9B764F46FF60}</Project>
+      <Name>Fohjin.DDD.Contracts</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Fohjin.DDD.Reporting.Dto\Fohjin.DDD.Reporting.Dto.csproj">
       <Project>{44666AF0-AC7A-486E-AD1F-49FD0573ED43}</Project>
       <Name>Fohjin.DDD.Reporting.Dto</Name>

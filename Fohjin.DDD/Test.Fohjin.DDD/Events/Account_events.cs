@@ -1,8 +1,8 @@
 using System;
+using Fohjin.DDD.Contracts;
 using Fohjin.DDD.EventHandlers;
 using Fohjin.DDD.Events.ActiveAccount;
 using Fohjin.DDD.Reporting.Dto;
-using Fohjin.DDD.Reporting.Infrastructure;
 using Moq;
 
 namespace Test.Fohjin.DDD.Events

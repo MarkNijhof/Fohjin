@@ -1,5 +1,6 @@
 using Fohjin.DDD.Bus;
 using Fohjin.DDD.Bus.Implementation;
+using Fohjin.DDD.Contracts;
 using Fohjin.DDD.Reporting.Infrastructure;
 using StructureMap.Configuration.DSL;
 

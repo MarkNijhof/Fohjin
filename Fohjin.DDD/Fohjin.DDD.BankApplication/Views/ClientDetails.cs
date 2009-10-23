@@ -88,8 +88,18 @@ namespace Fohjin.DDD.BankApplication.Views
 
         public IEnumerable<ClosedAccount> ClosedAccounts
         {
-            get { return (IEnumerable<ClosedAccount>)_accounts.DataSource; }
-            set { _accounts.DataSource = value; }
+            get { return (IEnumerable<ClosedAccount>)_closedAccounts.DataSource; }
+            set { _closedAccounts.DataSource = value; }
+        }
+
+        public Account GetSelectedAccount()
+        {
+            return (Account)_accounts.SelectedItem;
+        }
+
+        public ClosedAccount GetSelectedClosedAccount()
+        {
+            return (ClosedAccount)_closedAccounts.SelectedItem;
         }
 
         public string PhoneNumber
@@ -122,16 +132,6 @@ namespace Fohjin.DDD.BankApplication.Views
         public string PhoneNumberLabel
         {
             set { _phoneNumberLabel.Text = value; }
-        }
-
-        public Account GetSelectedAccount()
-        {
-            return (Account)_accounts.SelectedItem;
-        }
-
-        public ClosedAccount GetSelectedClosedAccount()
-        {
-            return (ClosedAccount)_closedAccounts.SelectedItem;
         }
 
         public void DisableAddNewAccountMenu()

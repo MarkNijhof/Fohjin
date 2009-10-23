@@ -1,8 +1,8 @@
 using System;
+using Fohjin.DDD.Contracts;
 using Fohjin.DDD.EventHandlers;
 using Fohjin.DDD.Events.Client;
 using Fohjin.DDD.Reporting.Dto;
-using Fohjin.DDD.Reporting.Infrastructure;
 using Moq;
 using NUnit.Framework;
 

@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.SQLite;
 using System.Linq;
 using System.Reflection;
+using Fohjin.DDD.Contracts;
 
 namespace Fohjin.DDD.Reporting.Infrastructure
 {

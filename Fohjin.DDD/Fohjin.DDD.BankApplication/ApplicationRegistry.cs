@@ -11,10 +11,12 @@ namespace Fohjin.DDD.BankApplication
             ForRequestedType<IClientSearchFormPresenter>().TheDefaultIsConcreteType<ClientSearchFormPresenter>();
             ForRequestedType<IClientDetailsPresenter>().TheDefaultIsConcreteType<ClientDetailsPresenter>();
             ForRequestedType<IAccountDetailsPresenter>().TheDefaultIsConcreteType<AccountDetailsPresenter>();
+            ForRequestedType<IPopupPresenter>().TheDefaultIsConcreteType<PopupPresenter>();
 
             ForRequestedType<IClientSearchFormView>().TheDefaultIsConcreteType<ClientSearchForm>();
             ForRequestedType<IClientDetailsView>().TheDefaultIsConcreteType<ClientDetails>();
             ForRequestedType<IAccountDetailsView>().TheDefaultIsConcreteType<AccountDetails>();
+            ForRequestedType<IPopupView>().TheDefaultIsConcreteType<Popup>();
         }
     }
 }

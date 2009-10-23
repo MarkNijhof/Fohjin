@@ -64,7 +64,9 @@
     <Compile Include="Presenters\IAccountDetailsPresenter.cs" />
     <Compile Include="Presenters\IClientDetailsPresenter.cs" />
     <Compile Include="Presenters\IClientSearchFormPresenter.cs" />
+    <Compile Include="Presenters\IPopupPresenter.cs" />
     <Compile Include="Presenters\IPresenter.cs" />
+    <Compile Include="Presenters\PopupPresenter.cs" />
     <Compile Include="Views\AccountDetails.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -100,6 +102,9 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\Popup.resx">
+      <DependentUpon>Popup.cs</DependentUpon>
+    </EmbeddedResource>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
@@ -116,7 +121,14 @@
     <Compile Include="Views\IAccountDetailsView.cs" />
     <Compile Include="Views\IClientDetailsView.cs" />
     <Compile Include="Views\IClientSearchFormView.cs" />
+    <Compile Include="Views\IPopupView.cs" />
     <Compile Include="Views\IView.cs" />
+    <Compile Include="Views\Popup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Popup.Designer.cs">
+      <DependentUpon>Popup.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Fohjin.DDD.Bus.Implementation\Fohjin.DDD.Bus.Implementation.csproj">
@@ -138,6 +150,10 @@
     <ProjectReference Include="..\Fohjin.DDD.Configuration\Fohjin.DDD.Configuration.csproj">
       <Project>{CF50373D-3EB9-492D-A88F-70D7D6756DFF}</Project>
       <Name>Fohjin.DDD.Configuration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fohjin.DDD.Contracts\Fohjin.DDD.Contracts.csproj">
+      <Project>{F18EACDA-7B90-4244-B5B8-9B764F46FF60}</Project>
+      <Name>Fohjin.DDD.Contracts</Name>
     </ProjectReference>
     <ProjectReference Include="..\Fohjin.DDD.Reporting.Dto\Fohjin.DDD.Reporting.Dto.csproj">
       <Project>{44666AF0-AC7A-486E-AD1F-49FD0573ED43}</Project>

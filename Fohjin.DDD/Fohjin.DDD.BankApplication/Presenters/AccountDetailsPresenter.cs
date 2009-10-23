@@ -3,8 +3,8 @@ using System.Linq;
 using Fohjin.DDD.BankApplication.Views;
 using Fohjin.DDD.Bus;
 using Fohjin.DDD.Commands;
+using Fohjin.DDD.Contracts;
 using Fohjin.DDD.Reporting.Dto;
-using Fohjin.DDD.Reporting.Infrastructure;
 using AccountDetails=Fohjin.DDD.Reporting.Dto.AccountDetails;
 
 namespace Fohjin.DDD.BankApplication.Presenters
@@ -15,13 +15,16 @@ namespace Fohjin.DDD.BankApplication.Presenters
         private Account _account;
         private AccountDetails _accountDetails;
         private readonly IAccountDetailsView _accountDetailsView;
+        private readonly IPopupPresenter _popupPresenter;
         private readonly ICommandBus _bus;
         private readonly IReportingRepository _reportingRepository;
 
-        public AccountDetailsPresenter(IAccountDetailsView accountDetailsView, ICommandBus bus, IReportingRepository reportingRepository) : base(accountDetailsView)
+        public AccountDetailsPresenter(IAccountDetailsView accountDetailsView, IPopupPresenter popupPresenter, ICommandBus bus, IReportingRepository reportingRepository)
+            : base(accountDetailsView)
         {
             _editStep = 0;
             _accountDetailsView = accountDetailsView;
+            _popupPresenter = popupPresenter;
             _bus = bus;
             _reportingRepository = reportingRepository;
         }
@@ -54,12 +57,15 @@ namespace Fohjin.DDD.BankApplication.Presenters
 
         public void CloseTheAccount()
         {
-            if (_accountDetails == null)
-                return;
+            _popupPresenter.CatchPossibleException(() =>
+            {
+                if (_accountDetails == null)
+                    return;
 
-            _bus.Publish(new CloseAccountCommand(_account.Id));
+                _bus.Publish(new CloseAccountCommand(_account.Id));
 
-            _accountDetailsView.Close();
+                _accountDetailsView.Close();
+            });
         }
 
         public void Cancel()
@@ -104,53 +110,65 @@ namespace Fohjin.DDD.BankApplication.Presenters
 
         public void ChangeAccountName()
         {
-            _bus.Publish(new AccountNameGotChangedCommand(
-                _accountDetails.Id,
-                _accountDetailsView.AccountName));
+            _popupPresenter.CatchPossibleException(() =>
+            {
+                _bus.Publish(new AccountNameGotChangedCommand(
+                                 _accountDetails.Id,
+                                 _accountDetailsView.AccountName));
 
-            _accountDetails = new AccountDetails(
-                _accountDetails.Id,
-                _accountDetails.ClientId,
-                _accountDetailsView.AccountName,
-                _accountDetails.Balance,
-                _accountDetails.AccountNumber);
+                _accountDetails = new AccountDetails(
+                    _accountDetails.Id,
+                    _accountDetails.ClientId,
+                    _accountDetailsView.AccountName,
+                    _accountDetails.Balance,
+                    _accountDetails.AccountNumber);
 
-            _accountDetailsView.EnableMenuButtons();
-            _accountDetailsView.EnableDetailsPanel();
+                _accountDetailsView.EnableMenuButtons();
+                _accountDetailsView.EnableDetailsPanel();
+            });
         }
 
         public void DepositeMoney()
         {
-            _bus.Publish(new CashDepositeCommand(
-                _accountDetails.Id,
-                _accountDetailsView.DepositeAmount));
+            _popupPresenter.CatchPossibleException(() =>
+            {
+                _bus.Publish(new CashDepositeCommand(
+                                 _accountDetails.Id,
+                                 _accountDetailsView.DepositeAmount));
 
-            _accountDetailsView.DepositeAmount = 0;
-            _accountDetailsView.EnableMenuButtons();
-            _accountDetailsView.EnableDetailsPanel();
+                _accountDetailsView.DepositeAmount = 0;
+                _accountDetailsView.EnableMenuButtons();
+                _accountDetailsView.EnableDetailsPanel();
+            });
         }
 
         public void WithdrawlMoney()
         {
-            _bus.Publish(new CashWithdrawlCommand(
-                _accountDetails.Id,
-                _accountDetailsView.WithdrawlAmount));
+            _popupPresenter.CatchPossibleException(() =>
+            {
+                _bus.Publish(new CashWithdrawlCommand(
+                                 _accountDetails.Id,
+                                 _accountDetailsView.WithdrawlAmount));
 
-            _accountDetailsView.WithdrawlAmount = 0;
-            _accountDetailsView.EnableMenuButtons();
-            _accountDetailsView.EnableDetailsPanel();
+                _accountDetailsView.WithdrawlAmount = 0;
+                _accountDetailsView.EnableMenuButtons();
+                _accountDetailsView.EnableDetailsPanel();
+            });
         }
 
         public void TransferMoney()
         {
-            _bus.Publish(new TransferMoneyToAnOtherAccountCommand(
-                _accountDetails.Id,
-                _accountDetailsView.TransferAmount,
-                _accountDetailsView.GetSelectedTransferAccount().AccountNumber));
+            _popupPresenter.CatchPossibleException(() =>
+            {
+                _bus.Publish(new TransferMoneyToAnOtherAccountCommand(
+                                 _accountDetails.Id,
+                                 _accountDetailsView.TransferAmount,
+                                 _accountDetailsView.GetSelectedTransferAccount().AccountNumber));
 
-            _accountDetailsView.TransferAmount = 0;
-            _accountDetailsView.EnableMenuButtons();
-            _accountDetailsView.EnableDetailsPanel();
+                _accountDetailsView.TransferAmount = 0;
+                _accountDetailsView.EnableMenuButtons();
+                _accountDetailsView.EnableDetailsPanel();
+            });
         }
 
         public void Refresh()

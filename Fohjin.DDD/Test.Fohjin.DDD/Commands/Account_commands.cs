@@ -10,7 +10,6 @@ using Fohjin.DDD.Domain.Exceptions;
 using Fohjin.DDD.Events;
 using Fohjin.DDD.Events.ActiveAccount;
 using Fohjin.DDD.Reporting.Dto;
-using Fohjin.DDD.Reporting.Infrastructure;
 using Moq;
 using ClosedAccount=Fohjin.DDD.Domain.Entities.ClosedAccount;
 

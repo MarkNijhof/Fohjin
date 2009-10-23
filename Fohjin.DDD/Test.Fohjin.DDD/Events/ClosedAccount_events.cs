@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
+using Fohjin.DDD.Contracts;
 using Fohjin.DDD.EventHandlers;
 using Fohjin.DDD.Events.ClosedAccount;
 using Fohjin.DDD.Reporting.Dto;
-using Fohjin.DDD.Reporting.Infrastructure;
 using Moq;
 using ClosedAccount=Fohjin.DDD.Reporting.Dto.ClosedAccount;
 using Ledger=Fohjin.DDD.Reporting.Dto.Ledger;
