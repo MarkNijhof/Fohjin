@@ -59,12 +59,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
 
             _bus.Publish(new CloseAccountCommand(_account.Id));
 
-            _accountDetails = new AccountDetails(
-                _accountDetails.Id,
-                _accountDetails.ClientId,
-                _accountDetails.AccountName,
-                _accountDetails.Balance,
-                _accountDetails.AccountNumber);
+            _accountDetailsView.Close();
         }
 
         public void Cancel()
