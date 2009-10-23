@@ -17,6 +17,8 @@ namespace Fohjin.DDD.Configuration
             typeof(ClientDetails), 
             typeof(Account), 
             typeof(AccountDetails), 
+            typeof(ClosedAccount), 
+            typeof(ClosedAccountDetails), 
             typeof(Ledger),
         };
         private readonly SqlCreateBuilder _sqlCreateBuilder = new SqlCreateBuilder();

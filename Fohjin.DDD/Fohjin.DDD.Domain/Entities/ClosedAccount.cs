@@ -9,10 +9,19 @@ namespace Fohjin.DDD.Domain.Entities
 {
     public class ClosedAccount : BaseAggregateRoot, IOrginator
     {
+        private Guid _originalAccountId;
+        private Guid _clientId;
+        private AccountName _accountName;
+        private AccountNumber _accountNumber;
         private readonly List<Ledger> _ledgers;
 
         public ClosedAccount()
         {
+            Id = new Guid();
+            _accountName = new AccountName(string.Empty);
+            _accountNumber = new AccountNumber(string.Empty);
+            Version = 0;
+            EventVersion = 0;
             _ledgers = new List<Ledger>();
 
             registerEvents();
@@ -23,7 +32,7 @@ namespace Fohjin.DDD.Domain.Entities
             var Ledgers = new List<KeyValuePair<string, string>>();
             ledgers.ForEach(x => Ledgers.Add(new KeyValuePair<string, string>(x.GetType().Name, string.Format("{0}|{1}", ((decimal)x.Amount), x.Account.Number))));
 
-            Apply(new ClosedAccountCreatedEvent(accountId, clientId, Ledgers, accountName, accountNumber));
+            Apply(new ClosedAccountCreatedEvent(Guid.NewGuid(), accountId, clientId, Ledgers, accountName, accountNumber));
         }
 
         public static ClosedAccount CreateNew(Guid accountId, Guid clientId, List<Ledger> ledgers, AccountName accountName, AccountNumber accountNumber)
@@ -33,7 +42,7 @@ namespace Fohjin.DDD.Domain.Entities
 
         public IMemento CreateMemento()
         {
-            return new ClosedAccountMemento(Id, Version, _ledgers);
+            return new ClosedAccountMemento(Id, Version, _originalAccountId, _clientId, _accountName.Name, _accountNumber.Number, _ledgers);
         }
 
         public void SetMemento(IMemento memento)
@@ -41,6 +50,10 @@ namespace Fohjin.DDD.Domain.Entities
             var closedAccountMemento = (ClosedAccountMemento)memento;
             Id = closedAccountMemento.Id;
             Version = closedAccountMemento.Version;
+            _originalAccountId = closedAccountMemento.OriginalAccountId;
+            _clientId = closedAccountMemento.ClientId;
+            _accountName = new AccountName(closedAccountMemento.AccountName);
+            _accountNumber = new AccountNumber(closedAccountMemento.AccountNumber);
 
             foreach (var ledger in closedAccountMemento.Ledgers)
             {
@@ -69,7 +82,11 @@ namespace Fohjin.DDD.Domain.Entities
 
         private void onClosedAccountCreated(ClosedAccountCreatedEvent closedAccountCreatedEvent)
         {
-            Id = closedAccountCreatedEvent.ClientId;
+            Id = closedAccountCreatedEvent.AccountId;
+            _originalAccountId = closedAccountCreatedEvent.OriginalAccountId;
+            _clientId = closedAccountCreatedEvent.ClientId;
+            _accountName = new AccountName(closedAccountCreatedEvent.AccountName);
+            _accountNumber = new AccountNumber(closedAccountCreatedEvent.AccountNumber);
 
             foreach (var ledger in closedAccountCreatedEvent.Ledgers)
             {

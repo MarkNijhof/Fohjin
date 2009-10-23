@@ -76,6 +76,13 @@ namespace Fohjin.DDD.BankApplication.Presenters
             _accountDetailsPresenter.Display();
         }
 
+        public void OpenSelectedClosedAccount()
+        {
+            var client = _clientDetailsView.GetSelectedClosedAccount();
+            _accountDetailsPresenter.SetAccount(client);
+            _accountDetailsPresenter.Display();
+        }
+
         public void FormElementGotChanged()
         {
             _clientDetailsView.DisableSaveButton();
@@ -311,6 +318,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
             _clientDetailsView.City = _clientDetails.City;
             _clientDetailsView.PhoneNumber = _clientDetails.PhoneNumber;
             _clientDetailsView.Accounts = _clientDetails.Accounts;
+            _clientDetailsView.ClosedAccounts = _clientDetails.ClosedAccounts;
         }
 
         private void EnableAllMenuButtons() 

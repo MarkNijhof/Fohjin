@@ -12,11 +12,12 @@ namespace Test.Fohjin.DDD.Events
 {
     public class Providing_an_new_closed_account_created_event : EventTestFixture<ClosedAccountCreatedEvent, ClosedAccountCreatedEventHandler>
     {
-        private static Guid _accountId;
+        private static Guid _orginalAccountId;
         private static Guid _clientId;
         private ClosedAccount _save_closed_account;
         private ClosedAccountDetails _save_closed_account_details;
         private List<KeyValuePair<string, string>> ledgers;
+        private Guid _accountId;
 
         protected override void MockSetup()
         {
@@ -32,6 +33,7 @@ namespace Test.Fohjin.DDD.Events
         protected override ClosedAccountCreatedEvent When()
         {
             _accountId = Guid.NewGuid();
+            _orginalAccountId = Guid.NewGuid();
             _clientId = Guid.NewGuid();
 
             ledgers = new List<KeyValuePair<string, string>>
@@ -42,7 +44,7 @@ namespace Test.Fohjin.DDD.Events
                 new KeyValuePair<string, string>("DebitTransfer" , "15.0|0987654321"),
             };
 
-            var closedAccountCreatedEvent = new ClosedAccountCreatedEvent(_accountId, _clientId, ledgers, "Closed Account", "1234567890");
+            var closedAccountCreatedEvent = new ClosedAccountCreatedEvent(_accountId, _orginalAccountId, _clientId, ledgers, "Closed Account", "1234567890");
             return closedAccountCreatedEvent;
         }
 
@@ -65,20 +67,6 @@ namespace Test.Fohjin.DDD.Events
         {
             GetMock<IReportingRepository>()
                 .Verify(x => x.Save(It.IsAny<Ledger>()), Times.Exactly(4));
-        }
-
-        [Then]
-        public void Then_it_will_call_the_repository_is_called_to_delete_the_account_dto()
-        {
-            GetMock<IReportingRepository>()
-                .Verify(x => x.Delete<Account>(It.IsAny<object>()), Times.Once());
-        }
-
-        [Then]
-        public void Then_it_will_call_the_repository_is_called_to_delete_the_account_details_dto()
-        {
-            GetMock<IReportingRepository>()
-                .Verify(x => x.Delete<AccountDetails>(It.IsAny<object>()), Times.Once());
         }
 
         [Then]

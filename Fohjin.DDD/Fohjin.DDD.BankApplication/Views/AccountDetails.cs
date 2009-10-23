@@ -35,7 +35,7 @@ namespace Fohjin.DDD.BankApplication.Views
             changeAccountNameToolStripMenuItem.Click += (e, s) => OnInitiateAccountNameChange();
             closeAccountToolStripMenuItem.Click += (e, s) => OnCloseTheAccount();
             makeCashMutationToolStripMenuItem.Click += (e, s) => OnInitiateMoneyDeposite();
-            makeCashWithdrawlToolStripMenuItem.Click += (e, s) => OnInitiateMoneyDeposite();
+            makeCashWithdrawlToolStripMenuItem.Click += (e, s) => OnInitiateMoneyWithdrawl();
             transferMoneyToolStripMenuItem.Click += (e, s) => OnInitiateMoneyTransfer();
             _depositeCancelButton.Click += (e, s) => OnCancel();
             _depositeButton.Click += (e, s) => OnDepositeMoney();

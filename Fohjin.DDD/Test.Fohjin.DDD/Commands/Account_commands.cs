@@ -95,6 +95,26 @@ namespace Test.Fohjin.DDD.Commands
         }
     }
 
+    public class When_providing_a_close_account_command_on_a_created_ActiveAccount_with_a_positive_balance : CommandTestFixture<CloseAccountCommand, CloseAccountCommandHandler, ActiveAccount>
+    {
+        protected override IEnumerable<IDomainEvent> Given()
+        {
+            yield return PrepareDomainEvent.Set(new AccountCreatedEvent(Guid.NewGuid(), Guid.NewGuid(), "AccountName", "1234567890")).ToVersion(1);
+            yield return PrepareDomainEvent.Set(new DepositeEvent(20, 20)).ToVersion(1);
+        }
+
+        protected override CloseAccountCommand When()
+        {
+            return new CloseAccountCommand(Guid.NewGuid());
+        }
+
+        [Then]
+        public void Then_it_will_throw_an_exception()
+        {
+            caught.WillBeOfType<AccountMustFirstBeEmptiedBeforeClosingException>();
+        }
+    }
+
     public class When_providing_a_close_account_command_on_a_closed_ActiveAccount : CommandTestFixture<CloseAccountCommand, CloseAccountCommandHandler, ActiveAccount>
     {
         protected override IEnumerable<IDomainEvent> Given()

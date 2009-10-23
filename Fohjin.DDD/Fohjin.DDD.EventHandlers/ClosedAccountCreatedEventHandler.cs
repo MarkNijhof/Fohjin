@@ -19,6 +19,9 @@ namespace Fohjin.DDD.EventHandlers
             var closedAccount = new ClosedAccount(theEvent.AccountId, theEvent.ClientId, theEvent.AccountName, theEvent.AccountNumber);
             var closedAccountDetails = new ClosedAccountDetails(theEvent.AccountId, theEvent.ClientId, theEvent.AccountName, 0, theEvent.AccountNumber);
 
+            _reportingRepository.Save(closedAccount);
+            _reportingRepository.Save(closedAccountDetails);
+
             foreach (var ledger in theEvent.Ledgers)
             {
                 var split = ledger.Value.Split(new[] { '|' });
@@ -26,11 +29,6 @@ namespace Fohjin.DDD.EventHandlers
                 var account = split[1];
                 _reportingRepository.Save(new Ledger(Guid.NewGuid(), theEvent.AccountId, GetDescription(ledger.Key, account), amount));
             }
-
-            _reportingRepository.Save(closedAccount);
-            _reportingRepository.Save(closedAccountDetails);
-            _reportingRepository.Delete<Account>(new { Id = theEvent.AccountId });
-            _reportingRepository.Delete<AccountDetails>(new { Id = theEvent.AccountId });
         }
 
         private static string GetDescription(string transferType, string accountNumber)

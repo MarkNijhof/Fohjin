@@ -53,6 +53,8 @@ namespace Fohjin.DDD.Domain.Entities
         {
             Guard();
 
+            IsAccountBalanceZero();
+
             var closedAccount = ClosedAccount.CreateNew(Id, _clientId, _ledgers, _accountName, _accountNumber);
             Apply(new AccountClosedEvent());
             return closedAccount;
@@ -100,11 +102,11 @@ namespace Fohjin.DDD.Domain.Entities
 
         private void Guard()
         {
-            IsAccountCreated();
+            IsAccountNotCreated();
             IsAccountClosed();
         }
 
-        private void IsAccountCreated()
+        private void IsAccountNotCreated()
         {
             if (Id == new Guid())
                 throw new AccountWasNotCreatedException("The ActiveAcount is not created and no opperations can be executed on it");
@@ -122,9 +124,15 @@ namespace Fohjin.DDD.Domain.Entities
                 throw new AccountBalanceIsToLowException(string.Format("The amount {0} is larger than your current balance {1}", (decimal)amount, (decimal)_balance));
         }
 
+        private void IsAccountBalanceZero()
+        {
+            if (_balance != 0.0M)
+                throw new AccountMustFirstBeEmptiedBeforeClosingException(string.Format("The current balance is {0} this must first be transfered to an other account", (decimal)_balance));
+        }
+
         IMemento IOrginator.CreateMemento()
         {
-            return new ActiveAccountMemento(Id, Version, _accountName.Name, _accountNumber.Number, _balance, _ledgers, _closed);
+            return new ActiveAccountMemento(Id, Version, _clientId, _accountName.Name, _accountNumber.Number, _balance, _ledgers, _closed);
         }
 
         void IOrginator.SetMemento(IMemento memento)
@@ -132,6 +140,7 @@ namespace Fohjin.DDD.Domain.Entities
             var accountMemento = (ActiveAccountMemento) memento;
             Id = accountMemento.Id;
             Version = accountMemento.Version;
+            _clientId = accountMemento.ClientId;
             _accountName = new AccountName(accountMemento.AccountName);
             _accountNumber = new AccountNumber(accountMemento.AccountNumber);
             _balance = accountMemento.Balance;

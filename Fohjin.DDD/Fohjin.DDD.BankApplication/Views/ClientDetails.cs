@@ -18,6 +18,7 @@ namespace Fohjin.DDD.BankApplication.Views
         }
 
         public event Action OnOpenSelectedAccount;
+        public event Action OnOpenSelectedClosedAccount;
         public event Action OnFormElementGotChanged;
         public event Action OnCancel;
         public event Action OnSaveNewClientName;
@@ -41,6 +42,7 @@ namespace Fohjin.DDD.BankApplication.Views
             _clientNameSaveButton.Click += (e, s) => OnSaveNewClientName();
             _clientNameCancelButton.Click += (e, s) => OnCancel();
             _accounts.DoubleClick += (e, s) => OnOpenSelectedAccount();
+            _closedAccounts.DoubleClick += (e, s) => OnOpenSelectedClosedAccount();
             _addressCancelButton.Click += (e, s) => OnCancel();
             _addressSaveButton.Click += (e, s) => OnSaveNewAddress();
             _phoneNumberCancelButton.Click += (e, s) => OnCancel();
@@ -84,6 +86,12 @@ namespace Fohjin.DDD.BankApplication.Views
             set { _accounts.DataSource = value; }
         }
 
+        public IEnumerable<ClosedAccount> ClosedAccounts
+        {
+            get { return (IEnumerable<ClosedAccount>)_accounts.DataSource; }
+            set { _accounts.DataSource = value; }
+        }
+
         public string PhoneNumber
         {
             get { return _phoneNumber.Text; }
@@ -119,6 +127,11 @@ namespace Fohjin.DDD.BankApplication.Views
         public Account GetSelectedAccount()
         {
             return (Account)_accounts.SelectedItem;
+        }
+
+        public ClosedAccount GetSelectedClosedAccount()
+        {
+            return (ClosedAccount)_closedAccounts.SelectedItem;
         }
 
         public void DisableAddNewAccountMenu()

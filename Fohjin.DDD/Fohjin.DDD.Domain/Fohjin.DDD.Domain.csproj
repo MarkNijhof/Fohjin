@@ -58,6 +58,7 @@
     <Compile Include="Entities\Mementos\ClientMemento.cs" />
     <Compile Include="Entities\Mementos\ClosedAccountMemento.cs" />
     <Compile Include="Exceptions\AccountBalanceIsToLowException.cs" />
+    <Compile Include="Exceptions\AccountMustFirstBeEmptiedBeforeClosingException.cs" />
     <Compile Include="Exceptions\AccountWasClosedException.cs" />
     <Compile Include="Exceptions\AccountWasNotCreatedException.cs" />
     <Compile Include="Exceptions\ClientWasNotCreatedException.cs" />

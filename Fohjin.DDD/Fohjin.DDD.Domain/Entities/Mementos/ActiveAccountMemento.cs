@@ -8,16 +8,18 @@ namespace Fohjin.DDD.Domain.Entities.Mementos
     {
         internal Guid Id { get; private set; }
         internal int Version { get; private set; }
+        internal Guid ClientId { get; private set; }
         internal string AccountName { get; private set; }
         internal string AccountNumber { get; set; }
         internal decimal Balance { get; private set; }
         internal bool Closed { get; private set; }
         internal List<KeyValuePair<string, string>> Ledgers { get; private set; }
 
-        public ActiveAccountMemento(Guid id, int version, string accountName, string accountNumber, decimal balance, List<Ledger> ledgers, bool closed)
+        public ActiveAccountMemento(Guid id, int version, Guid clientId, string accountName, string accountNumber, decimal balance, List<Ledger> ledgers, bool closed)
         {
             Id = id;
             Version = version;
+            ClientId = clientId;
             AccountName = accountName;
             AccountNumber = accountNumber;
             Balance = balance;

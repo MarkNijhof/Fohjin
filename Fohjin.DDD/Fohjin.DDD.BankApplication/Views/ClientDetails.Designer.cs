@@ -75,6 +75,8 @@
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this._newAccountName = new System.Windows.Forms.TextBox();
             this._refreshButton = new System.Windows.Forms.Button();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this._closedAccounts = new System.Windows.Forms.ListBox();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this._detailsTab.SuspendLayout();
@@ -88,6 +90,7 @@
             this._clientNameGroupBox.SuspendLayout();
             this._addNewAccount.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -154,17 +157,18 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 24);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(306, 256);
+            this.tabControl1.Size = new System.Drawing.Size(306, 378);
             this.tabControl1.TabIndex = 19;
             // 
             // _detailsTab
             // 
+            this._detailsTab.Controls.Add(this.groupBox4);
             this._detailsTab.Controls.Add(this.groupBox1);
             this._detailsTab.Controls.Add(this.groupBox2);
             this._detailsTab.Location = new System.Drawing.Point(4, 22);
             this._detailsTab.Name = "_detailsTab";
             this._detailsTab.Padding = new System.Windows.Forms.Padding(3);
-            this._detailsTab.Size = new System.Drawing.Size(298, 230);
+            this._detailsTab.Size = new System.Drawing.Size(298, 352);
             this._detailsTab.TabIndex = 0;
             this._detailsTab.Text = "tabPage1";
             this._detailsTab.UseVisualStyleBackColor = true;
@@ -547,11 +551,29 @@
             this._refreshButton.Text = "Refresh";
             this._refreshButton.UseVisualStyleBackColor = true;
             // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this._closedAccounts);
+            this.groupBox4.Location = new System.Drawing.Point(5, 228);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(285, 119);
+            this.groupBox4.TabIndex = 21;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Client closed accounts";
+            // 
+            // _closedAccounts
+            // 
+            this._closedAccounts.FormattingEnabled = true;
+            this._closedAccounts.Location = new System.Drawing.Point(6, 19);
+            this._closedAccounts.Name = "_closedAccounts";
+            this._closedAccounts.Size = new System.Drawing.Size(273, 95);
+            this._closedAccounts.TabIndex = 7;
+            // 
             // ClientDetails
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(306, 280);
+            this.ClientSize = new System.Drawing.Size(306, 402);
             this.Controls.Add(this._refreshButton);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.menuStrip1);
@@ -579,6 +601,7 @@
             this._addNewAccount.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
+            this.groupBox4.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -633,5 +656,7 @@
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.TextBox _newAccountName;
         private System.Windows.Forms.Button _refreshButton;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.ListBox _closedAccounts;
     }
 }

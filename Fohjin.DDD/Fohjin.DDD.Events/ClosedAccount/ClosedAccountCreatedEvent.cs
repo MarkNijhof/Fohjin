@@ -7,14 +7,16 @@ namespace Fohjin.DDD.Events.ClosedAccount
     public class ClosedAccountCreatedEvent : DomainEvent
     {
         public Guid AccountId { get; private set; }
+        public Guid OriginalAccountId { get; private set; }
         public Guid ClientId { get; private set; }
         public IList<KeyValuePair<string, string>> Ledgers { get; private set; }
         public string AccountName { get; private set; }
         public string AccountNumber { get; private set; }
 
-        public ClosedAccountCreatedEvent(Guid accoutId, Guid clientId, IList<KeyValuePair<string, string>> ledgers, string accountName, string accountNumber)
+        public ClosedAccountCreatedEvent(Guid accountId, Guid originalAccountId, Guid clientId, IList<KeyValuePair<string, string>> ledgers, string accountName, string accountNumber)
         {
-            AccountId = accoutId;
+            AccountId = accountId;
+            OriginalAccountId = originalAccountId;
             ClientId = clientId;
             Ledgers = ledgers;
             AccountName = accountName;

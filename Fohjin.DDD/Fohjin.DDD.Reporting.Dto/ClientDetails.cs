@@ -7,6 +7,7 @@ namespace Fohjin.DDD.Reporting.Dto
     {
         public Guid Id { get; private set; }
         public IEnumerable<Account> Accounts { get; private set; }
+        public IEnumerable<ClosedAccount> ClosedAccounts { get; private set; }
         public string ClientName { get; private set; }
         public string Street { get; private set; }
         public string StreetNumber { get; private set; }
@@ -18,6 +19,7 @@ namespace Fohjin.DDD.Reporting.Dto
         {
             Id = id;
             Accounts = new List<Account>();
+            ClosedAccounts = new List<ClosedAccount>();
             ClientName = clientName;
             Street = street;
             StreetNumber = streetNumber;

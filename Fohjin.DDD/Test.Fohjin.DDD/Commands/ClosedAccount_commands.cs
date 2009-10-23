@@ -43,7 +43,7 @@ namespace Test.Fohjin.DDD.Commands
         [Then]
         public void Then_the_generated_closed_account_created_event_will_contain_the_details_of_the_closed_account()
         {
-            events.Last<ClosedAccountCreatedEvent>().AccountId.WillBe(_accountId);
+            events.Last<ClosedAccountCreatedEvent>().OriginalAccountId.WillBe(_accountId);
             events.Last<ClosedAccountCreatedEvent>().ClientId.WillBe(_clientId);
             events.Last<ClosedAccountCreatedEvent>().AccountName.WillBe("Closed Account");
             events.Last<ClosedAccountCreatedEvent>().AccountNumber.WillBe("1234567890");

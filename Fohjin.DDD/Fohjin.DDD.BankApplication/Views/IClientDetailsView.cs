@@ -20,6 +20,9 @@ namespace Fohjin.DDD.BankApplication.Views
 
         IEnumerable<Account> Accounts { get; set; }
         Account GetSelectedAccount();
+
+        IEnumerable<ClosedAccount> ClosedAccounts { get; set; }
+        ClosedAccount GetSelectedClosedAccount();
         
         void EnableAddNewAccountMenu();
         void DisableAddNewAccountMenu();
@@ -39,6 +42,7 @@ namespace Fohjin.DDD.BankApplication.Views
         void EnableAddNewAccountPanel();
 
         event Action OnOpenSelectedAccount;
+        event Action OnOpenSelectedClosedAccount;
         event Action OnFormElementGotChanged;
         event Action OnCancel;
         event Action OnSaveNewClientName;
