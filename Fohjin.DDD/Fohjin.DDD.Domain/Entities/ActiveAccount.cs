@@ -80,16 +80,16 @@ namespace Fohjin.DDD.Domain.Entities
             Apply(new DepositeEvent(newBalance, amount));
         }
 
-        public void ReceiveTransferFrom(AccountNumber accountNumber, Amount amount)
+        public void ReceiveTransferFrom(AccountNumber sourceAccountNumber, Amount amount)
         {
             Guard();
 
             var newBalance = _balance.Deposite(amount);
 
-            Apply(new MoneyTransferedFromAnOtherAccountEvent(newBalance, amount, accountNumber.Number));
+            Apply(new MoneyTransferReceivedFromAnOtherAccountEvent(newBalance, amount, sourceAccountNumber.Number, _accountNumber.Number));
         }
 
-        public void SendTransferTo(AccountNumber accountNumber, Amount amount)
+        public void SendTransferTo(AccountNumber targetAccountNumber, Amount amount)
         {
             Guard();
 
@@ -97,7 +97,12 @@ namespace Fohjin.DDD.Domain.Entities
 
             var newBalance = _balance.Withdrawl(amount);
 
-            Apply(new MoneyTransferedToAnOtherAccountEvent(newBalance, amount, accountNumber.Number));
+            Apply(new MoneyTransferSendToAnOtherAccountEvent(newBalance, amount, _accountNumber.Number, targetAccountNumber.Number));
+        }
+
+        public void PreviousTransferFailed(AccountNumber accountNumber, Amount amount)
+        {
+            throw new NotImplementedException();
         }
 
         private void Guard()
@@ -173,20 +178,20 @@ namespace Fohjin.DDD.Domain.Entities
             RegisterEvent<WithdrawlEvent>(onWithdrawl);
             RegisterEvent<DepositeEvent>(onDeposite);
             RegisterEvent<AccountNameGotChangedEvent>(onAccountNameGotChanged);
-            RegisterEvent<MoneyTransferedFromAnOtherAccountEvent>(onMoneyTransferedFromAnOtherAccount);
-            RegisterEvent<MoneyTransferedToAnOtherAccountEvent>(onMoneyTransferedToAnOtherAccount);
+            RegisterEvent<MoneyTransferReceivedFromAnOtherAccountEvent>(onMoneyTransferedFromAnOtherAccount);
+            RegisterEvent<MoneyTransferSendToAnOtherAccountEvent>(onMoneyTransferedToAnOtherAccount);
         }
 
-        private void onMoneyTransferedToAnOtherAccount(MoneyTransferedToAnOtherAccountEvent moneyTransferedToAnOtherAccountEvent)
+        private void onMoneyTransferedToAnOtherAccount(MoneyTransferSendToAnOtherAccountEvent moneyTransferSendToAnOtherAccountEvent)
         {
-            _ledgers.Add(new CreditTransfer(moneyTransferedToAnOtherAccountEvent.Amount, new AccountNumber(moneyTransferedToAnOtherAccountEvent.OtherAccount)));
-            _balance = moneyTransferedToAnOtherAccountEvent.Balance;
+            _ledgers.Add(new CreditTransfer(moneyTransferSendToAnOtherAccountEvent.Amount, new AccountNumber(moneyTransferSendToAnOtherAccountEvent.TargetAccount)));
+            _balance = moneyTransferSendToAnOtherAccountEvent.Balance;
         }
 
-        private void onMoneyTransferedFromAnOtherAccount(MoneyTransferedFromAnOtherAccountEvent moneyTransferedFromAnOtherAccountEvent)
+        private void onMoneyTransferedFromAnOtherAccount(MoneyTransferReceivedFromAnOtherAccountEvent moneyTransferReceivedFromAnOtherAccountEvent)
         {
-            _ledgers.Add(new DebitTransfer(moneyTransferedFromAnOtherAccountEvent.Amount, new AccountNumber(moneyTransferedFromAnOtherAccountEvent.OtherAccount)));
-            _balance = moneyTransferedFromAnOtherAccountEvent.Balance;
+            _ledgers.Add(new DebitTransfer(moneyTransferReceivedFromAnOtherAccountEvent.Amount, new AccountNumber(moneyTransferReceivedFromAnOtherAccountEvent.TargetAccount)));
+            _balance = moneyTransferReceivedFromAnOtherAccountEvent.Balance;
         }
 
         private void onAccountNameGotChanged(AccountNameGotChangedEvent accountNameGotChangedEvent)

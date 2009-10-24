@@ -1,4 +1,5 @@
 using Fohjin.DDD.Configuration;
+using Fohjin.DDD.Services;
 using StructureMap;
 
 namespace Fohjin.DDD.BankApplication
@@ -17,6 +18,7 @@ namespace Fohjin.DDD.BankApplication
                 x.AddRegistry<ReportingRegistry>();
                 x.AddRegistry<CommandHandlerRegister>();
                 x.AddRegistry<EventHandlerRegister>();
+                x.AddRegistry<ServicesRegister>();
             });
             ObjectFactory.AssertConfigurationIsValid();
         }

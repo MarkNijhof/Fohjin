@@ -425,25 +425,25 @@ namespace Test.Fohjin.DDD.Commands
         [Then]
         public void Then_it_will_generate_an_account_created_event()
         {
-            events.Last().WillBeOfType<MoneyTransferedToAnOtherAccountEvent>();
+            events.Last().WillBeOfType<MoneyTransferSendToAnOtherAccountEvent>();
         }
 
         [Then]
         public void Then_it_will_generate_an_deposite_event_with_the_expected_ammount()
         {
-            events.Last<MoneyTransferedToAnOtherAccountEvent>().Amount.WillBe(5.0M);
+            events.Last<MoneyTransferSendToAnOtherAccountEvent>().Amount.WillBe(5.0M);
         }
 
         [Then]
         public void Then_it_will_generate_an_deposite_event_with_the_expected_balance()
         {
-            events.Last<MoneyTransferedToAnOtherAccountEvent>().Balance.WillBe(15.0M);
+            events.Last<MoneyTransferSendToAnOtherAccountEvent>().Balance.WillBe(15.0M);
         }
 
         [Then]
         public void Then_it_will_generate_an_deposite_event_with_the_expected_other_account()
         {
-            events.Last<MoneyTransferedToAnOtherAccountEvent>().OtherAccount.WillBe("1234567890");
+            events.Last<MoneyTransferSendToAnOtherAccountEvent>().TargetAccount.WillBe("1234567890");
         }
     }
 
@@ -476,10 +476,6 @@ namespace Test.Fohjin.DDD.Commands
 
         protected override TransferMoneyFromAnOtherAccountCommand When()
         {
-            GetMock<IReportingRepository>()
-                .Setup(x => x.GetByExample<Account>(It.IsAny<object>()))
-                .Returns(new List<Account> { new Account(Guid.NewGuid(), Guid.NewGuid(), "AccountName", "1234567890") });
-
             return new TransferMoneyFromAnOtherAccountCommand(Guid.NewGuid(), 10.0M, "1234567890");
         }
 
@@ -500,35 +496,31 @@ namespace Test.Fohjin.DDD.Commands
 
         protected override TransferMoneyFromAnOtherAccountCommand When()
         {
-            GetMock<IReportingRepository>()
-                .Setup(x => x.GetByExample<Account>(It.IsAny<object>()))
-                .Returns(new List<Account> { new Account(Guid.NewGuid(), Guid.NewGuid(), "AccountName", "1234567890") });
-
             return new TransferMoneyFromAnOtherAccountCommand(Guid.NewGuid(), 5.0M, "1234567890");
         }
 
         [Then]
         public void Then_it_will_generate_an_account_created_event()
         {
-            events.Last().WillBeOfType<MoneyTransferedFromAnOtherAccountEvent>();
+            events.Last().WillBeOfType<MoneyTransferReceivedFromAnOtherAccountEvent>();
         }
 
         [Then]
         public void Then_it_will_generate_an_deposite_event_with_the_expected_ammount()
         {
-            events.Last<MoneyTransferedFromAnOtherAccountEvent>().Amount.WillBe(5.0M);
+            events.Last<MoneyTransferReceivedFromAnOtherAccountEvent>().Amount.WillBe(5.0M);
         }
 
         [Then]
         public void Then_it_will_generate_an_deposite_event_with_the_expected_balance()
         {
-            events.Last<MoneyTransferedFromAnOtherAccountEvent>().Balance.WillBe(25.0M);
+            events.Last<MoneyTransferReceivedFromAnOtherAccountEvent>().Balance.WillBe(25.0M);
         }
 
         [Then]
         public void Then_it_will_generate_an_deposite_event_with_the_expected_other_account()
         {
-            events.Last<MoneyTransferedFromAnOtherAccountEvent>().OtherAccount.WillBe("1234567890");
+            events.Last<MoneyTransferReceivedFromAnOtherAccountEvent>().TargetAccount.WillBe("1234567890");
         }
     }
 
@@ -542,10 +534,6 @@ namespace Test.Fohjin.DDD.Commands
 
         protected override TransferMoneyFromAnOtherAccountCommand When()
         {
-            GetMock<IReportingRepository>()
-                .Setup(x => x.GetByExample<Account>(It.IsAny<object>()))
-                .Returns(new List<Account> {new Account(Guid.NewGuid(), Guid.NewGuid(), "AccountName", "1234567890")});
-
             return new TransferMoneyFromAnOtherAccountCommand(Guid.NewGuid(), 10.0M, "1234567890");
         }
 

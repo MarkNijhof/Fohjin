@@ -279,7 +279,7 @@ namespace Test.Fohjin.DDD.Events
         }
     }
 
-    public class Providing_an_money_transfer_from_an_other_account_event : EventTestFixture<MoneyTransferedFromAnOtherAccountEvent, MoneyTransferedFromAnOtherAccountEventHandler>
+    public class Providing_an_money_transfer_from_an_other_account_event : EventTestFixture<MoneyTransferReceivedFromAnOtherAccountEvent, MoneyTransferedFromAnOtherAccountEventHandler>
     {
         private static Guid _accountId;
         private object _update_account_details;
@@ -297,9 +297,9 @@ namespace Test.Fohjin.DDD.Events
                 .Callback<Ledger>(l => { _ledger = l; });
         }
 
-        protected override MoneyTransferedFromAnOtherAccountEvent When()
+        protected override MoneyTransferReceivedFromAnOtherAccountEvent When()
         {
-            var moneyTransferedFromAnOtherAccountEvent = new MoneyTransferedFromAnOtherAccountEvent(50.5M, 10.5M, "1234567890") { AggregateId = Guid.NewGuid() };
+            var moneyTransferedFromAnOtherAccountEvent = new MoneyTransferReceivedFromAnOtherAccountEvent(50.5M, 10.5M, "0987654321", "1234567890") { AggregateId = Guid.NewGuid() };
             _accountId = moneyTransferedFromAnOtherAccountEvent.AggregateId;
             return moneyTransferedFromAnOtherAccountEvent;
         }
@@ -329,7 +329,7 @@ namespace Test.Fohjin.DDD.Events
         {
             _ledger.AccountDetailsId.WillBe(_accountId);
             _ledger.Amount.WillBe(10.5M);
-            _ledger.Action.WillBe("Transfer from 1234567890");
+            _ledger.Action.WillBe("Transfer from 0987654321");
         }
 
         [Then]
@@ -339,7 +339,7 @@ namespace Test.Fohjin.DDD.Events
         }
     }
 
-    public class Providing_an_money_transfer_to_an_other_account_event : EventTestFixture<MoneyTransferedToAnOtherAccountEvent, MoneyTransferedToAnOtherAccountEventHandler>
+    public class Providing_an_money_transfer_to_an_other_account_event : EventTestFixture<MoneyTransferSendToAnOtherAccountEvent, MoneyTransferedToAnOtherAccountEventHandler>
     {
         private static Guid _accountId;
         private object _update_account_details;
@@ -357,9 +357,9 @@ namespace Test.Fohjin.DDD.Events
                 .Callback<Ledger>(l => { _ledger = l; });
         }
 
-        protected override MoneyTransferedToAnOtherAccountEvent When()
+        protected override MoneyTransferSendToAnOtherAccountEvent When()
         {
-            var moneyTransferedToAnOtherAccountEvent = new MoneyTransferedToAnOtherAccountEvent(50.5M, 10.5M, "1234567890") { AggregateId = Guid.NewGuid() };
+            var moneyTransferedToAnOtherAccountEvent = new MoneyTransferSendToAnOtherAccountEvent(50.5M, 10.5M, "0987654321", "1234567890") { AggregateId = Guid.NewGuid() };
             _accountId = moneyTransferedToAnOtherAccountEvent.AggregateId;
             return moneyTransferedToAnOtherAccountEvent;
         }

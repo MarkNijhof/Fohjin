@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{58D61FA0-D67F-4D72-81EA-2D709356AF95}</ProjectGuid>
+    <ProjectGuid>{B2428304-1BF2-4BCB-B250-7D09E536560A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Fohjin.DDD.Commands</RootNamespace>
-    <AssemblyName>Fohjin.DDD.Commands</AssemblyName>
+    <RootNamespace>Fohjin.DDD.Services</RootNamespace>
+    <AssemblyName>Fohjin.DDD.Services</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="StructureMap, Version=2.5.3.0, Culture=neutral, PublicKeyToken=e60ad81abae3c223, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Lib\StructureMap\StructureMap.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -45,30 +49,33 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AccountNameGotChangedCommand.cs" />
-    <Compile Include="AddNewAccountToClientCommand.cs" />
-    <Compile Include="ClientChangedTheirNameCommand.cs" />
-    <Compile Include="ClientCreatedCommand.cs" />
-    <Compile Include="ClientHasMovedCommand.cs" />
-    <Compile Include="CloseAccountCommand.cs" />
-    <Compile Include="CashDepositeCommand.cs" />
-    <Compile Include="ClientPhoneNumberIsChangedCommand.cs" />
-    <Compile Include="Command.cs" />
-    <Compile Include="ICommand.cs" />
-    <Compile Include="CashWithdrawlCommand.cs" />
+    <Compile Include="MoneyTransfer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TransferMoneyFromAnOtherAccountCommand.cs" />
-    <Compile Include="TransferMoneyToAnOtherAccountCommand.cs" />
-    <Compile Include="TransferMoneyToAnOtherAccountFailedCommand.cs" />
+    <Compile Include="AcceptMoneyTransferService.cs" />
+    <Compile Include="SendMoneyTransferService.cs" />
+    <Compile Include="ServicesRegister.cs" />
+    <Compile Include="TheAccountDoesNotBelongToThisBankException.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Fohjin.DDD.Bus\Fohjin.DDD.Bus.csproj">
       <Project>{14C6E3E5-D4D0-4811-BBBC-89A5FF7BF41F}</Project>
       <Name>Fohjin.DDD.Bus</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Fohjin.DDD.Commands\Fohjin.DDD.Commands.csproj">
+      <Project>{58D61FA0-D67F-4D72-81EA-2D709356AF95}</Project>
+      <Name>Fohjin.DDD.Commands</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Fohjin.DDD.Contracts\Fohjin.DDD.Contracts.csproj">
       <Project>{F18EACDA-7B90-4244-B5B8-9B764F46FF60}</Project>
       <Name>Fohjin.DDD.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fohjin.DDD.Domain\Fohjin.DDD.Domain.csproj">
+      <Project>{0FB24C8F-FA8C-409E-A71C-8580F7D78474}</Project>
+      <Name>Fohjin.DDD.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fohjin.DDD.Reporting.Dto\Fohjin.DDD.Reporting.Dto.csproj">
+      <Project>{44666AF0-AC7A-486E-AD1F-49FD0573ED43}</Project>
+      <Name>Fohjin.DDD.Reporting.Dto</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

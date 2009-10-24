@@ -1,4 +1,5 @@
 using Fohjin.DDD.Configuration;
+using Fohjin.DDD.Services;
 using NUnit.Framework;
 using StructureMap;
 
@@ -16,6 +17,7 @@ namespace Test.Fohjin.DDD.Configuration
                 x.AddRegistry<ReportingRegistry>();
                 x.AddRegistry<CommandHandlerRegister>();
                 x.AddRegistry<EventHandlerRegister>();
+                x.AddRegistry<ServicesRegister>();
             });
 
             ObjectFactory.AssertConfigurationIsValid();

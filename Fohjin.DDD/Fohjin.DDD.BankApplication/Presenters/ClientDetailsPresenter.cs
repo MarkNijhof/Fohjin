@@ -84,12 +84,12 @@ namespace Fohjin.DDD.BankApplication.Presenters
 
         public void OpenSelectedClosedAccount()
         {
-            _popupPresenter.CatchPossibleException(() =>
-            {
-                var client = _clientDetailsView.GetSelectedClosedAccount();
-                _accountDetailsPresenter.SetAccount(client);
-                _accountDetailsPresenter.Display();
-            });
+            //_popupPresenter.CatchPossibleException(() =>
+            //{
+            //    var client = _clientDetailsView.GetSelectedClosedAccount();
+            //    _accountDetailsPresenter.SetAccount(client);
+            //    _accountDetailsPresenter.Display();
+            //});
         }
 
         public void FormElementGotChanged()
