@@ -45,13 +45,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AccountDetails.cs" />
-    <Compile Include="Account.cs" />
-    <Compile Include="ClosedAccount.cs" />
-    <Compile Include="ClosedAccountDetails.cs" />
-    <Compile Include="Ledger.cs" />
-    <Compile Include="ClientDetails.cs" />
-    <Compile Include="Client.cs" />
+    <Compile Include="AccountDetailsReport.cs" />
+    <Compile Include="AccountReport.cs" />
+    <Compile Include="ClosedAccountReport.cs" />
+    <Compile Include="ClosedAccountDetailsReport.cs" />
+    <Compile Include="LedgerReport.cs" />
+    <Compile Include="ClientDetailsReport.cs" />
+    <Compile Include="ClientReport.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

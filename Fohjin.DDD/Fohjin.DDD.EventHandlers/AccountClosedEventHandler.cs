@@ -15,8 +15,8 @@ namespace Fohjin.DDD.EventHandlers
 
         public void Execute(AccountClosedEvent theEvent)
         {
-            _reportingRepository.Delete<Account>(new { Id = theEvent.AggregateId });
-            _reportingRepository.Delete<AccountDetails>(new { Id = theEvent.AggregateId });
+            _reportingRepository.Delete<AccountReport>(new { Id = theEvent.AggregateId });
+            _reportingRepository.Delete<AccountDetailsReport>(new { Id = theEvent.AggregateId });
         }
     }
 }

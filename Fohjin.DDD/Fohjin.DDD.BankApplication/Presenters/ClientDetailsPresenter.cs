@@ -5,7 +5,6 @@ using Fohjin.DDD.Bus;
 using Fohjin.DDD.Commands;
 using Fohjin.DDD.Contracts;
 using Fohjin.DDD.Reporting.Dto;
-using ClientDetails=Fohjin.DDD.Reporting.Dto.ClientDetails;
 
 namespace Fohjin.DDD.BankApplication.Presenters
 {
@@ -14,8 +13,8 @@ namespace Fohjin.DDD.BankApplication.Presenters
         private bool _createNewProcess;
         private bool _addNewAccountProcess;
         private int _editStep;
-        private Client _client;
-        private ClientDetails _clientDetails;
+        private ClientReport _clientReport;
+        private ClientDetailsReport _clientDetailsReport;
         private readonly IClientDetailsView _clientDetailsView;
         private readonly IAccountDetailsPresenter _accountDetailsPresenter;
         private readonly IPopupPresenter _popupPresenter;
@@ -42,11 +41,11 @@ namespace Fohjin.DDD.BankApplication.Presenters
             DisableAllMenuButtons();
             _clientDetailsView.EnableOverviewPanel();
 
-            if (_client == null)
+            if (_clientReport == null)
             {
                 _editStep = 1;
                 _createNewProcess = true;
-                _clientDetails = new ClientDetails(Guid.NewGuid(), string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty);
+                _clientDetailsReport = new ClientDetailsReport(Guid.NewGuid(), string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty);
                 ResetForm();
                 _clientDetailsView.EnableClientNamePanel();
                 _clientDetailsView.ShowDialog();
@@ -61,15 +60,15 @@ namespace Fohjin.DDD.BankApplication.Presenters
 
         private void LoadData()
         {
-            _clientDetails = _reportingRepository.GetByExample<ClientDetails>(new { _client.Id }).FirstOrDefault();
+            _clientDetailsReport = _reportingRepository.GetByExample<ClientDetailsReport>(new { _clientReport.Id }).FirstOrDefault();
 
             SetClientDetailsData();
             SetReadOnlyData();
         }
 
-        public void SetClient(Client client)
+        public void SetClient(ClientReport clientReport)
         {
-            _client = client;
+            _clientReport = clientReport;
         }
 
         public void OpenSelectedAccount()
@@ -126,31 +125,31 @@ namespace Fohjin.DDD.BankApplication.Presenters
                 if (_createNewProcess)
                 {
                     _editStep = 2;
-                    _clientDetails = new ClientDetails(
-                        _clientDetails.Id,
+                    _clientDetailsReport = new ClientDetailsReport(
+                        _clientDetailsReport.Id,
                         _clientDetailsView.ClientName,
-                        _clientDetails.Street,
-                        _clientDetails.StreetNumber,
-                        _clientDetails.PostalCode,
-                        _clientDetails.City,
-                        _clientDetails.PhoneNumber);
+                        _clientDetailsReport.Street,
+                        _clientDetailsReport.StreetNumber,
+                        _clientDetailsReport.PostalCode,
+                        _clientDetailsReport.City,
+                        _clientDetailsReport.PhoneNumber);
 
                     _clientDetailsView.EnableAddressPanel();
                     return;
                 }
 
-                _bus.Publish(new ClientChangedTheirNameCommand(
-                                 _clientDetails.Id,
+                _bus.Publish(new ChangeClientNameCommand(
+                                 _clientDetailsReport.Id,
                                  _clientDetailsView.ClientName));
 
-                _clientDetails = new ClientDetails(
-                    _clientDetails.Id,
+                _clientDetailsReport = new ClientDetailsReport(
+                    _clientDetailsReport.Id,
                     _clientDetailsView.ClientName,
-                    _clientDetails.Street,
-                    _clientDetails.StreetNumber,
-                    _clientDetails.PostalCode,
-                    _clientDetails.City,
-                    _clientDetails.PhoneNumber);
+                    _clientDetailsReport.Street,
+                    _clientDetailsReport.StreetNumber,
+                    _clientDetailsReport.PostalCode,
+                    _clientDetailsReport.City,
+                    _clientDetailsReport.PhoneNumber);
 
                 EnableAllMenuButtons();
                 _clientDetailsView.EnableOverviewPanel();
@@ -165,34 +164,34 @@ namespace Fohjin.DDD.BankApplication.Presenters
                 if (_createNewProcess)
                 {
                     _editStep = 3;
-                    _clientDetails = new ClientDetails(
-                        _clientDetails.Id,
-                        _clientDetails.ClientName,
+                    _clientDetailsReport = new ClientDetailsReport(
+                        _clientDetailsReport.Id,
+                        _clientDetailsReport.ClientName,
                         _clientDetailsView.Street,
                         _clientDetailsView.StreetNumber,
                         _clientDetailsView.PostalCode,
                         _clientDetailsView.City,
-                        _clientDetails.PhoneNumber);
+                        _clientDetailsReport.PhoneNumber);
 
                     _clientDetailsView.EnablePhoneNumberPanel();
                     return;
                 }
 
-                _bus.Publish(new ClientHasMovedCommand(
-                                 _clientDetails.Id,
+                _bus.Publish(new MoveClientToNewAddressCommand(
+                                 _clientDetailsReport.Id,
                                  _clientDetailsView.Street,
                                  _clientDetailsView.StreetNumber,
                                  _clientDetailsView.PostalCode,
                                  _clientDetailsView.City));
 
-                _clientDetails = new ClientDetails(
-                    _clientDetails.Id,
-                    _clientDetails.ClientName,
+                _clientDetailsReport = new ClientDetailsReport(
+                    _clientDetailsReport.Id,
+                    _clientDetailsReport.ClientName,
                     _clientDetailsView.Street,
                     _clientDetailsView.StreetNumber,
                     _clientDetailsView.PostalCode,
                     _clientDetailsView.City,
-                    _clientDetails.PhoneNumber);
+                    _clientDetailsReport.PhoneNumber);
 
                 EnableAllMenuButtons();
                 _clientDetailsView.EnableOverviewPanel();
@@ -206,30 +205,30 @@ namespace Fohjin.DDD.BankApplication.Presenters
                 _clientDetailsView.DisableSaveButton();
                 if (_createNewProcess)
                 {
-                    _bus.Publish(new ClientCreatedCommand(
+                    _bus.Publish(new CreateClientCommand(
                                      Guid.NewGuid(),
-                                     _clientDetails.ClientName,
-                                     _clientDetails.Street,
-                                     _clientDetails.StreetNumber,
-                                     _clientDetails.PostalCode,
-                                     _clientDetails.City,
+                                     _clientDetailsReport.ClientName,
+                                     _clientDetailsReport.Street,
+                                     _clientDetailsReport.StreetNumber,
+                                     _clientDetailsReport.PostalCode,
+                                     _clientDetailsReport.City,
                                      _clientDetailsView.PhoneNumber));
 
                     _clientDetailsView.Close();
                     return;
                 }
 
-                _bus.Publish(new ClientPhoneNumberIsChangedCommand(
-                                 _clientDetails.Id,
+                _bus.Publish(new ChangeClientPhoneNumberCommand(
+                                 _clientDetailsReport.Id,
                                  _clientDetailsView.PhoneNumber));
 
-                _clientDetails = new ClientDetails(
-                    _clientDetails.Id,
-                    _clientDetails.ClientName,
-                    _clientDetails.Street,
-                    _clientDetails.StreetNumber,
-                    _clientDetails.PostalCode,
-                    _clientDetails.City,
+                _clientDetailsReport = new ClientDetailsReport(
+                    _clientDetailsReport.Id,
+                    _clientDetailsReport.ClientName,
+                    _clientDetailsReport.Street,
+                    _clientDetailsReport.StreetNumber,
+                    _clientDetailsReport.PostalCode,
+                    _clientDetailsReport.City,
                     _clientDetailsView.PhoneNumber);
 
                 EnableAllMenuButtons();
@@ -242,7 +241,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
             _popupPresenter.CatchPossibleException(() =>
             {
                 _bus.Publish(new AddNewAccountToClientCommand(
-                                 _clientDetails.Id,
+                                 _clientDetailsReport.Id,
                                  _clientDetailsView.NewAccountName));
 
                 _addNewAccountProcess = false;
@@ -305,10 +304,10 @@ namespace Fohjin.DDD.BankApplication.Presenters
 
         private void SetReadOnlyData() 
         {
-            _clientDetailsView.ClientNameLabel = _clientDetails.ClientName;
-            _clientDetailsView.PhoneNumberLabel = _clientDetails.PhoneNumber;
-            _clientDetailsView.AddressLine1Label = string.Format("{0} {1}", _clientDetails.Street, _clientDetails.StreetNumber);
-            _clientDetailsView.AddressLine2Label = string.Format("{0} {1}", _clientDetails.PostalCode, _clientDetails.City);
+            _clientDetailsView.ClientNameLabel = _clientDetailsReport.ClientName;
+            _clientDetailsView.PhoneNumberLabel = _clientDetailsReport.PhoneNumber;
+            _clientDetailsView.AddressLine1Label = string.Format("{0} {1}", _clientDetailsReport.Street, _clientDetailsReport.StreetNumber);
+            _clientDetailsView.AddressLine2Label = string.Format("{0} {1}", _clientDetailsReport.PostalCode, _clientDetailsReport.City);
         }
 
         private void ResetForm() 
@@ -332,14 +331,14 @@ namespace Fohjin.DDD.BankApplication.Presenters
 
         private void SetClientDetailsData()
         {
-            _clientDetailsView.ClientName = _clientDetails.ClientName;
-            _clientDetailsView.Street = _clientDetails.Street;
-            _clientDetailsView.StreetNumber = _clientDetails.StreetNumber;
-            _clientDetailsView.PostalCode = _clientDetails.PostalCode;
-            _clientDetailsView.City = _clientDetails.City;
-            _clientDetailsView.PhoneNumber = _clientDetails.PhoneNumber;
-            _clientDetailsView.Accounts = _clientDetails.Accounts;
-            _clientDetailsView.ClosedAccounts = _clientDetails.ClosedAccounts;
+            _clientDetailsView.ClientName = _clientDetailsReport.ClientName;
+            _clientDetailsView.Street = _clientDetailsReport.Street;
+            _clientDetailsView.StreetNumber = _clientDetailsReport.StreetNumber;
+            _clientDetailsView.PostalCode = _clientDetailsReport.PostalCode;
+            _clientDetailsView.City = _clientDetailsReport.City;
+            _clientDetailsView.PhoneNumber = _clientDetailsReport.PhoneNumber;
+            _clientDetailsView.Accounts = _clientDetailsReport.Accounts;
+            _clientDetailsView.ClosedAccounts = _clientDetailsReport.ClosedAccounts;
         }
 
         private void EnableAllMenuButtons() 
@@ -386,20 +385,20 @@ namespace Fohjin.DDD.BankApplication.Presenters
         private bool AddressHasChanged()
         {
             return
-                _clientDetailsView.Street != _clientDetails.Street ||
-                _clientDetailsView.StreetNumber != _clientDetails.StreetNumber ||
-                _clientDetailsView.PostalCode != _clientDetails.PostalCode ||
-                _clientDetailsView.City != _clientDetails.City;
+                _clientDetailsView.Street != _clientDetailsReport.Street ||
+                _clientDetailsView.StreetNumber != _clientDetailsReport.StreetNumber ||
+                _clientDetailsView.PostalCode != _clientDetailsReport.PostalCode ||
+                _clientDetailsView.City != _clientDetailsReport.City;
         }
 
         private bool PhoneNumberHasChanged()
         {
-            return _clientDetailsView.PhoneNumber != _clientDetails.PhoneNumber;
+            return _clientDetailsView.PhoneNumber != _clientDetailsReport.PhoneNumber;
         }
 
         private bool ClientNameHasChanged()
         {
-            return _clientDetailsView.ClientName != _clientDetails.ClientName;
+            return _clientDetailsView.ClientName != _clientDetailsReport.ClientName;
         }
     }
 }

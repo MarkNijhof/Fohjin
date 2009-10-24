@@ -61,22 +61,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands\Account_commands.cs" />
     <Compile Include="Commands\All_commands_must_be_Serializable.cs" />
-    <Compile Include="Commands\Client_commands.cs" />
-    <Compile Include="Commands\ClosedAccount_commands.cs" />
     <Compile Include="Configuration\DatabaseBootStrapperTest.cs" />
     <Compile Include="Configuration\ReportingBootStrapperTest.cs" />
     <Compile Include="Configuration\StructureMapTest.cs" />
     <Compile Include="Domain\Entities\BaseAggregateTest.cs" />
     <Compile Include="Domain\Repositories\ClientRepositoryTest.cs" />
-    <Compile Include="Events\Account_events.cs" />
-    <Compile Include="Events\Back_into_the_domain.cs" />
-    <Compile Include="Events\Client_events.cs" />
-    <Compile Include="Events\ClosedAccount_events.cs" />
     <Compile Include="EventTestFixture.cs" />
     <Compile Include="Reporting\Infrastructure\SqlDeleteBuilderTest.cs" />
     <Compile Include="Reporting\Infrastructure\SqlUpdateBuilderTest.cs" />
+    <Compile Include="Scenarios\Adding_a_new_account_to_a_client.cs" />
+    <Compile Include="Scenarios\Changing_the_address_of_a_client_because_they_moved.cs" />
+    <Compile Include="Scenarios\Changing_the_name_of_an_account.cs" />
+    <Compile Include="Scenarios\Changing_the_name_of_a_client.cs" />
+    <Compile Include="Scenarios\Changing_the_phone_number_of_a_client.cs" />
+    <Compile Include="Scenarios\Closing_an_account.cs" />
+    <Compile Include="Scenarios\Creating_a_new_client.cs" />
+    <Compile Include="Scenarios\Making_a_cash_deposite.cs" />
+    <Compile Include="Scenarios\Making_a_cash_withdrawl.cs" />
+    <Compile Include="Scenarios\Receiving_a_money_transfer_from_an_other_account.cs" />
+    <Compile Include="Scenarios\Sending_a_money_transfer_to_an_other_account.cs" />
     <Compile Include="TestExtensions.cs" />
     <Compile Include="CommandTestFixture.cs" />
     <Compile Include="Domain\Repositories\ActiveAccountRepositoryTest.cs" />
@@ -140,7 +144,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Infrastructure\" />
+    <Folder Include="Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -80,26 +80,26 @@ namespace Fohjin.DDD.BankApplication.Views
             set { _city.Text = value; }
         }
 
-        public IEnumerable<Account> Accounts
+        public IEnumerable<AccountReport> Accounts
         {
-            get { return (IEnumerable<Account>)_accounts.DataSource; }
+            get { return (IEnumerable<AccountReport>)_accounts.DataSource; }
             set { _accounts.DataSource = value; }
         }
 
-        public IEnumerable<ClosedAccount> ClosedAccounts
+        public IEnumerable<ClosedAccountReport> ClosedAccounts
         {
-            get { return (IEnumerable<ClosedAccount>)_closedAccounts.DataSource; }
+            get { return (IEnumerable<ClosedAccountReport>)_closedAccounts.DataSource; }
             set { _closedAccounts.DataSource = value; }
         }
 
-        public Account GetSelectedAccount()
+        public AccountReport GetSelectedAccount()
         {
-            return (Account)_accounts.SelectedItem;
+            return (AccountReport)_accounts.SelectedItem;
         }
 
-        public ClosedAccount GetSelectedClosedAccount()
+        public ClosedAccountReport GetSelectedClosedAccount()
         {
-            return (ClosedAccount)_closedAccounts.SelectedItem;
+            return (ClosedAccountReport)_closedAccounts.SelectedItem;
         }
 
         public string PhoneNumber

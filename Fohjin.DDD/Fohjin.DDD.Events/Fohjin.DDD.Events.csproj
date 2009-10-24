@@ -47,16 +47,16 @@
   <ItemGroup>
     <Compile Include="ActiveAccount\AccountClosedEvent.cs" />
     <Compile Include="ActiveAccount\AccountCreatedEvent.cs" />
-    <Compile Include="ActiveAccount\AccountNameGotChangedEvent.cs" />
-    <Compile Include="ActiveAccount\DepositeEvent.cs" />
-    <Compile Include="ActiveAccount\MoneyTransferReceivedFromAnOtherAccountEvent.cs" />
-    <Compile Include="ActiveAccount\MoneyTransferSendToAnOtherAccountEvent.cs" />
-    <Compile Include="ActiveAccount\WithdrawlEvent.cs" />
-    <Compile Include="Client\ClientGotAnAccountAssignedEvent.cs" />
-    <Compile Include="Client\ClientHasMovedEvent.cs" />
-    <Compile Include="Client\ClientNameWasChangedEvent.cs" />
-    <Compile Include="Client\ClientPhoneNumberWasChangedEvent.cs" />
-    <Compile Include="Client\NewClientCreatedEvent.cs" />
+    <Compile Include="ActiveAccount\AccountNameChangedEvent.cs" />
+    <Compile Include="ActiveAccount\CashDepositedEvent.cs" />
+    <Compile Include="ActiveAccount\MoneyTransferReceivedEvent.cs" />
+    <Compile Include="ActiveAccount\MoneyTransferSendEvent.cs" />
+    <Compile Include="ActiveAccount\CashWithdrawnEvent.cs" />
+    <Compile Include="Client\AccountToClientAssignedEvent.cs" />
+    <Compile Include="Client\ClientMovedEvent.cs" />
+    <Compile Include="Client\ClientNameChangedEvent.cs" />
+    <Compile Include="Client\ClientPhoneNumberChangedEvent.cs" />
+    <Compile Include="Client\ClientCreatedEvent.cs" />
     <Compile Include="ClosedAccount\ClosedAccountCreatedEvent.cs" />
     <Compile Include="DomainEvent.cs" />
     <Compile Include="IDomainEvent.cs" />

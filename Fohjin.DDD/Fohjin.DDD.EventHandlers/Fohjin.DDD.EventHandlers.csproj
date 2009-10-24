@@ -47,21 +47,20 @@
   <ItemGroup>
     <Compile Include="AccountClosedEventHandler.cs" />
     <Compile Include="AccountCreatedEventHandler.cs" />
-    <Compile Include="AccountNameGotChangedEventHandler.cs" />
-    <Compile Include="ClientGotAnAccountAssignedEventHandler.cs" />
-    <Compile Include="ClientHasMovedEventHandler.cs" />
-    <Compile Include="ClientNameWasChangedEventHandler.cs" />
-    <Compile Include="ClientPhoneNumberWasChangedEventHandler.cs" />
+    <Compile Include="AccountNameChangedEventHandler.cs" />
+    <Compile Include="AccountToClientAssignedEventHandler.cs" />
+    <Compile Include="ClientMovedEventHandler.cs" />
+    <Compile Include="ClientNameChangedEventHandler.cs" />
+    <Compile Include="ClientPhoneNumberChangedEventHandler.cs" />
     <Compile Include="ClosedAccountCreatedEventHandler.cs" />
-    <Compile Include="DepositeEventHandler.cs" />
+    <Compile Include="CashDepositeEventHandler.cs" />
     <Compile Include="IEventHandler.cs" />
-    <Compile Include="MoneyTransferedFromAnOtherAccountEventHandler.cs" />
-    <Compile Include="MoneyTransferedReceivedFromAnOtherAccountEventHandler.cs" />
-    <Compile Include="MoneyTransferedToAnOtherAccountEventHandler.cs" />
-    <Compile Include="NewClientCreatedEventHandler.cs" />
+    <Compile Include="MoneyTransferReceivedEventHandler.cs" />
+    <Compile Include="MoneyTransferSendEventHandler.cs" />
+    <Compile Include="ClientCreatedEventHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SendMoneyTransferedToAnOtherAccountEventHandler.cs" />
-    <Compile Include="WithdrawlEventHandler.cs" />
+    <Compile Include="SendMoneyTransferFurtherEventHandler.cs" />
+    <Compile Include="CashWithdrawnEventHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Fohjin.DDD.Bus\Fohjin.DDD.Bus.csproj">

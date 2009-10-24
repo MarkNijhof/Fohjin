@@ -10,9 +10,9 @@ namespace Fohjin.DDD.BankApplication.Views
         decimal BalanceLabel { set; }
         string AccountName { get; set; }
 
-        IEnumerable<Ledger> Ledgers { get; set; }
-        IEnumerable<Account> TransferAccounts { get; set; }
-        Account GetSelectedTransferAccount();
+        IEnumerable<LedgerReport> Ledgers { get; set; }
+        IEnumerable<AccountReport> TransferAccounts { get; set; }
+        AccountReport GetSelectedTransferAccount();
 
         decimal DepositeAmount { get; set; }
         decimal WithdrawlAmount { get; set; }

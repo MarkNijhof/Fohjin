@@ -18,11 +18,11 @@ namespace Fohjin.DDD.BankApplication.Views
         string AddressLine2Label { set; }
         string PhoneNumberLabel { set; }
 
-        IEnumerable<Account> Accounts { get; set; }
-        Account GetSelectedAccount();
+        IEnumerable<AccountReport> Accounts { get; set; }
+        AccountReport GetSelectedAccount();
 
-        IEnumerable<ClosedAccount> ClosedAccounts { get; set; }
-        ClosedAccount GetSelectedClosedAccount();
+        IEnumerable<ClosedAccountReport> ClosedAccounts { get; set; }
+        ClosedAccountReport GetSelectedClosedAccount();
         
         void EnableAddNewAccountMenu();
         void DisableAddNewAccountMenu();

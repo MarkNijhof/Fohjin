@@ -58,15 +58,15 @@ namespace Fohjin.DDD.BankApplication.Views
             set { _accountNumberLabel.Text = value; }
         }
 
-        public IEnumerable<Ledger> Ledgers
+        public IEnumerable<LedgerReport> Ledgers
         {
-            get { return (IEnumerable<Ledger>)_ledgers.DataSource; }
+            get { return (IEnumerable<LedgerReport>)_ledgers.DataSource; }
             set { _ledgers.DataSource = value; }
         }
 
-        public IEnumerable<Account> TransferAccounts
+        public IEnumerable<AccountReport> TransferAccounts
         {
-            get { return (IEnumerable<Account>)_transferAccounts.DataSource; }
+            get { return (IEnumerable<AccountReport>)_transferAccounts.DataSource; }
             set { _transferAccounts.DataSource = value; }
         }
 
@@ -129,9 +129,9 @@ namespace Fohjin.DDD.BankApplication.Views
             transferMoneyToolStripMenuItem.Enabled = false;
         }
 
-        public Account GetSelectedTransferAccount()
+        public AccountReport GetSelectedTransferAccount()
         {
-            return (Account)_transferAccounts.SelectedItem;
+            return (AccountReport)_transferAccounts.SelectedItem;
         }
 
         public decimal DepositeAmount

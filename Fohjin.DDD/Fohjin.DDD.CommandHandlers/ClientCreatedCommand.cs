@@ -5,16 +5,16 @@ using Fohjin.DDD.Domain.ValueObjects;
 
 namespace Fohjin.DDD.CommandHandlers
 {
-    public class ClientCreatedCommandHandler : ICommandHandler<ClientCreatedCommand>
+    public class CreateClientCommandHandler : ICommandHandler<CreateClientCommand>
     {
         private readonly IDomainRepository _repository;
 
-        public ClientCreatedCommandHandler(IDomainRepository repository)
+        public CreateClientCommandHandler(IDomainRepository repository)
         {
             _repository = repository;
         }
 
-        public void Execute(ClientCreatedCommand command)
+        public void Execute(CreateClientCommand command)
         {
             var client = Client.CreateNew(new ClientName(command.ClientName), new Address(command.Street, command.StreetNumber, command.PostalCode, command.City), new PhoneNumber(command.PhoneNumber));
             _repository.Save(client);

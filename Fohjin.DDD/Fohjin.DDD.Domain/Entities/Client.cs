@@ -23,7 +23,7 @@ namespace Fohjin.DDD.Domain.Entities
 
         private Client(ClientName clientName, Address address, PhoneNumber phoneNumber) : this()
         {
-            Apply(new NewClientCreatedEvent(Guid.NewGuid(), clientName.Name, address.Street, address.StreetNumber, address.PostalCode, address.City, phoneNumber.Number));
+            Apply(new ClientCreatedEvent(Guid.NewGuid(), clientName.Name, address.Street, address.StreetNumber, address.PostalCode, address.City, phoneNumber.Number));
         }
 
         public static Client CreateNew(ClientName clientName, Address address, PhoneNumber phoneNumber)
@@ -35,21 +35,21 @@ namespace Fohjin.DDD.Domain.Entities
         {
             IsClientCreated();
 
-            Apply(new ClientPhoneNumberWasChangedEvent(phoneNumber.Number));
+            Apply(new ClientPhoneNumberChangedEvent(phoneNumber.Number));
         }
 
         public void UpdateClientName(ClientName clientName)
         {
             IsClientCreated();
 
-            Apply(new ClientNameWasChangedEvent(clientName.Name));
+            Apply(new ClientNameChangedEvent(clientName.Name));
         }
 
         public void ClientMoved(Address newAddress)
         {
             IsClientCreated();
 
-            Apply(new ClientHasMovedEvent(newAddress.Street, newAddress.StreetNumber, newAddress.PostalCode, newAddress.City));
+            Apply(new ClientMovedEvent(newAddress.Street, newAddress.StreetNumber, newAddress.PostalCode, newAddress.City));
         }
 
         public ActiveAccount CreateNewAccount(string accountName)
@@ -58,7 +58,7 @@ namespace Fohjin.DDD.Domain.Entities
 
             var activeAccount = ActiveAccount.CreateNew(Id, accountName);
 
-            Apply(new ClientGotAnAccountAssignedEvent(activeAccount.Id));
+            Apply(new AccountToClientAssignedEvent(activeAccount.Id));
 
             return activeAccount;
         }
@@ -87,39 +87,39 @@ namespace Fohjin.DDD.Domain.Entities
 
         private void registerEvents()
         {
-            RegisterEvent<NewClientCreatedEvent>(onNewClientCreated);
-            RegisterEvent<ClientPhoneNumberWasChangedEvent>(onClientPhoneNumberWasChanged);
-            RegisterEvent<ClientNameWasChangedEvent>(onClientNameWasChanged);
-            RegisterEvent<ClientHasMovedEvent>(onNewClientMoved);
-            RegisterEvent<ClientGotAnAccountAssignedEvent>(onAccountWasAssignedToClient);
+            RegisterEvent<ClientCreatedEvent>(onNewClientCreated);
+            RegisterEvent<ClientPhoneNumberChangedEvent>(onClientPhoneNumberWasChanged);
+            RegisterEvent<ClientNameChangedEvent>(onClientNameWasChanged);
+            RegisterEvent<ClientMovedEvent>(onNewClientMoved);
+            RegisterEvent<AccountToClientAssignedEvent>(onAccountWasAssignedToClient);
         }
 
-        private void onAccountWasAssignedToClient(ClientGotAnAccountAssignedEvent clientGotAnAccountAssignedEvent)
+        private void onAccountWasAssignedToClient(AccountToClientAssignedEvent accountToClientAssignedEvent)
         {
-            _accounts.Add(clientGotAnAccountAssignedEvent.AccountId);
+            _accounts.Add(accountToClientAssignedEvent.AccountId);
         }
 
-        private void onNewClientCreated(NewClientCreatedEvent newClientCreatedEvent)
+        private void onNewClientCreated(ClientCreatedEvent clientCreatedEvent)
         {
-            Id = newClientCreatedEvent.ClientId;
-            _clientName = new ClientName(newClientCreatedEvent.ClientName);
-            _address = new Address(newClientCreatedEvent.Street, newClientCreatedEvent.StreetNumber, newClientCreatedEvent.PostalCode, newClientCreatedEvent.City);
-            _phoneNumber = new PhoneNumber(newClientCreatedEvent.PhoneNumber);
+            Id = clientCreatedEvent.ClientId;
+            _clientName = new ClientName(clientCreatedEvent.ClientName);
+            _address = new Address(clientCreatedEvent.Street, clientCreatedEvent.StreetNumber, clientCreatedEvent.PostalCode, clientCreatedEvent.City);
+            _phoneNumber = new PhoneNumber(clientCreatedEvent.PhoneNumber);
         }
 
-        private void onClientPhoneNumberWasChanged(ClientPhoneNumberWasChangedEvent clientPhoneNumberWasChangedEvent)
+        private void onClientPhoneNumberWasChanged(ClientPhoneNumberChangedEvent clientPhoneNumberChangedEvent)
         {
-            _phoneNumber = new PhoneNumber(clientPhoneNumberWasChangedEvent.PhoneNumber);
+            _phoneNumber = new PhoneNumber(clientPhoneNumberChangedEvent.PhoneNumber);
         }
 
-        private void onClientNameWasChanged(ClientNameWasChangedEvent clientNameWasChangedEvent)
+        private void onClientNameWasChanged(ClientNameChangedEvent clientNameChangedEvent)
         {
-            _clientName = new ClientName(clientNameWasChangedEvent.ClientName);
+            _clientName = new ClientName(clientNameChangedEvent.ClientName);
         }
 
-        private void onNewClientMoved(ClientHasMovedEvent clientHasMovedEvent)
+        private void onNewClientMoved(ClientMovedEvent clientMovedEvent)
         {
-            _address = new Address(clientHasMovedEvent.Street, clientHasMovedEvent.StreetNumber, clientHasMovedEvent.PostalCode, clientHasMovedEvent.City);
+            _address = new Address(clientMovedEvent.Street, clientMovedEvent.StreetNumber, clientMovedEvent.PostalCode, clientMovedEvent.City);
         }
     }
 }

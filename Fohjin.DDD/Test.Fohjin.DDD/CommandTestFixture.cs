@@ -22,8 +22,8 @@ namespace Test.Fohjin.DDD
         private IDictionary<Type, object> mocks;
         protected TAggregateRoot aggregateRoot;
         protected ICommandHandler<TCommand> commandHandler;
-        protected Exception caught;
-        protected IEnumerable<IDomainEvent> events;
+        protected Exception CaughtException;
+        protected IEnumerable<IDomainEvent> PublishedEvents;
 
         protected abstract IEnumerable<IDomainEvent> Given();
         protected abstract TCommand When();
@@ -32,7 +32,7 @@ namespace Test.Fohjin.DDD
         public void Setup()
         {
             mocks = new Dictionary<Type, object>();
-            caught = new ThereWasNoExceptionButOneWasExpectedException();
+            CaughtException = new ThereWasNoExceptionButOneWasExpectedException();
             aggregateRoot = new TAggregateRoot();
             aggregateRoot.LoadFromHistory(Given());
 
@@ -41,11 +41,11 @@ namespace Test.Fohjin.DDD
             try
             {
                 commandHandler.Execute(When());
-                events = aggregateRoot.GetChanges();
+                PublishedEvents = aggregateRoot.GetChanges();
             }
             catch (Exception e)
             {
-                caught = e;
+                CaughtException = e;
             }
         }
 

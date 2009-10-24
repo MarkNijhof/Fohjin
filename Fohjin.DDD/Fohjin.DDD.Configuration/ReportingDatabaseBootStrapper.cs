@@ -13,13 +13,13 @@ namespace Fohjin.DDD.Configuration
         public const string dataBaseFile = "reportingDataBase.db3";
         private readonly List<Type> _dtos = new List<Type>
         {
-            typeof(Client), 
-            typeof(ClientDetails), 
-            typeof(Account), 
-            typeof(AccountDetails), 
-            typeof(ClosedAccount), 
-            typeof(ClosedAccountDetails), 
-            typeof(Ledger),
+            typeof(ClientReport), 
+            typeof(ClientDetailsReport), 
+            typeof(AccountReport), 
+            typeof(AccountDetailsReport), 
+            typeof(ClosedAccountReport), 
+            typeof(ClosedAccountDetailsReport), 
+            typeof(LedgerReport),
         };
         private readonly SqlCreateBuilder _sqlCreateBuilder = new SqlCreateBuilder();
 

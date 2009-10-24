@@ -7,8 +7,8 @@ namespace Fohjin.DDD.Services
     {
         public ServicesRegister()
         {
-            ForRequestedType<IAcceptMoneyTransfer>().TheDefault.Is.OfConcreteType<AcceptMoneyTransferService>();
-            ForRequestedType<ISendMoneyTransfer>().TheDefault.Is.OfConcreteType<SendMoneyTransferService>();
+            ForRequestedType<IReceiveMoneyTransfers>().TheDefault.Is.OfConcreteType<MoneyReceiveService>();
+            ForRequestedType<ISendMoneyTransfer>().TheDefault.Is.OfConcreteType<MoneyTransferService>();
         }
     }
 }

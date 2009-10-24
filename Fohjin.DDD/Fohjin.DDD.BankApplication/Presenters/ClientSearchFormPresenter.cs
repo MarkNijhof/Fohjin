@@ -56,7 +56,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
 
         private void LoadData()
         {
-            _clientSearchFormView.Clients = _reportingRepository.GetByExample<Client>(null);
+            _clientSearchFormView.Clients = _reportingRepository.GetByExample<ClientReport>(null);
         }
     }
 }

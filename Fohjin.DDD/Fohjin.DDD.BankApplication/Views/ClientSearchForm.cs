@@ -27,15 +27,15 @@ namespace Fohjin.DDD.BankApplication.Views
             _clients.Click += (e, s) => OnOpenSelectedClient();
         }
 
-        public IEnumerable<Client> Clients
+        public IEnumerable<ClientReport> Clients
         {
-            get { return (IEnumerable<Client>)_clients.DataSource; }
+            get { return (IEnumerable<ClientReport>)_clients.DataSource; }
             set { _clients.DataSource = value; }
         }
 
-        public Client GetSelectedClient()
+        public ClientReport GetSelectedClient()
         {
-            return (Client)_clients.SelectedItem;
+            return (ClientReport)_clients.SelectedItem;
         }
     }
 }

@@ -5,8 +5,8 @@ namespace Fohjin.DDD.BankApplication.Views
 {
     public interface IClientSearchFormView : IView
     {
-        IEnumerable<Client> Clients { get; set; }
-        Client GetSelectedClient();
+        IEnumerable<ClientReport> Clients { get; set; }
+        ClientReport GetSelectedClient();
         event Action OnCreateNewClient;
         event Action OnOpenSelectedClient;
         event Action OnRefresh;

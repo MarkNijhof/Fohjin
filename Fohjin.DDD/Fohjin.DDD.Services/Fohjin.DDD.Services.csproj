@@ -51,10 +51,10 @@
   <ItemGroup>
     <Compile Include="MoneyTransfer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="AcceptMoneyTransferService.cs" />
-    <Compile Include="SendMoneyTransferService.cs" />
+    <Compile Include="MoneyReceiveService.cs" />
+    <Compile Include="MoneyTransferService.cs" />
     <Compile Include="ServicesRegister.cs" />
-    <Compile Include="TheAccountDoesNotBelongToThisBankException.cs" />
+    <Compile Include="AccountDoesNotExistException.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Fohjin.DDD.Bus\Fohjin.DDD.Bus.csproj">

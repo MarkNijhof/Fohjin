@@ -1,4 +1,3 @@
-using System;
 using Fohjin.DDD.Commands;
 using Fohjin.DDD.Contracts;
 using Fohjin.DDD.Domain.Entities;

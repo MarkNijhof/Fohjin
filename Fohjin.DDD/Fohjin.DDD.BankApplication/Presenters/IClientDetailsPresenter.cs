@@ -4,7 +4,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
 {
     public interface IClientDetailsPresenter : IPresenter
     {
-        void SetClient(Client client);
+        void SetClient(ClientReport clientReport);
         void OpenSelectedAccount();
         void OpenSelectedClosedAccount();
         void FormElementGotChanged();

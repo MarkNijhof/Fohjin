@@ -16,8 +16,8 @@ namespace Fohjin.DDD.EventHandlers
 
         public void Execute(ClosedAccountCreatedEvent theEvent)
         {
-            var closedAccount = new ClosedAccount(theEvent.AccountId, theEvent.ClientId, theEvent.AccountName, theEvent.AccountNumber);
-            var closedAccountDetails = new ClosedAccountDetails(theEvent.AccountId, theEvent.ClientId, theEvent.AccountName, 0, theEvent.AccountNumber);
+            var closedAccount = new ClosedAccountReport(theEvent.AccountId, theEvent.ClientId, theEvent.AccountName, theEvent.AccountNumber);
+            var closedAccountDetails = new ClosedAccountDetailsReport(theEvent.AccountId, theEvent.ClientId, theEvent.AccountName, 0, theEvent.AccountNumber);
 
             _reportingRepository.Save(closedAccount);
             _reportingRepository.Save(closedAccountDetails);
@@ -27,7 +27,7 @@ namespace Fohjin.DDD.EventHandlers
                 var split = ledger.Value.Split(new[] { '|' });
                 var amount = Convert.ToDecimal(split[0]);
                 var account = split[1];
-                _reportingRepository.Save(new Ledger(Guid.NewGuid(), theEvent.AccountId, GetDescription(ledger.Key, account), amount));
+                _reportingRepository.Save(new LedgerReport(Guid.NewGuid(), theEvent.AccountId, GetDescription(ledger.Key, account), amount));
             }
         }
 
