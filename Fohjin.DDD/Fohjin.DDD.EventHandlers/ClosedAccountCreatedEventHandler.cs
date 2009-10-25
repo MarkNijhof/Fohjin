@@ -45,7 +45,10 @@ namespace Fohjin.DDD.EventHandlers
             if (transferType == "DebitTransfer")
                 return string.Format("Transfer from {0}", accountNumber);
 
-            return string.Empty;
+            if (transferType == "CreditTransferFailed")
+                return string.Format("Transfer to {0} failed", accountNumber);
+
+            throw new Exception(string.Format("Transfer type '{0}' is not implemented", transferType));
         }
     }
 }

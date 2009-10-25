@@ -62,12 +62,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseTestFixture.cs" />
+    <Compile Include="Bus\Command_bus.cs" />
+    <Compile Include="Bus\Event_bus.cs" />
     <Compile Include="Commands\All_commands_must_be_Serializable.cs" />
     <Compile Include="Configuration\DatabaseBootStrapperTest.cs" />
     <Compile Include="Configuration\ReportingBootStrapperTest.cs" />
     <Compile Include="Configuration\StructureMapTest.cs" />
     <Compile Include="Domain\Entities\BaseAggregateTest.cs" />
     <Compile Include="Domain\Repositories\ClientRepositoryTest.cs" />
+    <Compile Include="Domain\Repositories\ClosedAccountRepositoryTest.cs" />
     <Compile Include="EventTestFixture.cs" />
     <Compile Include="Reporting\Infrastructure\SqlDeleteBuilderTest.cs" />
     <Compile Include="Reporting\Infrastructure\SqlUpdateBuilderTest.cs" />
@@ -97,6 +100,10 @@
     <Compile Include="Reporting\Infrastructure\TestDtoCase1.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Fohjin.DDD.Bus.Implementation\Fohjin.DDD.Bus.Implementation.csproj">
+      <Project>{DA415B11-2B50-4635-9951-42AAAEFA38EF}</Project>
+      <Name>Fohjin.DDD.Bus.Implementation</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Fohjin.DDD.Bus\Fohjin.DDD.Bus.csproj">
       <Project>{14C6E3E5-D4D0-4811-BBBC-89A5FF7BF41F}</Project>
       <Name>Fohjin.DDD.Bus</Name>

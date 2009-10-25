@@ -12,6 +12,11 @@ namespace Fohjin.DDD.Domain.Entities
             Amount = amount;
             Account = account;
         }
+
+        public override string ToString()
+        {
+            return string.Format("{0} - {1} - {2}", GetType().Name, Account.Number, (decimal)Amount);
+        }
     }
 
     public class CreditMutation : Ledger

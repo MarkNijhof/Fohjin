@@ -8,5 +8,10 @@ namespace Fohjin.DDD.Domain.ValueObjects
         {
             Number = number;
         }
+
+        public override string ToString()
+        {
+            return Number;
+        }
     }
 }
