@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Fohjin.DDD.Bus;
 using Fohjin.DDD.Commands;
@@ -18,12 +19,20 @@ namespace Fohjin.DDD.Services
         private readonly ICommandBus _commandBus;
         private readonly IReportingRepository _reportingRepository;
         private readonly IReceiveMoneyTransfers _receiveMoneyTransfers;
+        private readonly IDictionary<int, Action<MoneyTransfer>> _moneyTransferOptions;
 
         public MoneyTransferService(ICommandBus commandBus, IReportingRepository reportingRepository, IReceiveMoneyTransfers receiveMoneyTransfers)
         {
             _commandBus = commandBus;
             _reportingRepository = reportingRepository;
             _receiveMoneyTransfers = receiveMoneyTransfers;
+
+            _moneyTransferOptions = new Dictionary<int, Action<MoneyTransfer>>
+            {
+                {0, MoneyTransferIsGoingToAnInternalAccount},
+                {1, MoneyTransferIsGoingToAnExternalAccount},
+                {2, MoneyTransferIsGoingToAnExternalNonExistingAccount},
+            };
         }
 
         public void Send(MoneyTransfer moneyTransfer)
@@ -31,15 +40,7 @@ namespace Fohjin.DDD.Services
             try
             {
                 // I didn't want to introduce an actual external bank, so that's why you see this nice construct :)
-                if (SystemRandom.Next(0, 2) == 0)
-                {
-                    MoneyTransferIsGoingToAnInternalAccount(moneyTransfer);
-                    return;
-                }
-
-                // Send the MoneyTransfer to an other bank here!
-                // In this case here we threat the same MoneyTransfer as if it was coming from an external bank.
-                _receiveMoneyTransfers.Receive(moneyTransfer);
+                _moneyTransferOptions[SystemRandom.Next(0, 3)](moneyTransfer);
             }
             catch(Exception)
             {
@@ -49,13 +50,23 @@ namespace Fohjin.DDD.Services
 
         private void MoneyTransferIsGoingToAnInternalAccount(MoneyTransfer moneyTransfer)
         {
-            var account = _reportingRepository.GetByExample<AccountReport>(new { moneyTransfer.TargetAccount }).First();
+            var account = _reportingRepository.GetByExample<AccountReport>(new { AccountNumber = moneyTransfer.TargetAccount }).First();
             _commandBus.Publish(new ReceiveMoneyTransferCommand(account.Id, moneyTransfer.Ammount, moneyTransfer.SourceAccount));
+        }
+
+        private void MoneyTransferIsGoingToAnExternalAccount(MoneyTransfer moneyTransfer)
+        {
+            _receiveMoneyTransfers.Receive(moneyTransfer);
+        }
+
+        private void MoneyTransferIsGoingToAnExternalNonExistingAccount(MoneyTransfer moneyTransfer)
+        {
+            _receiveMoneyTransfers.Receive(new MoneyTransfer(moneyTransfer.SourceAccount, moneyTransfer.TargetAccount.Reverse().ToString(), moneyTransfer.Ammount));
         }
 
         private void CompensatingActionBecauseOfFailedMoneyTransfer(MoneyTransfer moneyTransfer)
         {
-            var account = _reportingRepository.GetByExample<AccountReport>(new { moneyTransfer.SourceAccount }).First();
+            var account = _reportingRepository.GetByExample<AccountReport>(new { AccountNumber = moneyTransfer.SourceAccount }).First();
             _commandBus.Publish(new MoneyTransferFailedCommand(account.Id, moneyTransfer.Ammount, moneyTransfer.TargetAccount));
         }
     }

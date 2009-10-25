@@ -33,4 +33,9 @@ namespace Fohjin.DDD.Domain.Entities
     {
         public DebitTransfer(Amount amount, AccountNumber account) : base(amount, account) { }
     }
+
+    public class DebitTransferFailed : Ledger
+    {
+        public DebitTransferFailed(Amount amount, AccountNumber account) : base(amount, account) { }
+    }
 }

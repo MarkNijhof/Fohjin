@@ -102,7 +102,13 @@ namespace Fohjin.DDD.Domain.Entities
 
         public void PreviousTransferFailed(AccountNumber accountNumber, Amount amount)
         {
-            throw new NotImplementedException();
+            Guard();
+
+            IsBalanceHighEnough(amount);
+
+            var newBalance = _balance.Deposite(amount);
+
+            Apply(new MoneyTransferFailedEvent(newBalance, amount, accountNumber.Number));
         }
 
         private void Guard()
@@ -180,6 +186,13 @@ namespace Fohjin.DDD.Domain.Entities
             RegisterEvent<AccountNameChangedEvent>(onAccountNameGotChanged);
             RegisterEvent<MoneyTransferReceivedEvent>(onMoneyTransferedFromAnOtherAccount);
             RegisterEvent<MoneyTransferSendEvent>(onMoneyTransferedToAnOtherAccount);
+            RegisterEvent<MoneyTransferFailedEvent>(onMoneyTransferFailed);
+        }
+
+        private void onMoneyTransferFailed(MoneyTransferFailedEvent moneyTransferFailedEvent)
+        {
+            _ledgers.Add(new DebitTransferFailed(moneyTransferFailedEvent.Amount, new AccountNumber(string.Empty)));
+            _balance = moneyTransferFailedEvent.Balance;
         }
 
         private void onMoneyTransferedToAnOtherAccount(MoneyTransferSendEvent moneyTransferSendEvent)

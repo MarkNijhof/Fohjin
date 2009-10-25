@@ -121,7 +121,7 @@ namespace Test.Fohjin.DDD.Services
         {
             // !!! This is DEMO code !!!
             // Setup the SystemRandom class to return the value where the account is not found
-            SystemRandom.Next = (min, max) => 1;
+            SystemRandom.Next = (min, max) => 2;
         }
 
         protected override void When()

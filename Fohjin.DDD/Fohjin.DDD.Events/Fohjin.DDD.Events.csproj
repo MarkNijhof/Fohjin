@@ -49,6 +49,7 @@
     <Compile Include="ActiveAccount\AccountCreatedEvent.cs" />
     <Compile Include="ActiveAccount\AccountNameChangedEvent.cs" />
     <Compile Include="ActiveAccount\CashDepositedEvent.cs" />
+    <Compile Include="ActiveAccount\MoneyTransferFailedEvent.cs" />
     <Compile Include="ActiveAccount\MoneyTransferReceivedEvent.cs" />
     <Compile Include="ActiveAccount\MoneyTransferSendEvent.cs" />
     <Compile Include="ActiveAccount\CashWithdrawnEvent.cs" />
