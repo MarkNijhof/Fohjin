@@ -132,13 +132,13 @@ namespace Fohjin.DDD.Domain.Entities
         private void IsBalanceHighEnough(Amount amount)
         {
             if (_balance.WithdrawlWillResultInNegativeBalance(amount))
-                throw new AccountBalanceIsToLowException(string.Format("The amount {0} is larger than your current balance {1}", (decimal)amount, (decimal)_balance));
+                throw new AccountBalanceIsToLowException(string.Format("The amount {0:C} is larger than your current balance {1:C}", (decimal)amount, (decimal)_balance));
         }
 
         private void IsAccountBalanceZero()
         {
             if (_balance != 0.0M)
-                throw new AccountMustFirstBeEmptiedBeforeClosingException(string.Format("The current balance is {0} this must first be transfered to an other account", (decimal)_balance));
+                throw new AccountMustFirstBeEmptiedBeforeClosingException(string.Format("The current balance is {0:C} this must first be transfered to an other account", (decimal)_balance));
         }
 
         IMemento IOrginator.CreateMemento()

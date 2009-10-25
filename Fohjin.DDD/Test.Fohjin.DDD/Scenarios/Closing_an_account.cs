@@ -247,7 +247,7 @@ namespace Test.Fohjin.DDD.Scenarios
         [Then]
         public void Then_the_reporting_repository_will_be_used_to_save_the_four_ledger_reports()
         {
-            GetMock<IReportingRepository>().Verify(x => x.Save(It.IsAny<LedgerReport>()), Times.Exactly(4));
+            GetMock<IReportingRepository>().Verify(x => x.Save(It.IsAny<LedgerReport>()), Times.Exactly(5));
         }
     }
 }

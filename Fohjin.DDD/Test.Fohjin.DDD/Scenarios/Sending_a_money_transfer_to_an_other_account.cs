@@ -115,7 +115,7 @@ namespace Test.Fohjin.DDD.Scenarios
         [Then]
         public void Then_the_exception_message_will_be()
         {
-            CaughtException.WithMessage(string.Format("The amount {0} is larger than your current balance {1}", 10.5M, 0));
+            CaughtException.WithMessage(string.Format("The amount {0:C} is larger than your current balance {1:C}", 10.5M, 0));
         }
     }
 
