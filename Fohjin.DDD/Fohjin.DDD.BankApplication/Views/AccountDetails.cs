@@ -32,20 +32,20 @@ namespace Fohjin.DDD.BankApplication.Views
 
         private void RegisterCLientEvents()
         {
-            changeAccountNameToolStripMenuItem.Click += (e, s) => OnInitiateAccountNameChange();
-            closeAccountToolStripMenuItem.Click += (e, s) => OnCloseTheAccount();
-            makeCashMutationToolStripMenuItem.Click += (e, s) => OnInitiateMoneyDeposite();
-            makeCashWithdrawlToolStripMenuItem.Click += (e, s) => OnInitiateMoneyWithdrawl();
-            transferMoneyToolStripMenuItem.Click += (e, s) => OnInitiateMoneyTransfer();
-            _depositeCancelButton.Click += (e, s) => OnCancel();
-            _depositeButton.Click += (e, s) => OnDepositeMoney();
-            _withdrawlCancelButton.Click += (e, s) => OnCancel();
-            _withdrawlButton.Click += (e, s) => OnWithdrawlMoney();
-            _transferCancelButton.Click += (e, s) => OnCancel();
-            _transferButton.Click += (e, s) => OnTransferMoney();
-            _newAccountNameCancelButton.Click += (e, s) => OnCancel();
-            _newAccountNameSaveButton.Click += (e, s) => OnChangeAccountName();
-            _refreshButton.Click += (e, s) => OnRefresh();
+            changeAccountNameToolStripMenuItem.Click += (s, e) => OnInitiateAccountNameChange();
+            closeAccountToolStripMenuItem.Click += (s, e) => OnCloseTheAccount();
+            makeCashMutationToolStripMenuItem.Click += (s, e) => OnInitiateMoneyDeposite();
+            makeCashWithdrawlToolStripMenuItem.Click += (s, e) => OnInitiateMoneyWithdrawl();
+            transferMoneyToolStripMenuItem.Click += (s, e) => OnInitiateMoneyTransfer();
+            _depositeCancelButton.Click += (s, e) => OnCancel();
+            _depositeButton.Click += (s, e) => OnDepositeMoney();
+            _withdrawlCancelButton.Click += (s, e) => OnCancel();
+            _withdrawlButton.Click += (s, e) => OnWithdrawlMoney();
+            _transferCancelButton.Click += (s, e) => OnCancel();
+            _transferButton.Click += (s, e) => OnTransferMoney();
+            _newAccountNameCancelButton.Click += (s, e) => OnCancel();
+            _newAccountNameSaveButton.Click += (s, e) => OnChangeAccountName();
+            _refreshButton.Click += (s, e) => OnRefresh();
         }
 
         public string AccountNameLabel
@@ -78,21 +78,25 @@ namespace Fohjin.DDD.BankApplication.Views
         public void EnableDepositePanel()
         {
             tabControl1.SelectedIndex = 1;
+            _depositeAmount.Focus();
         }
 
         public void EnableWithdrawlPanel()
         {
             tabControl1.SelectedIndex = 2;
+            _withdrawlAmount.Focus();
         }
 
         public void EnableTransferPanel()
         {
             tabControl1.SelectedIndex = 3;
+            _transferAmount.Focus();
         }
 
         public void EnableAccountNameChangePanel()
         {
             tabControl1.SelectedIndex = 4;
+            _accountName.Focus();
         }
 
         public void EnableSaveButton()

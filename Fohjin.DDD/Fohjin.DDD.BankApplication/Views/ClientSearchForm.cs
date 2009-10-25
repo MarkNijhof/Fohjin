@@ -22,9 +22,9 @@ namespace Fohjin.DDD.BankApplication.Views
 
         private void RegisterCLientEvents()
         {
-            addANewClientToolStripMenuItem.Click += (e, s) => OnCreateNewClient();
-            _refreshButton.Click += (e, s) => OnRefresh();
-            _clients.Click += (e, s) => OnOpenSelectedClient();
+            addANewClientToolStripMenuItem.Click += (s, e) => OnCreateNewClient();
+            _refreshButton.Click += (s, e) => OnRefresh();
+            _clients.Click += (s, e) => OnOpenSelectedClient();
         }
 
         public IEnumerable<ClientReport> Clients

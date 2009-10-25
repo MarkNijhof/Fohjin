@@ -33,21 +33,21 @@ namespace Fohjin.DDD.BankApplication.Views
 
         private void RegisterCLientEvents()
         {
-            nameChangedToolStripMenuItem.Click += (e, s) => OnInitiateClientNameChange();
-            hasMovedToolStripMenuItem.Click += (e, s) => OnInitiateClientHasMoved();
-            changedHisPhoneNumberToolStripMenuItem.Click += (e, s) => OnInitiateClientPhoneNumberChanged();
-            addNewAccountToolStripMenuItem.Click += (e, s) => OnInitiateAddNewAccount();
-            _newAccountCreateButton.Click += (e, s) => OnCreateNewAccount();
-            _newAccountCancelButton.Click += (e, s) => OnCancel();
-            _clientNameSaveButton.Click += (e, s) => OnSaveNewClientName();
-            _clientNameCancelButton.Click += (e, s) => OnCancel();
-            _accounts.DoubleClick += (e, s) => OnOpenSelectedAccount();
-            _closedAccounts.DoubleClick += (e, s) => OnOpenSelectedClosedAccount();
-            _addressCancelButton.Click += (e, s) => OnCancel();
-            _addressSaveButton.Click += (e, s) => OnSaveNewAddress();
-            _phoneNumberCancelButton.Click += (e, s) => OnCancel();
-            _phoneNumberSaveButton.Click += (e, s) => OnSaveNewPhoneNumber();
-            _refreshButton.Click += (e, s) => OnRefresh();
+            nameChangedToolStripMenuItem.Click += (s, e) => OnInitiateClientNameChange();
+            hasMovedToolStripMenuItem.Click += (s, e) => OnInitiateClientHasMoved();
+            changedHisPhoneNumberToolStripMenuItem.Click += (s, e) => OnInitiateClientPhoneNumberChanged();
+            addNewAccountToolStripMenuItem.Click += (s, e) => OnInitiateAddNewAccount();
+            _newAccountCreateButton.Click += (s, e) => OnCreateNewAccount();
+            _newAccountCancelButton.Click += (s, e) => OnCancel();
+            _clientNameSaveButton.Click += (s, e) => OnSaveNewClientName();
+            _clientNameCancelButton.Click += (s, e) => OnCancel();
+            _accounts.DoubleClick += (s, e) => OnOpenSelectedAccount();
+            _closedAccounts.DoubleClick += (s, e) => OnOpenSelectedClosedAccount();
+            _addressCancelButton.Click += (s, e) => OnCancel();
+            _addressSaveButton.Click += (s, e) => OnSaveNewAddress();
+            _phoneNumberCancelButton.Click += (s, e) => OnCancel();
+            _phoneNumberSaveButton.Click += (s, e) => OnSaveNewPhoneNumber();
+            _refreshButton.Click += (s, e) => OnRefresh();
         }
 
         public string ClientName
@@ -198,21 +198,25 @@ namespace Fohjin.DDD.BankApplication.Views
         public void EnableAddressPanel()
         {
             tabControl1.SelectedIndex = 1;
+            _street.Focus();
         }
 
         public void EnablePhoneNumberPanel()
         {
             tabControl1.SelectedIndex = 2;
+            _phoneNumber.Focus();
         }
 
         public void EnableClientNamePanel()
         {
             tabControl1.SelectedIndex = 3;
+            _clientName.Focus();
         }
 
         public void EnableAddNewAccountPanel()
         {
             tabControl1.SelectedIndex = 4;
+            _newAccountName.Focus();
         }
 
         private void _client_Changed(object sender, EventArgs e)

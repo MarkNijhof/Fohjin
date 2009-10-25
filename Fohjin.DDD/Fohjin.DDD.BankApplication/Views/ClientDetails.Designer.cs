@@ -37,6 +37,8 @@
             this.addNewAccountToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this._detailsTab = new System.Windows.Forms.TabPage();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this._closedAccounts = new System.Windows.Forms.ListBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this._accounts = new System.Windows.Forms.ListBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -75,11 +77,10 @@
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this._newAccountName = new System.Windows.Forms.TextBox();
             this._refreshButton = new System.Windows.Forms.Button();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this._closedAccounts = new System.Windows.Forms.ListBox();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this._detailsTab.SuspendLayout();
+            this.groupBox4.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this._addressTab.SuspendLayout();
@@ -90,7 +91,6 @@
             this._clientNameGroupBox.SuspendLayout();
             this._addNewAccount.SuspendLayout();
             this.groupBox3.SuspendLayout();
-            this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -172,6 +172,24 @@
             this._detailsTab.TabIndex = 0;
             this._detailsTab.Text = "tabPage1";
             this._detailsTab.UseVisualStyleBackColor = true;
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this._closedAccounts);
+            this.groupBox4.Location = new System.Drawing.Point(5, 228);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(285, 119);
+            this.groupBox4.TabIndex = 21;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Client closed accounts";
+            // 
+            // _closedAccounts
+            // 
+            this._closedAccounts.FormattingEnabled = true;
+            this._closedAccounts.Location = new System.Drawing.Point(6, 19);
+            this._closedAccounts.Name = "_closedAccounts";
+            this._closedAccounts.Size = new System.Drawing.Size(273, 95);
+            this._closedAccounts.TabIndex = 7;
             // 
             // groupBox1
             // 
@@ -282,7 +300,7 @@
             this._addressTab.Location = new System.Drawing.Point(4, 22);
             this._addressTab.Name = "_addressTab";
             this._addressTab.Padding = new System.Windows.Forms.Padding(3);
-            this._addressTab.Size = new System.Drawing.Size(298, 230);
+            this._addressTab.Size = new System.Drawing.Size(298, 352);
             this._addressTab.TabIndex = 1;
             this._addressTab.Text = "tabPage2";
             this._addressTab.UseVisualStyleBackColor = true;
@@ -290,20 +308,20 @@
             // _addressCancelButton
             // 
             this._addressCancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this._addressCancelButton.Location = new System.Drawing.Point(139, 204);
+            this._addressCancelButton.Location = new System.Drawing.Point(142, 329);
             this._addressCancelButton.Name = "_addressCancelButton";
             this._addressCancelButton.Size = new System.Drawing.Size(75, 23);
-            this._addressCancelButton.TabIndex = 16;
+            this._addressCancelButton.TabIndex = 6;
             this._addressCancelButton.Text = "Cancel";
             this._addressCancelButton.UseVisualStyleBackColor = true;
             // 
             // _addressSaveButton
             // 
             this._addressSaveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this._addressSaveButton.Location = new System.Drawing.Point(220, 204);
+            this._addressSaveButton.Location = new System.Drawing.Point(223, 329);
             this._addressSaveButton.Name = "_addressSaveButton";
             this._addressSaveButton.Size = new System.Drawing.Size(75, 23);
-            this._addressSaveButton.TabIndex = 15;
+            this._addressSaveButton.TabIndex = 5;
             this._addressSaveButton.Text = "Save";
             this._addressSaveButton.UseVisualStyleBackColor = true;
             // 
@@ -347,7 +365,7 @@
             this._postalCode.Location = new System.Drawing.Point(6, 73);
             this._postalCode.Name = "_postalCode";
             this._postalCode.Size = new System.Drawing.Size(55, 20);
-            this._postalCode.TabIndex = 11;
+            this._postalCode.TabIndex = 3;
             this._postalCode.TextChanged += new System.EventHandler(this._client_Changed);
             // 
             // _streetNumber
@@ -355,7 +373,7 @@
             this._streetNumber.Location = new System.Drawing.Point(224, 33);
             this._streetNumber.Name = "_streetNumber";
             this._streetNumber.Size = new System.Drawing.Size(55, 20);
-            this._streetNumber.TabIndex = 9;
+            this._streetNumber.TabIndex = 2;
             this._streetNumber.TextChanged += new System.EventHandler(this._client_Changed);
             // 
             // _city
@@ -363,7 +381,7 @@
             this._city.Location = new System.Drawing.Point(67, 73);
             this._city.Name = "_city";
             this._city.Size = new System.Drawing.Size(212, 20);
-            this._city.TabIndex = 12;
+            this._city.TabIndex = 4;
             this._city.TextChanged += new System.EventHandler(this._client_Changed);
             // 
             // label3
@@ -380,7 +398,7 @@
             this._street.Location = new System.Drawing.Point(6, 33);
             this._street.Name = "_street";
             this._street.Size = new System.Drawing.Size(212, 20);
-            this._street.TabIndex = 7;
+            this._street.TabIndex = 1;
             this._street.TextChanged += new System.EventHandler(this._client_Changed);
             // 
             // label2
@@ -399,7 +417,7 @@
             this._phoneNumberTab.Controls.Add(this._phoneNumberGroupBox);
             this._phoneNumberTab.Location = new System.Drawing.Point(4, 22);
             this._phoneNumberTab.Name = "_phoneNumberTab";
-            this._phoneNumberTab.Size = new System.Drawing.Size(298, 230);
+            this._phoneNumberTab.Size = new System.Drawing.Size(298, 352);
             this._phoneNumberTab.TabIndex = 2;
             this._phoneNumberTab.Text = "tabPage3";
             this._phoneNumberTab.UseVisualStyleBackColor = true;
@@ -407,20 +425,20 @@
             // _phoneNumberCancelButton
             // 
             this._phoneNumberCancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this._phoneNumberCancelButton.Location = new System.Drawing.Point(139, 204);
+            this._phoneNumberCancelButton.Location = new System.Drawing.Point(142, 329);
             this._phoneNumberCancelButton.Name = "_phoneNumberCancelButton";
             this._phoneNumberCancelButton.Size = new System.Drawing.Size(75, 23);
-            this._phoneNumberCancelButton.TabIndex = 19;
+            this._phoneNumberCancelButton.TabIndex = 9;
             this._phoneNumberCancelButton.Text = "Cancel";
             this._phoneNumberCancelButton.UseVisualStyleBackColor = true;
             // 
             // _phoneNumberSaveButton
             // 
             this._phoneNumberSaveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this._phoneNumberSaveButton.Location = new System.Drawing.Point(220, 204);
+            this._phoneNumberSaveButton.Location = new System.Drawing.Point(223, 329);
             this._phoneNumberSaveButton.Name = "_phoneNumberSaveButton";
             this._phoneNumberSaveButton.Size = new System.Drawing.Size(75, 23);
-            this._phoneNumberSaveButton.TabIndex = 18;
+            this._phoneNumberSaveButton.TabIndex = 8;
             this._phoneNumberSaveButton.Text = "Save";
             this._phoneNumberSaveButton.UseVisualStyleBackColor = true;
             // 
@@ -439,7 +457,7 @@
             this._phoneNumber.Location = new System.Drawing.Point(6, 19);
             this._phoneNumber.Name = "_phoneNumber";
             this._phoneNumber.Size = new System.Drawing.Size(273, 20);
-            this._phoneNumber.TabIndex = 9;
+            this._phoneNumber.TabIndex = 7;
             this._phoneNumber.TextChanged += new System.EventHandler(this._client_Changed);
             // 
             // _clientNameTab
@@ -449,7 +467,7 @@
             this._clientNameTab.Controls.Add(this._clientNameGroupBox);
             this._clientNameTab.Location = new System.Drawing.Point(4, 22);
             this._clientNameTab.Name = "_clientNameTab";
-            this._clientNameTab.Size = new System.Drawing.Size(298, 230);
+            this._clientNameTab.Size = new System.Drawing.Size(298, 352);
             this._clientNameTab.TabIndex = 3;
             this._clientNameTab.Text = "tabPage4";
             this._clientNameTab.UseVisualStyleBackColor = true;
@@ -457,20 +475,20 @@
             // _clientNameCancelButton
             // 
             this._clientNameCancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this._clientNameCancelButton.Location = new System.Drawing.Point(139, 204);
+            this._clientNameCancelButton.Location = new System.Drawing.Point(142, 329);
             this._clientNameCancelButton.Name = "_clientNameCancelButton";
             this._clientNameCancelButton.Size = new System.Drawing.Size(75, 23);
-            this._clientNameCancelButton.TabIndex = 18;
+            this._clientNameCancelButton.TabIndex = 12;
             this._clientNameCancelButton.Text = "Cancel";
             this._clientNameCancelButton.UseVisualStyleBackColor = true;
             // 
             // _clientNameSaveButton
             // 
             this._clientNameSaveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this._clientNameSaveButton.Location = new System.Drawing.Point(220, 204);
+            this._clientNameSaveButton.Location = new System.Drawing.Point(223, 329);
             this._clientNameSaveButton.Name = "_clientNameSaveButton";
             this._clientNameSaveButton.Size = new System.Drawing.Size(75, 23);
-            this._clientNameSaveButton.TabIndex = 17;
+            this._clientNameSaveButton.TabIndex = 11;
             this._clientNameSaveButton.Text = "Save";
             this._clientNameSaveButton.UseVisualStyleBackColor = true;
             // 
@@ -489,7 +507,7 @@
             this._clientName.Location = new System.Drawing.Point(6, 19);
             this._clientName.Name = "_clientName";
             this._clientName.Size = new System.Drawing.Size(273, 20);
-            this._clientName.TabIndex = 9;
+            this._clientName.TabIndex = 10;
             this._clientName.TextChanged += new System.EventHandler(this._client_Changed);
             // 
             // _addNewAccount
@@ -499,7 +517,7 @@
             this._addNewAccount.Controls.Add(this.groupBox3);
             this._addNewAccount.Location = new System.Drawing.Point(4, 22);
             this._addNewAccount.Name = "_addNewAccount";
-            this._addNewAccount.Size = new System.Drawing.Size(298, 230);
+            this._addNewAccount.Size = new System.Drawing.Size(298, 352);
             this._addNewAccount.TabIndex = 4;
             this._addNewAccount.Text = "tabPage5";
             this._addNewAccount.UseVisualStyleBackColor = true;
@@ -507,20 +525,20 @@
             // _newAccountCancelButton
             // 
             this._newAccountCancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this._newAccountCancelButton.Location = new System.Drawing.Point(139, 204);
+            this._newAccountCancelButton.Location = new System.Drawing.Point(142, 329);
             this._newAccountCancelButton.Name = "_newAccountCancelButton";
             this._newAccountCancelButton.Size = new System.Drawing.Size(75, 23);
-            this._newAccountCancelButton.TabIndex = 20;
+            this._newAccountCancelButton.TabIndex = 15;
             this._newAccountCancelButton.Text = "Cancel";
             this._newAccountCancelButton.UseVisualStyleBackColor = true;
             // 
             // _newAccountCreateButton
             // 
             this._newAccountCreateButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this._newAccountCreateButton.Location = new System.Drawing.Point(220, 204);
+            this._newAccountCreateButton.Location = new System.Drawing.Point(223, 329);
             this._newAccountCreateButton.Name = "_newAccountCreateButton";
             this._newAccountCreateButton.Size = new System.Drawing.Size(75, 23);
-            this._newAccountCreateButton.TabIndex = 19;
+            this._newAccountCreateButton.TabIndex = 14;
             this._newAccountCreateButton.Text = "Create";
             this._newAccountCreateButton.UseVisualStyleBackColor = true;
             // 
@@ -539,7 +557,7 @@
             this._newAccountName.Location = new System.Drawing.Point(6, 19);
             this._newAccountName.Name = "_newAccountName";
             this._newAccountName.Size = new System.Drawing.Size(273, 20);
-            this._newAccountName.TabIndex = 9;
+            this._newAccountName.TabIndex = 13;
             this._newAccountName.TextChanged += new System.EventHandler(this._client_Changed);
             // 
             // _refreshButton
@@ -547,27 +565,9 @@
             this._refreshButton.Location = new System.Drawing.Point(231, 0);
             this._refreshButton.Name = "_refreshButton";
             this._refreshButton.Size = new System.Drawing.Size(75, 23);
-            this._refreshButton.TabIndex = 24;
+            this._refreshButton.TabIndex = 16;
             this._refreshButton.Text = "Refresh";
             this._refreshButton.UseVisualStyleBackColor = true;
-            // 
-            // groupBox4
-            // 
-            this.groupBox4.Controls.Add(this._closedAccounts);
-            this.groupBox4.Location = new System.Drawing.Point(5, 228);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(285, 119);
-            this.groupBox4.TabIndex = 21;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Client closed accounts";
-            // 
-            // _closedAccounts
-            // 
-            this._closedAccounts.FormattingEnabled = true;
-            this._closedAccounts.Location = new System.Drawing.Point(6, 19);
-            this._closedAccounts.Name = "_closedAccounts";
-            this._closedAccounts.Size = new System.Drawing.Size(273, 95);
-            this._closedAccounts.TabIndex = 7;
             // 
             // ClientDetails
             // 
@@ -586,6 +586,7 @@
             this.menuStrip1.PerformLayout();
             this.tabControl1.ResumeLayout(false);
             this._detailsTab.ResumeLayout(false);
+            this.groupBox4.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
@@ -601,7 +602,6 @@
             this._addNewAccount.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
-            this.groupBox4.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
