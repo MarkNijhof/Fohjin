@@ -1,38 +1,34 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Fohjin.DDD.Bus;
-using Fohjin.DDD.Contracts;
-using Fohjin.DDD.EventHandlers;
 using Moq;
+using NUnit.Framework;
 
 namespace Test.Fohjin.DDD
 {
     [Specification]
-    public abstract class EventTestFixture<TEvent, TEventHandler>
-        where TEvent : class, IMessage
-        where TEventHandler : class, IEventHandler<TEvent>
+    public abstract class BaseTestFixture<TSubjectUnderTest>
     {
         private IDictionary<Type, object> mocks;
 
+        protected TSubjectUnderTest SubjectUnderTest;
         protected Exception CaughtException;
-        protected IEventHandler<TEvent> EventHandler;
-
         protected abstract void MockSetup();
-        protected abstract TEvent When();
+        protected abstract void Given();
+        protected abstract void When();
 
         [Given]
         public void Setup()
         {
             mocks = new Dictionary<Type, object>();
             CaughtException = new ThereWasNoExceptionButOneWasExpectedException();
-
-            EventHandler = BuildCommandHandler();
-
+            SubjectUnderTest = BuildSubjectUnderTest();
             MockSetup();
+
             try
             {
-                EventHandler.Execute(When());
+                Given();
+                When();
             }
             catch (Exception exception)
             {
@@ -40,31 +36,22 @@ namespace Test.Fohjin.DDD
             }
         }
 
+
         public Mock<TType> GetMock<TType>() where TType : class
         {
-            if (!mocks.ContainsKey(typeof(TType)))
-                throw new Exception(string.Format("The event handler '{0}' does not have a dependency upon '{1}'", typeof(TEventHandler).FullName, typeof(TType).FullName));
-
             return (Mock<TType>)mocks[typeof(TType)];
         }
 
-        private IEventHandler<TEvent> BuildCommandHandler()
+        private TSubjectUnderTest BuildSubjectUnderTest()
         {
-            var constructorInfo = typeof(TEventHandler).GetConstructors().First();
+            var constructorInfo = typeof(TSubjectUnderTest).GetConstructors().First();
 
             foreach (var parameter in constructorInfo.GetParameters())
             {
-                if (parameter.ParameterType == typeof(IReportingRepository))
-                {
-                    var repositoryMock = new Mock<IReportingRepository>();
-                    mocks.Add(parameter.ParameterType, repositoryMock);
-                    continue;
-                }
-
                 mocks.Add(parameter.ParameterType, CreateMock(parameter.ParameterType));
             }
 
-            return (IEventHandler<TEvent>)constructorInfo.Invoke(mocks.Values.Select(x => ((Mock)x).Object).ToArray());
+            return (TSubjectUnderTest)constructorInfo.Invoke(mocks.Values.Select(x => ((Mock)x).Object).ToArray());
         }
 
         private static object CreateMock(Type type)
@@ -73,4 +60,10 @@ namespace Test.Fohjin.DDD
             return constructorInfo.Invoke(new object[] { });
         }
     }
+
+    public class GivenAttribute : SetUpAttribute { }
+
+    public class ThenAttribute : TestAttribute { }
+
+    public class SpecificationAttribute : TestFixtureAttribute { }
 }

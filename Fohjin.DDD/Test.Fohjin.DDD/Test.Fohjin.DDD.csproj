@@ -61,6 +61,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseTestFixture.cs" />
     <Compile Include="Commands\All_commands_must_be_Serializable.cs" />
     <Compile Include="Configuration\DatabaseBootStrapperTest.cs" />
     <Compile Include="Configuration\ReportingBootStrapperTest.cs" />
@@ -81,6 +82,8 @@
     <Compile Include="Scenarios\Making_a_cash_withdrawl.cs" />
     <Compile Include="Scenarios\Receiving_a_money_transfer_from_an_other_account.cs" />
     <Compile Include="Scenarios\Sending_a_money_transfer_to_an_other_account.cs" />
+    <Compile Include="Services\Money_transfer_received.cs" />
+    <Compile Include="Services\Money_transfer_send.cs" />
     <Compile Include="TestExtensions.cs" />
     <Compile Include="CommandTestFixture.cs" />
     <Compile Include="Domain\Repositories\ActiveAccountRepositoryTest.cs" />
@@ -142,9 +145,6 @@
       <Project>{B2428304-1BF2-4BCB-B250-7D09E536560A}</Project>
       <Name>Fohjin.DDD.Services</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

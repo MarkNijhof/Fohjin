@@ -2,35 +2,34 @@ using System;
 using System.Collections.Generic;
 using Fohjin.DDD.Domain;
 using Fohjin.DDD.Events;
-using NUnit.Framework;
 
 namespace Test.Fohjin.DDD
 {
     [Specification]
     public abstract class AggregateRootTestFixture<TAggregateRoot> where TAggregateRoot : IEventProvider, new()
     {
-        protected TAggregateRoot aggregateRoot;
-        protected Exception caught;
-        protected IEnumerable<IDomainEvent> events;
+        protected TAggregateRoot AggregateRoot;
+        protected Exception CaughtException;
+        protected IEnumerable<IDomainEvent> PublishedEvents;
 
         protected abstract IEnumerable<IDomainEvent> Given();
         protected abstract void When();
 
-        [SetUp]
+        [Given]
         public void Setup()
         {
-            caught = new ThereWasNoExceptionButOneWasExpectedException();
-            aggregateRoot = new TAggregateRoot();
-            aggregateRoot.LoadFromHistory(Given());
+            CaughtException = new ThereWasNoExceptionButOneWasExpectedException();
+            AggregateRoot = new TAggregateRoot();
+            AggregateRoot.LoadFromHistory(Given());
 
             try
             {
                 When();
-                events = aggregateRoot.GetChanges();
+                PublishedEvents = AggregateRoot.GetChanges();
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                caught = e;
+                CaughtException = exception;
             }
         }
     }

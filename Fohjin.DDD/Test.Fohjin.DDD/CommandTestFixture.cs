@@ -9,7 +9,6 @@ using Fohjin.DDD.Domain;
 using Fohjin.DDD.Domain.Entities.Mementos;
 using Fohjin.DDD.Events;
 using Moq;
-using NUnit.Framework;
 
 namespace Test.Fohjin.DDD
 {
@@ -20,32 +19,33 @@ namespace Test.Fohjin.DDD
         where TAggregateRoot : IOrginator, IEventProvider, new()
     {
         private IDictionary<Type, object> mocks;
-        protected TAggregateRoot aggregateRoot;
-        protected ICommandHandler<TCommand> commandHandler;
+
+        protected TAggregateRoot AggregateRoot;
+        protected ICommandHandler<TCommand> CommandHandler;
         protected Exception CaughtException;
         protected IEnumerable<IDomainEvent> PublishedEvents;
 
         protected abstract IEnumerable<IDomainEvent> Given();
         protected abstract TCommand When();
 
-        [SetUp]
+        [Given]
         public void Setup()
         {
             mocks = new Dictionary<Type, object>();
             CaughtException = new ThereWasNoExceptionButOneWasExpectedException();
-            aggregateRoot = new TAggregateRoot();
-            aggregateRoot.LoadFromHistory(Given());
+            AggregateRoot = new TAggregateRoot();
+            AggregateRoot.LoadFromHistory(Given());
 
-            commandHandler = BuildCommandHandler();
+            CommandHandler = BuildCommandHandler();
 
             try
             {
-                commandHandler.Execute(When());
-                PublishedEvents = aggregateRoot.GetChanges();
+                CommandHandler.Execute(When());
+                PublishedEvents = AggregateRoot.GetChanges();
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                CaughtException = e;
+                CaughtException = exception;
             }
         }
 
@@ -63,8 +63,8 @@ namespace Test.Fohjin.DDD
                 if (parameter.ParameterType == typeof(IDomainRepository))
                 {
                     var repositoryMock = new Mock<IDomainRepository>();
-                    repositoryMock.Setup(x => x.GetById<TAggregateRoot>(It.IsAny<Guid>())).Returns(aggregateRoot);
-                    repositoryMock.Setup(x => x.Save(It.IsAny<TAggregateRoot>())).Callback<TAggregateRoot>(x => aggregateRoot = x);
+                    repositoryMock.Setup(x => x.GetById<TAggregateRoot>(It.IsAny<Guid>())).Returns(AggregateRoot);
+                    repositoryMock.Setup(x => x.Save(It.IsAny<TAggregateRoot>())).Callback<TAggregateRoot>(x => AggregateRoot = x);
                     mocks.Add(parameter.ParameterType, repositoryMock);
                     continue;
                 }

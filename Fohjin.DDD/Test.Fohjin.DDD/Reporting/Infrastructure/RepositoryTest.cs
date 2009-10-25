@@ -56,11 +56,11 @@ namespace Test.Fohjin.DDD.Reporting.Infrastructure
         {
             var accountDto = new AccountReport(Guid.NewGuid(), Guid.NewGuid(), "Account Name", "1234567890");
             _repository.Save(accountDto);
-            var sut = _repository.GetByExample<AccountReport>(new { Name = "Account Name" }).FirstOrDefault();
+            var sut = _repository.GetByExample<AccountReport>(new { AccountName = "Account Name" }).FirstOrDefault();
 
             Assert.That(sut.Id, Is.EqualTo(accountDto.Id));
             Assert.That(sut.ClientDetailsReportId, Is.EqualTo(accountDto.ClientDetailsReportId));
-            Assert.That(sut.Name, Is.EqualTo(accountDto.Name));
+            Assert.That(sut.AccountName, Is.EqualTo(accountDto.AccountName));
             Assert.That(sut.AccountNumber, Is.EqualTo(accountDto.AccountNumber));
         }
 

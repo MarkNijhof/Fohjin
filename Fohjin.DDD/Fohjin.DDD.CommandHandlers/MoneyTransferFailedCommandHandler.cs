@@ -5,16 +5,16 @@ using Fohjin.DDD.Domain.ValueObjects;
 
 namespace Fohjin.DDD.CommandHandlers
 {
-    public class TransferMoneyToAnOtherAccountFailedCommandHandler : ICommandHandler<TransferMoneyToAnOtherAccountFailedCommand>
+    public class MoneyTransferFailedCommandHandler : ICommandHandler<MoneyTransferFailedCommand>
     {
         private readonly IDomainRepository _repository;
 
-        public TransferMoneyToAnOtherAccountFailedCommandHandler(IDomainRepository repository)
+        public MoneyTransferFailedCommandHandler(IDomainRepository repository)
         {
             _repository = repository;
         }
 
-        public void Execute(TransferMoneyToAnOtherAccountFailedCommand command)
+        public void Execute(MoneyTransferFailedCommand command)
         {
             var activeAccount = _repository.GetById<ActiveAccount>(command.Id);
 

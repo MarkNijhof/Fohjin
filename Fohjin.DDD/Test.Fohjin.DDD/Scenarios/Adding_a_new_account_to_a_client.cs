@@ -37,7 +37,7 @@ namespace Test.Fohjin.DDD.Scenarios
         [Then]
         public void Then_the_published_event_will_contain_the_expected_details_of_the_account()
         {
-            PublishedEvents.Last<AccountToClientAssignedEvent>().AggregateId.WillBe(aggregateRoot.Id);
+            PublishedEvents.Last<AccountToClientAssignedEvent>().AggregateId.WillBe(AggregateRoot.Id);
             PublishedEvents.Last<AccountToClientAssignedEvent>().AccountId.WillNotBe(new Guid());
         }
 
@@ -91,21 +91,21 @@ namespace Test.Fohjin.DDD.Scenarios
         {
             SystemDateTime.Now = () => new DateTime(2009, 1, 1, 1, 1, 1, 1);
             _ticks = SystemDateTime.Now().Ticks.ToString();
-            aggregateRoot = ActiveAccount.CreateNew(Guid.NewGuid(), "New Account");
+            AggregateRoot = ActiveAccount.CreateNew(Guid.NewGuid(), "New Account");
             SystemDateTime.Reset();
         }
 
         [Then]
         public void Then_an_account_created_event_will_be_published()
         {
-            events.Last().WillBeOfType<AccountCreatedEvent>();
+            PublishedEvents.Last().WillBeOfType<AccountCreatedEvent>();
         }
 
         [Then]
         public void Then_the_published_event_will_contain_the_new_name_and_number_of_the_account()
         {
-            events.Last<AccountCreatedEvent>().AccountName.WillBe("New Account");
-            events.Last<AccountCreatedEvent>().AccountNumber.WillBe(_ticks);
+            PublishedEvents.Last<AccountCreatedEvent>().AccountName.WillBe("New Account");
+            PublishedEvents.Last<AccountCreatedEvent>().AccountNumber.WillBe(_ticks);
         }
     }
 
@@ -123,7 +123,7 @@ namespace Test.Fohjin.DDD.Scenarios
         [Then]
         public void Then_it_will_not_throw_an_exception()
         {
-            caught.WillBeOfType<ThereWasNoExceptionButOneWasExpectedException>();
+            CaughtException.WillBeOfType<ThereWasNoExceptionButOneWasExpectedException>();
         }
     }
 
@@ -164,7 +164,7 @@ namespace Test.Fohjin.DDD.Scenarios
         {
             SaveAccountReportObject.Id.WillBe(_accountId);
             SaveAccountReportObject.ClientDetailsReportId.WillBe(_clientId);
-            SaveAccountReportObject.Name.WillBe("New Account");
+            SaveAccountReportObject.AccountName.WillBe("New Account");
             SaveAccountReportObject.AccountNumber.WillBe("1234567890");
         }
 

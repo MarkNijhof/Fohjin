@@ -64,32 +64,32 @@ namespace Test.Fohjin.DDD.Scenarios
 
             _accountId = Guid.NewGuid();
             _clientId = Guid.NewGuid();
-            aggregateRoot = ClosedAccount.CreateNew(_accountId, _clientId, ledgers, new AccountName("Closed Account"), new AccountNumber("1234567890"));
+            AggregateRoot = ClosedAccount.CreateNew(_accountId, _clientId, ledgers, new AccountName("Closed Account"), new AccountNumber("1234567890"));
         }
 
         [Then]
         public void Then_a_closed_account_created_event_will_be_published()
         {
-            events.Last().WillBeOfType<ClosedAccountCreatedEvent>();
+            PublishedEvents.Last().WillBeOfType<ClosedAccountCreatedEvent>();
         }
 
         [Then]
         public void Then_the_published_event_will_contain_the_expected_details_of_the_closed_account()
         {
-            events.Last<ClosedAccountCreatedEvent>().OriginalAccountId.WillBe(_accountId);
-            events.Last<ClosedAccountCreatedEvent>().ClientId.WillBe(_clientId);
-            events.Last<ClosedAccountCreatedEvent>().AccountName.WillBe("Closed Account");
-            events.Last<ClosedAccountCreatedEvent>().AccountNumber.WillBe("1234567890");
+            PublishedEvents.Last<ClosedAccountCreatedEvent>().OriginalAccountId.WillBe(_accountId);
+            PublishedEvents.Last<ClosedAccountCreatedEvent>().ClientId.WillBe(_clientId);
+            PublishedEvents.Last<ClosedAccountCreatedEvent>().AccountName.WillBe("Closed Account");
+            PublishedEvents.Last<ClosedAccountCreatedEvent>().AccountNumber.WillBe("1234567890");
         }
 
         [Then]
         public void Then_the_published_event_will_contain_the_expected_ledgers_of_the_closed_account()
         {
-            events.Last<ClosedAccountCreatedEvent>().Ledgers.Count().WillBe(4);
-            events.Last<ClosedAccountCreatedEvent>().Ledgers[0].Key.WillBe("CreditMutation");
-            events.Last<ClosedAccountCreatedEvent>().Ledgers[1].Key.WillBe("DebitMutation");
-            events.Last<ClosedAccountCreatedEvent>().Ledgers[2].Key.WillBe("CreditTransfer");
-            events.Last<ClosedAccountCreatedEvent>().Ledgers[3].Key.WillBe("DebitTransfer");
+            PublishedEvents.Last<ClosedAccountCreatedEvent>().Ledgers.Count().WillBe(4);
+            PublishedEvents.Last<ClosedAccountCreatedEvent>().Ledgers[0].Key.WillBe("CreditMutation");
+            PublishedEvents.Last<ClosedAccountCreatedEvent>().Ledgers[1].Key.WillBe("DebitMutation");
+            PublishedEvents.Last<ClosedAccountCreatedEvent>().Ledgers[2].Key.WillBe("CreditTransfer");
+            PublishedEvents.Last<ClosedAccountCreatedEvent>().Ledgers[3].Key.WillBe("DebitTransfer");
         }
     }
 
@@ -224,7 +224,7 @@ namespace Test.Fohjin.DDD.Scenarios
         {
             SaveClosedAccountReportObject.Id.WillBe(_accountId);
             SaveClosedAccountReportObject.ClientDetailsReportId.WillBe(_clientId);
-            SaveClosedAccountReportObject.Name.WillBe("Closed Account");
+            SaveClosedAccountReportObject.AccountName.WillBe("Closed Account");
         }
 
         [Then]

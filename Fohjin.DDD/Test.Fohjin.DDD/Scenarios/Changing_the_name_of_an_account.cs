@@ -125,7 +125,7 @@ namespace Test.Fohjin.DDD.Scenarios
         [Then]
         public void Then_the_account_report_will_be_updated_with_the_expected_details()
         {
-            UpdateAccountObject.WillBeSimuliar(new { Name = "New Account Name" }.ToString());
+            UpdateAccountObject.WillBeSimuliar(new { AccountName = "New Account Name" }.ToString());
             WhereAccountObject.WillBeSimuliar(new { Id = _accountId });
         }
 

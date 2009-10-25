@@ -15,7 +15,7 @@ namespace Fohjin.DDD.EventHandlers
 
         public void Execute(AccountNameChangedEvent theEvent)
         {
-            _reportingRepository.Update<AccountReport>(new { Name = theEvent.AccountName }, new { Id = theEvent.AggregateId });
+            _reportingRepository.Update<AccountReport>(new { theEvent.AccountName }, new { Id = theEvent.AggregateId });
             _reportingRepository.Update<AccountDetailsReport>(new { theEvent.AccountName }, new { Id = theEvent.AggregateId });
         }
     }

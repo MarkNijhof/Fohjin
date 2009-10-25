@@ -6,10 +6,6 @@ using NUnit.Framework;
 
 namespace Test.Fohjin.DDD
 {
-    public class ThenAttribute : TestAttribute { }
-
-    public class SpecificationAttribute : TestFixtureAttribute { }
-
     public static class TestExtensions
     {
         public static IDomainEvent Number(this IEnumerable<IDomainEvent> events, int value)

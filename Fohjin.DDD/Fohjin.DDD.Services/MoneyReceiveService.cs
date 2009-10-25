@@ -1,8 +1,8 @@
+using System;
 using System.Linq;
 using Fohjin.DDD.Bus;
 using Fohjin.DDD.Commands;
 using Fohjin.DDD.Contracts;
-using Fohjin.DDD.Domain;
 using Fohjin.DDD.Reporting.Dto;
 
 namespace Fohjin.DDD.Services
@@ -25,26 +25,25 @@ namespace Fohjin.DDD.Services
 
         public void Receive(MoneyTransfer moneyTransfer)
         {
-            // I didn't want to introduce an actual account that didn't exists so that's why this nice construct :)
-            if (SystemRandom.Next(0, 2) == 0)
-            {
-                MoneyTransferIsGoingToAnInternalAccount(moneyTransfer);
-                return;
-            }
+            MoneyTransferIsGoingToAnInternalAccount(moneyTransfer);
+        }
 
-            // The account is <quote><quote>not found<quote><quote> so we throw an exception
-            RequestedAccountDoesNotExist(moneyTransfer);
+        private void MoneyTransferIsGoingToAnInternalAccount(MoneyTransfer moneyTransfer)
+        {
+            try
+            {
+                var account = _reportingRepository.GetByExample<AccountReport>(new {moneyTransfer.TargetAccount}).First();
+                _commandBus.Publish(new ReceiveMoneyTransferCommand(account.Id, moneyTransfer.Ammount, moneyTransfer.SourceAccount));
+            }
+            catch(Exception)
+            {
+                RequestedAccountDoesNotExist(moneyTransfer);
+            }
         }
 
         private static void RequestedAccountDoesNotExist(MoneyTransfer moneyTransfer)
         {
             throw new AccountDoesNotExistException(string.Format("The requested account '{0}' is not managed by this bank", moneyTransfer.TargetAccount));
-        }
-
-        private void MoneyTransferIsGoingToAnInternalAccount(MoneyTransfer moneyTransfer)
-        {
-            var account = _reportingRepository.GetByExample<AccountReport>(new { moneyTransfer.TargetAccount }).First();
-            _commandBus.Publish(new ReceiveMoneyTransferCommand(account.Id, moneyTransfer.Ammount, moneyTransfer.SourceAccount));
         }
     }
 }
