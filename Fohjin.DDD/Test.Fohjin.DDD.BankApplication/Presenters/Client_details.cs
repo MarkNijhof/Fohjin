@@ -87,4 +87,67 @@ namespace Test.Fohjin.DDD.BankApplication.Presenters
             GetMock<IClientDetailsView>().Verify(x => x.ShowDialog());
         }
     }
+
+    public class When_displaying_the_client_details_view_for_creating_a_new_client : BaseTestFixture<ClientDetailsPresenter>
+    {
+        protected override void MockSetup()
+        {
+        }
+
+        protected override void Given()
+        {
+        }
+
+        protected override void When()
+        {
+            SubjectUnderTest.SetClient(null);
+            SubjectUnderTest.Display();
+        }
+
+        [Then]
+        public void Then_the_save_button_will_be_disabled()
+        {
+            GetMock<IClientDetailsView>().Verify(x => x.DisableSaveButton());
+        }
+
+        [Then]
+        public void Then_the_menu_buttons_will_be_disabled()
+        {
+            GetMock<IClientDetailsView>().Verify(x => x.DisableAddNewAccountMenu());
+            GetMock<IClientDetailsView>().Verify(x => x.DisableClientHasMovedMenu());
+            GetMock<IClientDetailsView>().Verify(x => x.DisableNameChangedMenu());
+            GetMock<IClientDetailsView>().Verify(x => x.DisablePhoneNumberChangedMenu());
+        }
+
+        [Then]
+        public void Then_overview_panel_will_be_shown()
+        {
+            GetMock<IClientDetailsView>().Verify(x => x.EnableOverviewPanel());
+        }
+
+        [Then]
+        public void Then_the_view_input_fields_will_be_reset()
+        {
+            GetMock<IClientDetailsView>().VerifySet(x => x.ClientName = string.Empty);
+            GetMock<IClientDetailsView>().VerifySet(x => x.Street = string.Empty);
+            GetMock<IClientDetailsView>().VerifySet(x => x.StreetNumber = string.Empty);
+            GetMock<IClientDetailsView>().VerifySet(x => x.PostalCode = string.Empty);
+            GetMock<IClientDetailsView>().VerifySet(x => x.City = string.Empty);
+            GetMock<IClientDetailsView>().VerifySet(x => x.PhoneNumber = string.Empty);
+            GetMock<IClientDetailsView>().VerifySet(x => x.Accounts = null);
+            GetMock<IClientDetailsView>().VerifySet(x => x.ClosedAccounts = null);
+        }
+
+        [Then]
+        public void Then_client_name_entry_panel_will_be_shown()
+        {
+            GetMock<IClientDetailsView>().Verify(x => x.EnableClientNamePanel());
+        }
+
+        [Then]
+        public void Then_show_dialog_will_be_called_on_the_view()
+        {
+            GetMock<IClientDetailsView>().Verify(x => x.ShowDialog());
+        }
+    }
 }

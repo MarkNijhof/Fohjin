@@ -319,6 +319,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
             _clientDetailsView.City = string.Empty;
             _clientDetailsView.PhoneNumber = string.Empty;
             _clientDetailsView.Accounts = null;
+            _clientDetailsView.ClosedAccounts = null;
         }
 
         private void DisableAllMenuButtons() 
