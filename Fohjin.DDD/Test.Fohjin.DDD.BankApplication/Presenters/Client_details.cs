@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using Fohjin.DDD.BankApplication.Presenters;
 using Fohjin.DDD.BankApplication.Views;
+using Fohjin.DDD.Bus;
+using Fohjin.DDD.Commands;
 using Fohjin.DDD.Contracts;
 using Fohjin.DDD.Reporting.Dto;
 using Moq;
@@ -148,6 +150,144 @@ namespace Test.Fohjin.DDD.BankApplication.Presenters
         public void Then_show_dialog_will_be_called_on_the_view()
         {
             GetMock<IClientDetailsView>().Verify(x => x.ShowDialog());
+        }
+    }
+
+    public class When_saving_the_client_name_while_creating_a_new_client : BaseTestFixture<ClientDetailsPresenter>
+    {
+        protected override void MockSetup()
+        {
+            GetMock<IPopupPresenter>()
+                .Setup(x => x.CatchPossibleException(It.IsAny<System.Action>()))
+                .Callback<System.Action>(x => x());
+        }
+
+        protected override void Given()
+        {
+            SubjectUnderTest.SetClient(null);
+            SubjectUnderTest.Display();
+            GetMock<IClientDetailsView>().SetupGet(x => x.ClientName).Returns("New Client Name");
+            GetMock<IClientDetailsView>().Raise(x => x.OnFormElementGotChanged += delegate { });
+        }
+
+        protected override void When()
+        {
+            GetMock<IClientDetailsView>().Raise(x => x.OnSaveNewClientName += delegate { });
+        }
+
+        [Then]
+        public void Then_the_save_button_will_be_disabled()
+        {
+            GetMock<IClientDetailsView>().Verify(x => x.DisableSaveButton());
+        }
+
+        [Then]
+        public void Then_overview_panel_will_be_shown()
+        {
+            GetMock<IClientDetailsView>().Verify(x => x.EnableAddressPanel());
+        }
+    }
+
+    public class When_saving_the_client_address_while_creating_a_new_client : BaseTestFixture<ClientDetailsPresenter>
+    {
+        protected override void MockSetup()
+        {
+            GetMock<IPopupPresenter>()
+                .Setup(x => x.CatchPossibleException(It.IsAny<System.Action>()))
+                .Callback<System.Action>(x => x());
+        }
+
+        protected override void Given()
+        {
+            SubjectUnderTest.SetClient(null);
+            SubjectUnderTest.Display();
+            GetMock<IClientDetailsView>().SetupGet(x => x.ClientName).Returns("New Client Name");
+            GetMock<IClientDetailsView>().Raise(x => x.OnFormElementGotChanged += delegate { });
+            GetMock<IClientDetailsView>().Raise(x => x.OnSaveNewClientName += delegate { });
+            GetMock<IClientDetailsView>().SetupGet(x => x.Street).Returns("Street");
+            GetMock<IClientDetailsView>().SetupGet(x => x.StreetNumber).Returns("123");
+            GetMock<IClientDetailsView>().SetupGet(x => x.PostalCode).Returns("5000");
+            GetMock<IClientDetailsView>().SetupGet(x => x.City).Returns("Bergen");
+            GetMock<IClientDetailsView>().Raise(x => x.OnFormElementGotChanged += delegate { });
+        }
+
+        protected override void When()
+        {
+            GetMock<IClientDetailsView>().Raise(x => x.OnSaveNewAddress += delegate { });
+        }
+
+        [Then]
+        public void Then_the_save_button_will_be_disabled()
+        {
+            GetMock<IClientDetailsView>().Verify(x => x.DisableSaveButton());
+        }
+
+        [Then]
+        public void Then_overview_panel_will_be_shown()
+        {
+            GetMock<IClientDetailsView>().Verify(x => x.EnablePhoneNumberPanel());
+        }
+    }
+
+    public class When_saving_the_client_phone_number_while_creating_a_new_client : BaseTestFixture<ClientDetailsPresenter>
+    {
+        private CreateClientCommand _createClientCommand;
+
+        protected override void MockSetup()
+        {
+            GetMock<IPopupPresenter>()
+                .Setup(x => x.CatchPossibleException(It.IsAny<System.Action>()))
+                .Callback<System.Action>(x => x());
+
+            GetMock<ICommandBus>()
+                .Setup(x => x.Publish(It.IsAny<CreateClientCommand>()))
+                .Callback<CreateClientCommand>(x => _createClientCommand = x);
+        }
+
+        protected override void Given()
+        {
+            SubjectUnderTest.SetClient(null);
+            SubjectUnderTest.Display();
+            GetMock<IClientDetailsView>().SetupGet(x => x.ClientName).Returns("New Client Name");
+            GetMock<IClientDetailsView>().Raise(x => x.OnFormElementGotChanged += delegate { });
+            GetMock<IClientDetailsView>().Raise(x => x.OnSaveNewClientName += delegate { });
+            GetMock<IClientDetailsView>().SetupGet(x => x.Street).Returns("Street");
+            GetMock<IClientDetailsView>().SetupGet(x => x.StreetNumber).Returns("123");
+            GetMock<IClientDetailsView>().SetupGet(x => x.PostalCode).Returns("5000");
+            GetMock<IClientDetailsView>().SetupGet(x => x.City).Returns("Bergen");
+            GetMock<IClientDetailsView>().Raise(x => x.OnFormElementGotChanged += delegate { });
+            GetMock<IClientDetailsView>().Raise(x => x.OnSaveNewAddress += delegate { });
+            GetMock<IClientDetailsView>().SetupGet(x => x.PhoneNumber).Returns("1234567890");
+            GetMock<IClientDetailsView>().Raise(x => x.OnFormElementGotChanged += delegate { });
+        }
+
+        protected override void When()
+        {
+            GetMock<IClientDetailsView>().Raise(x => x.OnSaveNewPhoneNumber += delegate { });
+        }
+
+        [Then]
+        public void Then_the_save_button_will_be_disabled()
+        {
+            GetMock<IClientDetailsView>().Verify(x => x.DisableSaveButton());
+        }
+
+        [Then]
+        public void Then_a_create_client_command_with_all_collected_information_will_be_published()
+        {
+            GetMock<ICommandBus>().Verify(x => x.Publish(It.IsAny<CreateClientCommand>()));
+            _createClientCommand.ClientName.WillBe("New Client Name");
+            _createClientCommand.Street.WillBe("Street");
+            _createClientCommand.StreetNumber.WillBe("123");
+            _createClientCommand.PostalCode.WillBe("5000");
+            _createClientCommand.City.WillBe("Bergen");
+            _createClientCommand.PhoneNumber.WillBe("1234567890");
+        }
+
+        [Then]
+        public void Then_overview_panel_will_be_shown()
+        {
+            GetMock<IClientDetailsView>().Verify(x => x.Close());
         }
     }
 }

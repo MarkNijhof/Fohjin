@@ -48,11 +48,11 @@ namespace Test.Fohjin.DDD.BankApplication.Presenters
 
         protected override void MockSetup()
         {
-            _clientReport = new ClientReport(Guid.NewGuid(), "Client Name");
-
             GetMock<IPopupPresenter>()
                 .Setup(x => x.CatchPossibleException(It.IsAny<System.Action>()))
                 .Callback<System.Action>(x => x());
+
+            _clientReport = new ClientReport(Guid.NewGuid(), "Client Name");
 
             GetMock<IClientSearchFormView>()
                 .Setup(x => x.GetSelectedClient())
@@ -133,7 +133,7 @@ namespace Test.Fohjin.DDD.BankApplication.Presenters
 
         protected override void When()
         {
-            SubjectUnderTest.Refresh();
+            GetMock<IClientSearchFormView>().Raise(x => x.OnRefresh += delegate { });
         }
 
         [Then]
