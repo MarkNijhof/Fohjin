@@ -136,13 +136,6 @@ namespace Test.Fohjin.DDD.Bus
         }
     }
 
-//    public class OtherTestCommand : Command
-    //{
-    //    public OtherTestCommand(Guid id) : base(id)
-    //    {
-    //    }
-    //}
-
     public class FirstTestCommandHandler : ICommandHandler<TestCommand>
     {
         public List<Guid> Ids;

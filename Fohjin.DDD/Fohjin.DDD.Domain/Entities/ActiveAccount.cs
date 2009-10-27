@@ -104,8 +104,6 @@ namespace Fohjin.DDD.Domain.Entities
         {
             Guard();
 
-            IsBalanceHighEnough(amount);
-
             var newBalance = _balance.Deposite(amount);
 
             Apply(new MoneyTransferFailedEvent(newBalance, amount, accountNumber.Number));

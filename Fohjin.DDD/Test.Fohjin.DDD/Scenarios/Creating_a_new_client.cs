@@ -1,12 +1,10 @@
 using System;
 using System.Linq;
-using System.Collections.Generic;
 using Fohjin.DDD.CommandHandlers;
 using Fohjin.DDD.Commands;
 using Fohjin.DDD.Contracts;
 using Fohjin.DDD.Domain.Entities;
 using Fohjin.DDD.EventHandlers;
-using Fohjin.DDD.Events;
 using Fohjin.DDD.Events.Client;
 using Fohjin.DDD.Reporting.Dto;
 using Moq;
@@ -15,11 +13,6 @@ namespace Test.Fohjin.DDD.Scenarios
 {
     public class When_creating_a_new_client : CommandTestFixture<CreateClientCommand, CreateClientCommandHandler, Client>
     {
-        protected override IEnumerable<IDomainEvent> Given()
-        {
-            return new List<IDomainEvent>();
-        }
-
         protected override CreateClientCommand When()
         {
             return new CreateClientCommand(Guid.NewGuid(), "Mark Nijhof", "Welhavens gate", "49b", "5006", "Bergen", "95009937");

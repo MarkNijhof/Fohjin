@@ -13,8 +13,8 @@ namespace Test.Fohjin.DDD
 
         protected TSubjectUnderTest SubjectUnderTest;
         protected Exception CaughtException;
-        protected abstract void MockSetup();
-        protected abstract void Given();
+        protected virtual void MockSetup() { }
+        protected virtual void Given() { }
         protected abstract void When();
 
         [Given]
@@ -24,10 +24,10 @@ namespace Test.Fohjin.DDD
             CaughtException = new ThereWasNoExceptionButOneWasExpectedException();
             SubjectUnderTest = BuildSubjectUnderTest();
             MockSetup();
+            Given();
 
             try
             {
-                Given();
                 When();
             }
             catch (Exception exception)

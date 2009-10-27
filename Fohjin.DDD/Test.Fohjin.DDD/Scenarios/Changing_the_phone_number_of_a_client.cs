@@ -41,11 +41,6 @@ namespace Test.Fohjin.DDD.Scenarios
 
     public class When_changing_the_phone_number_of_a_not_yet_created_client : CommandTestFixture<ChangeClientPhoneNumberCommand, ChangeClientPhoneNumberCommandHandler, Client>
     {
-        protected override IEnumerable<IDomainEvent> Given()
-        {
-            return new List<IDomainEvent>();
-        }
-
         protected override ChangeClientPhoneNumberCommand When()
         {
             return new ChangeClientPhoneNumberCommand(Guid.NewGuid(), "95009937");

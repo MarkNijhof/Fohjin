@@ -43,11 +43,6 @@ namespace Test.Fohjin.DDD.Scenarios
 
     public class When_withdrawling_cash_from_an_account_that_is_not_yet_created : CommandTestFixture<WithdrawlCashCommand, WithdrawlCashCommandHandler, ActiveAccount>
     {
-        protected override IEnumerable<IDomainEvent> Given()
-        {
-            return new List<IDomainEvent>();
-        }
-
         protected override WithdrawlCashCommand When()
         {
             return new WithdrawlCashCommand(Guid.NewGuid(), 0);

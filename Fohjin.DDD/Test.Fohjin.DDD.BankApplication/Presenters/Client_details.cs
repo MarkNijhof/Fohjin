@@ -25,10 +25,6 @@ namespace Test.Fohjin.DDD.BankApplication.Presenters
                 .Returns(_clientDetailsReports);
         }
 
-        protected override void Given()
-        {
-        }
-
         protected override void When()
         {
             SubjectUnderTest.SetClient(new ClientReport(_clientId, "Client Name"));
@@ -92,14 +88,6 @@ namespace Test.Fohjin.DDD.BankApplication.Presenters
 
     public class When_displaying_the_client_details_view_for_creating_a_new_client : BaseTestFixture<ClientDetailsPresenter>
     {
-        protected override void MockSetup()
-        {
-        }
-
-        protected override void Given()
-        {
-        }
-
         protected override void When()
         {
             SubjectUnderTest.SetClient(null);

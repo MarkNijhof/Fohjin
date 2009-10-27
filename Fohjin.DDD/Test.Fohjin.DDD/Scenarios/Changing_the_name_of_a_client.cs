@@ -41,11 +41,6 @@ namespace Test.Fohjin.DDD.Scenarios
 
     public class When_changing_the_name_of_a_not_yet_created_client : CommandTestFixture<ChangeClientNameCommand, ChangeClientNameCommandHandler, Client>
     {
-        protected override IEnumerable<IDomainEvent> Given()
-        {
-            return new List<IDomainEvent>();
-        }
-
         protected override ChangeClientNameCommand When()
         {
             return new ChangeClientNameCommand(Guid.NewGuid(), "Mark Nijhof");

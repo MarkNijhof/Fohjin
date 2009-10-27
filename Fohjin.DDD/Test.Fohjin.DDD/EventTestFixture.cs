@@ -17,8 +17,7 @@ namespace Test.Fohjin.DDD
 
         protected Exception CaughtException;
         protected IEventHandler<TEvent> EventHandler;
-
-        protected abstract void MockSetup();
+        protected virtual void MockSetup() { }
         protected abstract TEvent When();
 
         [Given]
@@ -26,10 +25,9 @@ namespace Test.Fohjin.DDD
         {
             mocks = new Dictionary<Type, object>();
             CaughtException = new ThereWasNoExceptionButOneWasExpectedException();
-
             EventHandler = BuildCommandHandler();
-
             MockSetup();
+
             try
             {
                 EventHandler.Execute(When());

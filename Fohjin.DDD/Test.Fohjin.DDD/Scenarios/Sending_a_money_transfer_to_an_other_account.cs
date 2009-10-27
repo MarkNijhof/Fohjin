@@ -45,11 +45,6 @@ namespace Test.Fohjin.DDD.Scenarios
 
     public class When_sending_a_money_transfer_on_an_account_that_is_not_yet_created : CommandTestFixture<SendMoneyTransferCommand, SendMoneyTransferCommandHandler, ActiveAccount>
     {
-        protected override IEnumerable<IDomainEvent> Given()
-        {
-            return new List<IDomainEvent>();
-        }
-
         protected override SendMoneyTransferCommand When()
         {
             return new SendMoneyTransferCommand(Guid.NewGuid(), 10.0M, "1234567890");
@@ -235,11 +230,6 @@ namespace Test.Fohjin.DDD.Scenarios
 
     public class When_sending_a_money_transfer_failed_on_an_account_that_is_not_yet_created : CommandTestFixture<MoneyTransferFailedCommand, MoneyTransferFailedCommandHandler, ActiveAccount>
     {
-        protected override IEnumerable<IDomainEvent> Given()
-        {
-            return new List<IDomainEvent>();
-        }
-
         protected override MoneyTransferFailedCommand When()
         {
             return new MoneyTransferFailedCommand(Guid.NewGuid(), 5.0M, "0987654321");

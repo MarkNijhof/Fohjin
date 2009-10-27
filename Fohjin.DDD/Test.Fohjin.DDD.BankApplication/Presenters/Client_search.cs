@@ -20,10 +20,6 @@ namespace Test.Fohjin.DDD.BankApplication.Presenters
                 .Returns(_clientReports);
         }
 
-        protected override void Given()
-        {
-        }
-
         protected override void When()
         {
             SubjectUnderTest.Display();
@@ -59,10 +55,6 @@ namespace Test.Fohjin.DDD.BankApplication.Presenters
                 .Returns(_clientReport);
         }
 
-        protected override void Given()
-        {
-        }
-
         protected override void When()
         {
             GetMock<IClientSearchFormView>().Raise(x => x.OnOpenSelectedClient += delegate { });
@@ -89,14 +81,6 @@ namespace Test.Fohjin.DDD.BankApplication.Presenters
 
     public class When_creating_a_new_client : BaseTestFixture<ClientSearchFormPresenter>
     {
-        protected override void MockSetup()
-        {
-        }
-
-        protected override void Given()
-        {
-        }
-
         protected override void When()
         {
             GetMock<IClientSearchFormView>().Raise(x => x.OnCreateNewClient += delegate { });
@@ -125,10 +109,6 @@ namespace Test.Fohjin.DDD.BankApplication.Presenters
             GetMock<IReportingRepository>()
                 .Setup(x => x.GetByExample<ClientReport>(null))
                 .Returns(_clientReports);
-        }
-
-        protected override void Given()
-        {
         }
 
         protected override void When()

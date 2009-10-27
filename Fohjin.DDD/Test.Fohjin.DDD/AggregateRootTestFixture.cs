@@ -11,8 +11,10 @@ namespace Test.Fohjin.DDD
         protected TAggregateRoot AggregateRoot;
         protected Exception CaughtException;
         protected IEnumerable<IDomainEvent> PublishedEvents;
-
-        protected abstract IEnumerable<IDomainEvent> Given();
+        protected virtual IEnumerable<IDomainEvent> Given()
+        {
+            return new List<IDomainEvent>();
+        }
         protected abstract void When();
 
         [Given]

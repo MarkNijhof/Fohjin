@@ -44,11 +44,6 @@ namespace Test.Fohjin.DDD.Scenarios
 
     public class When_providing_a_client_has_moved_command_on_a_not_created_client : CommandTestFixture<MoveClientToNewAddressCommand, MoveClientToNewAddressCommandHandler, Client>
     {
-        protected override IEnumerable<IDomainEvent> Given()
-        {
-            return new List<IDomainEvent>();
-        }
-
         protected override MoveClientToNewAddressCommand When()
         {
             return new MoveClientToNewAddressCommand(Guid.NewGuid(), "Welhavens gate", "49b", "5006", "Bergen");

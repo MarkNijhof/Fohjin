@@ -41,11 +41,6 @@ namespace Test.Fohjin.DDD.Scenarios
 
     public class When_changing_the_name_of_an_account_that_is_not_yet_created : CommandTestFixture<ChangeAccountNameCommand, ChangeAccountNameCommandHandler, ActiveAccount>
     {
-        protected override IEnumerable<IDomainEvent> Given()
-        {
-            return new List<IDomainEvent>();
-        }
-
         protected override ChangeAccountNameCommand When()
         {
             return new ChangeAccountNameCommand(Guid.NewGuid(), "New Account Name");

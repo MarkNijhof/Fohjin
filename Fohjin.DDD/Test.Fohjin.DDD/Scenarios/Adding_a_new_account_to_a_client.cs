@@ -50,11 +50,6 @@ namespace Test.Fohjin.DDD.Scenarios
 
     public class When_adding_a_new_account_to_a_not_yet_created_client : CommandTestFixture<AddNewAccountToClientCommand, AddNewAccountToClientCommandHandler, Client>
     {
-        protected override IEnumerable<IDomainEvent> Given()
-        {
-            return new List<IDomainEvent>();
-        }
-
         protected override AddNewAccountToClientCommand When()
         {
             return new AddNewAccountToClientCommand(Guid.NewGuid(), "New Account");
@@ -82,10 +77,6 @@ namespace Test.Fohjin.DDD.Scenarios
     public class When_creating_a_new_account : AggregateRootTestFixture<ActiveAccount>
     {
         private string _ticks;
-        protected override IEnumerable<IDomainEvent> Given()
-        {
-            return new List<IDomainEvent>();
-        }
 
         protected override void When()
         {
@@ -111,10 +102,6 @@ namespace Test.Fohjin.DDD.Scenarios
 
     public class When_an_account_was_assigned_to_a_client : EventTestFixture<AccountToClientAssignedEvent, AccountToClientAssignedEventHandler>
     {
-        protected override void MockSetup()
-        {
-        }
-
         protected override AccountToClientAssignedEvent When()
         {
             return new AccountToClientAssignedEvent(Guid.NewGuid()) { AggregateId = Guid.NewGuid() };

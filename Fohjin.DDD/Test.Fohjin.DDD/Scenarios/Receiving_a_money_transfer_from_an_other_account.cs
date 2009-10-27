@@ -45,11 +45,6 @@ namespace Test.Fohjin.DDD.Scenarios
 
     public class When_receiveing_a_money_transfer_on_an_account_that_is_not_yet_created : CommandTestFixture<ReceiveMoneyTransferCommand, ReceiveMoneyTransferCommandHandler, ActiveAccount>
     {
-        protected override IEnumerable<IDomainEvent> Given()
-        {
-            return new List<IDomainEvent>();
-        }
-
         protected override ReceiveMoneyTransferCommand When()
         {
             return new ReceiveMoneyTransferCommand(Guid.NewGuid(), 10.0M, "1234567890");

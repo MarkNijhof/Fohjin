@@ -24,8 +24,11 @@ namespace Test.Fohjin.DDD
         protected ICommandHandler<TCommand> CommandHandler;
         protected Exception CaughtException;
         protected IEnumerable<IDomainEvent> PublishedEvents;
-
-        protected abstract IEnumerable<IDomainEvent> Given();
+        protected virtual void MockSetup() { }
+        protected virtual IEnumerable<IDomainEvent> Given() 
+        {
+            return new List<IDomainEvent>();
+        }
         protected abstract TCommand When();
 
         [Given]
@@ -38,6 +41,7 @@ namespace Test.Fohjin.DDD
 
             CommandHandler = BuildCommandHandler();
 
+            MockSetup();
             try
             {
                 CommandHandler.Execute(When());

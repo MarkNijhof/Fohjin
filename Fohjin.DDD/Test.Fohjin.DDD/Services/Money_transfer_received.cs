@@ -18,10 +18,6 @@ namespace Test.Fohjin.DDD.Services
                 .Returns(new List<AccountReport> {new AccountReport(Guid.NewGuid(), Guid.NewGuid(), "AccountName", "target account number")});
         }
 
-        protected override void Given()
-        {
-        }
-
         protected override void When()
         {
             SubjectUnderTest.Receive(new MoneyTransfer("source account number", "target account number", 123.45M));
@@ -41,10 +37,6 @@ namespace Test.Fohjin.DDD.Services
             GetMock<IReportingRepository>()
                 .Setup(x => x.GetByExample<AccountReport>(It.IsAny<object>()))
                 .Throws(new Exception("account not found"));
-        }
-
-        protected override void Given()
-        {
         }
 
         protected override void When()

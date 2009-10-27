@@ -47,11 +47,6 @@ namespace Test.Fohjin.DDD.Scenarios
         private Guid _accountId;
         private Guid _clientId;
 
-        protected override IEnumerable<IDomainEvent> Given()
-        {
-            return new List<IDomainEvent>();
-        }
-
         protected override void When()
         {
             ledgers = new List<Ledger>
@@ -95,11 +90,6 @@ namespace Test.Fohjin.DDD.Scenarios
 
     public class When_closing_a_not_yet_created_account : CommandTestFixture<CloseAccountCommand, CloseAccountCommandHandler, ActiveAccount>
     {
-        protected override IEnumerable<IDomainEvent> Given()
-        {
-            return new List<IDomainEvent>();
-        }
-
         protected override CloseAccountCommand When()
         {
             return new CloseAccountCommand(Guid.NewGuid());
@@ -154,10 +144,6 @@ namespace Test.Fohjin.DDD.Scenarios
 
     public class When_an_account_was_closed : EventTestFixture<AccountClosedEvent, AccountClosedEventHandler>
     {
-        protected override void MockSetup()
-        {
-        }
-
         protected override AccountClosedEvent When()
         {
             return new AccountClosedEvent { AggregateId = Guid.NewGuid() };

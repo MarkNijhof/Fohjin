@@ -43,11 +43,6 @@ namespace Test.Fohjin.DDD.Scenarios
 
     public class When_depositing_cash_on_account_that_is_not_yet_created : CommandTestFixture<DepositeCashCommand, DepositeCashCommandHandler, ActiveAccount>
     {
-        protected override IEnumerable<IDomainEvent> Given()
-        {
-            return new List<IDomainEvent>();
-        }
-
         protected override DepositeCashCommand When()
         {
             return new DepositeCashCommand(Guid.NewGuid(), 0);

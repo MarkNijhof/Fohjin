@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Fohjin.DDD.Domain;
 using Fohjin.DDD.Domain.Exceptions;
 using Fohjin.DDD.Events;
@@ -7,11 +6,6 @@ namespace Test.Fohjin.DDD.Domain.Entities
 {
     public class When_sending_an_internal_event_that_is_not_registered : AggregateRootTestFixture<TestEntity>
     {
-        protected override IEnumerable<IDomainEvent> Given()
-        {
-            return new List<IDomainEvent>();
-        }
-
         protected override void When()
         {
             AggregateRoot.DoSomething();

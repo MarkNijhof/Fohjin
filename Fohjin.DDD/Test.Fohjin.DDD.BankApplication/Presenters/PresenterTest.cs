@@ -54,7 +54,6 @@ namespace Test.Fohjin.DDD.BankApplication.Presenters
         // IView Interface plumbing
         public void Dispose()
         {
-            throw new NotImplementedException();
         }
 
         public DialogResult ShowDialog()
@@ -64,7 +63,6 @@ namespace Test.Fohjin.DDD.BankApplication.Presenters
 
         public void Close()
         {
-            throw new NotImplementedException();
         }
     }
 }
