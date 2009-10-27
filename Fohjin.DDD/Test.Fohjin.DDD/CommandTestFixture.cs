@@ -24,7 +24,7 @@ namespace Test.Fohjin.DDD
         protected ICommandHandler<TCommand> CommandHandler;
         protected Exception CaughtException;
         protected IEnumerable<IDomainEvent> PublishedEvents;
-        protected virtual void MockSetup() { }
+        protected virtual void SetupDependencies() { }
         protected virtual IEnumerable<IDomainEvent> Given() 
         {
             return new List<IDomainEvent>();
@@ -41,7 +41,7 @@ namespace Test.Fohjin.DDD
 
             CommandHandler = BuildCommandHandler();
 
-            MockSetup();
+            SetupDependencies();
             try
             {
                 CommandHandler.Execute(When());
@@ -53,7 +53,7 @@ namespace Test.Fohjin.DDD
             }
         }
 
-        public Mock<TType> GetMock<TType>() where TType : class
+        public Mock<TType> OnDependency<TType>() where TType : class
         {
             return (Mock<TType>)mocks[typeof(TType)];
         }

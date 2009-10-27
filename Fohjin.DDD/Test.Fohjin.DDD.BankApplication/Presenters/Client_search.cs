@@ -12,10 +12,10 @@ namespace Test.Fohjin.DDD.BankApplication.Presenters
     {
         private List<ClientReport> _clientReports;
 
-        protected override void MockSetup()
+        protected override void SetupDependencies()
         {
             _clientReports = new List<ClientReport> {new ClientReport(Guid.NewGuid(), "Client Name")};
-            GetMock<IReportingRepository>()
+            OnDependency<IReportingRepository>()
                 .Setup(x => x.GetByExample<ClientReport>(null))
                 .Returns(_clientReports);
         }
@@ -28,13 +28,13 @@ namespace Test.Fohjin.DDD.BankApplication.Presenters
         [Then]
         public void Then_show_dialog_will_be_called_on_the_view()
         {
-            GetMock<IClientSearchFormView>().Verify(x => x.ShowDialog());
+            OnDependency<IClientSearchFormView>().Verify(x => x.ShowDialog());
         }
 
         [Then]
         public void Then_client_report_data_from_the_reporting_repository_is_being_loaded_into_the_view()
         {
-            GetMock<IClientSearchFormView>().VerifySet(x => x.Clients = _clientReports);
+            OnDependency<IClientSearchFormView>().VerifySet(x => x.Clients = _clientReports);
         }
     }
 
@@ -42,40 +42,40 @@ namespace Test.Fohjin.DDD.BankApplication.Presenters
     {
         private ClientReport _clientReport;
 
-        protected override void MockSetup()
+        protected override void SetupDependencies()
         {
-            GetMock<IPopupPresenter>()
+            OnDependency<IPopupPresenter>()
                 .Setup(x => x.CatchPossibleException(It.IsAny<System.Action>()))
                 .Callback<System.Action>(x => x());
 
             _clientReport = new ClientReport(Guid.NewGuid(), "Client Name");
 
-            GetMock<IClientSearchFormView>()
+            OnDependency<IClientSearchFormView>()
                 .Setup(x => x.GetSelectedClient())
                 .Returns(_clientReport);
         }
 
         protected override void When()
         {
-            GetMock<IClientSearchFormView>().Raise(x => x.OnOpenSelectedClient += delegate { });
+            OnDependency<IClientSearchFormView>().Raise(x => x.OnOpenSelectedClient += delegate { });
         }
 
         [Then]
         public void Then_get_selected_client_will_be_called_on_the_view()
         {
-            GetMock<IClientSearchFormView>().Verify(x => x.GetSelectedClient());
+            OnDependency<IClientSearchFormView>().Verify(x => x.GetSelectedClient());
         }
 
         [Then]
         public void Then_client_report_data_from_the_reporting_repository_is_being_loaded_into_the_view()
         {
-            GetMock<IClientDetailsPresenter>().Verify(x => x.SetClient(_clientReport));
+            OnDependency<IClientDetailsPresenter>().Verify(x => x.SetClient(_clientReport));
         }
 
         [Then]
         public void Then_display_will_be_called_on_the_view()
         {
-            GetMock<IClientDetailsPresenter>().Verify(x => x.Display());
+            OnDependency<IClientDetailsPresenter>().Verify(x => x.Display());
         }
     }
 
@@ -83,19 +83,19 @@ namespace Test.Fohjin.DDD.BankApplication.Presenters
     {
         protected override void When()
         {
-            GetMock<IClientSearchFormView>().Raise(x => x.OnCreateNewClient += delegate { });
+            OnDependency<IClientSearchFormView>().Raise(x => x.OnCreateNewClient += delegate { });
         }
 
         [Then]
         public void Then_client_report_data_from_the_reporting_repository_is_being_loaded_into_the_view()
         {
-            GetMock<IClientDetailsPresenter>().Verify(x => x.SetClient(null));
+            OnDependency<IClientDetailsPresenter>().Verify(x => x.SetClient(null));
         }
 
         [Then]
         public void Then_display_will_be_called_on_the_view()
         {
-            GetMock<IClientDetailsPresenter>().Verify(x => x.Display());
+            OnDependency<IClientDetailsPresenter>().Verify(x => x.Display());
         }
     }
 
@@ -103,23 +103,23 @@ namespace Test.Fohjin.DDD.BankApplication.Presenters
     {
         private List<ClientReport> _clientReports;
 
-        protected override void MockSetup()
+        protected override void SetupDependencies()
         {
             _clientReports = new List<ClientReport> { new ClientReport(Guid.NewGuid(), "Client Name") };
-            GetMock<IReportingRepository>()
+            OnDependency<IReportingRepository>()
                 .Setup(x => x.GetByExample<ClientReport>(null))
                 .Returns(_clientReports);
         }
 
         protected override void When()
         {
-            GetMock<IClientSearchFormView>().Raise(x => x.OnRefresh += delegate { });
+            OnDependency<IClientSearchFormView>().Raise(x => x.OnRefresh += delegate { });
         }
 
         [Then]
         public void Then_client_report_data_from_the_reporting_repository_is_being_loaded_into_the_view()
         {
-            GetMock<IClientSearchFormView>().VerifySet(x => x.Clients = _clientReports);
+            OnDependency<IClientSearchFormView>().VerifySet(x => x.Clients = _clientReports);
         }
     }
 }

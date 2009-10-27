@@ -14,10 +14,10 @@ namespace Test.Fohjin.DDD.Bus
         private FirstTestCommandHandler _handler;
         private TestCommand _command;
 
-        protected override void MockSetup()
+        protected override void SetupDependencies()
         {
             _handler = new FirstTestCommandHandler();
-            GetMock<IContainer>()
+            OnDependency<IContainer>()
                 .Setup(x => x.GetAllInstances<ICommandHandler<TestCommand>>())
                 .Returns(new List<ICommandHandler<TestCommand>> {_handler});
         }
@@ -45,11 +45,11 @@ namespace Test.Fohjin.DDD.Bus
         private SecondTestCommandHandler _secondHandler;
         private TestCommand _command;
 
-        protected override void MockSetup()
+        protected override void SetupDependencies()
         {
             _handler = new FirstTestCommandHandler();
             _secondHandler = new SecondTestCommandHandler();
-            GetMock<IContainer>()
+            OnDependency<IContainer>()
                 .Setup(x => x.GetAllInstances<ICommandHandler<TestCommand>>())
                 .Returns(new List<ICommandHandler<TestCommand>> { _handler, _secondHandler });
         }
@@ -84,11 +84,11 @@ namespace Test.Fohjin.DDD.Bus
         private TestCommand _command;
         private TestCommand _otherCommand;
 
-        protected override void MockSetup()
+        protected override void SetupDependencies()
         {
             _handler = new FirstTestCommandHandler();
             _otherHandler = new SecondTestCommandHandler();
-            GetMock<IContainer>()
+            OnDependency<IContainer>()
                 .Setup(x => x.GetAllInstances<ICommandHandler<TestCommand>>())
                 .Returns(new List<ICommandHandler<TestCommand>> {_handler, _otherHandler});
         }

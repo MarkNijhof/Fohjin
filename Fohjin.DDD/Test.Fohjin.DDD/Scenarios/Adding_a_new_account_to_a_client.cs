@@ -44,7 +44,7 @@ namespace Test.Fohjin.DDD.Scenarios
         [Then]
         public void Then_the_newly_created_account_will_be_saved()
         {
-            GetMock<IDomainRepository>().Verify(x => x.Save(It.IsAny<ActiveAccount>()));
+            OnDependency<IDomainRepository>().Verify(x => x.Save(It.IsAny<ActiveAccount>()));
         }
     }
 
@@ -70,7 +70,7 @@ namespace Test.Fohjin.DDD.Scenarios
         [Then]
         public void Then_there_is_no_new_account_to_be_saved()
         {
-            GetMock<IDomainRepository>().Verify(x => x.Save(It.IsAny<ActiveAccount>()), Times.Never());
+            OnDependency<IDomainRepository>().Verify(x => x.Save(It.IsAny<ActiveAccount>()), Times.Never());
         }
     }
 
@@ -121,13 +121,13 @@ namespace Test.Fohjin.DDD.Scenarios
         private AccountReport SaveAccountReportObject;
         private AccountDetailsReport SaveAccountDetailsReportObject;
 
-        protected override void MockSetup()
+        protected override void SetupDependencies()
         {
-            GetMock<IReportingRepository>()
+            OnDependency<IReportingRepository>()
                 .Setup(x => x.Save(It.IsAny<AccountReport>()))
                 .Callback<AccountReport>(a => SaveAccountReportObject = a);
 
-            GetMock<IReportingRepository>()
+            OnDependency<IReportingRepository>()
                 .Setup(x => x.Save(It.IsAny<AccountDetailsReport>()))
                 .Callback<AccountDetailsReport>(a => SaveAccountDetailsReportObject = a);
         }
@@ -143,7 +143,7 @@ namespace Test.Fohjin.DDD.Scenarios
         [Then]
         public void Then_the_reporting_repository_will_be_used_to_update_the_account_report()
         {
-            GetMock<IReportingRepository>().Verify(x => x.Save(It.IsAny<AccountReport>()));
+            OnDependency<IReportingRepository>().Verify(x => x.Save(It.IsAny<AccountReport>()));
         }
 
         [Then]
@@ -158,7 +158,7 @@ namespace Test.Fohjin.DDD.Scenarios
         [Then]
         public void Then_the_reporting_repository_will_be_used_to_update_the_account_details_report()
         {
-            GetMock<IReportingRepository>().Verify(x => x.Save(It.IsAny<AccountDetailsReport>()));
+            OnDependency<IReportingRepository>().Verify(x => x.Save(It.IsAny<AccountDetailsReport>()));
         }
 
         [Then]

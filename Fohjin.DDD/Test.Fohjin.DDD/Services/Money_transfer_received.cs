@@ -11,9 +11,9 @@ namespace Test.Fohjin.DDD.Services
 {
     public class When_receiving_a_money_transfer : BaseTestFixture<MoneyReceiveService>
     {
-        protected override void MockSetup()
+        protected override void SetupDependencies()
         {
-            GetMock<IReportingRepository>()
+            OnDependency<IReportingRepository>()
                 .Setup(x => x.GetByExample<AccountReport>(It.IsAny<object>()))
                 .Returns(new List<AccountReport> {new AccountReport(Guid.NewGuid(), Guid.NewGuid(), "AccountName", "target account number")});
         }
@@ -26,15 +26,15 @@ namespace Test.Fohjin.DDD.Services
         [Then]
         public void Then_the_newly_created_account_will_be_saved()
         {
-            GetMock<ICommandBus>().Verify(x => x.Publish(It.IsAny<ReceiveMoneyTransferCommand>()));
+            OnDependency<ICommandBus>().Verify(x => x.Publish(It.IsAny<ReceiveMoneyTransferCommand>()));
         }
     }
 
     public class When_receiving_a_money_transfer_and_it_failed : BaseTestFixture<MoneyReceiveService>
     {
-        protected override void MockSetup()
+        protected override void SetupDependencies()
         {
-            GetMock<IReportingRepository>()
+            OnDependency<IReportingRepository>()
                 .Setup(x => x.GetByExample<AccountReport>(It.IsAny<object>()))
                 .Throws(new Exception("account not found"));
         }

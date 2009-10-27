@@ -65,9 +65,9 @@ namespace Test.Fohjin.DDD.Scenarios
         private object UpdateObject;
         private object WhereObject;
 
-        protected override void MockSetup()
+        protected override void SetupDependencies()
         {
-            GetMock<IReportingRepository>()
+            OnDependency<IReportingRepository>()
                 .Setup(x => x.Update<ClientDetailsReport>(It.IsAny<object>(), It.IsAny<object>()))
                 .Callback<object, object>((u, w) => { UpdateObject = u; WhereObject = w; });
         }
@@ -82,7 +82,7 @@ namespace Test.Fohjin.DDD.Scenarios
         [Then]
         public void Then_the_reporting_repository_will_be_used_to_update_the_client_details_report()
         {
-            GetMock<IReportingRepository>().Verify(x => x.Update<ClientDetailsReport>(It.IsAny<object>(), It.IsAny<object>()));
+            OnDependency<IReportingRepository>().Verify(x => x.Update<ClientDetailsReport>(It.IsAny<object>(), It.IsAny<object>()));
         }
 
         [Then]

@@ -37,7 +37,7 @@ namespace Test.Fohjin.DDD.Scenarios
         [Then]
         public void Then_the_newly_created_closed_account_will_be_saved()
         {
-            GetMock<IDomainRepository>().Verify(x => x.Save(It.IsAny<ClosedAccount>()));
+            OnDependency<IDomainRepository>().Verify(x => x.Save(It.IsAny<ClosedAccount>()));
         }
     }
 
@@ -152,13 +152,13 @@ namespace Test.Fohjin.DDD.Scenarios
         [Then]
         public void Then_the_reporting_repository_will_be_used_to_update_the_account_report()
         {
-            GetMock<IReportingRepository>().Verify(x => x.Delete<AccountReport>(It.IsAny<object>()), Times.Once());
+            OnDependency<IReportingRepository>().Verify(x => x.Delete<AccountReport>(It.IsAny<object>()), Times.Once());
         }
 
         [Then]
         public void Then_the_reporting_repository_will_be_used_to_update_the_account_details_report()
         {
-            GetMock<IReportingRepository>().Verify(x => x.Delete<AccountDetailsReport>(It.IsAny<object>()), Times.Once());
+            OnDependency<IReportingRepository>().Verify(x => x.Delete<AccountDetailsReport>(It.IsAny<object>()), Times.Once());
         }
     }
 
@@ -171,13 +171,13 @@ namespace Test.Fohjin.DDD.Scenarios
         private List<KeyValuePair<string, string>> ledgers;
         private Guid _accountId;
 
-        protected override void MockSetup()
+        protected override void SetupDependencies()
         {
-            GetMock<IReportingRepository>()
+            OnDependency<IReportingRepository>()
                 .Setup(x => x.Save(It.IsAny<ClosedAccountReport>()))
                 .Callback<ClosedAccountReport>(a => SaveClosedAccountReportObject = a);
 
-            GetMock<IReportingRepository>()
+            OnDependency<IReportingRepository>()
                 .Setup(x => x.Save(It.IsAny<ClosedAccountDetailsReport>()))
                 .Callback<ClosedAccountDetailsReport>(a => SaveClosedAccountDetailsReportObject = a);
         }
@@ -203,7 +203,7 @@ namespace Test.Fohjin.DDD.Scenarios
         [Then]
         public void Then_the_reporting_repository_will_be_used_to_save_the_closed_account_report()
         {
-            GetMock<IReportingRepository>().Verify(x => x.Save(It.IsAny<ClosedAccountReport>()));
+            OnDependency<IReportingRepository>().Verify(x => x.Save(It.IsAny<ClosedAccountReport>()));
         }
 
         [Then]
@@ -217,7 +217,7 @@ namespace Test.Fohjin.DDD.Scenarios
         [Then]
         public void Then_the_reporting_repository_will_be_used_to_save_the_closed_account_details_report()
         {
-            GetMock<IReportingRepository>().Verify(x => x.Save(It.IsAny<ClosedAccountDetailsReport>()));
+            OnDependency<IReportingRepository>().Verify(x => x.Save(It.IsAny<ClosedAccountDetailsReport>()));
         }
 
         [Then]
@@ -233,7 +233,7 @@ namespace Test.Fohjin.DDD.Scenarios
         [Then]
         public void Then_the_reporting_repository_will_be_used_to_save_the_four_ledger_reports()
         {
-            GetMock<IReportingRepository>().Verify(x => x.Save(It.IsAny<LedgerReport>()), Times.Exactly(5));
+            OnDependency<IReportingRepository>().Verify(x => x.Save(It.IsAny<LedgerReport>()), Times.Exactly(5));
         }
     }
 }

@@ -17,7 +17,7 @@ namespace Test.Fohjin.DDD
 
         protected Exception CaughtException;
         protected IEventHandler<TEvent> EventHandler;
-        protected virtual void MockSetup() { }
+        protected virtual void SetupDependencies() { }
         protected abstract TEvent When();
 
         [Given]
@@ -26,7 +26,7 @@ namespace Test.Fohjin.DDD
             mocks = new Dictionary<Type, object>();
             CaughtException = new ThereWasNoExceptionButOneWasExpectedException();
             EventHandler = BuildCommandHandler();
-            MockSetup();
+            SetupDependencies();
 
             try
             {
@@ -38,7 +38,7 @@ namespace Test.Fohjin.DDD
             }
         }
 
-        public Mock<TType> GetMock<TType>() where TType : class
+        public Mock<TType> OnDependency<TType>() where TType : class
         {
             if (!mocks.ContainsKey(typeof(TType)))
                 throw new Exception(string.Format("The event handler '{0}' does not have a dependency upon '{1}'", typeof(TEventHandler).FullName, typeof(TType).FullName));

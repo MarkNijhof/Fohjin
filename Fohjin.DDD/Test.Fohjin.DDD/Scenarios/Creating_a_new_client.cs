@@ -52,13 +52,13 @@ namespace Test.Fohjin.DDD.Scenarios
         private ClientReport SaveClientObject;
         private ClientDetailsReport SaveClientDetailsObject;
 
-        protected override void MockSetup()
+        protected override void SetupDependencies()
         {
-            GetMock<IReportingRepository>()
+            OnDependency<IReportingRepository>()
                 .Setup(x => x.Save(It.IsAny<ClientReport>()))
                 .Callback<ClientReport>(a => SaveClientObject = a);
 
-            GetMock<IReportingRepository>()
+            OnDependency<IReportingRepository>()
                 .Setup(x => x.Save(It.IsAny<ClientDetailsReport>()))
                 .Callback<ClientDetailsReport>(a => SaveClientDetailsObject = a);
         }
@@ -73,7 +73,7 @@ namespace Test.Fohjin.DDD.Scenarios
         [Then]
         public void Then_the_reporting_repository_will_be_used_to_save_the_client_report()
         {
-            GetMock<IReportingRepository>().Verify(x => x.Save(It.IsAny<ClientReport>()));
+            OnDependency<IReportingRepository>().Verify(x => x.Save(It.IsAny<ClientReport>()));
         }
 
         [Then]
@@ -86,7 +86,7 @@ namespace Test.Fohjin.DDD.Scenarios
         [Then]
         public void Then_the_reporting_repository_will_be_used_to_save_the_client_details_report()
         {
-            GetMock<IReportingRepository>().Verify(x => x.Save(It.IsAny<ClientDetailsReport>()));
+            OnDependency<IReportingRepository>().Verify(x => x.Save(It.IsAny<ClientDetailsReport>()));
         }
 
         [Then]

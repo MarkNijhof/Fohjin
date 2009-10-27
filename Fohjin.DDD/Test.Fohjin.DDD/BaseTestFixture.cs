@@ -13,7 +13,7 @@ namespace Test.Fohjin.DDD
 
         protected TSubjectUnderTest SubjectUnderTest;
         protected Exception CaughtException;
-        protected virtual void MockSetup() { }
+        protected virtual void SetupDependencies() { }
         protected virtual void Given() { }
         protected abstract void When();
 
@@ -23,7 +23,7 @@ namespace Test.Fohjin.DDD
             mocks = new Dictionary<Type, object>();
             CaughtException = new ThereWasNoExceptionButOneWasExpectedException();
             SubjectUnderTest = BuildSubjectUnderTest();
-            MockSetup();
+            SetupDependencies();
             Given();
 
             try
@@ -37,7 +37,7 @@ namespace Test.Fohjin.DDD
         }
 
 
-        public Mock<TType> GetMock<TType>() where TType : class
+        public Mock<TType> OnDependency<TType>() where TType : class
         {
             return (Mock<TType>)mocks[typeof(TType)];
         }

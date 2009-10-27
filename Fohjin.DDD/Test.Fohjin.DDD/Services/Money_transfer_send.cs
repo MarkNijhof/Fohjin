@@ -12,9 +12,9 @@ namespace Test.Fohjin.DDD.Services
 {
     public class When_sending_a_money_transfer_internal_account : BaseTestFixture<MoneyTransferService>
     {
-        protected override void MockSetup()
+        protected override void SetupDependencies()
         {
-            GetMock<IReportingRepository>()
+            OnDependency<IReportingRepository>()
                 .Setup(x => x.GetByExample<AccountReport>(It.IsAny<object>()))
                 .Returns(new List<AccountReport> { new AccountReport(Guid.NewGuid(), Guid.NewGuid(), "AccountName", "target account number") });
         }
@@ -34,7 +34,7 @@ namespace Test.Fohjin.DDD.Services
         [Then]
         public void Then_the_newly_created_account_will_be_saved()
         {
-            GetMock<ICommandBus>().Verify(x => x.Publish(It.IsAny<ReceiveMoneyTransferCommand>()));
+            OnDependency<ICommandBus>().Verify(x => x.Publish(It.IsAny<ReceiveMoneyTransferCommand>()));
 
             SystemRandom.Reset();
         }
@@ -42,13 +42,13 @@ namespace Test.Fohjin.DDD.Services
 
     public class When_sending_a_money_transfer_internal_account_and_it_failed : BaseTestFixture<MoneyTransferService>
     {
-        protected override void MockSetup()
+        protected override void SetupDependencies()
         {
-            GetMock<ICommandBus>()
+            OnDependency<ICommandBus>()
                 .Setup(x => x.Publish(It.IsAny<ReceiveMoneyTransferCommand>()))
                 .Throws(new Exception("exception message"));
 
-            GetMock<IReportingRepository>()
+            OnDependency<IReportingRepository>()
                 .Setup(x => x.GetByExample<AccountReport>(It.IsAny<object>()))
                 .Returns(new List<AccountReport> { new AccountReport(Guid.NewGuid(), Guid.NewGuid(), "AccountName", "target account number") });
         }
@@ -68,7 +68,7 @@ namespace Test.Fohjin.DDD.Services
         [Then]
         public void Then_the_newly_created_account_will_be_saved()
         {
-            GetMock<ICommandBus>().Verify(x => x.Publish(It.IsAny<MoneyTransferFailedCommand>()));
+            OnDependency<ICommandBus>().Verify(x => x.Publish(It.IsAny<MoneyTransferFailedCommand>()));
 
             SystemRandom.Reset();
         }
@@ -76,9 +76,9 @@ namespace Test.Fohjin.DDD.Services
 
     public class When_sending_a_money_transfer_external_account : BaseTestFixture<MoneyTransferService>
     {
-        protected override void MockSetup()
+        protected override void SetupDependencies()
         {
-            GetMock<IReportingRepository>()
+            OnDependency<IReportingRepository>()
                 .Setup(x => x.GetByExample<AccountReport>(It.IsAny<object>()))
                 .Returns(new List<AccountReport> { new AccountReport(Guid.NewGuid(), Guid.NewGuid(), "AccountName", "target account number") });
         }
@@ -98,7 +98,7 @@ namespace Test.Fohjin.DDD.Services
         [Then]
         public void Then_the_newly_created_account_will_be_saved()
         {
-            GetMock<IReceiveMoneyTransfers>().Verify(x => x.Receive(It.IsAny<MoneyTransfer>()));
+            OnDependency<IReceiveMoneyTransfers>().Verify(x => x.Receive(It.IsAny<MoneyTransfer>()));
 
             SystemRandom.Reset();
         }
@@ -106,13 +106,13 @@ namespace Test.Fohjin.DDD.Services
 
     public class When_sending_a_money_transfer_external_account_and_it_failed : BaseTestFixture<MoneyTransferService>
     {
-        protected override void MockSetup()
+        protected override void SetupDependencies()
         {
-            GetMock<IReceiveMoneyTransfers>()
+            OnDependency<IReceiveMoneyTransfers>()
                 .Setup(x => x.Receive(It.IsAny<MoneyTransfer>()))
                 .Throws(new AccountDoesNotExistException("exception message"));
 
-            GetMock<IReportingRepository>()
+            OnDependency<IReportingRepository>()
                 .Setup(x => x.GetByExample<AccountReport>(It.IsAny<object>()))
                 .Returns(new List<AccountReport> { new AccountReport(Guid.NewGuid(), Guid.NewGuid(), "AccountName", "target account number") });
         }
@@ -132,7 +132,7 @@ namespace Test.Fohjin.DDD.Services
         [Then]
         public void Then_the_newly_created_account_will_be_saved()
         {
-            GetMock<ICommandBus>().Verify(x => x.Publish(It.IsAny<MoneyTransferFailedCommand>()));
+            OnDependency<ICommandBus>().Verify(x => x.Publish(It.IsAny<MoneyTransferFailedCommand>()));
 
             SystemRandom.Reset();
         }
