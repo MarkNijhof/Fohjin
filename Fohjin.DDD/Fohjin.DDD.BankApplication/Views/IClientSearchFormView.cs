@@ -7,8 +7,8 @@ namespace Fohjin.DDD.BankApplication.Views
     {
         IEnumerable<ClientReport> Clients { get; set; }
         ClientReport GetSelectedClient();
-        event Action OnCreateNewClient;
-        event Action OnOpenSelectedClient;
-        event Action OnRefresh;
+        event EventAction OnCreateNewClient;
+        event EventAction OnOpenSelectedClient;
+        event EventAction OnRefresh;
     }
 }

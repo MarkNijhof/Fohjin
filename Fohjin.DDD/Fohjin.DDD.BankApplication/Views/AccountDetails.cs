@@ -17,18 +17,18 @@ namespace Fohjin.DDD.BankApplication.Views
             RegisterCLientEvents();
         }
 
-        public event Action OnCloseTheAccount;
-        public event Action OnFormElementGotChanged;
-        public event Action OnCancel;
-        public event Action OnInitiateAccountNameChange;
-        public event Action OnInitiateMoneyDeposite;
-        public event Action OnInitiateMoneyWithdrawl;
-        public event Action OnInitiateMoneyTransfer;
-        public event Action OnChangeAccountName;
-        public event Action OnDepositeMoney;
-        public event Action OnWithdrawlMoney;
-        public event Action OnTransferMoney;
-        public event Action OnRefresh;
+        public event EventAction OnCloseTheAccount;
+        public event EventAction OnFormElementGotChanged;
+        public event EventAction OnCancel;
+        public event EventAction OnInitiateAccountNameChange;
+        public event EventAction OnInitiateMoneyDeposite;
+        public event EventAction OnInitiateMoneyWithdrawl;
+        public event EventAction OnInitiateMoneyTransfer;
+        public event EventAction OnChangeAccountName;
+        public event EventAction OnDepositeMoney;
+        public event EventAction OnWithdrawlMoney;
+        public event EventAction OnTransferMoney;
+        public event EventAction OnRefresh;
 
         private void RegisterCLientEvents()
         {

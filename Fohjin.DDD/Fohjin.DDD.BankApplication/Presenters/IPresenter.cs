@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Fohjin.DDD.BankApplication.Views;
-using Action=Fohjin.DDD.BankApplication.Views.Action;
 
 namespace Fohjin.DDD.BankApplication.Presenters
 {
@@ -29,7 +28,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
             {
                 var eventInfo = viewEvents[actionProperty];
                 var methodInfo = presenterEventHandlers[actionProperty.Substring(2)];
-                var newDelegate = Delegate.CreateDelegate(typeof(Action), this, methodInfo);
+                var newDelegate = Delegate.CreateDelegate(typeof(EventAction), this, methodInfo);
                 eventInfo.AddEventHandler(view, newDelegate);
             }
         }

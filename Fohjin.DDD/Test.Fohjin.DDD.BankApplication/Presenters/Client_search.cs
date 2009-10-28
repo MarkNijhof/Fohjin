@@ -8,7 +8,7 @@ using Moq;
 
 namespace Test.Fohjin.DDD.BankApplication.Presenters
 {
-    public class When_openeing_the_client_search_application : BaseTestFixture<ClientSearchFormPresenter>
+    public class When_openeing_the_client_search_application : PresenterTestFixture<ClientSearchFormPresenter>
     {
         private List<ClientReport> _clientReports;
 
@@ -22,31 +22,31 @@ namespace Test.Fohjin.DDD.BankApplication.Presenters
 
         protected override void When()
         {
-            SubjectUnderTest.Display();
+            Presenter.Display();
         }
 
         [Then]
         public void Then_show_dialog_will_be_called_on_the_view()
         {
-            OnDependency<IClientSearchFormView>().Verify(x => x.ShowDialog());
+            On<IClientSearchFormView>().VerifyThat.Method(x => x.ShowDialog()).WasCalled();
         }
 
         [Then]
         public void Then_client_report_data_from_the_reporting_repository_is_being_loaded_into_the_view()
         {
-            OnDependency<IClientSearchFormView>().VerifySet(x => x.Clients = _clientReports);
+            On<IClientSearchFormView>().VerifyThat.ValueIsSetFor(x => x.Clients = _clientReports);
         }
     }
 
-    public class When_opening_an_existing_client : BaseTestFixture<ClientSearchFormPresenter>
+    public class When_opening_an_existing_client : PresenterTestFixture<ClientSearchFormPresenter>
     {
         private ClientReport _clientReport;
 
         protected override void SetupDependencies()
         {
             OnDependency<IPopupPresenter>()
-                .Setup(x => x.CatchPossibleException(It.IsAny<System.Action>()))
-                .Callback<System.Action>(x => x());
+                .Setup(x => x.CatchPossibleException(It.IsAny<Action>()))
+                .Callback<Action>(x => x());
 
             _clientReport = new ClientReport(Guid.NewGuid(), "Client Name");
 
@@ -57,49 +57,49 @@ namespace Test.Fohjin.DDD.BankApplication.Presenters
 
         protected override void When()
         {
-            OnDependency<IClientSearchFormView>().Raise(x => x.OnOpenSelectedClient += delegate { });
+            On<IClientSearchFormView>().FireEvent(x => x.OnOpenSelectedClient += delegate { });
         }
 
         [Then]
         public void Then_get_selected_client_will_be_called_on_the_view()
         {
-            OnDependency<IClientSearchFormView>().Verify(x => x.GetSelectedClient());
+            On<IClientSearchFormView>().VerifyThat.Method(x => x.GetSelectedClient()).WasCalled();
         }
 
         [Then]
         public void Then_client_report_data_from_the_reporting_repository_is_being_loaded_into_the_view()
         {
-            OnDependency<IClientDetailsPresenter>().Verify(x => x.SetClient(_clientReport));
+            On<IClientDetailsPresenter>().VerifyThat.Method(x => x.SetClient(_clientReport)).WasCalled();
         }
 
         [Then]
         public void Then_display_will_be_called_on_the_view()
         {
-            OnDependency<IClientDetailsPresenter>().Verify(x => x.Display());
+            On<IClientDetailsPresenter>().VerifyThat.Method(x => x.Display()).WasCalled();
         }
     }
 
-    public class When_creating_a_new_client : BaseTestFixture<ClientSearchFormPresenter>
+    public class When_creating_a_new_client : PresenterTestFixture<ClientSearchFormPresenter>
     {
         protected override void When()
         {
-            OnDependency<IClientSearchFormView>().Raise(x => x.OnCreateNewClient += delegate { });
+            On<IClientSearchFormView>().FireEvent(x => x.OnCreateNewClient += delegate { });
         }
 
         [Then]
         public void Then_client_report_data_from_the_reporting_repository_is_being_loaded_into_the_view()
         {
-            OnDependency<IClientDetailsPresenter>().Verify(x => x.SetClient(null));
+            On<IClientDetailsPresenter>().VerifyThat.Method(x => x.SetClient(null)).WasCalled();
         }
 
         [Then]
         public void Then_display_will_be_called_on_the_view()
         {
-            OnDependency<IClientDetailsPresenter>().Verify(x => x.Display());
+            On<IClientDetailsPresenter>().VerifyThat.Method(x => x.Display()).WasCalled();
         }
     }
 
-    public class When_refreshing_the_client_search_application : BaseTestFixture<ClientSearchFormPresenter>
+    public class When_refreshing_the_client_search_application : PresenterTestFixture<ClientSearchFormPresenter>
     {
         private List<ClientReport> _clientReports;
 
@@ -113,13 +113,13 @@ namespace Test.Fohjin.DDD.BankApplication.Presenters
 
         protected override void When()
         {
-            OnDependency<IClientSearchFormView>().Raise(x => x.OnRefresh += delegate { });
+            On<IClientSearchFormView>().FireEvent(x => x.OnRefresh += delegate { });
         }
 
         [Then]
         public void Then_client_report_data_from_the_reporting_repository_is_being_loaded_into_the_view()
         {
-            OnDependency<IClientSearchFormView>().VerifySet(x => x.Clients = _clientReports);
+            On<IClientSearchFormView>().VerifyThat.ValueIsSetFor(x => x.Clients = _clientReports);
         }
     }
 }

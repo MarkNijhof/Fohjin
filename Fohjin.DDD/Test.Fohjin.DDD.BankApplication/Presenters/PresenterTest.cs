@@ -4,7 +4,6 @@ using Fohjin.DDD.BankApplication.Presenters;
 using Fohjin.DDD.BankApplication.Views;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
-using Action=Fohjin.DDD.BankApplication.Views.Action;
 
 namespace Test.Fohjin.DDD.BankApplication.Presenters
 {
@@ -39,12 +38,12 @@ namespace Test.Fohjin.DDD.BankApplication.Presenters
 
     public interface ITestView : IView
     {
-        event Action OnTest;
+        event EventAction OnTest;
     }
 
     public class TestView : ITestView
     {
-        public event Action OnTest;
+        public event EventAction OnTest;
 
         public void Test()
         {

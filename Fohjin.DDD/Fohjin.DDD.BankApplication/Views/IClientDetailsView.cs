@@ -41,18 +41,18 @@ namespace Fohjin.DDD.BankApplication.Views
         void EnablePhoneNumberPanel();
         void EnableAddNewAccountPanel();
 
-        event Action OnOpenSelectedAccount;
-        event Action OnOpenSelectedClosedAccount;
-        event Action OnFormElementGotChanged;
-        event Action OnCancel;
-        event Action OnSaveNewClientName;
-        event Action OnSaveNewPhoneNumber;
-        event Action OnSaveNewAddress;
-        event Action OnInitiateClientHasMoved;
-        event Action OnInitiateClientNameChange;
-        event Action OnInitiateClientPhoneNumberChanged;
-        event Action OnInitiateAddNewAccount;
-        event Action OnCreateNewAccount;
-        event Action OnRefresh;
+        event EventAction OnOpenSelectedAccount;
+        event EventAction OnOpenSelectedClosedAccount;
+        event EventAction OnFormElementGotChanged;
+        event EventAction OnCancel;
+        event EventAction OnSaveNewClientName;
+        event EventAction OnSaveNewPhoneNumber;
+        event EventAction OnSaveNewAddress;
+        event EventAction OnInitiateClientHasMoved;
+        event EventAction OnInitiateClientNameChange;
+        event EventAction OnInitiateClientPhoneNumberChanged;
+        event EventAction OnInitiateAddNewAccount;
+        event EventAction OnCreateNewAccount;
+        event EventAction OnRefresh;
     }
 }

@@ -29,20 +29,20 @@ namespace Fohjin.DDD.BankApplication.Views
         void EnableWithdrawlPanel();
         void EnableTransferPanel();
 
-        event Action OnCloseTheAccount;
-        event Action OnFormElementGotChanged;
+        event EventAction OnCloseTheAccount;
+        event EventAction OnFormElementGotChanged;
 
-        event Action OnCancel;
+        event EventAction OnCancel;
 
-        event Action OnInitiateAccountNameChange;
-        event Action OnInitiateMoneyDeposite;
-        event Action OnInitiateMoneyWithdrawl;
-        event Action OnInitiateMoneyTransfer;
+        event EventAction OnInitiateAccountNameChange;
+        event EventAction OnInitiateMoneyDeposite;
+        event EventAction OnInitiateMoneyWithdrawl;
+        event EventAction OnInitiateMoneyTransfer;
 
-        event Action OnChangeAccountName;
-        event Action OnDepositeMoney;
-        event Action OnWithdrawlMoney;
-        event Action OnTransferMoney;
-        event Action OnRefresh;
+        event EventAction OnChangeAccountName;
+        event EventAction OnDepositeMoney;
+        event EventAction OnWithdrawlMoney;
+        event EventAction OnTransferMoney;
+        event EventAction OnRefresh;
     }
 }
