@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Fohjin.DDD.Bus;
 using Fohjin.DDD.Commands;
 using Fohjin.DDD.Contracts;
@@ -20,6 +21,7 @@ namespace Fohjin.DDD.Services
         private readonly IReportingRepository _reportingRepository;
         private readonly IReceiveMoneyTransfers _receiveMoneyTransfers;
         private readonly IDictionary<int, Action<MoneyTransfer>> _moneyTransferOptions;
+        private MoneyTransfer _moneyTransfer;
 
         public MoneyTransferService(ICommandBus commandBus, IReportingRepository reportingRepository, IReceiveMoneyTransfers receiveMoneyTransfers)
         {
@@ -30,17 +32,29 @@ namespace Fohjin.DDD.Services
             _moneyTransferOptions = new Dictionary<int, Action<MoneyTransfer>>
             {
                 {0, MoneyTransferIsGoingToAnInternalAccount},
-                {1, MoneyTransferIsGoingToAnExternalAccount},
-                {2, MoneyTransferIsGoingToAnExternalNonExistingAccount},
+                {1, MoneyTransferIsGoingToAnInternalAccount},
+                {2, MoneyTransferIsGoingToAnExternalAccount},
+                {3, MoneyTransferIsGoingToAnExternalAccount},
+                {4, MoneyTransferIsGoingToAnExternalNonExistingAccount},
             };
         }
 
         public void Send(MoneyTransfer moneyTransfer)
         {
+            _moneyTransfer = moneyTransfer;
+            new Thread(delegate()
+            {
+                Thread.Sleep(5000);
+                DoSend(moneyTransfer);
+            }).Start();
+        }
+
+        public void DoSend(MoneyTransfer moneyTransfer)
+        {
             try
             {
                 // I didn't want to introduce an actual external bank, so that's why you see this nice construct :)
-                _moneyTransferOptions[SystemRandom.Next(0, 3)](moneyTransfer);
+                _moneyTransferOptions[SystemRandom.Next(0, 5)](moneyTransfer);
             }
             catch(Exception)
             {

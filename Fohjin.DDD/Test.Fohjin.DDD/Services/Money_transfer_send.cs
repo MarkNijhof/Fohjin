@@ -28,7 +28,7 @@ namespace Test.Fohjin.DDD.Services
 
         protected override void When()
         {
-            SubjectUnderTest.Send(new MoneyTransfer("source account number", "target account number", 123.45M));
+            SubjectUnderTest.DoSend(new MoneyTransfer("source account number", "target account number", 123.45M));
         }
 
         [Then]
@@ -62,7 +62,7 @@ namespace Test.Fohjin.DDD.Services
 
         protected override void When()
         {
-            SubjectUnderTest.Send(new MoneyTransfer("source account number", "target account number", 123.45M));
+            SubjectUnderTest.DoSend(new MoneyTransfer("source account number", "target account number", 123.45M));
         }
 
         [Then]
@@ -87,12 +87,12 @@ namespace Test.Fohjin.DDD.Services
         {
             // !!! This is DEMO code !!!
             // Setup the SystemRandom class to return the value where the account is not found
-            SystemRandom.Next = (min, max) => 1;
+            SystemRandom.Next = (min, max) => 2;
         }
 
         protected override void When()
         {
-            SubjectUnderTest.Send(new MoneyTransfer("source account number", "target account number", 123.45M));
+            SubjectUnderTest.DoSend(new MoneyTransfer("source account number", "target account number", 123.45M));
         }
 
         [Then]
@@ -121,12 +121,12 @@ namespace Test.Fohjin.DDD.Services
         {
             // !!! This is DEMO code !!!
             // Setup the SystemRandom class to return the value where the account is not found
-            SystemRandom.Next = (min, max) => 2;
+            SystemRandom.Next = (min, max) => 4;
         }
 
         protected override void When()
         {
-            SubjectUnderTest.Send(new MoneyTransfer("source account number", "target account number", 123.45M));
+            SubjectUnderTest.DoSend(new MoneyTransfer("source account number", "target account number", 123.45M));
         }
 
         [Then]

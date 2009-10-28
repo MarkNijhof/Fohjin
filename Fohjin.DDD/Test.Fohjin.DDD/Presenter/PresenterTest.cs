@@ -5,7 +5,7 @@ using Fohjin.DDD.BankApplication.Views;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 
-namespace Test.Fohjin.DDD.BankApplication.Presenters
+namespace Test.Fohjin.DDD.Presenter
 {
     [TestFixture]
     public class PresenterTest

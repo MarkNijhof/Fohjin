@@ -51,6 +51,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\sqlite\bin\System.Data.SQLite.DLL</HintPath>
     </Reference>
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -73,6 +74,7 @@
     <Compile Include="Domain\Repositories\ClosedAccountRepositoryTest.cs" />
     <Compile Include="EventTestFixture.cs" />
     <Compile Include="PresenterTestFixture.cs" />
+    <Compile Include="Presenter\PresenterTest.cs" />
     <Compile Include="Reporting\Infrastructure\SqlDeleteBuilderTest.cs" />
     <Compile Include="Reporting\Infrastructure\SqlUpdateBuilderTest.cs" />
     <Compile Include="Scenarios\Adding_a_new_account_to_a_client.cs" />
@@ -84,8 +86,12 @@
     <Compile Include="Scenarios\Creating_a_new_client.cs" />
     <Compile Include="Scenarios\Making_a_cash_deposite.cs" />
     <Compile Include="Scenarios\Making_a_cash_withdrawl.cs" />
+    <Compile Include="Scenarios\Opening_the_application.cs" />
+    <Compile Include="Scenarios\Opening_the_client_details_view_for_an_existing_client.cs" />
     <Compile Include="Scenarios\Receiving_a_money_transfer_from_an_other_account.cs" />
     <Compile Include="Scenarios\Sending_a_money_transfer_to_an_other_account.cs" />
+    <Compile Include="Scenarios\Refreshing_the_client_search_application.cs" />
+    <Compile Include="Scenarios\Selecting_an_existing_client.cs" />
     <Compile Include="Services\Money_transfer_received.cs" />
     <Compile Include="Services\Money_transfer_send.cs" />
     <Compile Include="TestExtensions.cs" />
