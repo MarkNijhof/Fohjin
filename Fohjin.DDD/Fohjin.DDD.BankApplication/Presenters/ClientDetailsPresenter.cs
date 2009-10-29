@@ -197,6 +197,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
                 _clientDetailsView.DisableSaveButton();
                 if (_createNewProcess)
                 {
+                    _editStep = 4;
                     _bus.Publish(new CreateClientCommand(
                                      Guid.NewGuid(),
                                      _clientDetailsReport.ClientName,
@@ -259,25 +260,25 @@ namespace Fohjin.DDD.BankApplication.Presenters
             SetClientDetailsData();
         }
 
-        public void InitiateClientHasMoved()
+        public void InitiateClientNameChange()
         {
             _editStep = 1;
+            DisableAllMenuButtons();
+            _clientDetailsView.EnableClientNamePanel();
+        }
+
+        public void InitiateClientHasMoved()
+        {
+            _editStep = 2;
             DisableAllMenuButtons();
             _clientDetailsView.EnableAddressPanel();
         }
 
         public void InitiateClientPhoneNumberChanged()
         {
-            _editStep = 2;
-            DisableAllMenuButtons();
-            _clientDetailsView.EnablePhoneNumberPanel();
-        }
-
-        public void InitiateClientNameChange()
-        {
             _editStep = 3;
             DisableAllMenuButtons();
-            _clientDetailsView.EnableClientNamePanel();
+            _clientDetailsView.EnablePhoneNumberPanel();
         }
 
         public void InitiateAddNewAccount()

@@ -136,7 +136,6 @@ namespace Fohjin.DDD.BankApplication.Presenters
                                  _accountDetailsReport.Id,
                                  _accountDetailsView.DepositeAmount));
 
-                _accountDetailsView.DepositeAmount = 0;
                 _accountDetailsView.EnableMenuButtons();
                 _accountDetailsView.EnableDetailsPanel();
                 RefreshTimer.Trigger(LoadData).In(2000);
@@ -151,7 +150,6 @@ namespace Fohjin.DDD.BankApplication.Presenters
                                  _accountDetailsReport.Id,
                                  _accountDetailsView.WithdrawlAmount));
 
-                _accountDetailsView.WithdrawlAmount = 0;
                 _accountDetailsView.EnableMenuButtons();
                 _accountDetailsView.EnableDetailsPanel();
                 RefreshTimer.Trigger(LoadData).In(2000);
@@ -167,7 +165,6 @@ namespace Fohjin.DDD.BankApplication.Presenters
                                  _accountDetailsView.TransferAmount,
                                  _accountDetailsView.GetSelectedTransferAccount().AccountNumber));
 
-                _accountDetailsView.TransferAmount = 0;
                 _accountDetailsView.EnableMenuButtons();
                 _accountDetailsView.EnableDetailsPanel();
                 RefreshTimer.Trigger(LoadData).In(2000);

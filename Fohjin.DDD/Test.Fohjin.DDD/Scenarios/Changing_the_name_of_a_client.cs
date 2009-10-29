@@ -1,6 +1,9 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using Fohjin.DDD.BankApplication.Presenters;
+using Fohjin.DDD.BankApplication.Views;
+using Fohjin.DDD.Bus;
 using Fohjin.DDD.CommandHandlers;
 using Fohjin.DDD.Commands;
 using Fohjin.DDD.Contracts;
@@ -14,6 +17,249 @@ using Moq;
 
 namespace Test.Fohjin.DDD.Scenarios
 {
+    public class When_clicking_to_change_a_client_name : PresenterTestFixture<ClientDetailsPresenter>
+    {
+        private readonly Guid _clientId = Guid.NewGuid();
+        private ClientDetailsReport _clientDetailsReport;
+        private List<ClientDetailsReport> _clientDetailsReports;
+
+        protected override void SetupDependencies()
+        {
+            _clientDetailsReport = new ClientDetailsReport(_clientId, "Client Name", "street", "123", "5000", "bergen", "1234567890");
+            _clientDetailsReports = new List<ClientDetailsReport> { _clientDetailsReport };
+            OnDependency<IReportingRepository>()
+                .Setup(x => x.GetByExample<ClientDetailsReport>(It.IsAny<object>()))
+                .Returns(_clientDetailsReports);
+        }
+
+        protected override void Given()
+        {
+            Presenter.SetClient(new ClientReport(_clientId, "Client Name"));
+            Presenter.Display();
+        }
+
+        protected override void When()
+        {
+            On<IClientDetailsView>().FireEvent(x => x.OnInitiateClientNameChange += null);
+        }
+
+        [Then]
+        public void Then_the_menu_buttons_will_be_disabled()
+        {
+            On<IClientDetailsView>().VerifyThat.Method(x => x.DisableAddNewAccountMenu()).WasCalled();
+            On<IClientDetailsView>().VerifyThat.Method(x => x.DisableClientHasMovedMenu()).WasCalled();
+            On<IClientDetailsView>().VerifyThat.Method(x => x.DisableNameChangedMenu()).WasCalled();
+            On<IClientDetailsView>().VerifyThat.Method(x => x.DisablePhoneNumberChangedMenu()).WasCalled();
+        }
+
+        [Then]
+        public void Then_the_name_change_panel_will_be_enabled()
+        {
+            On<IClientDetailsView>().VerifyThat.Method(x => x.EnableOverviewPanel()).WasCalled();
+        }
+    }
+
+    public class When_inserting_the_new_client_name : PresenterTestFixture<ClientDetailsPresenter>
+    {
+        private readonly Guid _clientId = Guid.NewGuid();
+        private ClientDetailsReport _clientDetailsReport;
+        private List<ClientDetailsReport> _clientDetailsReports;
+
+        protected override void SetupDependencies()
+        {
+            _clientDetailsReport = new ClientDetailsReport(_clientId, "Client Name", "street", "123", "5000", "bergen", "1234567890");
+            _clientDetailsReports = new List<ClientDetailsReport> { _clientDetailsReport };
+            OnDependency<IReportingRepository>()
+                .Setup(x => x.GetByExample<ClientDetailsReport>(It.IsAny<object>()))
+                .Returns(_clientDetailsReports);
+        }
+
+        protected override void Given()
+        {
+            Presenter.SetClient(new ClientReport(_clientId, "Client Name"));
+            Presenter.Display();
+            On<IClientDetailsView>().ValueFor(x => x.ClientName).IsSetTo("Client name");
+            On<IClientDetailsView>().FireEvent(x => x.OnInitiateClientNameChange += null);
+        }
+
+        protected override void When()
+        {
+            On<IClientDetailsView>().ValueFor(x => x.ClientName).IsSetTo("New Client name");
+            On<IClientDetailsView>().FireEvent(x => x.OnFormElementGotChanged += null);
+        }
+
+        [Then]
+        public void Then_the_save_button_will_be_disabled()
+        {
+            On<IClientDetailsView>().VerifyThat.Method(x => x.DisableSaveButton()).WasCalled();
+        }
+
+        [Then]
+        public void Then_the_menu_buttons_will_be_enabled()
+        {
+            On<IClientDetailsView>().VerifyThat.Method(x => x.EnableAddNewAccountMenu()).WasCalled();
+            On<IClientDetailsView>().VerifyThat.Method(x => x.EnableClientHasMovedMenu()).WasCalled();
+            On<IClientDetailsView>().VerifyThat.Method(x => x.EnableNameChangedMenu()).WasCalled();
+            On<IClientDetailsView>().VerifyThat.Method(x => x.EnablePhoneNumberChangedMenu()).WasCalled();
+        }
+
+        [Then]
+        public void Then_the_save_button_will_be_enabled()
+        {
+            On<IClientDetailsView>().VerifyThat.Method(x => x.EnableSaveButton()).WasCalled();
+        }
+    }
+
+    public class When_clearing_the_new_client_name : PresenterTestFixture<ClientDetailsPresenter>
+    {
+        private readonly Guid _clientId = Guid.NewGuid();
+        private ClientDetailsReport _clientDetailsReport;
+        private List<ClientDetailsReport> _clientDetailsReports;
+
+        protected override void SetupDependencies()
+        {
+            _clientDetailsReport = new ClientDetailsReport(_clientId, "Client Name", "street", "123", "5000", "bergen", "1234567890");
+            _clientDetailsReports = new List<ClientDetailsReport> { _clientDetailsReport };
+            OnDependency<IReportingRepository>()
+                .Setup(x => x.GetByExample<ClientDetailsReport>(It.IsAny<object>()))
+                .Returns(_clientDetailsReports);
+        }
+
+        protected override void Given()
+        {
+            Presenter.SetClient(new ClientReport(_clientId, "Client Name"));
+            Presenter.Display();
+            On<IClientDetailsView>().ValueFor(x => x.ClientName).IsSetTo("Client name");
+            On<IClientDetailsView>().FireEvent(x => x.OnInitiateClientNameChange += null);
+            On<IClientDetailsView>().ValueFor(x => x.ClientName).IsSetTo("New Client name");
+            On<IClientDetailsView>().FireEvent(x => x.OnFormElementGotChanged += null);
+        }
+
+        protected override void When()
+        {
+            On<IClientDetailsView>().ValueFor(x => x.ClientName).IsSetTo(string.Empty);
+            On<IClientDetailsView>().FireEvent(x => x.OnFormElementGotChanged += null);
+        }
+
+        [Then]
+        public void Then_the_save_button_will_be_enabled()
+        {
+            On<IClientDetailsView>().VerifyThat.Method(x => x.DisableSaveButton()).WasCalled();
+        }
+    }
+
+    public class When_saving_the_new_client_name : PresenterTestFixture<ClientDetailsPresenter>
+    {
+        private readonly Guid _clientId = Guid.NewGuid();
+        private ClientDetailsReport _clientDetailsReport;
+        private List<ClientDetailsReport> _clientDetailsReports;
+
+        protected override void SetupDependencies()
+        {
+            OnDependency<IPopupPresenter>()
+                .Setup(x => x.CatchPossibleException(It.IsAny<Action>()))
+                .Callback<Action>(x => x());
+
+            _clientDetailsReport = new ClientDetailsReport(_clientId, "Client Name", "street", "123", "5000", "bergen", "1234567890");
+            _clientDetailsReports = new List<ClientDetailsReport> { _clientDetailsReport };
+            OnDependency<IReportingRepository>()
+                .Setup(x => x.GetByExample<ClientDetailsReport>(It.IsAny<object>()))
+                .Returns(_clientDetailsReports);
+        }
+
+        protected override void Given()
+        {
+            Presenter.SetClient(new ClientReport(_clientId, "Client Name"));
+            Presenter.Display();
+            On<IClientDetailsView>().ValueFor(x => x.ClientName).IsSetTo("Client name");
+            On<IClientDetailsView>().FireEvent(x => x.OnInitiateClientNameChange += null);
+            On<IClientDetailsView>().ValueFor(x => x.ClientName).IsSetTo("New Client name");
+            On<IClientDetailsView>().FireEvent(x => x.OnFormElementGotChanged += null);
+        }
+
+        protected override void When()
+        {
+            On<IClientDetailsView>().FireEvent(x => x.OnSaveNewClientName += null);
+        }
+
+        [Then]
+        public void Then_a_change_account_name_command_will_be_published()
+        {
+            On<ICommandBus>().VerifyThat.Method(x => x.Publish(It.IsAny<ChangeClientNameCommand>())).WasCalled();
+        }
+
+        [Then]
+        public void Then_the_save_button_will_be_disabled()
+        {
+            On<IClientDetailsView>().VerifyThat.Method(x => x.DisableSaveButton()).WasCalled();
+        }
+
+        [Then]
+        public void Then_the_menu_button_will_be_enabled()
+        {
+            On<IClientDetailsView>().VerifyThat.Method(x => x.EnableAddNewAccountMenu()).WasCalled();
+            On<IClientDetailsView>().VerifyThat.Method(x => x.EnableClientHasMovedMenu()).WasCalled();
+            On<IClientDetailsView>().VerifyThat.Method(x => x.EnableNameChangedMenu()).WasCalled();
+            On<IClientDetailsView>().VerifyThat.Method(x => x.EnablePhoneNumberChangedMenu()).WasCalled();
+        }
+
+        [Then]
+        public void Then_the_details_panel_will_be_enabled()
+        {
+            On<IClientDetailsView>().VerifyThat.Method(x => x.EnableOverviewPanel()).WasCalled();
+        }
+    }
+
+    public class When_canceling_to_make_a_client_name_change : PresenterTestFixture<ClientDetailsPresenter>
+    {
+        private readonly Guid _clientId = Guid.NewGuid();
+        private ClientDetailsReport _clientDetailsReport;
+        private List<ClientDetailsReport> _clientDetailsReports;
+
+        protected override void SetupDependencies()
+        {
+            _clientDetailsReport = new ClientDetailsReport(_clientId, "Client Name", "street", "123", "5000", "bergen", "1234567890");
+            _clientDetailsReports = new List<ClientDetailsReport> { _clientDetailsReport };
+            OnDependency<IReportingRepository>()
+                .Setup(x => x.GetByExample<ClientDetailsReport>(It.IsAny<object>()))
+                .Returns(_clientDetailsReports);
+        }
+
+        protected override void Given()
+        {
+            Presenter.SetClient(new ClientReport(_clientId, "Client Name"));
+            Presenter.Display();
+            On<IClientDetailsView>().ValueFor(x => x.ClientName).IsSetTo("Client name");
+            On<IClientDetailsView>().FireEvent(x => x.OnInitiateClientNameChange += null);
+        }
+
+        protected override void When()
+        {
+            On<IClientDetailsView>().FireEvent(x => x.OnCancel += null);
+        }
+
+        [Then]
+        public void Then_the_save_button_will_be_disabled()
+        {
+            On<IClientDetailsView>().VerifyThat.Method(x => x.DisableSaveButton()).WasCalled();
+        }
+
+        [Then]
+        public void Then_the_menu_button_will_be_enabled()
+        {
+            On<IClientDetailsView>().VerifyThat.Method(x => x.EnableAddNewAccountMenu()).WasCalled();
+            On<IClientDetailsView>().VerifyThat.Method(x => x.EnableClientHasMovedMenu()).WasCalled();
+            On<IClientDetailsView>().VerifyThat.Method(x => x.EnableNameChangedMenu()).WasCalled();
+            On<IClientDetailsView>().VerifyThat.Method(x => x.EnablePhoneNumberChangedMenu()).WasCalled();
+        }
+
+        [Then]
+        public void Then_the_details_panel_will_be_enabled()
+        {
+            On<IClientDetailsView>().VerifyThat.Method(x => x.EnableOverviewPanel()).WasCalled();
+        }
+    }
+
     public class When_changing_the_name_of_a_client : CommandTestFixture<ChangeClientNameCommand, ChangeClientNameCommandHandler, Client>
     {
         protected override IEnumerable<IDomainEvent> Given()

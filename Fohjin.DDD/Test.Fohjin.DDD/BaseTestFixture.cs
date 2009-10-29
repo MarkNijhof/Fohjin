@@ -16,6 +16,7 @@ namespace Test.Fohjin.DDD
         protected virtual void SetupDependencies() { }
         protected virtual void Given() { }
         protected abstract void When();
+        protected virtual void Finally() { }
 
         [Given]
         public void Setup()
@@ -33,6 +34,10 @@ namespace Test.Fohjin.DDD
             catch (Exception exception)
             {
                 CaughtException = exception;
+            }
+            finally
+            {
+                Finally();
             }
         }
 

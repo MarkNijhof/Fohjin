@@ -7,7 +7,7 @@ using Fohjin.DDD.Reporting.Dto;
 using Fohjin.DDD.Services;
 using Moq;
 
-namespace Test.Fohjin.DDD.Services
+namespace Test.Fohjin.DDD.Scenarios
 {
     public class When_receiving_a_money_transfer : BaseTestFixture<MoneyReceiveService>
     {
@@ -15,7 +15,7 @@ namespace Test.Fohjin.DDD.Services
         {
             OnDependency<IReportingRepository>()
                 .Setup(x => x.GetByExample<AccountReport>(It.IsAny<object>()))
-                .Returns(new List<AccountReport> {new AccountReport(Guid.NewGuid(), Guid.NewGuid(), "AccountName", "target account number")});
+                .Returns(new List<AccountReport> { new AccountReport(Guid.NewGuid(), Guid.NewGuid(), "AccountName", "target account number") });
         }
 
         protected override void When()

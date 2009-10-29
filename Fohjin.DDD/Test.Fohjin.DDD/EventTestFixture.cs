@@ -19,6 +19,7 @@ namespace Test.Fohjin.DDD
         protected IEventHandler<TEvent> EventHandler;
         protected virtual void SetupDependencies() { }
         protected abstract TEvent When();
+        protected virtual void Finally() { }
 
         [Given]
         public void Setup()
@@ -35,6 +36,10 @@ namespace Test.Fohjin.DDD
             catch (Exception exception)
             {
                 CaughtException = exception;
+            }
+            finally
+            {
+                Finally();
             }
         }
 

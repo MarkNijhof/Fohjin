@@ -1,6 +1,9 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using Fohjin.DDD.BankApplication.Presenters;
+using Fohjin.DDD.BankApplication.Views;
+using Fohjin.DDD.Bus;
 using Fohjin.DDD.CommandHandlers;
 using Fohjin.DDD.Commands;
 using Fohjin.DDD.Contracts;
@@ -14,6 +17,237 @@ using Moq;
 
 namespace Test.Fohjin.DDD.Scenarios
 {
+    public class When_clicking_to_change_an_account_name : PresenterTestFixture<AccountDetailsPresenter>
+    {
+        protected override void SetupDependencies()
+        {
+            OnDependency<IPopupPresenter>()
+                .Setup(x => x.CatchPossibleException(It.IsAny<Action>()))
+                .Callback<Action>(x => x());
+
+            var accountDetailsReports = new List<AccountDetailsReport> { new AccountDetailsReport(Guid.NewGuid(), Guid.NewGuid(), "Account name", 10.5M, "1234567890") };
+            OnDependency<IReportingRepository>()
+                .Setup(x => x.GetByExample<AccountDetailsReport>(It.IsAny<object>()))
+                .Returns(accountDetailsReports);
+
+            var accountReports = new List<AccountReport> { new AccountReport(Guid.NewGuid(), Guid.NewGuid(), "Account name 1", "1234567890") };
+            OnDependency<IReportingRepository>()
+                .Setup(x => x.GetByExample<AccountReport>(It.IsAny<object>()))
+                .Returns(accountReports);
+        }
+
+        protected override void Given()
+        {
+            Presenter.SetAccount(new AccountReport(Guid.NewGuid(), Guid.NewGuid(), "Account name", "1234567890"));
+            Presenter.Display();
+        }
+
+        protected override void When()
+        {
+            On<IAccountDetailsView>().FireEvent(x => x.OnInitiateAccountNameChange += null);
+        }
+
+        [Then]
+        public void Then_the_current_account_name_is_loaded_in_the_edit_field()
+        {
+            On<IAccountDetailsView>().VerifyThat.ValueIsSetFor(x => x.AccountName = "Account name");
+        }
+
+        [Then]
+        public void Then_the_save_button_will_be_disabled()
+        {
+            On<IAccountDetailsView>().VerifyThat.Method(x => x.DisableMenuButtons()).WasCalled();
+        }
+
+        [Then]
+        public void Then_the_name_change_panel_will_be_enabled()
+        {
+            On<IAccountDetailsView>().VerifyThat.Method(x => x.EnableAccountNameChangePanel()).WasCalled();
+        }
+    }
+
+    public class When_inserting_the_new_account_name : PresenterTestFixture<AccountDetailsPresenter>
+    {
+        protected override void SetupDependencies()
+        {
+            OnDependency<IPopupPresenter>()
+                .Setup(x => x.CatchPossibleException(It.IsAny<Action>()))
+                .Callback<Action>(x => x());
+
+            var accountDetailsReports = new List<AccountDetailsReport> { new AccountDetailsReport(Guid.NewGuid(), Guid.NewGuid(), "Account name", 10.5M, "1234567890") };
+            OnDependency<IReportingRepository>()
+                .Setup(x => x.GetByExample<AccountDetailsReport>(It.IsAny<object>()))
+                .Returns(accountDetailsReports);
+
+            var accountReports = new List<AccountReport> { new AccountReport(Guid.NewGuid(), Guid.NewGuid(), "Account name 1", "1234567890") };
+            OnDependency<IReportingRepository>()
+                .Setup(x => x.GetByExample<AccountReport>(It.IsAny<object>()))
+                .Returns(accountReports);
+        }
+
+        protected override void Given()
+        {
+            Presenter.SetAccount(new AccountReport(Guid.NewGuid(), Guid.NewGuid(), "Account name", "1234567890"));
+            Presenter.Display();
+            On<IAccountDetailsView>().FireEvent(x => x.OnInitiateAccountNameChange += null);
+        }
+
+        protected override void When()
+        {
+            On<IAccountDetailsView>().ValueFor(x => x.AccountName).IsSetTo("New Account name");
+            On<IAccountDetailsView>().FireEvent(x => x.OnFormElementGotChanged += null);
+        }
+
+        [Then]
+        public void Then_the_save_button_will_be_enabled()
+        {
+            On<IAccountDetailsView>().VerifyThat.Method(x => x.EnableSaveButton()).WasCalled();
+        }
+    }
+
+    public class When_clearing_the_new_account_name : PresenterTestFixture<AccountDetailsPresenter>
+    {
+        protected override void SetupDependencies()
+        {
+            OnDependency<IPopupPresenter>()
+                .Setup(x => x.CatchPossibleException(It.IsAny<Action>()))
+                .Callback<Action>(x => x());
+
+            var accountDetailsReports = new List<AccountDetailsReport> { new AccountDetailsReport(Guid.NewGuid(), Guid.NewGuid(), "Account name", 10.5M, "1234567890") };
+            OnDependency<IReportingRepository>()
+                .Setup(x => x.GetByExample<AccountDetailsReport>(It.IsAny<object>()))
+                .Returns(accountDetailsReports);
+
+            var accountReports = new List<AccountReport> { new AccountReport(Guid.NewGuid(), Guid.NewGuid(), "Account name 1", "1234567890") };
+            OnDependency<IReportingRepository>()
+                .Setup(x => x.GetByExample<AccountReport>(It.IsAny<object>()))
+                .Returns(accountReports);
+        }
+
+        protected override void Given()
+        {
+            Presenter.SetAccount(new AccountReport(Guid.NewGuid(), Guid.NewGuid(), "Account name", "1234567890"));
+            Presenter.Display();
+            On<IAccountDetailsView>().FireEvent(x => x.OnInitiateAccountNameChange += null);
+            On<IAccountDetailsView>().ValueFor(x => x.AccountName).IsSetTo("New Account name");
+            On<IAccountDetailsView>().FireEvent(x => x.OnFormElementGotChanged += null);
+        }
+
+        protected override void When()
+        {
+            On<IAccountDetailsView>().ValueFor(x => x.AccountName).IsSetTo(string.Empty);
+            On<IAccountDetailsView>().FireEvent(x => x.OnFormElementGotChanged += null);
+        }
+
+        [Then]
+        public void Then_the_save_button_will_be_enabled()
+        {
+            On<IAccountDetailsView>().VerifyThat.Method(x => x.DisableSaveButton()).WasCalled();
+        }
+    }
+
+    public class When_saving_the_new_account_name : PresenterTestFixture<AccountDetailsPresenter>
+    {
+        protected override void SetupDependencies()
+        {
+            OnDependency<IPopupPresenter>()
+                .Setup(x => x.CatchPossibleException(It.IsAny<Action>()))
+                .Callback<Action>(x => x());
+
+            var accountDetailsReports = new List<AccountDetailsReport> { new AccountDetailsReport(Guid.NewGuid(), Guid.NewGuid(), "Account name", 10.5M, "1234567890") };
+            OnDependency<IReportingRepository>()
+                .Setup(x => x.GetByExample<AccountDetailsReport>(It.IsAny<object>()))
+                .Returns(accountDetailsReports);
+
+            var accountReports = new List<AccountReport> { new AccountReport(Guid.NewGuid(), Guid.NewGuid(), "Account name 1", "1234567890") };
+            OnDependency<IReportingRepository>()
+                .Setup(x => x.GetByExample<AccountReport>(It.IsAny<object>()))
+                .Returns(accountReports);
+        }
+
+        protected override void Given()
+        {
+            Presenter.SetAccount(new AccountReport(Guid.NewGuid(), Guid.NewGuid(), "Account name", "1234567890"));
+            Presenter.Display();
+            On<IAccountDetailsView>().FireEvent(x => x.OnInitiateAccountNameChange += null);
+            On<IAccountDetailsView>().ValueFor(x => x.AccountName).IsSetTo("New Account name");
+            On<IAccountDetailsView>().FireEvent(x => x.OnFormElementGotChanged += null);
+        }
+
+        protected override void When()
+        {
+            On<IAccountDetailsView>().FireEvent(x => x.OnChangeAccountName += null);
+        }
+
+        [Then]
+        public void Then_a_change_account_name_command_will_be_published()
+        {
+            On<ICommandBus>().VerifyThat.Method(x => x.Publish(It.IsAny<ChangeAccountNameCommand>())).WasCalled();
+        }
+
+        [Then]
+        public void Then_the_menu_button_will_be_enabled()
+        {
+            On<IAccountDetailsView>().VerifyThat.Method(x => x.EnableMenuButtons()).WasCalled();
+        }
+
+        [Then]
+        public void Then_the_details_panel_will_be_enabled()
+        {
+            On<IAccountDetailsView>().VerifyThat.Method(x => x.EnableDetailsPanel()).WasCalled();
+        }
+    }
+
+    public class When_canceling_to_make_an_account_name_change : PresenterTestFixture<AccountDetailsPresenter>
+    {
+        protected override void SetupDependencies()
+        {
+            OnDependency<IPopupPresenter>()
+                .Setup(x => x.CatchPossibleException(It.IsAny<Action>()))
+                .Callback<Action>(x => x());
+
+            var accountDetailsReports = new List<AccountDetailsReport> { new AccountDetailsReport(Guid.NewGuid(), Guid.NewGuid(), "Account name", 10.5M, "1234567890") };
+            OnDependency<IReportingRepository>()
+                .Setup(x => x.GetByExample<AccountDetailsReport>(It.IsAny<object>()))
+                .Returns(accountDetailsReports);
+
+            var accountReports = new List<AccountReport> { new AccountReport(Guid.NewGuid(), Guid.NewGuid(), "Account name 1", "1234567890") };
+            OnDependency<IReportingRepository>()
+                .Setup(x => x.GetByExample<AccountReport>(It.IsAny<object>()))
+                .Returns(accountReports);
+        }
+
+        protected override void Given()
+        {
+            Presenter.SetAccount(new AccountReport(Guid.NewGuid(), Guid.NewGuid(), "Account name", "1234567890"));
+            Presenter.Display();
+            On<IAccountDetailsView>().FireEvent(x => x.OnInitiateMoneyWithdrawl += null);
+        }
+
+        protected override void When()
+        {
+            On<IAccountDetailsView>().FireEvent(x => x.OnCancel += null);
+        }
+
+        [Then]
+        public void Then_the_save_button_will_be_disabled()
+        {
+            On<IAccountDetailsView>().VerifyThat.Method(x => x.DisableSaveButton()).WasCalled();
+        }
+
+        [Then]
+        public void Then_the_menu_buttons_will_be_enabled()
+        {
+            On<IAccountDetailsView>().VerifyThat.Method(x => x.EnableMenuButtons()).WasCalled();
+        }
+
+        [Then]
+        public void Then_the_details_panel_will_be_enabled()
+        {
+            On<IAccountDetailsView>().VerifyThat.Method(x => x.EnableDetailsPanel()).WasCalled();
+        }
+    }
+
     public class When_changing_the_name_of_an_account : CommandTestFixture<ChangeAccountNameCommand, ChangeAccountNameCommandHandler, ActiveAccount>
     {
         protected override IEnumerable<IDomainEvent> Given()

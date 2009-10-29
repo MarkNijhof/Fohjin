@@ -15,6 +15,7 @@ namespace Test.Fohjin.DDD
         {
             return new List<IDomainEvent>();
         }
+        protected virtual void Finally() {}
         protected abstract void When();
 
         [Given]
@@ -32,6 +33,10 @@ namespace Test.Fohjin.DDD
             catch (Exception exception)
             {
                 CaughtException = exception;
+            }
+            finally
+            {
+                Finally();
             }
         }
     }

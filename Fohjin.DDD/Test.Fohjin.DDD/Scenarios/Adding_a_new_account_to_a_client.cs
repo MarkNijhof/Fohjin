@@ -78,12 +78,16 @@ namespace Test.Fohjin.DDD.Scenarios
     {
         private string _ticks;
 
-        protected override void When()
+        protected override IEnumerable<IDomainEvent> Given()
         {
             SystemDateTime.Now = () => new DateTime(2009, 1, 1, 1, 1, 1, 1);
+            return new List<IDomainEvent>();
+        }
+
+        protected override void When()
+        {
             _ticks = SystemDateTime.Now().Ticks.ToString();
             AggregateRoot = ActiveAccount.CreateNew(Guid.NewGuid(), "New Account");
-            SystemDateTime.Reset();
         }
 
         [Then]
@@ -103,6 +107,11 @@ namespace Test.Fohjin.DDD.Scenarios
         public void Then_the_published_event_will_have_the_same_aggregate_id()
         {
             PublishedEvents.Last<AccountCreatedEvent>().AccountId.WillBe(AggregateRoot.Id);
+        }
+
+        protected override void Finally()
+        {
+            SystemDateTime.Reset();
         }
     }
 

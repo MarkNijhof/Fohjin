@@ -1,9 +1,13 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using Fohjin.DDD.BankApplication.Presenters;
+using Fohjin.DDD.BankApplication.Views;
+using Fohjin.DDD.Bus;
 using Fohjin.DDD.CommandHandlers;
 using Fohjin.DDD.Commands;
 using Fohjin.DDD.Contracts;
+using Fohjin.DDD.Domain;
 using Fohjin.DDD.Domain.Entities;
 using Fohjin.DDD.Domain.Exceptions;
 using Fohjin.DDD.EventHandlers;
@@ -15,6 +19,253 @@ using Moq;
 
 namespace Test.Fohjin.DDD.Scenarios
 {
+    public class When_clicking_to_make_a_money_transfer : PresenterTestFixture<AccountDetailsPresenter>
+    {
+        protected override void SetupDependencies()
+        {
+            OnDependency<IPopupPresenter>()
+                .Setup(x => x.CatchPossibleException(It.IsAny<Action>()))
+                .Callback<Action>(x => x());
+
+            var accountDetailsReports = new List<AccountDetailsReport> { new AccountDetailsReport(Guid.NewGuid(), Guid.NewGuid(), "Account name", 10.5M, "1234567890") };
+            OnDependency<IReportingRepository>()
+                .Setup(x => x.GetByExample<AccountDetailsReport>(It.IsAny<object>()))
+                .Returns(accountDetailsReports);
+
+            var accountReports = new List<AccountReport> { new AccountReport(Guid.NewGuid(), Guid.NewGuid(), "Account name 1", "1234567890") };
+            OnDependency<IReportingRepository>()
+                .Setup(x => x.GetByExample<AccountReport>(It.IsAny<object>()))
+                .Returns(accountReports);
+        }
+
+        protected override void Given()
+        {
+            Presenter.SetAccount(new AccountReport(Guid.NewGuid(), Guid.NewGuid(), "Account name", "1234567890"));
+            Presenter.Display();
+        }
+
+        protected override void When()
+        {
+            On<IAccountDetailsView>().FireEvent(x => x.OnInitiateMoneyTransfer += null);
+        }
+
+        [Then]
+        public void Then_the_current_amount_is_set_to_zero()
+        {
+            On<IAccountDetailsView>().VerifyThat.ValueIsSetFor(x => x.TransferAmount = 0M);
+        }
+
+        [Then]
+        public void Then_the_save_button_will_be_disabled()
+        {
+            On<IAccountDetailsView>().VerifyThat.Method(x => x.DisableMenuButtons()).WasCalled();
+        }
+
+        [Then]
+        public void Then_the_transfer_panel_will_be_enabled()
+        {
+            On<IAccountDetailsView>().VerifyThat.Method(x => x.EnableTransferPanel()).WasCalled();
+        }
+    }
+
+    public class When_inserting_the_transfer_ammount : PresenterTestFixture<AccountDetailsPresenter>
+    {
+        protected override void SetupDependencies()
+        {
+            OnDependency<IPopupPresenter>()
+                .Setup(x => x.CatchPossibleException(It.IsAny<Action>()))
+                .Callback<Action>(x => x());
+
+            var accountDetailsReports = new List<AccountDetailsReport> { new AccountDetailsReport(Guid.NewGuid(), Guid.NewGuid(), "Account name", 10.5M, "1234567890") };
+            OnDependency<IReportingRepository>()
+                .Setup(x => x.GetByExample<AccountDetailsReport>(It.IsAny<object>()))
+                .Returns(accountDetailsReports);
+
+            var accountReports = new List<AccountReport> { new AccountReport(Guid.NewGuid(), Guid.NewGuid(), "Account name 1", "1234567890") };
+            OnDependency<IReportingRepository>()
+                .Setup(x => x.GetByExample<AccountReport>(It.IsAny<object>()))
+                .Returns(accountReports);
+        }
+
+        protected override void Given()
+        {
+            Presenter.SetAccount(new AccountReport(Guid.NewGuid(), Guid.NewGuid(), "Account name", "1234567890"));
+            Presenter.Display();
+            On<IAccountDetailsView>().ValueFor(x => x.AccountName).IsSetTo("Account name");
+            On<IAccountDetailsView>().ValueFor(x => x.WithdrawlAmount).IsSetTo(0M);
+            On<IAccountDetailsView>().ValueFor(x => x.DepositeAmount).IsSetTo(0M);
+            On<IAccountDetailsView>().ValueFor(x => x.TransferAmount).IsSetTo(0M);
+            On<IAccountDetailsView>().FireEvent(x => x.OnInitiateMoneyTransfer += null);
+        }
+
+        protected override void When()
+        {
+            On<IAccountDetailsView>().ValueFor(x => x.TransferAmount).IsSetTo(12.3M);
+            On<IAccountDetailsView>().FireEvent(x => x.OnFormElementGotChanged += null);
+        }
+
+        [Then]
+        public void Then_the_save_button_will_be_enabled()
+        {
+            On<IAccountDetailsView>().VerifyThat.Method(x => x.EnableSaveButton()).WasCalled();
+        }
+    }
+
+    public class When_clearing_the_transfer_ammount : PresenterTestFixture<AccountDetailsPresenter>
+    {
+        protected override void SetupDependencies()
+        {
+            OnDependency<IPopupPresenter>()
+                .Setup(x => x.CatchPossibleException(It.IsAny<Action>()))
+                .Callback<Action>(x => x());
+
+            var accountDetailsReports = new List<AccountDetailsReport> { new AccountDetailsReport(Guid.NewGuid(), Guid.NewGuid(), "Account name", 10.5M, "1234567890") };
+            OnDependency<IReportingRepository>()
+                .Setup(x => x.GetByExample<AccountDetailsReport>(It.IsAny<object>()))
+                .Returns(accountDetailsReports);
+
+            var accountReports = new List<AccountReport> { new AccountReport(Guid.NewGuid(), Guid.NewGuid(), "Account name 1", "1234567890") };
+            OnDependency<IReportingRepository>()
+                .Setup(x => x.GetByExample<AccountReport>(It.IsAny<object>()))
+                .Returns(accountReports);
+        }
+
+        protected override void Given()
+        {
+            Presenter.SetAccount(new AccountReport(Guid.NewGuid(), Guid.NewGuid(), "Account name", "1234567890"));
+            Presenter.Display();
+            On<IAccountDetailsView>().ValueFor(x => x.AccountName).IsSetTo("Account name");
+            On<IAccountDetailsView>().ValueFor(x => x.WithdrawlAmount).IsSetTo(0M);
+            On<IAccountDetailsView>().ValueFor(x => x.DepositeAmount).IsSetTo(0M);
+            On<IAccountDetailsView>().ValueFor(x => x.TransferAmount).IsSetTo(0M);
+            On<IAccountDetailsView>().FireEvent(x => x.OnInitiateMoneyTransfer += null);
+            On<IAccountDetailsView>().ValueFor(x => x.TransferAmount).IsSetTo(12.3M);
+            On<IAccountDetailsView>().FireEvent(x => x.OnFormElementGotChanged += null);
+        }
+
+        protected override void When()
+        {
+            On<IAccountDetailsView>().ValueFor(x => x.TransferAmount).IsSetTo(0M);
+            On<IAccountDetailsView>().FireEvent(x => x.OnFormElementGotChanged += null);
+        }
+
+        [Then]
+        public void Then_the_save_button_will_be_enabled()
+        {
+            On<IAccountDetailsView>().VerifyThat.Method(x => x.DisableSaveButton()).WasCalled();
+        }
+    }
+
+    public class When_executing_the_money_transfer : PresenterTestFixture<AccountDetailsPresenter>
+    {
+        protected override void SetupDependencies()
+        {
+            OnDependency<IPopupPresenter>()
+                .Setup(x => x.CatchPossibleException(It.IsAny<Action>()))
+                .Callback<Action>(x => x());
+
+            var accountDetailsReports = new List<AccountDetailsReport> { new AccountDetailsReport(Guid.NewGuid(), Guid.NewGuid(), "Account name", 10.5M, "1234567890") };
+            OnDependency<IReportingRepository>()
+                .Setup(x => x.GetByExample<AccountDetailsReport>(It.IsAny<object>()))
+                .Returns(accountDetailsReports);
+
+            var accountReports = new List<AccountReport> { new AccountReport(Guid.NewGuid(), Guid.NewGuid(), "Account name 1", "1234567890") };
+            OnDependency<IReportingRepository>()
+                .Setup(x => x.GetByExample<AccountReport>(It.IsAny<object>()))
+                .Returns(accountReports);
+
+            OnDependency<IAccountDetailsView>()
+                .Setup(x => x.GetSelectedTransferAccount())
+                .Returns(new AccountReport(Guid.NewGuid(), Guid.NewGuid(), "Account name", "1234567890"));
+        }
+
+        protected override void Given()
+        {
+            Presenter.SetAccount(new AccountReport(Guid.NewGuid(), Guid.NewGuid(), "Account name", "1234567890"));
+            Presenter.Display();
+            On<IAccountDetailsView>().ValueFor(x => x.AccountName).IsSetTo("Account name");
+            On<IAccountDetailsView>().ValueFor(x => x.WithdrawlAmount).IsSetTo(0M);
+            On<IAccountDetailsView>().ValueFor(x => x.DepositeAmount).IsSetTo(0M);
+            On<IAccountDetailsView>().ValueFor(x => x.TransferAmount).IsSetTo(0M);
+            On<IAccountDetailsView>().FireEvent(x => x.OnInitiateMoneyTransfer += null);
+            On<IAccountDetailsView>().ValueFor(x => x.TransferAmount).IsSetTo(12.3M);
+            On<IAccountDetailsView>().FireEvent(x => x.OnFormElementGotChanged += null);
+        }
+
+        protected override void When()
+        {
+            On<IAccountDetailsView>().FireEvent(x => x.OnTransferMoney += null);
+        }
+
+        [Then]
+        public void Then_a_change_account_name_command_will_be_published()
+        {
+            On<ICommandBus>().VerifyThat.Method(x => x.Publish(It.IsAny<SendMoneyTransferCommand>())).WasCalled();
+        }
+
+        [Then]
+        public void Then_the_save_button_will_be_enabled()
+        {
+            On<IAccountDetailsView>().VerifyThat.Method(x => x.EnableMenuButtons()).WasCalled();
+        }
+
+        [Then]
+        public void Then_the_details_panel_will_be_enabled()
+        {
+            On<IAccountDetailsView>().VerifyThat.Method(x => x.EnableDetailsPanel()).WasCalled();
+        }
+    }
+
+    public class When_canceling_to_make_a_money_transfer : PresenterTestFixture<AccountDetailsPresenter>
+    {
+        protected override void SetupDependencies()
+        {
+            OnDependency<IPopupPresenter>()
+                .Setup(x => x.CatchPossibleException(It.IsAny<Action>()))
+                .Callback<Action>(x => x());
+
+            var accountDetailsReports = new List<AccountDetailsReport> { new AccountDetailsReport(Guid.NewGuid(), Guid.NewGuid(), "Account name", 10.5M, "1234567890") };
+            OnDependency<IReportingRepository>()
+                .Setup(x => x.GetByExample<AccountDetailsReport>(It.IsAny<object>()))
+                .Returns(accountDetailsReports);
+
+            var accountReports = new List<AccountReport> { new AccountReport(Guid.NewGuid(), Guid.NewGuid(), "Account name 1", "1234567890") };
+            OnDependency<IReportingRepository>()
+                .Setup(x => x.GetByExample<AccountReport>(It.IsAny<object>()))
+                .Returns(accountReports);
+        }
+
+        protected override void Given()
+        {
+            Presenter.SetAccount(new AccountReport(Guid.NewGuid(), Guid.NewGuid(), "Account name", "1234567890"));
+            Presenter.Display();
+            On<IAccountDetailsView>().FireEvent(x => x.OnInitiateMoneyWithdrawl += null);
+        }
+
+        protected override void When()
+        {
+            On<IAccountDetailsView>().FireEvent(x => x.OnCancel += null);
+        }
+
+        [Then]
+        public void Then_the_save_button_will_be_disabled()
+        {
+            On<IAccountDetailsView>().VerifyThat.Method(x => x.DisableSaveButton()).WasCalled();
+        }
+
+        [Then]
+        public void Then_the_menu_buttons_will_be_enabled()
+        {
+            On<IAccountDetailsView>().VerifyThat.Method(x => x.EnableMenuButtons()).WasCalled();
+        }
+
+        [Then]
+        public void Then_the_details_panel_will_be_enabled()
+        {
+            On<IAccountDetailsView>().VerifyThat.Method(x => x.EnableDetailsPanel()).WasCalled();
+        }
+    }
+
     public class When_sending_a_money_transfer : CommandTestFixture<SendMoneyTransferCommand, SendMoneyTransferCommandHandler, ActiveAccount>
     {
         protected override IEnumerable<IDomainEvent> Given()
@@ -274,7 +525,7 @@ namespace Test.Fohjin.DDD.Scenarios
         }
     }
 
-    public class When_money_transfer_was_failed : EventTestFixture<MoneyTransferFailedEvent, MoneyTransferFailedEventHandler>
+    public class When_money_transfer_failed : EventTestFixture<MoneyTransferFailedEvent, MoneyTransferFailedEventHandler>
     {
         private static Guid _accountId;
         private object UpdateAccountDetailsObject;
@@ -323,6 +574,146 @@ namespace Test.Fohjin.DDD.Scenarios
             LedgerReportObject.AccountDetailsReportId.WillBe(_accountId);
             LedgerReportObject.Amount.WillBe(10.5M);
             LedgerReportObject.Action.WillBe("Transfer to 0987654321 failed");
+        }
+    }
+
+    public class When_sending_a_money_transfer_internal_account : BaseTestFixture<MoneyTransferService>
+    {
+        protected override void SetupDependencies()
+        {
+            OnDependency<IReportingRepository>()
+                .Setup(x => x.GetByExample<AccountReport>(It.IsAny<object>()))
+                .Returns(new List<AccountReport> { new AccountReport(Guid.NewGuid(), Guid.NewGuid(), "AccountName", "target account number") });
+        }
+
+        protected override void Given()
+        {
+            // !!! This is DEMO code !!!
+            // Setup the SystemRandom class to return the value where the account is found
+            SystemRandom.Next = (min, max) => 0;
+        }
+
+        protected override void When()
+        {
+            SubjectUnderTest.DoSend(new MoneyTransfer("source account number", "target account number", 123.45M));
+        }
+
+        [Then]
+        public void Then_the_newly_created_account_will_be_saved()
+        {
+            OnDependency<ICommandBus>().Verify(x => x.Publish(It.IsAny<ReceiveMoneyTransferCommand>()));
+        }
+
+        protected override void Finally()
+        {
+            SystemRandom.Reset();
+        }
+    }
+
+    public class When_sending_a_money_transfer_internal_account_and_it_failed : BaseTestFixture<MoneyTransferService>
+    {
+        protected override void SetupDependencies()
+        {
+            OnDependency<ICommandBus>()
+                .Setup(x => x.Publish(It.IsAny<ReceiveMoneyTransferCommand>()))
+                .Throws(new Exception("exception message"));
+
+            OnDependency<IReportingRepository>()
+                .Setup(x => x.GetByExample<AccountReport>(It.IsAny<object>()))
+                .Returns(new List<AccountReport> { new AccountReport(Guid.NewGuid(), Guid.NewGuid(), "AccountName", "target account number") });
+        }
+
+        protected override void Given()
+        {
+            // !!! This is DEMO code !!!
+            // Setup the SystemRandom class to return the value where the account is not found
+            SystemRandom.Next = (min, max) => 0;
+        }
+
+        protected override void When()
+        {
+            SubjectUnderTest.DoSend(new MoneyTransfer("source account number", "target account number", 123.45M));
+        }
+
+        [Then]
+        public void Then_the_newly_created_account_will_be_saved()
+        {
+            OnDependency<ICommandBus>().Verify(x => x.Publish(It.IsAny<MoneyTransferFailedCommand>()));
+        }
+
+        protected override void Finally()
+        {
+            SystemRandom.Reset();
+        }
+    }
+
+    public class When_sending_a_money_transfer_external_account : BaseTestFixture<MoneyTransferService>
+    {
+        protected override void SetupDependencies()
+        {
+            OnDependency<IReportingRepository>()
+                .Setup(x => x.GetByExample<AccountReport>(It.IsAny<object>()))
+                .Returns(new List<AccountReport> { new AccountReport(Guid.NewGuid(), Guid.NewGuid(), "AccountName", "target account number") });
+        }
+
+        protected override void Given()
+        {
+            // !!! This is DEMO code !!!
+            // Setup the SystemRandom class to return the value where the account is not found
+            SystemRandom.Next = (min, max) => 2;
+        }
+
+        protected override void When()
+        {
+            SubjectUnderTest.DoSend(new MoneyTransfer("source account number", "target account number", 123.45M));
+        }
+
+        [Then]
+        public void Then_the_newly_created_account_will_be_saved()
+        {
+            OnDependency<IReceiveMoneyTransfers>().Verify(x => x.Receive(It.IsAny<MoneyTransfer>()));
+        }
+
+        protected override void Finally()
+        {
+            SystemRandom.Reset();
+        }
+    }
+
+    public class When_sending_a_money_transfer_external_account_and_it_failed : BaseTestFixture<MoneyTransferService>
+    {
+        protected override void SetupDependencies()
+        {
+            OnDependency<IReceiveMoneyTransfers>()
+                .Setup(x => x.Receive(It.IsAny<MoneyTransfer>()))
+                .Throws(new AccountDoesNotExistException("exception message"));
+
+            OnDependency<IReportingRepository>()
+                .Setup(x => x.GetByExample<AccountReport>(It.IsAny<object>()))
+                .Returns(new List<AccountReport> { new AccountReport(Guid.NewGuid(), Guid.NewGuid(), "AccountName", "target account number") });
+        }
+
+        protected override void Given()
+        {
+            // !!! This is DEMO code !!!
+            // Setup the SystemRandom class to return the value where the account is not found
+            SystemRandom.Next = (min, max) => 4;
+        }
+
+        protected override void When()
+        {
+            SubjectUnderTest.DoSend(new MoneyTransfer("source account number", "target account number", 123.45M));
+        }
+
+        [Then]
+        public void Then_the_newly_created_account_will_be_saved()
+        {
+            OnDependency<ICommandBus>().Verify(x => x.Publish(It.IsAny<MoneyTransferFailedCommand>()));
+        }
+
+        protected override void Finally()
+        {
+            SystemRandom.Reset();
         }
     }
 }
