@@ -4,6 +4,7 @@ using Fohjin.DDD.BankApplication.Views;
 using Fohjin.DDD.Bus;
 using Fohjin.DDD.Commands;
 using Fohjin.DDD.Contracts;
+using Fohjin.DDD.Domain;
 using Fohjin.DDD.Reporting.Dto;
 
 namespace Fohjin.DDD.BankApplication.Presenters
@@ -143,7 +144,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
 
                 EnableAllMenuButtons();
                 _clientDetailsView.EnableOverviewPanel();
-                RefreshTimer.Trigger(LoadData).In(1000);
+                SystemTimer.Trigger(LoadData).In(1000);
             });
         }
 
@@ -186,7 +187,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
 
                 EnableAllMenuButtons();
                 _clientDetailsView.EnableOverviewPanel();
-                RefreshTimer.Trigger(LoadData).In(2000);
+                SystemTimer.Trigger(LoadData).In(2000);
             });
         }
 
@@ -226,7 +227,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
 
                 EnableAllMenuButtons();
                 _clientDetailsView.EnableOverviewPanel();
-                RefreshTimer.Trigger(LoadData).In(2000);
+                SystemTimer.Trigger(LoadData).In(2000);
             });
         }
 
@@ -241,7 +242,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
                 _addNewAccountProcess = false;
                 EnableAllMenuButtons();
                 _clientDetailsView.EnableOverviewPanel();
-                RefreshTimer.Trigger(LoadData).In(2000);
+                SystemTimer.Trigger(LoadData).In(2000);
             });
         }
 

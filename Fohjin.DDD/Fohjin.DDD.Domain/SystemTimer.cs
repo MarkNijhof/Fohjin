@@ -2,14 +2,14 @@ using System;
 using System.ComponentModel;
 using System.Threading;
 
-namespace Fohjin.DDD.BankApplication
+namespace Fohjin.DDD.Domain
 {
     public interface IKnowWhen
     {
         void In(int miliseconds);
     }
 
-    public class RefreshTimer : IKnowWhen
+    public class SystemTimer : IKnowWhen
     {
         private readonly Action _action;
         private readonly BackgroundWorker _backgroundWorker;
@@ -27,7 +27,7 @@ namespace Fohjin.DDD.BankApplication
             _willUseTheTimer = false;
         }
 
-        public RefreshTimer(Action action)
+        public SystemTimer(Action action)
         {
             _action = action;
 
@@ -48,7 +48,7 @@ namespace Fohjin.DDD.BankApplication
 
         public static IKnowWhen Trigger(Action action)
         {
-            return new RefreshTimer(action);
+            return new SystemTimer(action);
         }
 
         public void In(int miliseconds)

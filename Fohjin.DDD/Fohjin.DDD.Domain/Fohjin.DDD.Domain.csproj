@@ -88,6 +88,8 @@
     <Compile Include="Entities\Mementos\IMomento.cs" />
     <Compile Include="Entities\Mementos\IOrginator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SystemRandom.cs" />
+    <Compile Include="SystemTimer.cs" />
     <Compile Include="SystemDateTime.cs" />
     <Compile Include="ValueObjects\AccountName.cs" />
     <Compile Include="ValueObjects\AccountNumber.cs" />

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using Fohjin.DDD.Bus;
 using Fohjin.DDD.Commands;
 using Fohjin.DDD.Contracts;
@@ -21,7 +20,6 @@ namespace Fohjin.DDD.Services
         private readonly IReportingRepository _reportingRepository;
         private readonly IReceiveMoneyTransfers _receiveMoneyTransfers;
         private readonly IDictionary<int, Action<MoneyTransfer>> _moneyTransferOptions;
-        private MoneyTransfer _moneyTransfer;
 
         public MoneyTransferService(ICommandBus commandBus, IReportingRepository reportingRepository, IReceiveMoneyTransfers receiveMoneyTransfers)
         {
@@ -41,15 +39,10 @@ namespace Fohjin.DDD.Services
 
         public void Send(MoneyTransfer moneyTransfer)
         {
-            _moneyTransfer = moneyTransfer;
-            new Thread(delegate()
-            {
-                Thread.Sleep(5000);
-                DoSend(moneyTransfer);
-            }).Start();
+            SystemTimer.Trigger(() => DoSend(moneyTransfer)).In(5000);
         }
 
-        public void DoSend(MoneyTransfer moneyTransfer)
+        private void DoSend(MoneyTransfer moneyTransfer)
         {
             try
             {

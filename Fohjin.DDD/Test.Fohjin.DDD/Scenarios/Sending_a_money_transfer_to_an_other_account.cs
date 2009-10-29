@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using Fohjin.DDD.BankApplication;
 using Fohjin.DDD.BankApplication.Presenters;
 using Fohjin.DDD.BankApplication.Views;
 using Fohjin.DDD.Bus;
@@ -591,11 +592,12 @@ namespace Test.Fohjin.DDD.Scenarios
             // !!! This is DEMO code !!!
             // Setup the SystemRandom class to return the value where the account is found
             SystemRandom.Next = (min, max) => 0;
+            SystemTimer.ByPassTimer();
         }
 
         protected override void When()
         {
-            SubjectUnderTest.DoSend(new MoneyTransfer("source account number", "target account number", 123.45M));
+            SubjectUnderTest.Send(new MoneyTransfer("source account number", "target account number", 123.45M));
         }
 
         [Then]
@@ -606,6 +608,7 @@ namespace Test.Fohjin.DDD.Scenarios
 
         protected override void Finally()
         {
+            SystemTimer.Reset();
             SystemRandom.Reset();
         }
     }
@@ -628,11 +631,12 @@ namespace Test.Fohjin.DDD.Scenarios
             // !!! This is DEMO code !!!
             // Setup the SystemRandom class to return the value where the account is not found
             SystemRandom.Next = (min, max) => 0;
+            SystemTimer.ByPassTimer();
         }
 
         protected override void When()
         {
-            SubjectUnderTest.DoSend(new MoneyTransfer("source account number", "target account number", 123.45M));
+            SubjectUnderTest.Send(new MoneyTransfer("source account number", "target account number", 123.45M));
         }
 
         [Then]
@@ -643,6 +647,7 @@ namespace Test.Fohjin.DDD.Scenarios
 
         protected override void Finally()
         {
+            SystemTimer.Reset();
             SystemRandom.Reset();
         }
     }
@@ -661,11 +666,12 @@ namespace Test.Fohjin.DDD.Scenarios
             // !!! This is DEMO code !!!
             // Setup the SystemRandom class to return the value where the account is not found
             SystemRandom.Next = (min, max) => 2;
+            SystemTimer.ByPassTimer();
         }
 
         protected override void When()
         {
-            SubjectUnderTest.DoSend(new MoneyTransfer("source account number", "target account number", 123.45M));
+            SubjectUnderTest.Send(new MoneyTransfer("source account number", "target account number", 123.45M));
         }
 
         [Then]
@@ -676,6 +682,7 @@ namespace Test.Fohjin.DDD.Scenarios
 
         protected override void Finally()
         {
+            SystemTimer.Reset();
             SystemRandom.Reset();
         }
     }
@@ -698,11 +705,12 @@ namespace Test.Fohjin.DDD.Scenarios
             // !!! This is DEMO code !!!
             // Setup the SystemRandom class to return the value where the account is not found
             SystemRandom.Next = (min, max) => 4;
+            SystemTimer.ByPassTimer();
         }
 
         protected override void When()
         {
-            SubjectUnderTest.DoSend(new MoneyTransfer("source account number", "target account number", 123.45M));
+            SubjectUnderTest.Send(new MoneyTransfer("source account number", "target account number", 123.45M));
         }
 
         [Then]
@@ -713,6 +721,7 @@ namespace Test.Fohjin.DDD.Scenarios
 
         protected override void Finally()
         {
+            SystemTimer.Reset();
             SystemRandom.Reset();
         }
     }

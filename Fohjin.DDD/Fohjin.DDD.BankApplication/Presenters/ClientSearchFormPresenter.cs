@@ -1,5 +1,6 @@
 using Fohjin.DDD.BankApplication.Views;
 using Fohjin.DDD.Contracts;
+using Fohjin.DDD.Domain;
 using Fohjin.DDD.Reporting.Dto;
 
 namespace Fohjin.DDD.BankApplication.Presenters
@@ -24,7 +25,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
         {
             _clientDetailsPresenter.SetClient(null);
             _clientDetailsPresenter.Display();
-            RefreshTimer.Trigger(LoadData).In(2000);
+            SystemTimer.Trigger(LoadData).In(2000);
         }
 
         public void OpenSelectedClient()

@@ -88,7 +88,6 @@
     <Compile Include="Presenters\IPopupPresenter.cs" />
     <Compile Include="Presenters\IPresenter.cs" />
     <Compile Include="Presenters\PopupPresenter.cs" />
-    <Compile Include="RefreshTimer.cs" />
     <Compile Include="Views\AccountDetails.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -177,6 +176,10 @@
     <ProjectReference Include="..\Fohjin.DDD.Contracts\Fohjin.DDD.Contracts.csproj">
       <Project>{F18EACDA-7B90-4244-B5B8-9B764F46FF60}</Project>
       <Name>Fohjin.DDD.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fohjin.DDD.Domain\Fohjin.DDD.Domain.csproj">
+      <Project>{0FB24C8F-FA8C-409E-A71C-8580F7D78474}</Project>
+      <Name>Fohjin.DDD.Domain</Name>
     </ProjectReference>
     <ProjectReference Include="..\Fohjin.DDD.Reporting.Dto\Fohjin.DDD.Reporting.Dto.csproj">
       <Project>{44666AF0-AC7A-486E-AD1F-49FD0573ED43}</Project>
