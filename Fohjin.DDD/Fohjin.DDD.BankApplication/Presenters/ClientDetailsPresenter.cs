@@ -81,16 +81,6 @@ namespace Fohjin.DDD.BankApplication.Presenters
             });
         }
 
-        public void OpenSelectedClosedAccount()
-        {
-            //_popupPresenter.CatchPossibleException(() =>
-            //{
-            //    var client = _clientDetailsView.GetSelectedClosedAccount();
-            //    _accountDetailsPresenter.SetAccount(client);
-            //    _accountDetailsPresenter.Display();
-            //});
-        }
-
         public void FormElementGotChanged()
         {
             _clientDetailsView.DisableSaveButton();
@@ -153,7 +143,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
 
                 EnableAllMenuButtons();
                 _clientDetailsView.EnableOverviewPanel();
-                RefreshTimer.Trigger(Refresh).In(1000);
+                RefreshTimer.Trigger(LoadData).In(1000);
             });
         }
 
@@ -196,7 +186,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
 
                 EnableAllMenuButtons();
                 _clientDetailsView.EnableOverviewPanel();
-                RefreshTimer.Trigger(Refresh).In(2000);
+                RefreshTimer.Trigger(LoadData).In(2000);
             });
         }
 
@@ -235,7 +225,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
 
                 EnableAllMenuButtons();
                 _clientDetailsView.EnableOverviewPanel();
-                RefreshTimer.Trigger(Refresh).In(2000);
+                RefreshTimer.Trigger(LoadData).In(2000);
             });
         }
 
@@ -250,13 +240,8 @@ namespace Fohjin.DDD.BankApplication.Presenters
                 _addNewAccountProcess = false;
                 EnableAllMenuButtons();
                 _clientDetailsView.EnableOverviewPanel();
-                RefreshTimer.Trigger(Refresh).In(2000);
+                RefreshTimer.Trigger(LoadData).In(2000);
             });
-        }
-
-        public void Refresh()
-        {
-            LoadData();
         }
 
         public void Cancel()

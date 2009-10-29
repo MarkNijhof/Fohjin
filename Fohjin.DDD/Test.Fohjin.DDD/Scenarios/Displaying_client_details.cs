@@ -8,7 +8,7 @@ using Moq;
 
 namespace Test.Fohjin.DDD.Scenarios
 {
-    public class When_displaying_the_client_details_view_for_an_existing_client : PresenterTestFixture<ClientDetailsPresenter>
+    public class When_displaying_client_details : PresenterTestFixture<ClientDetailsPresenter>
     {
         private readonly Guid _clientId = Guid.NewGuid();
         private ClientDetailsReport _clientDetailsReport;

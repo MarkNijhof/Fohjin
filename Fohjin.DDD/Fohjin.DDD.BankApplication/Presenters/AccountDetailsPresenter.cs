@@ -58,8 +58,8 @@ namespace Fohjin.DDD.BankApplication.Presenters
         {
             _popupPresenter.CatchPossibleException(() =>
             {
-                if (_accountDetailsReport == null)
-                    return;
+//                if (_accountDetailsReport == null)
+//                    return;
 
                 _bus.Publish(new CloseAccountCommand(_accountReport.Id));
 
@@ -124,7 +124,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
 
                 _accountDetailsView.EnableMenuButtons();
                 _accountDetailsView.EnableDetailsPanel();
-                RefreshTimer.Trigger(Refresh).In(2000);
+                RefreshTimer.Trigger(LoadData).In(2000);
             });
         }
 
@@ -139,7 +139,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
                 _accountDetailsView.DepositeAmount = 0;
                 _accountDetailsView.EnableMenuButtons();
                 _accountDetailsView.EnableDetailsPanel();
-                RefreshTimer.Trigger(Refresh).In(2000);
+                RefreshTimer.Trigger(LoadData).In(2000);
             });
         }
 
@@ -154,7 +154,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
                 _accountDetailsView.WithdrawlAmount = 0;
                 _accountDetailsView.EnableMenuButtons();
                 _accountDetailsView.EnableDetailsPanel();
-                RefreshTimer.Trigger(Refresh).In(2000);
+                RefreshTimer.Trigger(LoadData).In(2000);
             });
         }
 
@@ -170,13 +170,8 @@ namespace Fohjin.DDD.BankApplication.Presenters
                 _accountDetailsView.TransferAmount = 0;
                 _accountDetailsView.EnableMenuButtons();
                 _accountDetailsView.EnableDetailsPanel();
-                RefreshTimer.Trigger(Refresh).In(2000);
+                RefreshTimer.Trigger(LoadData).In(2000);
             });
-        }
-
-        public void Refresh()
-        {
-            LoadData();
         }
 
         public void FormElementGotChanged()

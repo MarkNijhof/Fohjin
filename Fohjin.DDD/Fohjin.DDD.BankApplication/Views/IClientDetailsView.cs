@@ -42,7 +42,6 @@ namespace Fohjin.DDD.BankApplication.Views
         void EnableAddNewAccountPanel();
 
         event EventAction OnOpenSelectedAccount;
-        event EventAction OnOpenSelectedClosedAccount;
         event EventAction OnFormElementGotChanged;
         event EventAction OnCancel;
         event EventAction OnSaveNewClientName;

@@ -18,7 +18,6 @@ namespace Fohjin.DDD.BankApplication.Views
         }
 
         public event EventAction OnOpenSelectedAccount;
-        public event EventAction OnOpenSelectedClosedAccount;
         public event EventAction OnFormElementGotChanged;
         public event EventAction OnCancel;
         public event EventAction OnSaveNewClientName;
@@ -41,7 +40,6 @@ namespace Fohjin.DDD.BankApplication.Views
             _clientNameSaveButton.Click += (s, e) => OnSaveNewClientName();
             _clientNameCancelButton.Click += (s, e) => OnCancel();
             _accounts.DoubleClick += (s, e) => OnOpenSelectedAccount();
-            _closedAccounts.DoubleClick += (s, e) => OnOpenSelectedClosedAccount();
             _addressCancelButton.Click += (s, e) => OnCancel();
             _addressSaveButton.Click += (s, e) => OnSaveNewAddress();
             _phoneNumberCancelButton.Click += (s, e) => OnCancel();

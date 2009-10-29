@@ -27,7 +27,12 @@ namespace Fohjin.DDD.BankApplication.Presenters
             foreach (var actionProperty in viewDefinedEvents)
             {
                 var eventInfo = viewEvents[actionProperty];
-                var methodInfo = presenterEventHandlers[actionProperty.Substring(2)];
+
+                var substring = actionProperty.Substring(2);
+                if (!presenterEventHandlers.ContainsKey(substring))
+                    throw new Exception(string.Format("\n\nThere is no event handler for event '{0}' on presenter '{1}' expected '{2}'\n\n", eventInfo.Name, GetType().FullName, substring));
+
+                var methodInfo = presenterEventHandlers[substring];
                 var newDelegate = Delegate.CreateDelegate(typeof(EventAction), this, methodInfo);
                 eventInfo.AddEventHandler(view, newDelegate);
             }
@@ -38,7 +43,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
             IDictionary<string, MethodInfo> presenterEventHandlers = new Dictionary<string, MethodInfo>();
             presenter
                 .GetType()
-                .GetMethods()
+                .GetMethods(BindingFlags.Instance | BindingFlags.Public)
                 .Where(x => Contains(actionProperties, x))
                 .ToList()
                 .ForEach(x => presenterEventHandlers.Add(new KeyValuePair<string, MethodInfo>(x.Name, x)));
