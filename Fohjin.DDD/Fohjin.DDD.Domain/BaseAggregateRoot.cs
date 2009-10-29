@@ -8,7 +8,7 @@ namespace Fohjin.DDD.Domain
 {
     public class BaseAggregateRoot : IEventProvider
     {
-        private readonly Dictionary<Type, Delegate> _events;
+        private readonly Dictionary<Type, Action<IDomainEvent>> _events;
         private readonly List<IDomainEvent> _appliedEvents;
 
         public Guid Id { get; protected set; }
@@ -17,13 +17,13 @@ namespace Fohjin.DDD.Domain
 
         public BaseAggregateRoot()
         {
-            _events = new Dictionary<Type, Delegate>();
+            _events = new Dictionary<Type, Action<IDomainEvent>>();
             _appliedEvents = new List<IDomainEvent>();
         }
 
         protected void RegisterEvent<TEvent>(Action<TEvent> eventHandler) where TEvent : class, IDomainEvent
         {
-            _events.Add(typeof(TEvent), eventHandler);
+            _events.Add(typeof(TEvent), theEvent => eventHandler(theEvent as TEvent));
         }
 
         protected void Apply<TEvent>(TEvent domainEvent) where TEvent : class, IDomainEvent
@@ -63,12 +63,14 @@ namespace Fohjin.DDD.Domain
             Version = version;
         }
 
-        private void apply(Type eventType, object domainEvent)
+        private void apply(Type eventType, IDomainEvent domainEvent)
         {
-            if (!_events.ContainsKey(eventType))
+            Action<IDomainEvent> handler;
+
+            if (!_events.TryGetValue(eventType, out handler))
                 throw new DomainEventWasNotRegisteredException(string.Format("The requested event '{0}' is not registered", eventType.FullName));
 
-            _events[eventType].DynamicInvoke(new[] { domainEvent });
+            handler(domainEvent);
         }
     }
 }
