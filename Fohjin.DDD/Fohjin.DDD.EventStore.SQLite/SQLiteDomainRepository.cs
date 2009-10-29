@@ -22,18 +22,18 @@ namespace Fohjin.DDD.EventStore.SQLite
 
         public TAggregate GetById<TAggregate>(Guid id) where TAggregate : IOrginator, IEventProvider, new()
         {
-            var activeAccount = new TAggregate();
+            var aggregateRoot = new TAggregate();
 
-            LoadSnapShotIfExists(id, activeAccount);
+            LoadSnapShotIfExists(id, aggregateRoot);
 
-            loadRemainingHistoryEvents(id, activeAccount);
+            loadRemainingHistoryEvents(id, aggregateRoot);
 
-            return activeAccount;
+            return aggregateRoot;
         }
 
-        public void Save<TAggregate>(TAggregate activeAccount) where TAggregate : IOrginator, IEventProvider, new()
+        public void Save<TAggregate>(TAggregate aggregateRoot) where TAggregate : IOrginator, IEventProvider, new()
         {
-            var entity = (IEventProvider) activeAccount;
+            var entity = (IEventProvider) aggregateRoot;
 
             _domainEventStorage.Save(entity);
 
@@ -44,25 +44,25 @@ namespace Fohjin.DDD.EventStore.SQLite
             entity.Clear();
         }
 
-        private void LoadSnapShotIfExists(Guid id, IOrginator activeAccount)
+        private void LoadSnapShotIfExists(Guid id, IOrginator aggregateRoot)
         {
             var snapShot = _snapShotStorage.GetSnapShot(id);
             if (snapShot == null)
                 return;
 
-            activeAccount.SetMemento(snapShot.Memento);
+            aggregateRoot.SetMemento(snapShot.Memento);
         }
 
-        private void loadRemainingHistoryEvents(Guid id, IEventProvider activeAccount)
+        private void loadRemainingHistoryEvents(Guid id, IEventProvider aggregateRoot)
         {
             var events = _domainEventStorage.GetEventsSinceLastSnapShot(id);
             if (events.Count() > 0)
             {
-                activeAccount.LoadFromHistory(events);
+                aggregateRoot.LoadFromHistory(events);
                 return;
             }
 
-            activeAccount.LoadFromHistory(_domainEventStorage.GetAllEvents(id));
+            aggregateRoot.LoadFromHistory(_domainEventStorage.GetAllEvents(id));
         }
     }
 }
