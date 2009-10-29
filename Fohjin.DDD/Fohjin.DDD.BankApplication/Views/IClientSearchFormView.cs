@@ -9,6 +9,5 @@ namespace Fohjin.DDD.BankApplication.Views
         ClientReport GetSelectedClient();
         event EventAction OnCreateNewClient;
         event EventAction OnOpenSelectedClient;
-        event EventAction OnRefresh;
     }
 }

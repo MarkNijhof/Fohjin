@@ -24,6 +24,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
         {
             _clientDetailsPresenter.SetClient(null);
             _clientDetailsPresenter.Display();
+            RefreshTimer.Trigger(Refresh).In(2000);
         }
 
         public void OpenSelectedClient()

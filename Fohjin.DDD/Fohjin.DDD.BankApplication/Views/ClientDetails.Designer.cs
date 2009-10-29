@@ -76,7 +76,6 @@
             this._newAccountCreateButton = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this._newAccountName = new System.Windows.Forms.TextBox();
-            this._refreshButton = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this._detailsTab.SuspendLayout();
@@ -560,21 +559,11 @@
             this._newAccountName.TabIndex = 13;
             this._newAccountName.TextChanged += new System.EventHandler(this._client_Changed);
             // 
-            // _refreshButton
-            // 
-            this._refreshButton.Location = new System.Drawing.Point(231, 0);
-            this._refreshButton.Name = "_refreshButton";
-            this._refreshButton.Size = new System.Drawing.Size(75, 23);
-            this._refreshButton.TabIndex = 16;
-            this._refreshButton.Text = "Refresh";
-            this._refreshButton.UseVisualStyleBackColor = true;
-            // 
             // ClientDetails
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(306, 402);
-            this.Controls.Add(this._refreshButton);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
@@ -655,7 +644,6 @@
         private System.Windows.Forms.Button _newAccountCreateButton;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.TextBox _newAccountName;
-        private System.Windows.Forms.Button _refreshButton;
         private System.Windows.Forms.GroupBox groupBox4;
         private System.Windows.Forms.ListBox _closedAccounts;
     }

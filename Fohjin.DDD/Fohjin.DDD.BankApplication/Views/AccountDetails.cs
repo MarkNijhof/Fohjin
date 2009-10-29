@@ -28,7 +28,6 @@ namespace Fohjin.DDD.BankApplication.Views
         public event EventAction OnDepositeMoney;
         public event EventAction OnWithdrawlMoney;
         public event EventAction OnTransferMoney;
-        public event EventAction OnRefresh;
 
         private void RegisterCLientEvents()
         {
@@ -45,7 +44,6 @@ namespace Fohjin.DDD.BankApplication.Views
             _transferButton.Click += (s, e) => OnTransferMoney();
             _newAccountNameCancelButton.Click += (s, e) => OnCancel();
             _newAccountNameSaveButton.Click += (s, e) => OnChangeAccountName();
-            _refreshButton.Click += (s, e) => OnRefresh();
         }
 
         public string AccountNameLabel

@@ -98,6 +98,12 @@ namespace Test.Fohjin.DDD.Scenarios
             PublishedEvents.Last<AccountCreatedEvent>().AccountName.WillBe("New Account");
             PublishedEvents.Last<AccountCreatedEvent>().AccountNumber.WillBe(_ticks);
         }
+
+        [Then]
+        public void Then_the_published_event_will_have_the_same_aggregate_id()
+        {
+            PublishedEvents.Last<AccountCreatedEvent>().AccountId.WillBe(AggregateRoot.Id);
+        }
     }
 
     public class When_an_account_was_assigned_to_a_client : EventTestFixture<AccountToClientAssignedEvent, AccountToClientAssignedEventHandler>

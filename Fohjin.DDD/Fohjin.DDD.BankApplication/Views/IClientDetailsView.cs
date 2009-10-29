@@ -53,6 +53,5 @@ namespace Fohjin.DDD.BankApplication.Views
         event EventAction OnInitiateClientPhoneNumberChanged;
         event EventAction OnInitiateAddNewAccount;
         event EventAction OnCreateNewAccount;
-        event EventAction OnRefresh;
     }
 }

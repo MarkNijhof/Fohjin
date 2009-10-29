@@ -72,7 +72,6 @@ namespace Fohjin.DDD.BankApplication.Views
             this._accountName = new System.Windows.Forms.TextBox();
             this._newAccountNameCancelButton = new System.Windows.Forms.Button();
             this._newAccountNameSaveButton = new System.Windows.Forms.Button();
-            this._refreshButton = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this._detailsTab.SuspendLayout();
@@ -501,21 +500,11 @@ namespace Fohjin.DDD.BankApplication.Views
             this._newAccountNameSaveButton.Text = "Save";
             this._newAccountNameSaveButton.UseVisualStyleBackColor = true;
             // 
-            // _refreshButton
-            // 
-            this._refreshButton.Location = new System.Drawing.Point(231, 0);
-            this._refreshButton.Name = "_refreshButton";
-            this._refreshButton.Size = new System.Drawing.Size(75, 23);
-            this._refreshButton.TabIndex = 14;
-            this._refreshButton.Text = "Refresh";
-            this._refreshButton.UseVisualStyleBackColor = true;
-            // 
             // AccountDetails
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(306, 278);
-            this.Controls.Add(this._refreshButton);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
@@ -591,6 +580,5 @@ namespace Fohjin.DDD.BankApplication.Views
         private System.Windows.Forms.GroupBox groupBox7;
         private System.Windows.Forms.TextBox _accountName;
         private System.Windows.Forms.ComboBox _transferAccounts;
-        private Button _refreshButton;
     }
 }
