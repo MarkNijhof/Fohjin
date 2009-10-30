@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
 using Fohjin.DDD.Domain;
-using Fohjin.DDD.Domain.Entities.Mementos;
+using Fohjin.DDD.Domain.Mementos;
 using Fohjin.DDD.Events;
 
 namespace Fohjin.DDD.EventStore.SQLite

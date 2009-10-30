@@ -1,6 +1,6 @@
 using System;
 using Fohjin.DDD.Contracts;
-using Fohjin.DDD.Events.ClosedAccount;
+using Fohjin.DDD.Events.Account;
 using Fohjin.DDD.Reporting.Dto;
 
 namespace Fohjin.DDD.EventHandlers

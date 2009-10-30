@@ -7,13 +7,10 @@ using Fohjin.DDD.Bus;
 using Fohjin.DDD.CommandHandlers;
 using Fohjin.DDD.Commands;
 using Fohjin.DDD.Contracts;
-using Fohjin.DDD.Domain.Entities;
-using Fohjin.DDD.Domain.Exceptions;
-using Fohjin.DDD.Domain.ValueObjects;
+using Fohjin.DDD.Domain.Account;
 using Fohjin.DDD.EventHandlers;
 using Fohjin.DDD.Events;
-using Fohjin.DDD.Events.ActiveAccount;
-using Fohjin.DDD.Events.ClosedAccount;
+using Fohjin.DDD.Events.Account;
 using Fohjin.DDD.Reporting.Dto;
 using Moq;
 

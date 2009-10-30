@@ -7,7 +7,7 @@ using Fohjin.DDD.Bus;
 using Fohjin.DDD.CommandHandlers;
 using Fohjin.DDD.Commands;
 using Fohjin.DDD.Contracts;
-using Fohjin.DDD.Domain.Entities;
+using Fohjin.DDD.Domain.Client;
 using Fohjin.DDD.EventHandlers;
 using Fohjin.DDD.Events.Client;
 using Fohjin.DDD.Reporting.Dto;

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Fohjin.DDD.Domain.Exceptions;
 using Fohjin.DDD.Events;
 
 namespace Fohjin.DDD.Domain

@@ -6,7 +6,7 @@ using Fohjin.DDD.CommandHandlers;
 using Fohjin.DDD.Commands;
 using Fohjin.DDD.Contracts;
 using Fohjin.DDD.Domain;
-using Fohjin.DDD.Domain.Entities.Mementos;
+using Fohjin.DDD.Domain.Mementos;
 using Fohjin.DDD.Events;
 using Moq;
 

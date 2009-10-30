@@ -1,5 +1,4 @@
 using Fohjin.DDD.Domain;
-using Fohjin.DDD.Domain.Exceptions;
 using Fohjin.DDD.Events;
 
 namespace Test.Fohjin.DDD.Domain.Entities

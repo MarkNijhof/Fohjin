@@ -110,7 +110,8 @@ namespace Fohjin.DDD.BankApplication.Views
             // changeAccountNameToolStripMenuItem
             // 
             this.changeAccountNameToolStripMenuItem.Name = "changeAccountNameToolStripMenuItem";
-            this.changeAccountNameToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
+            this.changeAccountNameToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.N)));
+            this.changeAccountNameToolStripMenuItem.Size = new System.Drawing.Size(233, 22);
             this.changeAccountNameToolStripMenuItem.Text = "Change account name";
             // 
             // closeAccountToolStripMenuItem
@@ -132,19 +133,22 @@ namespace Fohjin.DDD.BankApplication.Views
             // makeCashMutationToolStripMenuItem
             // 
             this.makeCashMutationToolStripMenuItem.Name = "makeCashMutationToolStripMenuItem";
-            this.makeCashMutationToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.makeCashMutationToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D)));
+            this.makeCashMutationToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
             this.makeCashMutationToolStripMenuItem.Text = "Make cash deposite";
             // 
             // makeCashWithdrawlToolStripMenuItem
             // 
             this.makeCashWithdrawlToolStripMenuItem.Name = "makeCashWithdrawlToolStripMenuItem";
-            this.makeCashWithdrawlToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.makeCashWithdrawlToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.W)));
+            this.makeCashWithdrawlToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
             this.makeCashWithdrawlToolStripMenuItem.Text = "Make cash withdrawl";
             // 
             // transferMoneyToolStripMenuItem
             // 
             this.transferMoneyToolStripMenuItem.Name = "transferMoneyToolStripMenuItem";
-            this.transferMoneyToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
+            this.transferMoneyToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.T)));
+            this.transferMoneyToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
             this.transferMoneyToolStripMenuItem.Text = "Transfer money";
             // 
             // tabControl1
@@ -291,7 +295,7 @@ namespace Fohjin.DDD.BankApplication.Views
             this._depositeAmount.Location = new System.Drawing.Point(6, 19);
             this._depositeAmount.Name = "_depositeAmount";
             this._depositeAmount.Size = new System.Drawing.Size(273, 20);
-            this._depositeAmount.TabIndex = 1;
+            this._depositeAmount.TabIndex = 0;
             this._depositeAmount.Text = "0";
             this._depositeAmount.TextChanged += new System.EventHandler(this._depositeAmount_TextChanged);
             this._depositeAmount.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this._amount_KeyPress);
@@ -302,7 +306,7 @@ namespace Fohjin.DDD.BankApplication.Views
             this._depositeCancelButton.Location = new System.Drawing.Point(142, 205);
             this._depositeCancelButton.Name = "_depositeCancelButton";
             this._depositeCancelButton.Size = new System.Drawing.Size(75, 23);
-            this._depositeCancelButton.TabIndex = 3;
+            this._depositeCancelButton.TabIndex = 2;
             this._depositeCancelButton.Text = "Cancel";
             this._depositeCancelButton.UseVisualStyleBackColor = true;
             // 
@@ -312,7 +316,7 @@ namespace Fohjin.DDD.BankApplication.Views
             this._depositeButton.Location = new System.Drawing.Point(223, 205);
             this._depositeButton.Name = "_depositeButton";
             this._depositeButton.Size = new System.Drawing.Size(75, 23);
-            this._depositeButton.TabIndex = 2;
+            this._depositeButton.TabIndex = 1;
             this._depositeButton.Text = "Deposite";
             this._depositeButton.UseVisualStyleBackColor = true;
             // 
@@ -343,7 +347,7 @@ namespace Fohjin.DDD.BankApplication.Views
             this._withdrawlAmount.Location = new System.Drawing.Point(6, 19);
             this._withdrawlAmount.Name = "_withdrawlAmount";
             this._withdrawlAmount.Size = new System.Drawing.Size(273, 20);
-            this._withdrawlAmount.TabIndex = 4;
+            this._withdrawlAmount.TabIndex = 0;
             this._withdrawlAmount.Text = "0";
             this._withdrawlAmount.TextChanged += new System.EventHandler(this._depositeAmount_TextChanged);
             this._withdrawlAmount.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this._amount_KeyPress);
@@ -354,7 +358,7 @@ namespace Fohjin.DDD.BankApplication.Views
             this._withdrawlCancelButton.Location = new System.Drawing.Point(142, 205);
             this._withdrawlCancelButton.Name = "_withdrawlCancelButton";
             this._withdrawlCancelButton.Size = new System.Drawing.Size(75, 23);
-            this._withdrawlCancelButton.TabIndex = 6;
+            this._withdrawlCancelButton.TabIndex = 2;
             this._withdrawlCancelButton.Text = "Cancel";
             this._withdrawlCancelButton.UseVisualStyleBackColor = true;
             // 
@@ -364,7 +368,7 @@ namespace Fohjin.DDD.BankApplication.Views
             this._withdrawlButton.Location = new System.Drawing.Point(223, 205);
             this._withdrawlButton.Name = "_withdrawlButton";
             this._withdrawlButton.Size = new System.Drawing.Size(75, 23);
-            this._withdrawlButton.TabIndex = 5;
+            this._withdrawlButton.TabIndex = 1;
             this._withdrawlButton.Text = "Withdrawl";
             this._withdrawlButton.UseVisualStyleBackColor = true;
             // 
@@ -399,7 +403,7 @@ namespace Fohjin.DDD.BankApplication.Views
             this._transferAccounts.Location = new System.Drawing.Point(6, 72);
             this._transferAccounts.Name = "_transferAccounts";
             this._transferAccounts.Size = new System.Drawing.Size(273, 21);
-            this._transferAccounts.TabIndex = 8;
+            this._transferAccounts.TabIndex = 1;
             this._transferAccounts.SelectedIndexChanged += new System.EventHandler(this._depositeAmount_TextChanged);
             // 
             // label12
@@ -416,7 +420,7 @@ namespace Fohjin.DDD.BankApplication.Views
             this._transferAmount.Location = new System.Drawing.Point(6, 33);
             this._transferAmount.Name = "_transferAmount";
             this._transferAmount.Size = new System.Drawing.Size(273, 20);
-            this._transferAmount.TabIndex = 7;
+            this._transferAmount.TabIndex = 0;
             this._transferAmount.Text = "0";
             this._transferAmount.TextChanged += new System.EventHandler(this._depositeAmount_TextChanged);
             this._transferAmount.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this._amount_KeyPress);
@@ -436,7 +440,7 @@ namespace Fohjin.DDD.BankApplication.Views
             this._transferCancelButton.Location = new System.Drawing.Point(142, 205);
             this._transferCancelButton.Name = "_transferCancelButton";
             this._transferCancelButton.Size = new System.Drawing.Size(75, 23);
-            this._transferCancelButton.TabIndex = 10;
+            this._transferCancelButton.TabIndex = 3;
             this._transferCancelButton.Text = "Cancel";
             this._transferCancelButton.UseVisualStyleBackColor = true;
             // 
@@ -446,7 +450,7 @@ namespace Fohjin.DDD.BankApplication.Views
             this._transferButton.Location = new System.Drawing.Point(223, 205);
             this._transferButton.Name = "_transferButton";
             this._transferButton.Size = new System.Drawing.Size(75, 23);
-            this._transferButton.TabIndex = 9;
+            this._transferButton.TabIndex = 2;
             this._transferButton.Text = "Transfer";
             this._transferButton.UseVisualStyleBackColor = true;
             // 
@@ -477,7 +481,7 @@ namespace Fohjin.DDD.BankApplication.Views
             this._accountName.Location = new System.Drawing.Point(6, 19);
             this._accountName.Name = "_accountName";
             this._accountName.Size = new System.Drawing.Size(273, 20);
-            this._accountName.TabIndex = 11;
+            this._accountName.TabIndex = 0;
             this._accountName.TextChanged += new System.EventHandler(this._depositeAmount_TextChanged);
             // 
             // _newAccountNameCancelButton
@@ -486,7 +490,7 @@ namespace Fohjin.DDD.BankApplication.Views
             this._newAccountNameCancelButton.Location = new System.Drawing.Point(142, 205);
             this._newAccountNameCancelButton.Name = "_newAccountNameCancelButton";
             this._newAccountNameCancelButton.Size = new System.Drawing.Size(75, 23);
-            this._newAccountNameCancelButton.TabIndex = 13;
+            this._newAccountNameCancelButton.TabIndex = 2;
             this._newAccountNameCancelButton.Text = "Cancel";
             this._newAccountNameCancelButton.UseVisualStyleBackColor = true;
             // 
@@ -496,7 +500,7 @@ namespace Fohjin.DDD.BankApplication.Views
             this._newAccountNameSaveButton.Location = new System.Drawing.Point(223, 205);
             this._newAccountNameSaveButton.Name = "_newAccountNameSaveButton";
             this._newAccountNameSaveButton.Size = new System.Drawing.Size(75, 23);
-            this._newAccountNameSaveButton.TabIndex = 12;
+            this._newAccountNameSaveButton.TabIndex = 1;
             this._newAccountNameSaveButton.Text = "Save";
             this._newAccountNameSaveButton.UseVisualStyleBackColor = true;
             // 

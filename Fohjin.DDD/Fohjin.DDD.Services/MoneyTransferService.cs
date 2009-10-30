@@ -34,6 +34,10 @@ namespace Fohjin.DDD.Services
                 {2, MoneyTransferIsGoingToAnExternalAccount},
                 {3, MoneyTransferIsGoingToAnExternalAccount},
                 {4, MoneyTransferIsGoingToAnExternalNonExistingAccount},
+                {5, MoneyTransferIsGoingToAnInternalAccount},
+                {6, MoneyTransferIsGoingToAnInternalAccount},
+                {7, MoneyTransferIsGoingToAnExternalAccount},
+                {8, MoneyTransferIsGoingToAnExternalAccount},
             };
         }
 
@@ -47,9 +51,9 @@ namespace Fohjin.DDD.Services
             try
             {
                 // I didn't want to introduce an actual external bank, so that's why you see this nice construct :)
-                _moneyTransferOptions[SystemRandom.Next(0, 5)](moneyTransfer);
+                _moneyTransferOptions[SystemRandom.Next(0, 9)](moneyTransfer);
             }
-            catch(Exception)
+            catch(Exception Ex)
             {
                 CompensatingActionBecauseOfFailedMoneyTransfer(moneyTransfer);
             }

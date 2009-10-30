@@ -116,19 +116,22 @@
             // nameChangedToolStripMenuItem
             // 
             this.nameChangedToolStripMenuItem.Name = "nameChangedToolStripMenuItem";
-            this.nameChangedToolStripMenuItem.Size = new System.Drawing.Size(219, 22);
+            this.nameChangedToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.N)));
+            this.nameChangedToolStripMenuItem.Size = new System.Drawing.Size(256, 22);
             this.nameChangedToolStripMenuItem.Text = "Got his name changed";
             // 
             // hasMovedToolStripMenuItem
             // 
             this.hasMovedToolStripMenuItem.Name = "hasMovedToolStripMenuItem";
-            this.hasMovedToolStripMenuItem.Size = new System.Drawing.Size(219, 22);
+            this.hasMovedToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.M)));
+            this.hasMovedToolStripMenuItem.Size = new System.Drawing.Size(256, 22);
             this.hasMovedToolStripMenuItem.Text = "Has moved";
             // 
             // changedHisPhoneNumberToolStripMenuItem
             // 
             this.changedHisPhoneNumberToolStripMenuItem.Name = "changedHisPhoneNumberToolStripMenuItem";
-            this.changedHisPhoneNumberToolStripMenuItem.Size = new System.Drawing.Size(219, 22);
+            this.changedHisPhoneNumberToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.P)));
+            this.changedHisPhoneNumberToolStripMenuItem.Size = new System.Drawing.Size(256, 22);
             this.changedHisPhoneNumberToolStripMenuItem.Text = "Changed his phonenumber";
             // 
             // accountsToolStripMenuItem
@@ -142,7 +145,8 @@
             // addNewAccountToolStripMenuItem
             // 
             this.addNewAccountToolStripMenuItem.Name = "addNewAccountToolStripMenuItem";
-            this.addNewAccountToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
+            this.addNewAccountToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.A)));
+            this.addNewAccountToolStripMenuItem.Size = new System.Drawing.Size(205, 22);
             this.addNewAccountToolStripMenuItem.Text = "Add new account";
             // 
             // tabControl1
@@ -157,7 +161,7 @@
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(306, 378);
-            this.tabControl1.TabIndex = 19;
+            this.tabControl1.TabIndex = 1;
             // 
             // _detailsTab
             // 
@@ -320,7 +324,7 @@
             this._addressSaveButton.Location = new System.Drawing.Point(223, 329);
             this._addressSaveButton.Name = "_addressSaveButton";
             this._addressSaveButton.Size = new System.Drawing.Size(75, 23);
-            this._addressSaveButton.TabIndex = 5;
+            this._addressSaveButton.TabIndex = 4;
             this._addressSaveButton.Text = "Save";
             this._addressSaveButton.UseVisualStyleBackColor = true;
             // 
@@ -364,7 +368,7 @@
             this._postalCode.Location = new System.Drawing.Point(6, 73);
             this._postalCode.Name = "_postalCode";
             this._postalCode.Size = new System.Drawing.Size(55, 20);
-            this._postalCode.TabIndex = 3;
+            this._postalCode.TabIndex = 2;
             this._postalCode.TextChanged += new System.EventHandler(this._client_Changed);
             // 
             // _streetNumber
@@ -372,7 +376,7 @@
             this._streetNumber.Location = new System.Drawing.Point(224, 33);
             this._streetNumber.Name = "_streetNumber";
             this._streetNumber.Size = new System.Drawing.Size(55, 20);
-            this._streetNumber.TabIndex = 2;
+            this._streetNumber.TabIndex = 1;
             this._streetNumber.TextChanged += new System.EventHandler(this._client_Changed);
             // 
             // _city
@@ -380,7 +384,7 @@
             this._city.Location = new System.Drawing.Point(67, 73);
             this._city.Name = "_city";
             this._city.Size = new System.Drawing.Size(212, 20);
-            this._city.TabIndex = 4;
+            this._city.TabIndex = 3;
             this._city.TextChanged += new System.EventHandler(this._client_Changed);
             // 
             // label3
@@ -397,7 +401,7 @@
             this._street.Location = new System.Drawing.Point(6, 33);
             this._street.Name = "_street";
             this._street.Size = new System.Drawing.Size(212, 20);
-            this._street.TabIndex = 1;
+            this._street.TabIndex = 0;
             this._street.TextChanged += new System.EventHandler(this._client_Changed);
             // 
             // label2
@@ -427,7 +431,7 @@
             this._phoneNumberCancelButton.Location = new System.Drawing.Point(142, 329);
             this._phoneNumberCancelButton.Name = "_phoneNumberCancelButton";
             this._phoneNumberCancelButton.Size = new System.Drawing.Size(75, 23);
-            this._phoneNumberCancelButton.TabIndex = 9;
+            this._phoneNumberCancelButton.TabIndex = 2;
             this._phoneNumberCancelButton.Text = "Cancel";
             this._phoneNumberCancelButton.UseVisualStyleBackColor = true;
             // 
@@ -437,7 +441,7 @@
             this._phoneNumberSaveButton.Location = new System.Drawing.Point(223, 329);
             this._phoneNumberSaveButton.Name = "_phoneNumberSaveButton";
             this._phoneNumberSaveButton.Size = new System.Drawing.Size(75, 23);
-            this._phoneNumberSaveButton.TabIndex = 8;
+            this._phoneNumberSaveButton.TabIndex = 1;
             this._phoneNumberSaveButton.Text = "Save";
             this._phoneNumberSaveButton.UseVisualStyleBackColor = true;
             // 
@@ -456,7 +460,7 @@
             this._phoneNumber.Location = new System.Drawing.Point(6, 19);
             this._phoneNumber.Name = "_phoneNumber";
             this._phoneNumber.Size = new System.Drawing.Size(273, 20);
-            this._phoneNumber.TabIndex = 7;
+            this._phoneNumber.TabIndex = 0;
             this._phoneNumber.TextChanged += new System.EventHandler(this._client_Changed);
             // 
             // _clientNameTab
@@ -477,7 +481,7 @@
             this._clientNameCancelButton.Location = new System.Drawing.Point(142, 329);
             this._clientNameCancelButton.Name = "_clientNameCancelButton";
             this._clientNameCancelButton.Size = new System.Drawing.Size(75, 23);
-            this._clientNameCancelButton.TabIndex = 12;
+            this._clientNameCancelButton.TabIndex = 2;
             this._clientNameCancelButton.Text = "Cancel";
             this._clientNameCancelButton.UseVisualStyleBackColor = true;
             // 
@@ -487,7 +491,7 @@
             this._clientNameSaveButton.Location = new System.Drawing.Point(223, 329);
             this._clientNameSaveButton.Name = "_clientNameSaveButton";
             this._clientNameSaveButton.Size = new System.Drawing.Size(75, 23);
-            this._clientNameSaveButton.TabIndex = 11;
+            this._clientNameSaveButton.TabIndex = 1;
             this._clientNameSaveButton.Text = "Save";
             this._clientNameSaveButton.UseVisualStyleBackColor = true;
             // 
@@ -506,7 +510,7 @@
             this._clientName.Location = new System.Drawing.Point(6, 19);
             this._clientName.Name = "_clientName";
             this._clientName.Size = new System.Drawing.Size(273, 20);
-            this._clientName.TabIndex = 10;
+            this._clientName.TabIndex = 0;
             this._clientName.TextChanged += new System.EventHandler(this._client_Changed);
             // 
             // _addNewAccount
@@ -527,7 +531,7 @@
             this._newAccountCancelButton.Location = new System.Drawing.Point(142, 329);
             this._newAccountCancelButton.Name = "_newAccountCancelButton";
             this._newAccountCancelButton.Size = new System.Drawing.Size(75, 23);
-            this._newAccountCancelButton.TabIndex = 15;
+            this._newAccountCancelButton.TabIndex = 2;
             this._newAccountCancelButton.Text = "Cancel";
             this._newAccountCancelButton.UseVisualStyleBackColor = true;
             // 
@@ -537,7 +541,7 @@
             this._newAccountCreateButton.Location = new System.Drawing.Point(223, 329);
             this._newAccountCreateButton.Name = "_newAccountCreateButton";
             this._newAccountCreateButton.Size = new System.Drawing.Size(75, 23);
-            this._newAccountCreateButton.TabIndex = 14;
+            this._newAccountCreateButton.TabIndex = 1;
             this._newAccountCreateButton.Text = "Create";
             this._newAccountCreateButton.UseVisualStyleBackColor = true;
             // 
@@ -556,7 +560,7 @@
             this._newAccountName.Location = new System.Drawing.Point(6, 19);
             this._newAccountName.Name = "_newAccountName";
             this._newAccountName.Size = new System.Drawing.Size(273, 20);
-            this._newAccountName.TabIndex = 13;
+            this._newAccountName.TabIndex = 0;
             this._newAccountName.TextChanged += new System.EventHandler(this._client_Changed);
             // 
             // ClientDetails

@@ -1,5 +1,5 @@
 using System;
-using Fohjin.DDD.Domain.Entities.Mementos;
+using Fohjin.DDD.Domain.Mementos;
 
 namespace Fohjin.DDD.EventStore.SQLite
 {

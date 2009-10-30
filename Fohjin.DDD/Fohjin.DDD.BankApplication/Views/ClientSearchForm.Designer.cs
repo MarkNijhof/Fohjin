@@ -63,7 +63,8 @@
             // addANewClientToolStripMenuItem
             // 
             this.addANewClientToolStripMenuItem.Name = "addANewClientToolStripMenuItem";
-            this.addANewClientToolStripMenuItem.Size = new System.Drawing.Size(162, 22);
+            this.addANewClientToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.A)));
+            this.addANewClientToolStripMenuItem.Size = new System.Drawing.Size(200, 22);
             this.addANewClientToolStripMenuItem.Text = "Add a new client";
             // 
             // tabControl1

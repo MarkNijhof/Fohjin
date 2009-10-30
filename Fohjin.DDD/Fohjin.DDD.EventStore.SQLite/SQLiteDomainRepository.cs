@@ -3,7 +3,7 @@ using System.Linq;
 using Fohjin.DDD.Bus;
 using Fohjin.DDD.Contracts;
 using Fohjin.DDD.Domain;
-using Fohjin.DDD.Domain.Entities.Mementos;
+using Fohjin.DDD.Domain.Mementos;
 
 namespace Fohjin.DDD.EventStore.SQLite
 {
