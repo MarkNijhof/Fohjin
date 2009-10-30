@@ -113,6 +113,7 @@
     <Compile Include="Scenarios\Receiving_a_money_transfer_from_an_other_account.cs" />
     <Compile Include="Scenarios\Sending_a_money_transfer_to_an_other_account.cs" />
     <Compile Include="Scenarios\Displaying_account_details.cs" />
+    <Compile Include="Scenarios\Showing_a_error_popup.cs" />
     <Compile Include="TestExtensions.cs" />
     <Compile Include="CommandTestFixture.cs" />
     <Compile Include="Domain\Repositories\ActiveAccountRepositoryTest.cs" />
