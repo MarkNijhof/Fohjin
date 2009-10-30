@@ -1,7 +1,7 @@
 using Fohjin.DDD.Domain;
 using Fohjin.DDD.Events;
 
-namespace Test.Fohjin.DDD.Domain.Entities
+namespace Test.Fohjin.DDD.Domain
 {
     public class When_sending_an_internal_event_that_is_not_registered : AggregateRootTestFixture<TestEntity>
     {
