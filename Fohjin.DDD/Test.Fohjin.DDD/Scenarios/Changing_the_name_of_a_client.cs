@@ -25,7 +25,7 @@ namespace Test.Fohjin.DDD.Scenarios
 
         protected override void SetupDependencies()
         {
-            _clientDetailsReport = new ClientDetailsReport(_clientId, "Client Name", "street", "123", "5000", "bergen", "1234567890");
+            _clientDetailsReport = new ClientDetailsReport(_clientId, "Client Name", "Street", "123", "5000", "Bergen", "1234567890");
             _clientDetailsReports = new List<ClientDetailsReport> { _clientDetailsReport };
             OnDependency<IReportingRepository>()
                 .Setup(x => x.GetByExample<ClientDetailsReport>(It.IsAny<object>()))
@@ -55,7 +55,7 @@ namespace Test.Fohjin.DDD.Scenarios
         [Then]
         public void Then_the_name_change_panel_will_be_enabled()
         {
-            On<IClientDetailsView>().VerifyThat.Method(x => x.EnableOverviewPanel()).WasCalled();
+            On<IClientDetailsView>().VerifyThat.Method(x => x.EnableClientNamePanel()).WasCalled();
         }
     }
 
@@ -67,7 +67,7 @@ namespace Test.Fohjin.DDD.Scenarios
 
         protected override void SetupDependencies()
         {
-            _clientDetailsReport = new ClientDetailsReport(_clientId, "Client Name", "street", "123", "5000", "bergen", "1234567890");
+            _clientDetailsReport = new ClientDetailsReport(_clientId, "Client Name", "Street", "123", "5000", "Bergen", "1234567890");
             _clientDetailsReports = new List<ClientDetailsReport> { _clientDetailsReport };
             OnDependency<IReportingRepository>()
                 .Setup(x => x.GetByExample<ClientDetailsReport>(It.IsAny<object>()))
@@ -79,6 +79,11 @@ namespace Test.Fohjin.DDD.Scenarios
             Presenter.SetClient(new ClientReport(_clientId, "Client Name"));
             Presenter.Display();
             On<IClientDetailsView>().ValueFor(x => x.ClientName).IsSetTo("Client name");
+            On<IClientDetailsView>().ValueFor(x => x.PhoneNumber).IsSetTo("1234567890");
+            On<IClientDetailsView>().ValueFor(x => x.Street).IsSetTo("Street");
+            On<IClientDetailsView>().ValueFor(x => x.StreetNumber).IsSetTo("123");
+            On<IClientDetailsView>().ValueFor(x => x.PostalCode).IsSetTo("5000");
+            On<IClientDetailsView>().ValueFor(x => x.City).IsSetTo("Bergen");
             On<IClientDetailsView>().FireEvent(x => x.OnInitiateClientNameChange += null);
         }
 
@@ -118,7 +123,7 @@ namespace Test.Fohjin.DDD.Scenarios
 
         protected override void SetupDependencies()
         {
-            _clientDetailsReport = new ClientDetailsReport(_clientId, "Client Name", "street", "123", "5000", "bergen", "1234567890");
+            _clientDetailsReport = new ClientDetailsReport(_clientId, "Client Name", "Street", "123", "5000", "Bergen", "1234567890");
             _clientDetailsReports = new List<ClientDetailsReport> { _clientDetailsReport };
             OnDependency<IReportingRepository>()
                 .Setup(x => x.GetByExample<ClientDetailsReport>(It.IsAny<object>()))
@@ -130,6 +135,11 @@ namespace Test.Fohjin.DDD.Scenarios
             Presenter.SetClient(new ClientReport(_clientId, "Client Name"));
             Presenter.Display();
             On<IClientDetailsView>().ValueFor(x => x.ClientName).IsSetTo("Client name");
+            On<IClientDetailsView>().ValueFor(x => x.PhoneNumber).IsSetTo("1234567890");
+            On<IClientDetailsView>().ValueFor(x => x.Street).IsSetTo("Street");
+            On<IClientDetailsView>().ValueFor(x => x.StreetNumber).IsSetTo("123");
+            On<IClientDetailsView>().ValueFor(x => x.PostalCode).IsSetTo("5000");
+            On<IClientDetailsView>().ValueFor(x => x.City).IsSetTo("Bergen");
             On<IClientDetailsView>().FireEvent(x => x.OnInitiateClientNameChange += null);
             On<IClientDetailsView>().ValueFor(x => x.ClientName).IsSetTo("New Client name");
             On<IClientDetailsView>().FireEvent(x => x.OnFormElementGotChanged += null);
@@ -137,7 +147,7 @@ namespace Test.Fohjin.DDD.Scenarios
 
         protected override void When()
         {
-            On<IClientDetailsView>().ValueFor(x => x.ClientName).IsSetTo(string.Empty);
+            On<IClientDetailsView>().ValueFor(x => x.ClientName).IsSetTo("Client Name");
             On<IClientDetailsView>().FireEvent(x => x.OnFormElementGotChanged += null);
         }
 
@@ -160,7 +170,7 @@ namespace Test.Fohjin.DDD.Scenarios
                 .Setup(x => x.CatchPossibleException(It.IsAny<Action>()))
                 .Callback<Action>(x => x());
 
-            _clientDetailsReport = new ClientDetailsReport(_clientId, "Client Name", "street", "123", "5000", "bergen", "1234567890");
+            _clientDetailsReport = new ClientDetailsReport(_clientId, "Client Name", "Street", "123", "5000", "Bergen", "1234567890");
             _clientDetailsReports = new List<ClientDetailsReport> { _clientDetailsReport };
             OnDependency<IReportingRepository>()
                 .Setup(x => x.GetByExample<ClientDetailsReport>(It.IsAny<object>()))
@@ -172,6 +182,11 @@ namespace Test.Fohjin.DDD.Scenarios
             Presenter.SetClient(new ClientReport(_clientId, "Client Name"));
             Presenter.Display();
             On<IClientDetailsView>().ValueFor(x => x.ClientName).IsSetTo("Client name");
+            On<IClientDetailsView>().ValueFor(x => x.PhoneNumber).IsSetTo("1234567890");
+            On<IClientDetailsView>().ValueFor(x => x.Street).IsSetTo("Street");
+            On<IClientDetailsView>().ValueFor(x => x.StreetNumber).IsSetTo("123");
+            On<IClientDetailsView>().ValueFor(x => x.PostalCode).IsSetTo("5000");
+            On<IClientDetailsView>().ValueFor(x => x.City).IsSetTo("Bergen");
             On<IClientDetailsView>().FireEvent(x => x.OnInitiateClientNameChange += null);
             On<IClientDetailsView>().ValueFor(x => x.ClientName).IsSetTo("New Client name");
             On<IClientDetailsView>().FireEvent(x => x.OnFormElementGotChanged += null);

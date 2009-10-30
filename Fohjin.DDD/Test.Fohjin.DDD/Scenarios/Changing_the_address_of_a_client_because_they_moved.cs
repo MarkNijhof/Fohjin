@@ -1,6 +1,9 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using Fohjin.DDD.BankApplication.Presenters;
+using Fohjin.DDD.BankApplication.Views;
+using Fohjin.DDD.Bus;
 using Fohjin.DDD.CommandHandlers;
 using Fohjin.DDD.Commands;
 using Fohjin.DDD.Contracts;
@@ -14,6 +17,219 @@ using Moq;
 
 namespace Test.Fohjin.DDD.Scenarios
 {
+    public class When_clicking_to_change_a_client_address : PresenterTestFixture<ClientDetailsPresenter>
+    {
+        private readonly Guid _clientId = Guid.NewGuid();
+        private ClientDetailsReport _clientDetailsReport;
+        private List<ClientDetailsReport> _clientDetailsReports;
+
+        protected override void SetupDependencies()
+        {
+            _clientDetailsReport = new ClientDetailsReport(_clientId, "Client Name", "Street", "123", "5000", "Bergen", "1234567890");
+            _clientDetailsReports = new List<ClientDetailsReport> { _clientDetailsReport };
+            OnDependency<IReportingRepository>()
+                .Setup(x => x.GetByExample<ClientDetailsReport>(It.IsAny<object>()))
+                .Returns(_clientDetailsReports);
+        }
+
+        protected override void Given()
+        {
+            Presenter.SetClient(new ClientReport(_clientId, "Client Name"));
+            Presenter.Display();
+        }
+
+        protected override void When()
+        {
+            On<IClientDetailsView>().FireEvent(x => x.OnInitiateClientHasMoved += null);
+        }
+
+        [Then]
+        public void Then_the_menu_buttons_will_be_disabled()
+        {
+            On<IClientDetailsView>().VerifyThat.Method(x => x.DisableAddNewAccountMenu()).WasCalled();
+            On<IClientDetailsView>().VerifyThat.Method(x => x.DisableClientHasMovedMenu()).WasCalled();
+            On<IClientDetailsView>().VerifyThat.Method(x => x.DisableNameChangedMenu()).WasCalled();
+            On<IClientDetailsView>().VerifyThat.Method(x => x.DisablePhoneNumberChangedMenu()).WasCalled();
+        }
+
+        [Then]
+        public void Then_the_name_change_panel_will_be_enabled()
+        {
+            On<IClientDetailsView>().VerifyThat.Method(x => x.EnableAddressPanel()).WasCalled();
+        }
+    }
+
+    public class When_inserting_the_new_client_address : PresenterTestFixture<ClientDetailsPresenter>
+    {
+        private readonly Guid _clientId = Guid.NewGuid();
+        private ClientDetailsReport _clientDetailsReport;
+        private List<ClientDetailsReport> _clientDetailsReports;
+
+        protected override void SetupDependencies()
+        {
+            _clientDetailsReport = new ClientDetailsReport(_clientId, "Client Name", "Street", "123", "5000", "Bergen", "1234567890");
+            _clientDetailsReports = new List<ClientDetailsReport> { _clientDetailsReport };
+            OnDependency<IReportingRepository>()
+                .Setup(x => x.GetByExample<ClientDetailsReport>(It.IsAny<object>()))
+                .Returns(_clientDetailsReports);
+        }
+
+        protected override void Given()
+        {
+            Presenter.SetClient(new ClientReport(_clientId, "Client Name"));
+            Presenter.Display();
+            On<IClientDetailsView>().ValueFor(x => x.ClientName).IsSetTo("Client name");
+            On<IClientDetailsView>().ValueFor(x => x.PhoneNumber).IsSetTo("1234567890");
+            On<IClientDetailsView>().ValueFor(x => x.Street).IsSetTo("Street");
+            On<IClientDetailsView>().ValueFor(x => x.StreetNumber).IsSetTo("123");
+            On<IClientDetailsView>().ValueFor(x => x.PostalCode).IsSetTo("5000");
+            On<IClientDetailsView>().ValueFor(x => x.City).IsSetTo("Bergen");
+            On<IClientDetailsView>().FireEvent(x => x.OnFormElementGotChanged += null);
+            On<IClientDetailsView>().FireEvent(x => x.OnInitiateClientHasMoved += null);
+        }
+
+        protected override void When()
+        {
+            On<IClientDetailsView>().ValueFor(x => x.Street).IsSetTo("Lane");
+            On<IClientDetailsView>().ValueFor(x => x.StreetNumber).IsSetTo("321");
+            On<IClientDetailsView>().ValueFor(x => x.PostalCode).IsSetTo("6000");
+            On<IClientDetailsView>().ValueFor(x => x.City).IsSetTo("Oslo");
+            On<IClientDetailsView>().FireEvent(x => x.OnFormElementGotChanged += null);
+        }
+
+        [Then]
+        public void Then_the_save_button_will_be_disabled()
+        {
+            On<IClientDetailsView>().VerifyThat.Method(x => x.DisableSaveButton()).WasCalled();
+        }
+
+        [Then]
+        public void Then_the_menu_buttons_will_be_enabled()
+        {
+            On<IClientDetailsView>().VerifyThat.Method(x => x.EnableAddNewAccountMenu()).WasCalled();
+            On<IClientDetailsView>().VerifyThat.Method(x => x.EnableClientHasMovedMenu()).WasCalled();
+            On<IClientDetailsView>().VerifyThat.Method(x => x.EnableNameChangedMenu()).WasCalled();
+            On<IClientDetailsView>().VerifyThat.Method(x => x.EnablePhoneNumberChangedMenu()).WasCalled();
+        }
+
+        [Then]
+        public void Then_the_save_button_will_be_enabled()
+        {
+            On<IClientDetailsView>().VerifyThat.Method(x => x.EnableSaveButton()).WasCalled();
+        }
+    }
+
+    public class When_clearing_the_new_client_address : PresenterTestFixture<ClientDetailsPresenter>
+    {
+        private readonly Guid _clientId = Guid.NewGuid();
+        private ClientDetailsReport _clientDetailsReport;
+        private List<ClientDetailsReport> _clientDetailsReports;
+
+        protected override void SetupDependencies()
+        {
+            _clientDetailsReport = new ClientDetailsReport(_clientId, "Client Name", "Street", "123", "5000", "Bergen", "1234567890");
+            _clientDetailsReports = new List<ClientDetailsReport> { _clientDetailsReport };
+            OnDependency<IReportingRepository>()
+                .Setup(x => x.GetByExample<ClientDetailsReport>(It.IsAny<object>()))
+                .Returns(_clientDetailsReports);
+        }
+
+        protected override void Given()
+        {
+            Presenter.SetClient(new ClientReport(_clientId, "Client Name"));
+            Presenter.Display();
+            On<IClientDetailsView>().ValueFor(x => x.ClientName).IsSetTo("Client name");
+            On<IClientDetailsView>().ValueFor(x => x.PhoneNumber).IsSetTo("1234567890");
+            On<IClientDetailsView>().ValueFor(x => x.Street).IsSetTo("Street");
+            On<IClientDetailsView>().ValueFor(x => x.StreetNumber).IsSetTo("123");
+            On<IClientDetailsView>().ValueFor(x => x.PostalCode).IsSetTo("5000");
+            On<IClientDetailsView>().ValueFor(x => x.City).IsSetTo("Bergen");
+            On<IClientDetailsView>().FireEvent(x => x.OnFormElementGotChanged += null);
+            On<IClientDetailsView>().FireEvent(x => x.OnInitiateClientHasMoved += null);
+        }
+
+        protected override void When()
+        {
+            On<IClientDetailsView>().ValueFor(x => x.Street).IsSetTo("Street");
+            On<IClientDetailsView>().ValueFor(x => x.StreetNumber).IsSetTo("123");
+            On<IClientDetailsView>().ValueFor(x => x.PostalCode).IsSetTo("5000");
+            On<IClientDetailsView>().ValueFor(x => x.City).IsSetTo("Bergen");
+            On<IClientDetailsView>().FireEvent(x => x.OnFormElementGotChanged += null);
+        }
+
+        [Then]
+        public void Then_the_save_button_will_be_enabled()
+        {
+            On<IClientDetailsView>().VerifyThat.Method(x => x.DisableSaveButton()).WasCalled();
+        }
+    }
+
+    public class When_saving_the_new_client_address : PresenterTestFixture<ClientDetailsPresenter>
+    {
+        private readonly Guid _clientId = Guid.NewGuid();
+        private ClientDetailsReport _clientDetailsReport;
+        private List<ClientDetailsReport> _clientDetailsReports;
+
+        protected override void SetupDependencies()
+        {
+            OnDependency<IPopupPresenter>()
+                .Setup(x => x.CatchPossibleException(It.IsAny<Action>()))
+                .Callback<Action>(x => x());
+
+            _clientDetailsReport = new ClientDetailsReport(_clientId, "Client Name", "Street", "123", "5000", "Bergen", "1234567890");
+            _clientDetailsReports = new List<ClientDetailsReport> { _clientDetailsReport };
+            OnDependency<IReportingRepository>()
+                .Setup(x => x.GetByExample<ClientDetailsReport>(It.IsAny<object>()))
+                .Returns(_clientDetailsReports);
+        }
+
+        protected override void Given()
+        {
+            Presenter.SetClient(new ClientReport(_clientId, "Client Name"));
+            Presenter.Display();
+            On<IClientDetailsView>().ValueFor(x => x.ClientName).IsSetTo("Client name");
+            On<IClientDetailsView>().ValueFor(x => x.PhoneNumber).IsSetTo("1234567890");
+            On<IClientDetailsView>().ValueFor(x => x.Street).IsSetTo("Lane");
+            On<IClientDetailsView>().ValueFor(x => x.StreetNumber).IsSetTo("321");
+            On<IClientDetailsView>().ValueFor(x => x.PostalCode).IsSetTo("6000");
+            On<IClientDetailsView>().ValueFor(x => x.City).IsSetTo("Oslo");
+            On<IClientDetailsView>().FireEvent(x => x.OnFormElementGotChanged += null);
+            On<IClientDetailsView>().FireEvent(x => x.OnInitiateClientPhoneNumberChanged += null);
+        }
+
+        protected override void When()
+        {
+            On<IClientDetailsView>().FireEvent(x => x.OnSaveNewAddress += null);
+        }
+
+        [Then]
+        public void Then_a_change_client_phone_number_command_will_be_published()
+        {
+            On<ICommandBus>().VerifyThat.Method(x => x.Publish(It.IsAny<MoveClientToNewAddressCommand>())).WasCalled();
+        }
+
+        [Then]
+        public void Then_the_save_button_will_be_disabled()
+        {
+            On<IClientDetailsView>().VerifyThat.Method(x => x.DisableSaveButton()).WasCalled();
+        }
+
+        [Then]
+        public void Then_the_menu_button_will_be_enabled()
+        {
+            On<IClientDetailsView>().VerifyThat.Method(x => x.EnableAddNewAccountMenu()).WasCalled();
+            On<IClientDetailsView>().VerifyThat.Method(x => x.EnableClientHasMovedMenu()).WasCalled();
+            On<IClientDetailsView>().VerifyThat.Method(x => x.EnableNameChangedMenu()).WasCalled();
+            On<IClientDetailsView>().VerifyThat.Method(x => x.EnablePhoneNumberChangedMenu()).WasCalled();
+        }
+
+        [Then]
+        public void Then_the_details_panel_will_be_enabled()
+        {
+            On<IClientDetailsView>().VerifyThat.Method(x => x.EnableOverviewPanel()).WasCalled();
+        }
+    }
+
     public class When_providing_a_client_has_moved_command_on_a_created_client : CommandTestFixture<MoveClientToNewAddressCommand, MoveClientToNewAddressCommandHandler, Client>
     {
         protected override IEnumerable<IDomainEvent> Given()

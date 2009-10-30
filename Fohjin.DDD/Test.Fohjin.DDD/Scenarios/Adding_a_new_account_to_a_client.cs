@@ -1,6 +1,9 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using Fohjin.DDD.BankApplication.Presenters;
+using Fohjin.DDD.BankApplication.Views;
+using Fohjin.DDD.Bus;
 using Fohjin.DDD.CommandHandlers;
 using Fohjin.DDD.Commands;
 using Fohjin.DDD.Contracts;
@@ -16,6 +19,136 @@ using Moq;
 
 namespace Test.Fohjin.DDD.Scenarios
 {
+    public class When_starting_to_create_a_new_account : PresenterTestFixture<ClientDetailsPresenter>
+    {
+        protected override void SetupDependencies()
+        {
+            OnDependency<IReportingRepository>()
+                .Setup(x => x.GetByExample<ClientDetailsReport>(It.IsAny<object>()))
+                .Returns(new List<ClientDetailsReport> { new ClientDetailsReport(Guid.NewGuid(), "Client Name", "street", "123", "5000", "bergen", "1234567890") });
+        }
+
+        protected override void When()
+        {
+            Presenter.SetClient(new ClientReport(Guid.NewGuid(), "Client name"));
+            Presenter.Display();
+            On<IClientDetailsView>().FireEvent(x => x.OnInitiateAddNewAccount += delegate { });
+        }
+
+        [Then]
+        public void Then_the_menu_buttons_will_be_disabled()
+        {
+            On<IClientDetailsView>().VerifyThat.Method(x => x.DisableAddNewAccountMenu()).WasCalled();
+            On<IClientDetailsView>().VerifyThat.Method(x => x.DisableClientHasMovedMenu()).WasCalled();
+            On<IClientDetailsView>().VerifyThat.Method(x => x.DisableNameChangedMenu()).WasCalled();
+            On<IClientDetailsView>().VerifyThat.Method(x => x.DisablePhoneNumberChangedMenu()).WasCalled();
+        }
+
+        [Then]
+        public void Then_the_add_new_panel_will_be_enabled()
+        {
+            On<IClientDetailsView>().VerifyThat.Method(x => x.EnableAddNewAccountPanel()).WasCalled();
+        }
+    }
+
+    public class When_saving_the_new_account : PresenterTestFixture<ClientDetailsPresenter>
+    {
+        protected override void SetupDependencies()
+        {
+            OnDependency<IPopupPresenter>()
+                .Setup(x => x.CatchPossibleException(It.IsAny<Action>()))
+                .Callback<Action>(x => x());
+
+            OnDependency<IReportingRepository>()
+                .Setup(x => x.GetByExample<ClientDetailsReport>(It.IsAny<object>()))
+                .Returns(new List<ClientDetailsReport> { new ClientDetailsReport(Guid.NewGuid(), "Client Name", "street", "123", "5000", "bergen", "1234567890") });
+        }
+
+        protected override void Given()
+        {
+            Presenter.SetClient(new ClientReport(Guid.NewGuid(), "Client name"));
+            Presenter.Display();
+            On<IClientDetailsView>().FireEvent(x => x.OnInitiateAddNewAccount += delegate { });
+            On<IClientDetailsView>().ValueFor(x => x.NewAccountName).IsSetTo("New account name");
+            On<IClientDetailsView>().FireEvent(x => x.OnFormElementGotChanged += null);
+        }
+
+        protected override void When()
+        {
+            On<IClientDetailsView>().FireEvent(x => x.OnCreateNewAccount += null);
+        }
+
+        [Then]
+        public void Then_a_add_new_account_to_client_command_will_be_published()
+        {
+            On<ICommandBus>().VerifyThat.Method(x => x.Publish(It.IsAny<AddNewAccountToClientCommand>())).WasCalled();
+        }
+
+        [Then]
+        public void Then_the_menu_buttons_will_be_enabled()
+        {
+            On<IClientDetailsView>().VerifyThat.Method(x => x.EnableAddNewAccountMenu()).WasCalled();
+            On<IClientDetailsView>().VerifyThat.Method(x => x.EnableClientHasMovedMenu()).WasCalled();
+            On<IClientDetailsView>().VerifyThat.Method(x => x.EnableNameChangedMenu()).WasCalled();
+            On<IClientDetailsView>().VerifyThat.Method(x => x.EnablePhoneNumberChangedMenu()).WasCalled();
+        }
+
+        [Then]
+        public void Then_overview_panel_will_be_shown()
+        {
+            On<IClientDetailsView>().VerifyThat.Method(x => x.EnableOverviewPanel()).WasCalled();
+        }
+    }
+
+    public class When_canceling_to_create_a_new_account : PresenterTestFixture<ClientDetailsPresenter>
+    {
+        private readonly Guid _clientId = Guid.NewGuid();
+        private ClientDetailsReport _clientDetailsReport;
+        private List<ClientDetailsReport> _clientDetailsReports;
+
+        protected override void SetupDependencies()
+        {
+            _clientDetailsReport = new ClientDetailsReport(_clientId, "Client Name", "street", "123", "5000", "bergen", "1234567890");
+            _clientDetailsReports = new List<ClientDetailsReport> { _clientDetailsReport };
+            OnDependency<IReportingRepository>()
+                .Setup(x => x.GetByExample<ClientDetailsReport>(It.IsAny<object>()))
+                .Returns(_clientDetailsReports);
+        }
+
+        protected override void Given()
+        {
+            On<IClientDetailsView>().FireEvent(x => x.OnInitiateAddNewAccount += delegate { });
+            On<IClientDetailsView>().ValueFor(x => x.NewAccountName).IsSetTo("New account name");
+            On<IClientDetailsView>().FireEvent(x => x.OnFormElementGotChanged += null);
+        }
+
+        protected override void When()
+        {
+            On<IClientDetailsView>().FireEvent(x => x.OnCancel += null);
+        }
+
+        [Then]
+        public void Then_the_menu_buttons_will_be_enabled()
+        {
+            On<IClientDetailsView>().VerifyThat.Method(x => x.EnableAddNewAccountMenu()).WasCalled();
+            On<IClientDetailsView>().VerifyThat.Method(x => x.EnableClientHasMovedMenu()).WasCalled();
+            On<IClientDetailsView>().VerifyThat.Method(x => x.EnableNameChangedMenu()).WasCalled();
+            On<IClientDetailsView>().VerifyThat.Method(x => x.EnablePhoneNumberChangedMenu()).WasCalled();
+        }
+
+        [Then]
+        public void Then_disable_the_save_button()
+        {
+            On<IClientDetailsView>().VerifyThat.Method(x => x.DisableSaveButton()).WasCalled();
+        }
+
+        [Then]
+        public void Then_overview_panel_will_be_shown()
+        {
+            On<IClientDetailsView>().VerifyThat.Method(x => x.EnableOverviewPanel()).WasCalled();
+        }
+    }
+    
     public class When_adding_a_new_account_to_a_client : CommandTestFixture<AddNewAccountToClientCommand, AddNewAccountToClientCommandHandler, Client>
     {
         protected override IEnumerable<IDomainEvent> Given()
