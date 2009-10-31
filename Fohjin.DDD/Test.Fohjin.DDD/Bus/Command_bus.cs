@@ -145,9 +145,9 @@ namespace Test.Fohjin.DDD.Bus
             Ids = new List<Guid>();
         }
 
-        public void Execute(TestCommand command)
+        public void Execute(TestCommand compensatingCommand)
         {
-            Ids.Add(command.Id);
+            Ids.Add(compensatingCommand.Id);
         }
     }
 
@@ -160,9 +160,9 @@ namespace Test.Fohjin.DDD.Bus
             Ids = new List<Guid>();
         }
 
-        public void Execute(TestCommand command)
+        public void Execute(TestCommand compensatingCommand)
         {
-            Ids.Add(command.Id);
+            Ids.Add(compensatingCommand.Id);
         }
     }
 }

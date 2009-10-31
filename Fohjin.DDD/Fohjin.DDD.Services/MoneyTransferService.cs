@@ -78,7 +78,7 @@ namespace Fohjin.DDD.Services
         private void CompensatingActionBecauseOfFailedMoneyTransfer(MoneyTransfer moneyTransfer)
         {
             var account = _reportingRepository.GetByExample<AccountReport>(new { AccountNumber = moneyTransfer.SourceAccount }).First();
-            _commandBus.Publish(new MoneyTransferFailedCommand(account.Id, moneyTransfer.Ammount, moneyTransfer.TargetAccount));
+            _commandBus.Publish(new MoneyTransferFailedCompensatingCommand(account.Id, moneyTransfer.Ammount, moneyTransfer.TargetAccount));
         }
     }
 }

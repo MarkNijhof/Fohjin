@@ -169,7 +169,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
                     return;
                 }
 
-                _bus.Publish(new MoveClientToNewAddressCommand(
+                _bus.Publish(new ClientIsMovingCommand(
                                  _clientDetailsReport.Id,
                                  _clientDetailsView.Street,
                                  _clientDetailsView.StreetNumber,
@@ -235,7 +235,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
         {
             _popupPresenter.CatchPossibleException(() =>
             {
-                _bus.Publish(new AddNewAccountToClientCommand(
+                _bus.Publish(new OpenNewAccountForClientCommand(
                                  _clientDetailsReport.Id,
                                  _clientDetailsView.NewAccountName));
 
@@ -282,7 +282,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
             _clientDetailsView.EnablePhoneNumberPanel();
         }
 
-        public void InitiateAddNewAccount()
+        public void InitiateOpenNewAccount()
         {
             _editStep = 4;
             _addNewAccountProcess = true;

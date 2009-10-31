@@ -13,11 +13,11 @@ namespace Fohjin.DDD.CommandHandlers
             _repository = repository;
         }
 
-        public void Execute(ChangeAccountNameCommand command)
+        public void Execute(ChangeAccountNameCommand compensatingCommand)
         {
-            var activeAccount = _repository.GetById<ActiveAccount>(command.Id);
+            var activeAccount = _repository.GetById<ActiveAccount>(compensatingCommand.Id);
 
-            activeAccount.ChangeAccountName(new AccountName(command.AccountName));
+            activeAccount.ChangeAccountName(new AccountName(compensatingCommand.AccountName));
 
             _repository.Save(activeAccount);
         }

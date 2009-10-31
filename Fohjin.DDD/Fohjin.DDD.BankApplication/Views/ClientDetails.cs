@@ -26,7 +26,7 @@ namespace Fohjin.DDD.BankApplication.Views
         public event EventAction OnInitiateClientHasMoved;
         public event EventAction OnInitiateClientNameChange;
         public event EventAction OnInitiateClientPhoneNumberChanged;
-        public event EventAction OnInitiateAddNewAccount;
+        public event EventAction OnInitiateOpenNewAccount;
         public event EventAction OnCreateNewAccount;
 
         private void RegisterCLientEvents()
@@ -34,7 +34,7 @@ namespace Fohjin.DDD.BankApplication.Views
             nameChangedToolStripMenuItem.Click += (s, e) => OnInitiateClientNameChange();
             hasMovedToolStripMenuItem.Click += (s, e) => OnInitiateClientHasMoved();
             changedHisPhoneNumberToolStripMenuItem.Click += (s, e) => OnInitiateClientPhoneNumberChanged();
-            addNewAccountToolStripMenuItem.Click += (s, e) => OnInitiateAddNewAccount();
+            addNewAccountToolStripMenuItem.Click += (s, e) => OnInitiateOpenNewAccount();
             _newAccountCreateButton.Click += (s, e) => OnCreateNewAccount();
             _newAccountCancelButton.Click += (s, e) => OnCancel();
             _clientNameSaveButton.Click += (s, e) => OnSaveNewClientName();

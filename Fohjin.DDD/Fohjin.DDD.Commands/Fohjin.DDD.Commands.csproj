@@ -67,10 +67,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ChangeAccountNameCommand.cs" />
-    <Compile Include="AddNewAccountToClientCommand.cs" />
+    <Compile Include="OpenNewAccountForClientCommand.cs" />
     <Compile Include="ChangeClientNameCommand.cs" />
     <Compile Include="CreateClientCommand.cs" />
-    <Compile Include="MoveClientToNewAddressCommand.cs" />
+    <Compile Include="ClientIsMovingCommand.cs" />
     <Compile Include="CloseAccountCommand.cs" />
     <Compile Include="DepositeCashCommand.cs" />
     <Compile Include="ChangeClientPhoneNumberCommand.cs" />
@@ -80,7 +80,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReceiveMoneyTransferCommand.cs" />
     <Compile Include="SendMoneyTransferCommand.cs" />
-    <Compile Include="MoneyTransferFailedCommand.cs" />
+    <Compile Include="MoneyTransferFailedCompensatingCommand.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Fohjin.DDD.Bus\Fohjin.DDD.Bus.csproj">

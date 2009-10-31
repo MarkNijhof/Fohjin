@@ -13,11 +13,11 @@ namespace Fohjin.DDD.CommandHandlers
             _repository = repository;
         }
 
-        public void Execute(ChangeClientPhoneNumberCommand command)
+        public void Execute(ChangeClientPhoneNumberCommand compensatingCommand)
         {
-            var client = _repository.GetById<Client>(command.Id);
+            var client = _repository.GetById<Client>(compensatingCommand.Id);
 
-            client.UpdatePhoneNumber(new PhoneNumber(command.PhoneNumber));
+            client.UpdatePhoneNumber(new PhoneNumber(compensatingCommand.PhoneNumber));
 
             _repository.Save(client);
         }

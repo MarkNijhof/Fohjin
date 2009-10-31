@@ -32,7 +32,7 @@ namespace Fohjin.DDD.Domain.Account
         private ActiveAccount(Guid clientId, string accountName) : this()
         {
             var accountNumber = SystemDateTime.Now().Ticks.ToString();
-            Apply(new AccountCreatedEvent(Guid.NewGuid(), clientId, accountName, accountNumber));
+            Apply(new AccountOpenedEvent(Guid.NewGuid(), clientId, accountName, accountNumber));
         }
 
         public static ActiveAccount CreateNew(Guid clientId, string accountName)
@@ -175,7 +175,7 @@ namespace Fohjin.DDD.Domain.Account
 
         private void registerEvents()
         {
-            RegisterEvent<AccountCreatedEvent>(onAccountCreated);
+            RegisterEvent<AccountOpenedEvent>(onAccountCreated);
             RegisterEvent<AccountClosedEvent>(onAccountClosed);
             RegisterEvent<CashWithdrawnEvent>(onWithdrawl);
             RegisterEvent<CashDepositedEvent>(onDeposite);
@@ -208,12 +208,12 @@ namespace Fohjin.DDD.Domain.Account
             _accountName = new AccountName(accountNameChangedEvent.AccountName);
         }
 
-        private void onAccountCreated(AccountCreatedEvent accountCreatedEvent)
+        private void onAccountCreated(AccountOpenedEvent accountOpenedEvent)
         {
-            Id = accountCreatedEvent.AccountId;
-            _clientId = accountCreatedEvent.ClientId;
-            _accountName = new AccountName(accountCreatedEvent.AccountName);
-            _accountNumber = new AccountNumber(accountCreatedEvent.AccountNumber);
+            Id = accountOpenedEvent.AccountId;
+            _clientId = accountOpenedEvent.ClientId;
+            _accountName = new AccountName(accountOpenedEvent.AccountName);
+            _accountNumber = new AccountNumber(accountOpenedEvent.AccountNumber);
         }
 
         private void onAccountClosed(AccountClosedEvent accountClosedEvent)

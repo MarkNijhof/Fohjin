@@ -13,11 +13,11 @@ namespace Fohjin.DDD.CommandHandlers
             _repository = repository;
         }
 
-        public void Execute(DepositeCashCommand command)
+        public void Execute(DepositeCashCommand compensatingCommand)
         {
-            var activeAccount = _repository.GetById<ActiveAccount>(command.Id);
+            var activeAccount = _repository.GetById<ActiveAccount>(compensatingCommand.Id);
 
-            activeAccount.Deposite(new Amount(command.Amount));
+            activeAccount.Deposite(new Amount(compensatingCommand.Amount));
 
             _repository.Save(activeAccount);
         }

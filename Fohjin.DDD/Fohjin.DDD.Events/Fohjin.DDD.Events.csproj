@@ -67,7 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Account\AccountClosedEvent.cs" />
-    <Compile Include="Account\AccountCreatedEvent.cs" />
+    <Compile Include="Account\AccountOpenedEvent.cs" />
     <Compile Include="Account\AccountNameChangedEvent.cs" />
     <Compile Include="Account\CashDepositedEvent.cs" />
     <Compile Include="Account\MoneyTransferFailedEvent.cs" />
