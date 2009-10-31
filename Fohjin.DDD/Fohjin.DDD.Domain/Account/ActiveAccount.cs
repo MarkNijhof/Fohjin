@@ -116,25 +116,25 @@ namespace Fohjin.DDD.Domain.Account
         private void IsAccountNotCreated()
         {
             if (Id == new Guid())
-                throw new AccountWasNotCreatedException("The ActiveAcount is not created and no opperations can be executed on it");
+                throw new NonExitsingAccountException("The ActiveAcount is not created and no opperations can be executed on it");
         }
 
         private void IsAccountClosed()
         {
             if (_closed)
-                throw new AccountWasClosedException("The ActiveAcount is closed and no opperations can be executed on it");
+                throw new ClosedAccountException("The ActiveAcount is closed and no opperations can be executed on it");
         }
 
         private void IsBalanceHighEnough(Amount amount)
         {
             if (_balance.WithdrawlWillResultInNegativeBalance(amount))
-                throw new AccountBalanceIsToLowException(string.Format("The amount {0:C} is larger than your current balance {1:C}", (decimal)amount, (decimal)_balance));
+                throw new AccountBalanceToLowException(string.Format("The amount {0:C} is larger than your current balance {1:C}", (decimal)amount, (decimal)_balance));
         }
 
         private void IsAccountBalanceZero()
         {
             if (_balance != 0.0M)
-                throw new AccountMustFirstBeEmptiedBeforeClosingException(string.Format("The current balance is {0:C} this must first be transfered to an other account", (decimal)_balance));
+                throw new AccountBalanceNotZeroException(string.Format("The current balance is {0:C} this must first be transfered to an other account", (decimal)_balance));
         }
 
         IMemento IOrginator.CreateMemento()

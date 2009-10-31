@@ -30,7 +30,7 @@ namespace Test.Fohjin.DDD.Scenarios
         }
     }
 
-    public class When_receiving_a_money_transfer_and_it_failed : BaseTestFixture<MoneyReceiveService>
+    public class When_receiving_a_money_transfer_for_an_unknown_account : BaseTestFixture<MoneyReceiveService>
     {
         protected override void SetupDependencies()
         {
@@ -47,7 +47,7 @@ namespace Test.Fohjin.DDD.Scenarios
         [Then]
         public void Then_the_newly_created_account_will_be_saved()
         {
-            CaughtException.WillBeOfType<AccountDoesNotExistException>();
+            CaughtException.WillBeOfType<UnknownAccountException>();
         }
 
         [Then]

@@ -280,9 +280,9 @@ namespace Test.Fohjin.DDD.Scenarios
         }
 
         [Then]
-        public void Then_an_account_was_not_created_exception_will_be_thrown()
+        public void Then_a_non_existing_account_exception_will_be_thrown()
         {
-            CaughtException.WillBeOfType<AccountWasNotCreatedException>();
+            CaughtException.WillBeOfType<NonExitsingAccountException>();
         }
 
         [Then]
@@ -306,9 +306,9 @@ namespace Test.Fohjin.DDD.Scenarios
         }
 
         [Then]
-        public void Then_an_account_was_closed_exception_will_be_thrown()
+        public void Then_a_closed_account_exception_will_be_thrown()
         {
-            CaughtException.WillBeOfType<AccountWasClosedException>();
+            CaughtException.WillBeOfType<ClosedAccountException>();
         }
 
         [Then]

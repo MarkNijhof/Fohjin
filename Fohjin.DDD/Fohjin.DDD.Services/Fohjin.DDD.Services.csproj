@@ -75,7 +75,7 @@
     <Compile Include="MoneyReceiveService.cs" />
     <Compile Include="MoneyTransferService.cs" />
     <Compile Include="ServicesRegister.cs" />
-    <Compile Include="AccountDoesNotExistException.cs" />
+    <Compile Include="UnknownAccountException.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Fohjin.DDD.Bus\Fohjin.DDD.Bus.csproj">

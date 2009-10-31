@@ -301,9 +301,9 @@ namespace Test.Fohjin.DDD.Scenarios
         }
 
         [Then]
-        public void Then_an_account_was_not_created_exception_will_be_thrown()
+        public void Then_a_non_existing_account_exception_will_be_thrown()
         {
-            CaughtException.WillBeOfType<AccountWasNotCreatedException>();
+            CaughtException.WillBeOfType<NonExitsingAccountException>();
         }
 
         [Then]
@@ -327,9 +327,9 @@ namespace Test.Fohjin.DDD.Scenarios
         }
 
         [Then]
-        public void Then_an_account_was_closed_exception_will_be_thrown()
+        public void Then_a_closed_account_exception_will_be_thrown()
         {
-            CaughtException.WillBeOfType<AccountWasClosedException>();
+            CaughtException.WillBeOfType<ClosedAccountException>();
         }
 
         [Then]
@@ -352,9 +352,9 @@ namespace Test.Fohjin.DDD.Scenarios
         }
 
         [Then]
-        public void Then_an_account_balance_is_to_low_exception_will_be_thrown()
+        public void Then_an_account_balance_to_low_exception_will_be_thrown()
         {
-            CaughtException.WillBeOfType<AccountBalanceIsToLowException>();
+            CaughtException.WillBeOfType<AccountBalanceToLowException>();
         }
 
         [Then]
@@ -486,9 +486,9 @@ namespace Test.Fohjin.DDD.Scenarios
         }
 
         [Then]
-        public void Then_an_account_was_not_created_exception_will_be_thrown()
+        public void Then_a_non_existing_account_exception_will_be_thrown()
         {
-            CaughtException.WillBeOfType<AccountWasNotCreatedException>();
+            CaughtException.WillBeOfType<NonExitsingAccountException>();
         }
 
         [Then]
@@ -512,9 +512,9 @@ namespace Test.Fohjin.DDD.Scenarios
         }
 
         [Then]
-        public void Then_an_account_was_closed_exception_will_be_thrown()
+        public void Then_a_closed_account_exception_will_be_thrown()
         {
-            CaughtException.WillBeOfType<AccountWasClosedException>();
+            CaughtException.WillBeOfType<ClosedAccountException>();
         }
 
         [Then]
@@ -691,7 +691,7 @@ namespace Test.Fohjin.DDD.Scenarios
         {
             OnDependency<IReceiveMoneyTransfers>()
                 .Setup(x => x.Receive(It.IsAny<MoneyTransfer>()))
-                .Throws(new AccountDoesNotExistException("exception message"));
+                .Throws(new UnknownAccountException("exception message"));
 
             OnDependency<IReportingRepository>()
                 .Setup(x => x.GetByExample<AccountReport>(It.IsAny<object>()))

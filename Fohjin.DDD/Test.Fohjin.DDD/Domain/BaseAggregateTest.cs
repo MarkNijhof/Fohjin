@@ -11,15 +11,15 @@ namespace Test.Fohjin.DDD.Domain
         }
 
         [Then]
-        public void Then_it_will_throw_an_exception()
+        public void Then_it_will_throw_an_unregistered_domain_event_exception()
         {
-            CaughtException.WillBeOfType<DomainEventWasNotRegisteredException>();
+            CaughtException.WillBeOfType<UnregisteredDomainEventException>();
         }
 
         [Then]
         public void Then_the_exception_will_have_the_following_message()
         {
-            CaughtException.Message.WillBe(string.Format("The requested event '{0}' is not registered", typeof(SomeUnregisteredEvent).FullName));
+            CaughtException.Message.WillBe(string.Format("The requested domain event '{0}' is not registered", typeof(SomeUnregisteredEvent).FullName));
         }
     }
 

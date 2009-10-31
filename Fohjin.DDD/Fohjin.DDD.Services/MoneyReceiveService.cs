@@ -43,7 +43,7 @@ namespace Fohjin.DDD.Services
 
         private static void RequestedAccountDoesNotExist(MoneyTransfer moneyTransfer)
         {
-            throw new AccountDoesNotExistException(string.Format("The requested account '{0}' is not managed by this bank", moneyTransfer.TargetAccount));
+            throw new UnknownAccountException(string.Format("The requested account '{0}' is not managed by this bank", moneyTransfer.TargetAccount));
         }
     }
 }

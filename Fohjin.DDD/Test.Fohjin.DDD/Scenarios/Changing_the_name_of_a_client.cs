@@ -307,9 +307,9 @@ namespace Test.Fohjin.DDD.Scenarios
         }
 
         [Then]
-        public void Then_a_client_was_not_created_exception_will_be_thrown()
+        public void Then_a_non_existing_client_exception_will_be_thrown()
         {
-            CaughtException.WillBeOfType<ClientWasNotCreatedException>();
+            CaughtException.WillBeOfType<NonExistingClientException>();
         }
 
         [Then]

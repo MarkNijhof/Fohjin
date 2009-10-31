@@ -67,7 +67,7 @@ namespace Fohjin.DDD.Domain
             Action<IDomainEvent> handler;
 
             if (!_events.TryGetValue(eventType, out handler))
-                throw new DomainEventWasNotRegisteredException(string.Format("The requested event '{0}' is not registered", eventType.FullName));
+                throw new UnregisteredDomainEventException(string.Format("The requested domain event '{0}' is not registered", eventType.FullName));
 
             handler(domainEvent);
         }

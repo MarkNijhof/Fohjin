@@ -228,7 +228,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
         }
 
         [Test]
-        [ExpectedException(typeof(AccountBalanceIsToLowException))]
+        [ExpectedException(typeof(AccountBalanceToLowException))]
         public void When_calling_GetById_after_9_events_a_new_ActiveAcount_will_be_populated()
         {
             var activeAccount = ActiveAccount.CreateNew(Guid.NewGuid(), "AccountName");
@@ -258,7 +258,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
         }
 
         [Test]
-        [ExpectedException(typeof(AccountBalanceIsToLowException))]
+        [ExpectedException(typeof(AccountBalanceToLowException))]
         public void When_calling_GetById_after_every_10_events_a_new_snap_shot_will_be_created()
         {
             var activeAccount = ActiveAccount.CreateNew(Guid.NewGuid(), "AccountName");
@@ -289,7 +289,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
         }
 
         [Test]
-        [ExpectedException(typeof(AccountBalanceIsToLowException))]
+        [ExpectedException(typeof(AccountBalanceToLowException))]
         public void When_calling_GetById_after_every_10_events_a_new_snap_shot_will_be_created_11_events()
         {
             var activeAccount = ActiveAccount.CreateNew(Guid.NewGuid(), "AccountName");

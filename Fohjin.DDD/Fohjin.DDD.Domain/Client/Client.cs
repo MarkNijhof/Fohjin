@@ -65,7 +65,7 @@ namespace Fohjin.DDD.Domain.Client
         private void IsClientCreated()
         {
             if (Id == new Guid())
-                throw new ClientWasNotCreatedException("The Client is not created and no opperations can be executed on it");
+                throw new NonExistingClientException("The Client is not created and no opperations can be executed on it");
         }
 
         public IMemento CreateMemento()
