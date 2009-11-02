@@ -39,14 +39,14 @@ namespace Fohjin.DDD.Domain.Account
             return new ClosedAccount(accountId, clientId, ledgers, accountName.Name, accountNumber.Number);
         }
 
-        public IMemento CreateMemento()
+        IMemento IOrginator.CreateMemento()
         {
             return new ClosedAccountMemento(Id, Version, _originalAccountId, _clientId, _accountName.Name, _accountNumber.Number, _ledgers);
         }
 
-        public void SetMemento(IMemento memento)
+        void IOrginator.SetMemento(IMemento memento)
         {
-            var closedAccountMemento = (ClosedAccountMemento)memento;
+            var closedAccountMemento = (ClosedAccountMemento) memento;
             Id = closedAccountMemento.Id;
             Version = closedAccountMemento.Version;
             _originalAccountId = closedAccountMemento.OriginalAccountId;

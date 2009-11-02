@@ -8,6 +8,7 @@ using Fohjin.DDD.Configuration;
 using Fohjin.DDD.Contracts;
 using Fohjin.DDD.Domain;
 using Fohjin.DDD.Domain.Account;
+using Fohjin.DDD.Domain.Mementos;
 using Fohjin.DDD.EventStore.SQLite;
 using Moq;
 using NUnit.Framework;
@@ -91,11 +92,11 @@ namespace Test.Fohjin.DDD.Domain.Repositories
 
             var closedAccount = ClosedAccount.CreateNew(Guid.NewGuid(), Guid.NewGuid(), _ledgers, new AccountName("AccountName"), new AccountNumber("1234567890"));
 
-            var memento = closedAccount.CreateMemento();
+            var memento = ((IOrginator)closedAccount).CreateMemento();
 
             var newClosedAccount = new ClosedAccount();
 
-            newClosedAccount.SetMemento(memento);
+            ((IOrginator)newClosedAccount).SetMemento(memento);
 
             ClosedAccountComparer(closedAccount, newClosedAccount);
         }

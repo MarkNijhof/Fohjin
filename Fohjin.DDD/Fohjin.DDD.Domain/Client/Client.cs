@@ -68,14 +68,14 @@ namespace Fohjin.DDD.Domain.Client
                 throw new NonExistingClientException("The Client is not created and no opperations can be executed on it");
         }
 
-        public IMemento CreateMemento()
+        IMemento IOrginator.CreateMemento()
         {
             return new ClientMemento(Id, Version, _clientName.Name, _address.Street, _address.StreetNumber, _address.PostalCode, _address.City, _phoneNumber.Number, _accounts);
         }
 
-        public void SetMemento(IMemento memento)
+        void IOrginator.SetMemento(IMemento memento)
         {
-            var clientMemento = (ClientMemento)memento;
+            var clientMemento = (ClientMemento) memento;
             Id = clientMemento.Id;
             Version = clientMemento.Version;
             _clientName = new ClientName(clientMemento.ClientName);

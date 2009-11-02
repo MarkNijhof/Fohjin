@@ -53,7 +53,7 @@ namespace Fohjin.DDD.Services
                 // I didn't want to introduce an actual external bank, so that's why you see this nice construct :)
                 _moneyTransferOptions[SystemRandom.Next(0, 9)](moneyTransfer);
             }
-            catch(Exception Ex)
+            catch(Exception)
             {
                 CompensatingActionBecauseOfFailedMoneyTransfer(moneyTransfer);
             }

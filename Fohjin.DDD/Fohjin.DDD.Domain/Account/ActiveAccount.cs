@@ -144,16 +144,16 @@ namespace Fohjin.DDD.Domain.Account
 
         void IOrginator.SetMemento(IMemento memento)
         {
-            var accountMemento = (ActiveAccountMemento) memento;
-            Id = accountMemento.Id;
-            Version = accountMemento.Version;
-            _clientId = accountMemento.ClientId;
-            _accountName = new AccountName(accountMemento.AccountName);
-            _accountNumber = new AccountNumber(accountMemento.AccountNumber);
-            _balance = accountMemento.Balance;
-            _closed = accountMemento.Closed;
+            var activeAccountMemento = (ActiveAccountMemento) memento;
+            Id = activeAccountMemento.Id;
+            Version = activeAccountMemento.Version;
+            _clientId = activeAccountMemento.ClientId;
+            _accountName = new AccountName(activeAccountMemento.AccountName);
+            _accountNumber = new AccountNumber(activeAccountMemento.AccountNumber);
+            _balance = activeAccountMemento.Balance;
+            _closed = activeAccountMemento.Closed;
 
-            foreach (var ledger in accountMemento.Ledgers)
+            foreach (var ledger in activeAccountMemento.Ledgers)
             {
                 var split = ledger.Value.Split(new[] { '|' });
                 var amount = new Amount(Convert.ToDecimal(split[0]));
