@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using Fohjin.DDD.Configuration;
-using Fohjin.DDD.Contracts;
 using Fohjin.DDD.Domain.Account;
 using Fohjin.DDD.Domain.Mementos;
 using Fohjin.DDD.EventStore;
@@ -18,7 +17,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
         private const string dataBaseFile = "domainDataBase.db3";
 
         private IDomainRepository _repository;
-        private Storage _storage;
+        private DomainEventStorage _domainEventStorage;
 
         [SetUp]
         public void SetUp()
@@ -27,9 +26,9 @@ namespace Test.Fohjin.DDD.Domain.Repositories
 
             var sqliteConnectionString = string.Format("Data Source={0}", dataBaseFile);
 
-            _storage = new Storage(sqliteConnectionString, new BinaryFormatter());
+            _domainEventStorage = new DomainEventStorage(sqliteConnectionString, new BinaryFormatter());
 
-            _repository = new SQLiteDomainRepository(_storage, _storage);
+            _repository = new DomainRepository(_domainEventStorage);
         }
 
         [Test]
@@ -41,8 +40,8 @@ namespace Test.Fohjin.DDD.Domain.Repositories
 
             _repository.Save(activeAccount);
 
-            Assert.That(_storage.GetEventsSinceLastSnapShot(activeAccount.Id).Count(), Is.EqualTo(3));
-            Assert.That(_storage.GetAllEvents(activeAccount.Id).Count(), Is.EqualTo(3));
+            Assert.That(_domainEventStorage.GetEventsSinceLastSnapShot(activeAccount.Id).Count(), Is.EqualTo(3));
+            Assert.That(_domainEventStorage.GetAllEvents(activeAccount.Id).Count(), Is.EqualTo(3));
         }
 
         [Test]
@@ -74,7 +73,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
 
             _repository.Save(activeAccount);
 
-            Assert.That(_storage.GetSnapShot(activeAccount.Id), Is.Null);
+            Assert.That(_domainEventStorage.GetSnapShot(activeAccount.Id), Is.Null);
         }
 
         [Test]
@@ -92,8 +91,9 @@ namespace Test.Fohjin.DDD.Domain.Repositories
             activeAccount.Deposite(new Amount(1));
 
             _repository.Save(activeAccount);
+            _domainEventStorage.SaveShapShot(activeAccount);
 
-            var snapShot = _storage.GetSnapShot(activeAccount.Id);
+            var snapShot = _domainEventStorage.GetSnapShot(activeAccount.Id);
 
             Assert.That(snapShot, Is.Not.Null);
             Assert.That(snapShot.Memento, Is.InstanceOfType(typeof(ActiveAccountMemento)));
@@ -115,8 +115,9 @@ namespace Test.Fohjin.DDD.Domain.Repositories
             activeAccount.Deposite(new Amount(1));
 
             _repository.Save(activeAccount);
+            _domainEventStorage.SaveShapShot(activeAccount);
 
-            var snapShot = _storage.GetSnapShot(activeAccount.Id);
+            var snapShot = _domainEventStorage.GetSnapShot(activeAccount.Id);
 
             Assert.That(snapShot, Is.Not.Null);
             Assert.That(snapShot.Memento, Is.InstanceOfType(typeof(ActiveAccountMemento)));
@@ -137,6 +138,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
             activeAccount.Deposite(new Amount(1));
 
             _repository.Save(activeAccount);
+            _domainEventStorage.SaveShapShot(activeAccount);
 
             activeAccount.Deposite(new Amount(1));
             activeAccount.Deposite(new Amount(1));
@@ -153,7 +155,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
 
             _repository.Save(activeAccount);
 
-            var snapShot = _storage.GetSnapShot(activeAccount.Id);
+            var snapShot = _domainEventStorage.GetSnapShot(activeAccount.Id);
 
             Assert.That(snapShot, Is.Not.Null);
             Assert.That(snapShot.Memento, Is.InstanceOfType(typeof(ActiveAccountMemento)));
@@ -174,6 +176,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
             activeAccount.Deposite(new Amount(1));
 
             _repository.Save(activeAccount);
+            _domainEventStorage.SaveShapShot(activeAccount);
 
             activeAccount.Deposite(new Amount(1));
             activeAccount.Deposite(new Amount(1));
@@ -187,7 +190,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
 
             _repository.Save(activeAccount);
 
-            var snapShot = _storage.GetSnapShot(activeAccount.Id);
+            var snapShot = _domainEventStorage.GetSnapShot(activeAccount.Id);
 
             Assert.That(snapShot, Is.Not.Null);
             Assert.That(snapShot.Memento, Is.InstanceOfType(typeof(ActiveAccountMemento)));
@@ -208,6 +211,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
             activeAccount.Deposite(new Amount(1));
 
             _repository.Save(activeAccount);
+            _domainEventStorage.SaveShapShot(activeAccount);
 
             activeAccount.Deposite(new Amount(1));
             activeAccount.Deposite(new Amount(1));
@@ -221,8 +225,8 @@ namespace Test.Fohjin.DDD.Domain.Repositories
 
             _repository.Save(activeAccount);
 
-            Assert.That(_storage.GetEventsSinceLastSnapShot(activeAccount.Id).Count(), Is.EqualTo(9));
-            Assert.That(_storage.GetAllEvents(activeAccount.Id).Count(), Is.EqualTo(19));
+            Assert.That(_domainEventStorage.GetEventsSinceLastSnapShot(activeAccount.Id).Count(), Is.EqualTo(9));
+            Assert.That(_domainEventStorage.GetAllEvents(activeAccount.Id).Count(), Is.EqualTo(19));
         }
 
         [Test]

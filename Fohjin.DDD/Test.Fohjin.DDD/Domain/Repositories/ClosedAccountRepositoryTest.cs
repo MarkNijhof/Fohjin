@@ -4,7 +4,6 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
 using Fohjin.DDD.Configuration;
-using Fohjin.DDD.Contracts;
 using Fohjin.DDD.Domain.Account;
 using Fohjin.DDD.EventStore;
 using Fohjin.DDD.EventStore.SQLite;
@@ -19,7 +18,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
         private const string dataBaseFile = "domainDataBase.db3";
 
         private IDomainRepository _repository;
-        private Storage _storage;
+        private DomainEventStorage _domainEventStorage;
         private List<Ledger> _ledgers;
 
         [SetUp]
@@ -29,9 +28,9 @@ namespace Test.Fohjin.DDD.Domain.Repositories
 
             var sqliteConnectionString = string.Format("Data Source={0}", dataBaseFile);
 
-            _storage = new Storage(sqliteConnectionString, new BinaryFormatter());
+            _domainEventStorage = new DomainEventStorage(sqliteConnectionString, new BinaryFormatter());
 
-            _repository = new SQLiteDomainRepository(_storage, _storage);
+            _repository = new DomainRepository(_domainEventStorage);
         }
 
         [Test]
@@ -50,8 +49,8 @@ namespace Test.Fohjin.DDD.Domain.Repositories
 
             _repository.Save(closedAccount);
 
-            Assert.That(_storage.GetEventsSinceLastSnapShot(closedAccount.Id).Count(), Is.EqualTo(1));
-            Assert.That(_storage.GetAllEvents(closedAccount.Id).Count(), Is.EqualTo(1));
+            Assert.That(_domainEventStorage.GetEventsSinceLastSnapShot(closedAccount.Id).Count(), Is.EqualTo(1));
+            Assert.That(_domainEventStorage.GetAllEvents(closedAccount.Id).Count(), Is.EqualTo(1));
         }
 
         [Test]

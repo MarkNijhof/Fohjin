@@ -1,6 +1,6 @@
 using Fohjin.DDD.Commands;
-using Fohjin.DDD.Contracts;
 using Fohjin.DDD.Domain.Client;
+using Fohjin.DDD.EventStore;
 
 namespace Fohjin.DDD.CommandHandlers
 {

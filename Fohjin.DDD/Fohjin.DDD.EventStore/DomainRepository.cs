@@ -1,17 +1,14 @@
 using System;
 using System.Linq;
-using Fohjin.DDD.Contracts;
 
-namespace Fohjin.DDD.EventStore.SQLite
+namespace Fohjin.DDD.EventStore
 {
-    public class SQLiteDomainRepository : IDomainRepository
+    public class DomainRepository : IDomainRepository
     {
         private readonly IDomainEventStorage _domainEventStorage;
-        private readonly ISnapShotStorage _snapShotStorage;
 
-        public SQLiteDomainRepository(IDomainEventStorage domainEventStorage, ISnapShotStorage snapShotStorage)
+        public DomainRepository(IDomainEventStorage domainEventStorage)
         {
-            _snapShotStorage = snapShotStorage;
             _domainEventStorage = domainEventStorage;
         }
 
@@ -32,14 +29,12 @@ namespace Fohjin.DDD.EventStore.SQLite
 
             _domainEventStorage.Save(entity);
 
-            _snapShotStorage.SaveShapShot(entity);
-
             entity.Clear();
         }
 
         private void LoadSnapShotIfExists(Guid id, IOrginator aggregateRoot)
         {
-            var snapShot = _snapShotStorage.GetSnapShot(id);
+            var snapShot = _domainEventStorage.GetSnapShot(id);
             if (snapShot == null)
                 return;
 

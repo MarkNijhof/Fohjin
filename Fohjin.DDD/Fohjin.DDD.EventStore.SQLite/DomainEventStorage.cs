@@ -7,13 +7,12 @@ using System.Runtime.Serialization;
 
 namespace Fohjin.DDD.EventStore.SQLite
 {
-    public class Storage : IDomainEventStorage, ISnapShotStorage
+    public class DomainEventStorage : IDomainEventStorage
     {
-        private const int snapShotInterval = 10;
         private readonly string _sqLiteConnectionString;
         private readonly IFormatter _formatter;
 
-        public Storage(string sqLiteConnectionString, IFormatter formatter)
+        public DomainEventStorage(string sqLiteConnectionString, IFormatter formatter)
         {
             _sqLiteConnectionString = sqLiteConnectionString;
             _formatter = formatter;
@@ -183,33 +182,6 @@ namespace Fohjin.DDD.EventStore.SQLite
             }
         }
 
-        private static void UpdateEventProviderVersion(IEventProvider eventProvider, SQLiteTransaction transaction)
-        {
-            const string commandText = "UPDATE EventProviders SET Version = @version WHERE EventProviderId = @eventProviderId;";
-            using (var sqLiteCommand = new SQLiteCommand(commandText, transaction.Connection, transaction))
-            {
-                sqLiteCommand.Parameters.Add(new SQLiteParameter("@eventProviderId", eventProvider.Id));
-                sqLiteCommand.Parameters.Add(new SQLiteParameter("@version", eventProvider.Version));
-
-                sqLiteCommand.ExecuteNonQuery();
-            }
-        }
-
-        private static int GetEventProviderVersion(IEventProvider eventProvider, SQLiteTransaction transaction)
-        {
-            const string commandText = @"
-                INSERT OR IGNORE INTO EventProviders VALUES (@eventProviderId, @type, 0);
-                SELECT Version FROM EventProviders WHERE EventProviderId = @eventProviderId";
-            using (var sqLiteCommand = new SQLiteCommand(commandText, transaction.Connection, transaction))
-            {
-                sqLiteCommand.Parameters.Add(new SQLiteParameter("@eventProviderId", eventProvider.Id));
-                sqLiteCommand.Parameters.Add(new SQLiteParameter("@type", eventProvider.GetType().FullName));
-                sqLiteCommand.Parameters.Add(new SQLiteParameter("@version", eventProvider.Version));
-
-                return Convert.ToInt32(sqLiteCommand.ExecuteScalar());
-            }
-        }
-
         public ISnapShot GetSnapShot(Guid eventProviderId)
         {
             ISnapShot snapshot = null;
@@ -244,11 +216,7 @@ namespace Fohjin.DDD.EventStore.SQLite
 
         public void SaveShapShot(IEventProvider entity)
         {
-            var eventCount = GetEventCountSinceLastSnapShot(entity.Id);
-            if (eventCount < snapShotInterval)
-                return;
-
-            StoreSnapShot(new SnapShot(entity.Id, entity.GetChanges().Last().Version, ((IOrginator)entity).CreateMemento()));
+            StoreSnapShot(new SnapShot(entity.Id, entity.Version, ((IOrginator)entity).CreateMemento()));
         }
 
         private void StoreSnapShot(ISnapShot snapShot)
@@ -282,6 +250,33 @@ namespace Fohjin.DDD.EventStore.SQLite
             }
         }
 
+        private static void UpdateEventProviderVersion(IEventProvider eventProvider, SQLiteTransaction transaction)
+        {
+            const string commandText = "UPDATE EventProviders SET Version = @version WHERE EventProviderId = @eventProviderId;";
+            using (var sqLiteCommand = new SQLiteCommand(commandText, transaction.Connection, transaction))
+            {
+                sqLiteCommand.Parameters.Add(new SQLiteParameter("@eventProviderId", eventProvider.Id));
+                sqLiteCommand.Parameters.Add(new SQLiteParameter("@version", eventProvider.Version));
+
+                sqLiteCommand.ExecuteNonQuery();
+            }
+        }
+
+        private static int GetEventProviderVersion(IEventProvider eventProvider, SQLiteTransaction transaction)
+        {
+            const string commandText = @"
+                INSERT OR IGNORE INTO EventProviders VALUES (@eventProviderId, @type, 0);
+                SELECT Version FROM EventProviders WHERE EventProviderId = @eventProviderId";
+            using (var sqLiteCommand = new SQLiteCommand(commandText, transaction.Connection, transaction))
+            {
+                sqLiteCommand.Parameters.Add(new SQLiteParameter("@eventProviderId", eventProvider.Id));
+                sqLiteCommand.Parameters.Add(new SQLiteParameter("@type", eventProvider.GetType().FullName));
+                sqLiteCommand.Parameters.Add(new SQLiteParameter("@version", eventProvider.Version));
+
+                return Convert.ToInt32(sqLiteCommand.ExecuteScalar());
+            }
+        }
+
         private byte[] Serialize(object theObject)
         {
             using (var memoryStream = new MemoryStream())
@@ -290,6 +285,7 @@ namespace Fohjin.DDD.EventStore.SQLite
                 return memoryStream.ToArray();
             }
         }
+
         private TType Deserialize<TType>(byte[] bytes)
         {
             using (var memoryStream = new MemoryStream(bytes))
@@ -298,6 +294,4 @@ namespace Fohjin.DDD.EventStore.SQLite
             }
         }
     }
-
-    public class ConcurrencyViolationException : Exception {}
 }

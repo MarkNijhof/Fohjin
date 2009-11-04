@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DomainRepository.cs" />
     <Compile Include="IDomainEvent.cs" />
     <Compile Include="IDomainEventStorage.cs" />
     <Compile Include="IDomainRepository.cs" />

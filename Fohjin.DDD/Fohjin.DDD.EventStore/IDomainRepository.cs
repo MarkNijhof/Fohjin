@@ -1,7 +1,6 @@
 using System;
-using Fohjin.DDD.EventStore;
 
-namespace Fohjin.DDD.Contracts
+namespace Fohjin.DDD.EventStore
 {
     public interface IDomainRepository 
     {

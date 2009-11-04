@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Fohjin.DDD.EventStore
 {
-    public interface IDomainEventStorage
+    public interface IDomainEventStorage : ISnapShotStorage
     {
         IEnumerable<IDomainEvent> GetAllEvents(Guid eventProviderId);
         IEnumerable<IDomainEvent> GetEventsSinceLastSnapShot(Guid eventProviderId);

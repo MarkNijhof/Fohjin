@@ -1,7 +1,6 @@
 using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using Fohjin.DDD.Configuration;
-using Fohjin.DDD.Contracts;
 using Fohjin.DDD.Domain.Client;
 using Fohjin.DDD.Domain.Mementos;
 using Fohjin.DDD.EventStore;
@@ -17,7 +16,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
         private const string dataBaseFile = "domainDataBase.db3";
 
         private IDomainRepository _repository;
-        private Storage _storage;
+        private DomainEventStorage _domainEventStorage;
 
         [SetUp]
         public void SetUp()
@@ -26,9 +25,9 @@ namespace Test.Fohjin.DDD.Domain.Repositories
 
             var sqliteConnectionString = string.Format("Data Source={0}", dataBaseFile);
 
-            _storage = new Storage(sqliteConnectionString, new BinaryFormatter());
+            _domainEventStorage = new DomainEventStorage(sqliteConnectionString, new BinaryFormatter());
 
-            _repository = new SQLiteDomainRepository(_storage, _storage);
+            _repository = new DomainRepository(_domainEventStorage);
         }
 
         [Test]
@@ -40,8 +39,8 @@ namespace Test.Fohjin.DDD.Domain.Repositories
 
             _repository.Save(client);
 
-            Assert.That(_storage.GetEventsSinceLastSnapShot(client.Id).Count(), Is.EqualTo(3));
-            Assert.That(_storage.GetAllEvents(client.Id).Count(), Is.EqualTo(3));
+            Assert.That(_domainEventStorage.GetEventsSinceLastSnapShot(client.Id).Count(), Is.EqualTo(3));
+            Assert.That(_domainEventStorage.GetAllEvents(client.Id).Count(), Is.EqualTo(3));
         }
 
         [Test]
@@ -73,7 +72,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
 
             _repository.Save(client);
 
-            Assert.That(_storage.GetSnapShot(client.Id), Is.Null);
+            Assert.That(_domainEventStorage.GetSnapShot(client.Id), Is.Null);
         }
 
         [Test]
@@ -91,8 +90,9 @@ namespace Test.Fohjin.DDD.Domain.Repositories
             client.UpdatePhoneNumber(new PhoneNumber("1234567890"));
 
             _repository.Save(client);
+            _domainEventStorage.SaveShapShot(client);
 
-            var snapShot = _storage.GetSnapShot(client.Id);
+            var snapShot = _domainEventStorage.GetSnapShot(client.Id);
 
             Assert.That(snapShot, Is.Not.Null);
             Assert.That(snapShot.Memento, Is.InstanceOfType(typeof(ClientMemento)));
@@ -114,8 +114,9 @@ namespace Test.Fohjin.DDD.Domain.Repositories
             client.UpdatePhoneNumber(new PhoneNumber("1234567890"));
 
             _repository.Save(client);
+            _domainEventStorage.SaveShapShot(client);
 
-            var snapShot = _storage.GetSnapShot(client.Id);
+            var snapShot = _domainEventStorage.GetSnapShot(client.Id);
 
             Assert.That(snapShot, Is.Not.Null);
             Assert.That(snapShot.Memento, Is.InstanceOfType(typeof(ClientMemento)));
@@ -136,6 +137,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
             client.UpdatePhoneNumber(new PhoneNumber("1234567890"));
 
             _repository.Save(client);
+            _domainEventStorage.SaveShapShot(client);
 
             client.UpdatePhoneNumber(new PhoneNumber("1234567890"));
             client.UpdatePhoneNumber(new PhoneNumber("1234567890"));
@@ -152,7 +154,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
 
             _repository.Save(client);
 
-            var snapShot = _storage.GetSnapShot(client.Id);
+            var snapShot = _domainEventStorage.GetSnapShot(client.Id);
 
             Assert.That(snapShot, Is.Not.Null);
             Assert.That(snapShot.Memento, Is.InstanceOfType(typeof(ClientMemento)));
@@ -173,6 +175,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
             client.UpdatePhoneNumber(new PhoneNumber("1234567890"));
 
             _repository.Save(client);
+            _domainEventStorage.SaveShapShot(client);
 
             client.UpdatePhoneNumber(new PhoneNumber("1234567890"));
             client.UpdatePhoneNumber(new PhoneNumber("1234567890"));
@@ -186,7 +189,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
 
             _repository.Save(client);
 
-            var snapShot = _storage.GetSnapShot(client.Id);
+            var snapShot = _domainEventStorage.GetSnapShot(client.Id);
 
             Assert.That(snapShot, Is.Not.Null);
             Assert.That(snapShot.Memento, Is.InstanceOfType(typeof(ClientMemento)));
@@ -207,6 +210,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
             client.UpdatePhoneNumber(new PhoneNumber("1234567890"));
 
             _repository.Save(client);
+            _domainEventStorage.SaveShapShot(client);
 
             client.UpdatePhoneNumber(new PhoneNumber("1234567890"));
             client.UpdatePhoneNumber(new PhoneNumber("1234567890"));
@@ -220,11 +224,9 @@ namespace Test.Fohjin.DDD.Domain.Repositories
 
             _repository.Save(client);
 
-            Assert.That(_storage.GetEventsSinceLastSnapShot(client.Id).Count(), Is.EqualTo(9));
-            Assert.That(_storage.GetAllEvents(client.Id).Count(), Is.EqualTo(19));
+            Assert.That(_domainEventStorage.GetEventsSinceLastSnapShot(client.Id).Count(), Is.EqualTo(9));
+            Assert.That(_domainEventStorage.GetAllEvents(client.Id).Count(), Is.EqualTo(19));
         }
-
-
 
         [Test]
         public void When_calling_GetById_after_9_events_a_new_Client_will_be_populated()
