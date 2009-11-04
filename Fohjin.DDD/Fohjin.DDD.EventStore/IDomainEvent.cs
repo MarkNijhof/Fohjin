@@ -1,9 +1,8 @@
 using System;
-using Fohjin.DDD.Bus;
 
-namespace Fohjin.DDD.Events
+namespace Fohjin.DDD.EventStore
 {
-    public interface IDomainEvent : IMessage
+    public interface IDomainEvent
     {
         Guid Id { get; }
         Guid AggregateId { get; set; }

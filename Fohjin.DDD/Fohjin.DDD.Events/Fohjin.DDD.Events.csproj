@@ -81,13 +81,16 @@
     <Compile Include="Client\ClientCreatedEvent.cs" />
     <Compile Include="Account\ClosedAccountCreatedEvent.cs" />
     <Compile Include="DomainEvent.cs" />
-    <Compile Include="IDomainEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Fohjin.DDD.Bus\Fohjin.DDD.Bus.csproj">
       <Project>{14C6E3E5-D4D0-4811-BBBC-89A5FF7BF41F}</Project>
       <Name>Fohjin.DDD.Bus</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fohjin.DDD.EventStore\Fohjin.DDD.EventStore.csproj">
+      <Project>{318F1FE0-DA43-4A02-9956-361C9FE96915}</Project>
+      <Name>Fohjin.DDD.EventStore</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

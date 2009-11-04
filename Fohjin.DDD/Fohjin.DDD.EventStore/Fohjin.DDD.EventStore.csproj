@@ -45,7 +45,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IDomainEvent.cs" />
     <Compile Include="IDomainEventStorage.cs" />
+    <Compile Include="IDomainRepository.cs" />
     <Compile Include="IEventProvider.cs" />
     <Compile Include="IMomento.cs" />
     <Compile Include="IOrginator.cs" />
@@ -54,16 +56,6 @@
     <Compile Include="ISnapShotStorage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SnapShot.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Fohjin.DDD.Bus\Fohjin.DDD.Bus.csproj">
-      <Project>{14C6E3E5-D4D0-4811-BBBC-89A5FF7BF41F}</Project>
-      <Name>Fohjin.DDD.Bus</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Fohjin.DDD.Events\Fohjin.DDD.Events.csproj">
-      <Project>{CFB4C037-822D-470E-8A01-832957D193C9}</Project>
-      <Name>Fohjin.DDD.Events</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

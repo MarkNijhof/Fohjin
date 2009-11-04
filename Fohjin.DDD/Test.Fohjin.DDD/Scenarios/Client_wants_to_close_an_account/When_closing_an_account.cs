@@ -7,6 +7,7 @@ using Fohjin.DDD.Contracts;
 using Fohjin.DDD.Domain.Account;
 using Fohjin.DDD.Events;
 using Fohjin.DDD.Events.Account;
+using Fohjin.DDD.EventStore;
 using Moq;
 
 namespace Test.Fohjin.DDD.Scenarios.Client_wants_to_close_an_account

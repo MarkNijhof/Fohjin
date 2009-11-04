@@ -6,6 +6,7 @@ using Fohjin.DDD.Commands;
 using Fohjin.DDD.Domain.Client;
 using Fohjin.DDD.Events;
 using Fohjin.DDD.Events.Client;
+using Fohjin.DDD.EventStore;
 
 namespace Test.Fohjin.DDD.Scenarios.Client_got_a_new_phone_number
 {

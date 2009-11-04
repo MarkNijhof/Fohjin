@@ -6,6 +6,7 @@ using Fohjin.DDD.Commands;
 using Fohjin.DDD.Domain.Account;
 using Fohjin.DDD.Events;
 using Fohjin.DDD.Events.Account;
+using Fohjin.DDD.EventStore;
 
 namespace Test.Fohjin.DDD.Scenarios.Withdrawing_cash
 {
