@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Fohjin.DDD.Domain;
 using Fohjin.DDD.Events;
 
 namespace Fohjin.DDD.EventStore

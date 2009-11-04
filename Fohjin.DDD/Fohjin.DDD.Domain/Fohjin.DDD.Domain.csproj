@@ -84,9 +84,6 @@
     <Compile Include="Account\NonExitsingAccountException.cs" />
     <Compile Include="Client\NonExistingClientException.cs" />
     <Compile Include="UnregisteredDomainEventException.cs" />
-    <Compile Include="IEventProvider.cs" />
-    <Compile Include="Mementos\IMomento.cs" />
-    <Compile Include="Mementos\IOrginator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SystemRandom.cs" />
     <Compile Include="SystemTimer.cs" />
@@ -103,6 +100,10 @@
     <ProjectReference Include="..\Fohjin.DDD.Bus\Fohjin.DDD.Bus.csproj">
       <Project>{14C6E3E5-D4D0-4811-BBBC-89A5FF7BF41F}</Project>
       <Name>Fohjin.DDD.Bus</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fohjin.DDD.EventStore\Fohjin.DDD.EventStore.csproj">
+      <Project>{318F1FE0-DA43-4A02-9956-361C9FE96915}</Project>
+      <Name>Fohjin.DDD.EventStore</Name>
     </ProjectReference>
     <ProjectReference Include="..\Fohjin.DDD.Events\Fohjin.DDD.Events.csproj">
       <Project>{CFB4C037-822D-470E-8A01-832957D193C9}</Project>

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Fohjin.DDD.Domain.Account;
+using Fohjin.DDD.EventStore;
 
 namespace Fohjin.DDD.Domain.Mementos
 {

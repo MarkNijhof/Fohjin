@@ -8,6 +8,7 @@ using Fohjin.DDD.Contracts;
 using Fohjin.DDD.Domain;
 using Fohjin.DDD.Domain.Mementos;
 using Fohjin.DDD.Events;
+using Fohjin.DDD.EventStore;
 using Moq;
 
 namespace Test.Fohjin.DDD

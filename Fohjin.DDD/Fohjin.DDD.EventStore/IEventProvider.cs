@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Fohjin.DDD.Events;
 
-namespace Fohjin.DDD.Domain
+namespace Fohjin.DDD.EventStore
 {
     public interface IEventProvider 
     {

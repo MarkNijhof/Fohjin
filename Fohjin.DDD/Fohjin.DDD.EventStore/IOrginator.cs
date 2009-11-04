@@ -1,4 +1,4 @@
-namespace Fohjin.DDD.Domain.Mementos
+namespace Fohjin.DDD.EventStore
 {
     public interface IOrginator
     {

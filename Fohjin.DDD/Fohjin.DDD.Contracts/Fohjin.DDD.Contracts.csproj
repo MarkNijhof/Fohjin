@@ -75,6 +75,10 @@
       <Project>{0FB24C8F-FA8C-409E-A71C-8580F7D78474}</Project>
       <Name>Fohjin.DDD.Domain</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Fohjin.DDD.EventStore\Fohjin.DDD.EventStore.csproj">
+      <Project>{318F1FE0-DA43-4A02-9956-361C9FE96915}</Project>
+      <Name>Fohjin.DDD.EventStore</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

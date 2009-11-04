@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Fohjin.DDD.Domain.Account;
 using Fohjin.DDD.Domain.Mementos;
 using Fohjin.DDD.Events.Client;
+using Fohjin.DDD.EventStore;
 
 namespace Fohjin.DDD.Domain.Client
 {

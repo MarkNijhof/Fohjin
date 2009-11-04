@@ -1,5 +1,4 @@
 using System;
-using Fohjin.DDD.Domain.Mementos;
 
 namespace Fohjin.DDD.EventStore
 {

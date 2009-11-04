@@ -1,6 +1,5 @@
 using System;
-using Fohjin.DDD.Domain;
-using Fohjin.DDD.Domain.Mementos;
+using Fohjin.DDD.EventStore;
 
 namespace Fohjin.DDD.Contracts
 {

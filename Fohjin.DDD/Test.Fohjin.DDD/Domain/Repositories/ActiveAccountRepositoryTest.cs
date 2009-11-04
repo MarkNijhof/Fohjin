@@ -7,6 +7,7 @@ using Fohjin.DDD.Contracts;
 using Fohjin.DDD.Domain;
 using Fohjin.DDD.Domain.Account;
 using Fohjin.DDD.Domain.Mementos;
+using Fohjin.DDD.EventStore;
 using Fohjin.DDD.EventStore.SQLite;
 using Moq;
 using NUnit.Framework;
