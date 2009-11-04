@@ -1,7 +1,7 @@
 using System;
 using Fohjin.DDD.Domain;
 
-namespace Fohjin.DDD.EventStore.SQLite
+namespace Fohjin.DDD.EventStore
 {
     public interface ISnapShotStorage
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Fohjin.DDD.Domain;
 using Fohjin.DDD.Events;
 
-namespace Fohjin.DDD.EventStore.SQLite
+namespace Fohjin.DDD.EventStore
 {
     public interface IDomainEventStorage
     {

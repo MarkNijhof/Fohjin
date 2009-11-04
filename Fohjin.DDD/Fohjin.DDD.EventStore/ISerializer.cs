@@ -1,5 +1,4 @@
-
-namespace Fohjin.DDD.EventStore.SQLite
+namespace Fohjin.DDD.EventStore
 {
     public interface ISerializer 
     {

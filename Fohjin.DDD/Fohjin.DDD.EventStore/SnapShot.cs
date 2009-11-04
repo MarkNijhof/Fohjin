@@ -1,7 +1,7 @@
 using System;
 using Fohjin.DDD.Domain.Mementos;
 
-namespace Fohjin.DDD.EventStore.SQLite
+namespace Fohjin.DDD.EventStore
 {
     [Serializable]
     public class SnapShot : ISnapShot

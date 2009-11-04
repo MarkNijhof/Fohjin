@@ -259,6 +259,10 @@
       <Project>{8DE1C044-594E-4A85-8244-FE059BF4825B}</Project>
       <Name>Fohjin.DDD.EventStore.SQLite</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Fohjin.DDD.EventStore\Fohjin.DDD.EventStore.csproj">
+      <Project>{318F1FE0-DA43-4A02-9956-361C9FE96915}</Project>
+      <Name>Fohjin.DDD.EventStore</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Fohjin.DDD.Events\Fohjin.DDD.Events.csproj">
       <Project>{CFB4C037-822D-470E-8A01-832957D193C9}</Project>
       <Name>Fohjin.DDD.Events</Name>

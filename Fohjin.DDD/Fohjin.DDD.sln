@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2010
+# Visual Studio 2008
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fohjin.DDD.Reporting", "Fohjin.DDD.Reporting\Fohjin.DDD.Reporting.csproj", "{0E86D5C6-929D-4304-A00D-ADC9FB2AFE77}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.Fohjin.DDD", "Test.Fohjin.DDD\Test.Fohjin.DDD.csproj", "{CEBF24CE-3326-464B-B6C5-463E7F4BF4BC}"
@@ -30,6 +30,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fohjin.DDD.EventStore.SQLite", "Fohjin.DDD.EventStore.SQLite\Fohjin.DDD.EventStore.SQLite.csproj", "{8DE1C044-594E-4A85-8244-FE059BF4825B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fohjin.DDD.Services", "Fohjin.DDD.Services\Fohjin.DDD.Services.csproj", "{B2428304-1BF2-4BCB-B250-7D09E536560A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fohjin.DDD.EventStore", "Fohjin.DDD.EventStore\Fohjin.DDD.EventStore.csproj", "{318F1FE0-DA43-4A02-9956-361C9FE96915}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -97,6 +99,10 @@ Global
 		{B2428304-1BF2-4BCB-B250-7D09E536560A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B2428304-1BF2-4BCB-B250-7D09E536560A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B2428304-1BF2-4BCB-B250-7D09E536560A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{318F1FE0-DA43-4A02-9956-361C9FE96915}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{318F1FE0-DA43-4A02-9956-361C9FE96915}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{318F1FE0-DA43-4A02-9956-361C9FE96915}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{318F1FE0-DA43-4A02-9956-361C9FE96915}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
