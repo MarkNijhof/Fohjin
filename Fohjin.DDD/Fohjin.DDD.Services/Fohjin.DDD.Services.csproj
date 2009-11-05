@@ -78,10 +78,6 @@
     <Compile Include="UnknownAccountException.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Fohjin.DDD.Bus\Fohjin.DDD.Bus.csproj">
-      <Project>{14C6E3E5-D4D0-4811-BBBC-89A5FF7BF41F}</Project>
-      <Name>Fohjin.DDD.Bus</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Fohjin.DDD.Commands\Fohjin.DDD.Commands.csproj">
       <Project>{58D61FA0-D67F-4D72-81EA-2D709356AF95}</Project>
       <Name>Fohjin.DDD.Commands</Name>
@@ -93,6 +89,10 @@
     <ProjectReference Include="..\Fohjin.DDD.Domain\Fohjin.DDD.Domain.csproj">
       <Project>{0FB24C8F-FA8C-409E-A71C-8580F7D78474}</Project>
       <Name>Fohjin.DDD.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fohjin.DDD.EventStore\Fohjin.DDD.EventStore.csproj">
+      <Project>{318F1FE0-DA43-4A02-9956-361C9FE96915}</Project>
+      <Name>Fohjin.DDD.EventStore</Name>
     </ProjectReference>
     <ProjectReference Include="..\Fohjin.DDD.Reporting.Dto\Fohjin.DDD.Reporting.Dto.csproj">
       <Project>{44666AF0-AC7A-486E-AD1F-49FD0573ED43}</Project>

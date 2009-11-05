@@ -1,4 +1,4 @@
-namespace Fohjin.DDD.Bus
+namespace Fohjin.DDD.EventStore
 {
     public interface IMessage {}
 }

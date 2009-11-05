@@ -48,12 +48,14 @@
     <Compile Include="DomainRepository.cs" />
     <Compile Include="EventStoreIdentityMap.cs" />
     <Compile Include="EventStoreUnitOfWork.cs" />
+    <Compile Include="IBus.cs" />
     <Compile Include="IDomainEvent.cs" />
     <Compile Include="IDomainEventStorage.cs" />
     <Compile Include="IDomainRepository.cs" />
     <Compile Include="IEventProvider.cs" />
     <Compile Include="IEventStoreUnitOfWork.cs" />
     <Compile Include="IIdentityMap.cs" />
+    <Compile Include="IMessage.cs" />
     <Compile Include="IMomento.cs" />
     <Compile Include="IOrginator.cs" />
     <Compile Include="ISnapShot.cs" />

@@ -5,6 +5,7 @@ using Fohjin.DDD.Bus;
 using Fohjin.DDD.Bus.Implementation;
 using Fohjin.DDD.CommandHandlers;
 using Fohjin.DDD.Commands;
+using Fohjin.DDD.EventStore;
 using StructureMap;
 
 namespace Test.Fohjin.DDD.Bus

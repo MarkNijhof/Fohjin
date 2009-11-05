@@ -3,6 +3,7 @@ using Fohjin.DDD.BankApplication.Presenters;
 using Fohjin.DDD.BankApplication.Views;
 using Fohjin.DDD.Bus;
 using Fohjin.DDD.Commands;
+using Fohjin.DDD.EventStore;
 using Moq;
 
 namespace Test.Fohjin.DDD.Scenarios.Adding_a_new_client

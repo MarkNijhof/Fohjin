@@ -4,6 +4,7 @@ using System.Linq;
 using Fohjin.DDD.Bus;
 using Fohjin.DDD.Contracts;
 using Fohjin.DDD.EventHandlers;
+using Fohjin.DDD.EventStore;
 using Moq;
 
 namespace Test.Fohjin.DDD

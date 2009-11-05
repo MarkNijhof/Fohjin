@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Fohjin.DDD.Bus;
 using Fohjin.DDD.Commands;
 using Fohjin.DDD.Contracts;
+using Fohjin.DDD.EventStore;
 using Fohjin.DDD.Reporting.Dto;
 using Fohjin.DDD.Services;
 using Moq;

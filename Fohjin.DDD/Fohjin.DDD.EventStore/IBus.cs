@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Fohjin.DDD.Bus
+namespace Fohjin.DDD.EventStore
 {
     public interface ICommandBus : IBus {}
     public interface IEventBus : IBus {}

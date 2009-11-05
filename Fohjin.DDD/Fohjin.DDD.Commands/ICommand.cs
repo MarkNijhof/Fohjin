@@ -1,5 +1,5 @@
 using System;
-using Fohjin.DDD.Bus;
+using Fohjin.DDD.EventStore;
 
 namespace Fohjin.DDD.Commands
 {

@@ -86,10 +86,6 @@
     <Compile Include="MoneyTransferFailedCompensatingCommandHandler.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Fohjin.DDD.Bus\Fohjin.DDD.Bus.csproj">
-      <Project>{14C6E3E5-D4D0-4811-BBBC-89A5FF7BF41F}</Project>
-      <Name>Fohjin.DDD.Bus</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Fohjin.DDD.Commands\Fohjin.DDD.Commands.csproj">
       <Project>{58D61FA0-D67F-4D72-81EA-2D709356AF95}</Project>
       <Name>Fohjin.DDD.Commands</Name>
