@@ -28,7 +28,7 @@ namespace Fohjin.DDD.Configuration
         public static IDictionary<Type, IList<Type>> GetEventHandlers()
         {
             var commands = new Dictionary<Type, IList<Type>>();
-            typeof(IEventHandler<>)
+            typeof(ClientCreatedEventHandler)
                 .Assembly
                 .GetExportedTypes()
                 .Where(x => x.GetInterfaces().Any(y => y.IsGenericType && y.GetGenericTypeDefinition() == typeof(IEventHandler<>)))

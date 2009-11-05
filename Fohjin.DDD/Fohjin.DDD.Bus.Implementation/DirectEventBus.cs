@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using Fohjin.DDD.EventHandlers;
-using Fohjin.DDD.EventStore;
+using Fohjin.DDD.EventStore.Bus;
 using StructureMap;
 
 namespace Fohjin.DDD.Bus.Implementation

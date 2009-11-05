@@ -2,6 +2,7 @@ using Fohjin.DDD.Bus;
 using Fohjin.DDD.Bus.Implementation;
 using Fohjin.DDD.Contracts;
 using Fohjin.DDD.EventStore;
+using Fohjin.DDD.EventStore.Bus;
 using Fohjin.DDD.Reporting.Infrastructure;
 using StructureMap.Configuration.DSL;
 

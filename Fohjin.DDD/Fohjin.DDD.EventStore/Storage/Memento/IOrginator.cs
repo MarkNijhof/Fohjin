@@ -1,4 +1,4 @@
-namespace Fohjin.DDD.EventStore
+namespace Fohjin.DDD.EventStore.Storage.Memento
 {
     public interface IOrginator
     {

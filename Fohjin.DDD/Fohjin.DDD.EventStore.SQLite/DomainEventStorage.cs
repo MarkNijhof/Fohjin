@@ -4,6 +4,8 @@ using System.Data.SQLite;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization;
+using Fohjin.DDD.EventStore.Storage;
+using Fohjin.DDD.EventStore.Storage.Memento;
 
 namespace Fohjin.DDD.EventStore.SQLite
 {

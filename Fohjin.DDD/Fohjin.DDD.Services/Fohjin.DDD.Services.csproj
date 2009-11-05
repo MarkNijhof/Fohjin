@@ -78,6 +78,10 @@
     <Compile Include="UnknownAccountException.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Fohjin.DDD.Bus.Implementation\Fohjin.DDD.Bus.Implementation.csproj">
+      <Project>{DA415B11-2B50-4635-9951-42AAAEFA38EF}</Project>
+      <Name>Fohjin.DDD.Bus.Implementation</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Fohjin.DDD.Commands\Fohjin.DDD.Commands.csproj">
       <Project>{58D61FA0-D67F-4D72-81EA-2D709356AF95}</Project>
       <Name>Fohjin.DDD.Commands</Name>

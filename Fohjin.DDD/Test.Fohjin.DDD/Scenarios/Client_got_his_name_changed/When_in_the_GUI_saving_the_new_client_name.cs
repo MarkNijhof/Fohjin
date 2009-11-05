@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using Fohjin.DDD.BankApplication.Presenters;
 using Fohjin.DDD.BankApplication.Views;
-using Fohjin.DDD.Bus;
+using Fohjin.DDD.Bus.Implementation;
 using Fohjin.DDD.Commands;
 using Fohjin.DDD.Contracts;
-using Fohjin.DDD.EventStore;
 using Fohjin.DDD.Reporting.Dto;
 using Moq;
 

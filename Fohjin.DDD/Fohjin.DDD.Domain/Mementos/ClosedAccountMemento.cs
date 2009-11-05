@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Fohjin.DDD.Domain.Account;
 using Fohjin.DDD.EventStore;
+using Fohjin.DDD.EventStore.Storage.Memento;
 
 namespace Fohjin.DDD.Domain.Mementos
 {

@@ -7,6 +7,8 @@ using Fohjin.DDD.Configuration;
 using Fohjin.DDD.Domain.Account;
 using Fohjin.DDD.EventStore;
 using Fohjin.DDD.EventStore.SQLite;
+using Fohjin.DDD.EventStore.Storage;
+using Fohjin.DDD.EventStore.Storage.Memento;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 

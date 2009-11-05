@@ -4,6 +4,7 @@ using System.Linq;
 using Fohjin.DDD.CommandHandlers;
 using Fohjin.DDD.Commands;
 using Fohjin.DDD.EventStore;
+using Fohjin.DDD.EventStore.Storage.Memento;
 using Moq;
 
 namespace Test.Fohjin.DDD

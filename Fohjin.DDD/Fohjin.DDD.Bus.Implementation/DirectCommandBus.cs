@@ -1,11 +1,16 @@
 using System.Collections.Generic;
 using System.Reflection;
 using Fohjin.DDD.CommandHandlers;
-using Fohjin.DDD.EventStore;
 using StructureMap;
 
 namespace Fohjin.DDD.Bus.Implementation
 {
+    public interface ICommandBus
+    {
+        void Publish<TMessage>(TMessage message) where TMessage : class;
+        void PublishMultiple<TMessage>(IEnumerable<TMessage> messages) where TMessage : class;
+    }
+
     public class DirectCommandBus : ICommandBus
     {
         private readonly IContainer _container;

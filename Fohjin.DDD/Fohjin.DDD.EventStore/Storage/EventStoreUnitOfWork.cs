@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Fohjin.DDD.EventStore.Storage.Memento;
 
-namespace Fohjin.DDD.EventStore
+namespace Fohjin.DDD.EventStore.Storage
 {
     public class EventStoreUnitOfWork : IEventStoreUnitOfWork
     {

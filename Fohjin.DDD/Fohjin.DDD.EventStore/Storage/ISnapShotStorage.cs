@@ -1,6 +1,6 @@
 using System;
 
-namespace Fohjin.DDD.EventStore
+namespace Fohjin.DDD.EventStore.Storage
 {
     public interface ISnapShotStorage
     {

@@ -75,7 +75,6 @@
     <Compile Include="ClientPhoneNumberChangedEventHandler.cs" />
     <Compile Include="ClosedAccountCreatedEventHandler.cs" />
     <Compile Include="CashDepositeEventHandler.cs" />
-    <Compile Include="IEventHandler.cs" />
     <Compile Include="MoneyTransferFailedEventHandler.cs" />
     <Compile Include="MoneyTransferReceivedEventHandler.cs" />
     <Compile Include="MoneyTransferSendEventHandler.cs" />

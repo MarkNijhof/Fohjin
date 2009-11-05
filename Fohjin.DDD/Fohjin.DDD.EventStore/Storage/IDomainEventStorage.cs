@@ -1,15 +1,8 @@
 using System;
 using System.Collections.Generic;
 
-namespace Fohjin.DDD.EventStore
+namespace Fohjin.DDD.EventStore.Storage
 {
-    public interface ITransactional
-    {
-        void BeginTransaction();
-        void Commit();
-        void Rollback();
-    }
-
     public interface IDomainEventStorage : ISnapShotStorage, ITransactional
     {
         IEnumerable<IDomainEvent> GetAllEvents(Guid eventProviderId);
