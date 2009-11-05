@@ -3,7 +3,14 @@ using System.Collections.Generic;
 
 namespace Fohjin.DDD.EventStore
 {
-    public interface IDomainEventStorage : ISnapShotStorage
+    public interface ITransactional
+    {
+        void BeginTransaction();
+        void Commit();
+        void Rollback();
+    }
+
+    public interface IDomainEventStorage : ISnapShotStorage, ITransactional
     {
         IEnumerable<IDomainEvent> GetAllEvents(Guid eventProviderId);
         IEnumerable<IDomainEvent> GetEventsSinceLastSnapShot(Guid eventProviderId);

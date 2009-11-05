@@ -19,7 +19,8 @@ namespace Fohjin.DDD.CommandHandlers
 
             client.UpdateClientName(new ClientName(compensatingCommand.ClientName));
 
-            _repository.Save(client);
+            //_repository.Add(client);
+            _repository.Complete();
         }
     }
 }

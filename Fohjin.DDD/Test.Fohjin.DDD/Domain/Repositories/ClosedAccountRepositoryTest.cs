@@ -19,6 +19,8 @@ namespace Test.Fohjin.DDD.Domain.Repositories
 
         private IDomainRepository _repository;
         private DomainEventStorage _domainEventStorage;
+        private EventStoreIdentityMap _eventStoreIdentityMap;
+        private EventStoreUnitOfWork _eventStoreUnitOfWork;
         private List<Ledger> _ledgers;
 
         [SetUp]
@@ -29,8 +31,9 @@ namespace Test.Fohjin.DDD.Domain.Repositories
             var sqliteConnectionString = string.Format("Data Source={0}", dataBaseFile);
 
             _domainEventStorage = new DomainEventStorage(sqliteConnectionString, new BinaryFormatter());
-
-            _repository = new DomainRepository(_domainEventStorage);
+            _eventStoreIdentityMap = new EventStoreIdentityMap();
+            _eventStoreUnitOfWork = new EventStoreUnitOfWork(_domainEventStorage, _eventStoreIdentityMap);
+            _repository = new DomainRepository(_eventStoreUnitOfWork, _eventStoreIdentityMap);
         }
 
         [Test]
@@ -47,7 +50,8 @@ namespace Test.Fohjin.DDD.Domain.Repositories
 
             var closedAccount = ClosedAccount.CreateNew(Guid.NewGuid(), Guid.NewGuid(), _ledgers, new AccountName("AccountName"), new AccountNumber("1234567890"));
 
-            _repository.Save(closedAccount);
+            _repository.Add(closedAccount);
+            _repository.Complete();
 
             Assert.That(_domainEventStorage.GetEventsSinceLastSnapShot(closedAccount.Id).Count(), Is.EqualTo(1));
             Assert.That(_domainEventStorage.GetAllEvents(closedAccount.Id).Count(), Is.EqualTo(1));
@@ -67,7 +71,8 @@ namespace Test.Fohjin.DDD.Domain.Repositories
 
             var closedAccount = ClosedAccount.CreateNew(Guid.NewGuid(), Guid.NewGuid(), _ledgers, new AccountName("AccountName"), new AccountNumber("1234567890"));
 
-            _repository.Save(closedAccount);
+            _repository.Add(closedAccount);
+            _repository.Complete();
 
             var closedAccountForRepository = (IEventProvider)closedAccount;
 

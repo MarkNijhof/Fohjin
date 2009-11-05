@@ -9,8 +9,11 @@ namespace Fohjin.DDD.EventStore.SQLite
 {
     public class DomainEventStorage : IDomainEventStorage
     {
+        private bool _isRunningWithinTransaction;
         private readonly string _sqLiteConnectionString;
         private readonly IFormatter _formatter;
+        private SQLiteTransaction _sqLiteTransaction;
+        private SQLiteConnection _sqliteConnection;
 
         public DomainEventStorage(string sqLiteConnectionString, IFormatter formatter)
         {
@@ -136,50 +139,21 @@ namespace Fohjin.DDD.EventStore.SQLite
 
         public void Save(IEventProvider eventProvider)
         {
-            using (var sqliteConnection = new SQLiteConnection(_sqLiteConnectionString))
+            if (!_isRunningWithinTransaction)
+                throw new Exception("Opperation is not running within a transaction");
+
+            var version = GetEventProviderVersion(eventProvider, _sqLiteTransaction);
+
+            if (version != eventProvider.Version)
+                throw new ConcurrencyViolationException();
+
+            foreach (var domainEvent in eventProvider.GetChanges())
             {
-                sqliteConnection.Open();
-
-                using (var sqliteTransaction = sqliteConnection.BeginTransaction())
-                {
-                    try
-                    {
-                        var version = GetEventProviderVersion(eventProvider, sqliteTransaction);
-
-                        if (version != eventProvider.Version)
-                            throw new ConcurrencyViolationException();
-
-                        foreach (IDomainEvent domainEvent in eventProvider.GetChanges())
-                        {
-                            SaveEvent(domainEvent, eventProvider, sqliteTransaction);
-                        }
-
-                        eventProvider.UpdateVersion(eventProvider.Version + eventProvider.GetChanges().Count());
-                        UpdateEventProviderVersion(eventProvider, sqliteTransaction);
-
-                        sqliteTransaction.Commit();
-                    }
-                    catch (Exception)
-                    {
-                        sqliteTransaction.Rollback();
-                        throw;
-                    }
-                }
+                SaveEvent(domainEvent, eventProvider, _sqLiteTransaction);
             }
-        }
 
-        private void SaveEvent(IDomainEvent domainEvent, IEventProvider eventProvider, SQLiteTransaction transaction)
-        {
-            const string commandText = "INSERT INTO Events VALUES(@eventId, @eventProviderId, @event, @version)";
-            using (var sqLiteCommand = new SQLiteCommand(commandText, transaction.Connection, transaction))
-            {
-                sqLiteCommand.Parameters.Add(new SQLiteParameter("@eventId", domainEvent.Id));
-                sqLiteCommand.Parameters.Add(new SQLiteParameter("@eventProviderId", eventProvider.Id));
-                sqLiteCommand.Parameters.Add(new SQLiteParameter("@event", Serialize(domainEvent)));
-                sqLiteCommand.Parameters.Add(new SQLiteParameter("@version", domainEvent.Version));
-
-                sqLiteCommand.ExecuteNonQuery();
-            }
+            eventProvider.UpdateVersion(eventProvider.Version + eventProvider.GetChanges().Count());
+            UpdateEventProviderVersion(eventProvider, _sqLiteTransaction);
         }
 
         public ISnapShot GetSnapShot(Guid eventProviderId)
@@ -217,6 +191,46 @@ namespace Fohjin.DDD.EventStore.SQLite
         public void SaveShapShot(IEventProvider entity)
         {
             StoreSnapShot(new SnapShot(entity.Id, entity.Version, ((IOrginator)entity).CreateMemento()));
+        }
+
+        public void BeginTransaction()
+        {
+            _sqliteConnection = new SQLiteConnection(_sqLiteConnectionString);
+            _sqliteConnection.Open();
+            _sqLiteTransaction = _sqliteConnection.BeginTransaction();
+            _isRunningWithinTransaction = true;
+        }
+
+        public void Commit()
+        {
+            _isRunningWithinTransaction = false;
+            _sqLiteTransaction.Commit();
+            _sqLiteTransaction.Dispose();
+            _sqliteConnection.Close();
+            _sqliteConnection.Dispose();
+        }
+
+        public void Rollback()
+        {
+            _isRunningWithinTransaction = false;
+            _sqLiteTransaction.Rollback();
+            _sqLiteTransaction.Dispose();
+            _sqliteConnection.Close();
+            _sqliteConnection.Dispose();
+        }
+
+        private void SaveEvent(IDomainEvent domainEvent, IEventProvider eventProvider, SQLiteTransaction transaction)
+        {
+            const string commandText = "INSERT INTO Events VALUES(@eventId, @eventProviderId, @event, @version)";
+            using (var sqLiteCommand = new SQLiteCommand(commandText, transaction.Connection, transaction))
+            {
+                sqLiteCommand.Parameters.Add(new SQLiteParameter("@eventId", domainEvent.Id));
+                sqLiteCommand.Parameters.Add(new SQLiteParameter("@eventProviderId", eventProvider.Id));
+                sqLiteCommand.Parameters.Add(new SQLiteParameter("@event", Serialize(domainEvent)));
+                sqLiteCommand.Parameters.Add(new SQLiteParameter("@version", domainEvent.Version));
+
+                sqLiteCommand.ExecuteNonQuery();
+            }
         }
 
         private void StoreSnapShot(ISnapShot snapShot)

@@ -41,7 +41,7 @@ namespace Test.Fohjin.DDD.Scenarios.Client_wants_to_open_a_new_account
         [Then]
         public void Then_the_newly_created_account_will_be_saved()
         {
-            OnDependency<IDomainRepository>().Verify(x => x.Save(It.IsAny<ActiveAccount>()));
+            OnDependency<IDomainRepository>().Verify(x => x.Add(It.IsAny<ActiveAccount>()));
         }
     }
 }

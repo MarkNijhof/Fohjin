@@ -6,20 +6,21 @@ namespace Fohjin.DDD.CommandHandlers
 {
     public class ReceiveMoneyTransferCommandHandler : ICommandHandler<ReceiveMoneyTransferCommand>
     {
-        private readonly IDomainRepository _domainRepository;
+        private readonly IDomainRepository _repository;
 
-        public ReceiveMoneyTransferCommandHandler(IDomainRepository domainRepository)
+        public ReceiveMoneyTransferCommandHandler(IDomainRepository repository)
         {
-            _domainRepository = domainRepository;
+            _repository = repository;
         }
 
         public void Execute(ReceiveMoneyTransferCommand compensatingCommand)
         {
-            var activeAccount = _domainRepository.GetById<ActiveAccount>(compensatingCommand.Id);
+            var activeAccount = _repository.GetById<ActiveAccount>(compensatingCommand.Id);
 
             activeAccount.ReceiveTransferFrom(new AccountNumber(compensatingCommand.AccountNumber), new Amount(compensatingCommand.Amount));
 
-            _domainRepository.Save(activeAccount);
+            //_repository.Add(activeAccount);
+            _repository.Complete();
         }
     }
 }

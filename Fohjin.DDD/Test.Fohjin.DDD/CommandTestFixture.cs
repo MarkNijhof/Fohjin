@@ -4,8 +4,6 @@ using System.Linq;
 using Fohjin.DDD.Bus;
 using Fohjin.DDD.CommandHandlers;
 using Fohjin.DDD.Commands;
-using Fohjin.DDD.Contracts;
-using Fohjin.DDD.Events;
 using Fohjin.DDD.EventStore;
 using Moq;
 
@@ -15,7 +13,7 @@ namespace Test.Fohjin.DDD
     public abstract class CommandTestFixture<TCommand, TCommandHandler, TAggregateRoot> 
         where TCommand : class, ICommand, IMessage
         where TCommandHandler : class, ICommandHandler<TCommand>
-        where TAggregateRoot : IOrginator, IEventProvider, new()
+        where TAggregateRoot : class, IOrginator, IEventProvider, new()
     {
         private IDictionary<Type, object> mocks;
 
@@ -72,7 +70,7 @@ namespace Test.Fohjin.DDD
                 {
                     var repositoryMock = new Mock<IDomainRepository>();
                     repositoryMock.Setup(x => x.GetById<TAggregateRoot>(It.IsAny<Guid>())).Returns(AggregateRoot);
-                    repositoryMock.Setup(x => x.Save(It.IsAny<TAggregateRoot>())).Callback<TAggregateRoot>(x => AggregateRoot = x);
+                    repositoryMock.Setup(x => x.Add(It.IsAny<TAggregateRoot>())).Callback<TAggregateRoot>(x => AggregateRoot = x);
                     mocks.Add(parameter.ParameterType, repositoryMock);
                     continue;
                 }

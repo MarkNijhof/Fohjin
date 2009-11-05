@@ -46,13 +46,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DomainRepository.cs" />
+    <Compile Include="EventStoreIdentityMap.cs" />
+    <Compile Include="EventStoreUnitOfWork.cs" />
     <Compile Include="IDomainEvent.cs" />
     <Compile Include="IDomainEventStorage.cs" />
     <Compile Include="IDomainRepository.cs" />
     <Compile Include="IEventProvider.cs" />
+    <Compile Include="IEventStoreUnitOfWork.cs" />
+    <Compile Include="IIdentityMap.cs" />
     <Compile Include="IMomento.cs" />
     <Compile Include="IOrginator.cs" />
-    <Compile Include="ISerializer.cs" />
     <Compile Include="ISnapShot.cs" />
     <Compile Include="ISnapShotStorage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -18,6 +18,8 @@ namespace Fohjin.DDD.Configuration
             ForRequestedType<IFormatter>().TheDefault.Is.ConstructedBy(x => new BinaryFormatter());
             ForRequestedType<IDomainEventStorage>().TheDefault.Is.OfConcreteType<DomainEventStorage>().WithCtorArg("sqLiteConnectionString").EqualTo(sqLiteConnectionString);
 
+            ForRequestedType<IIdentityMap>().TheDefault.Is.OfConcreteType<EventStoreIdentityMap>();
+            ForRequestedType<IEventStoreUnitOfWork>().TheDefault.Is.OfConcreteType<EventStoreUnitOfWork>();
             ForRequestedType<IDomainRepository>().TheDefault.Is.OfConcreteType<DomainRepository>();
         }
     }

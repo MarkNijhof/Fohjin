@@ -1,56 +1,53 @@
 using System;
-using System.Linq;
 
 namespace Fohjin.DDD.EventStore
 {
     public class DomainRepository : IDomainRepository
     {
-        private readonly IDomainEventStorage _domainEventStorage;
+        private readonly IEventStoreUnitOfWork _eventStoreUnitOfWork;
+        private readonly IIdentityMap _identityMap;
 
-        public DomainRepository(IDomainEventStorage domainEventStorage)
+        public DomainRepository(IEventStoreUnitOfWork eventStoreUnitOfWork, IIdentityMap identityMap)
         {
-            _domainEventStorage = domainEventStorage;
+            _eventStoreUnitOfWork = eventStoreUnitOfWork;
+            _identityMap = identityMap;
         }
 
-        public TAggregate GetById<TAggregate>(Guid id) where TAggregate : IOrginator, IEventProvider, new()
+        public TAggregate GetById<TAggregate>(Guid id) where TAggregate : class, IOrginator, IEventProvider, new()
         {
-            var aggregateRoot = new TAggregate();
-
-            LoadSnapShotIfExists(id, aggregateRoot);
-
-            loadRemainingHistoryEvents(id, aggregateRoot);
-
-            return aggregateRoot;
+            return GetFromIdentityMap<TAggregate>(id) ?? _eventStoreUnitOfWork.GetById<TAggregate>(id);
         }
 
-        public void Save<TAggregate>(TAggregate aggregateRoot) where TAggregate : IOrginator, IEventProvider, new()
+        private TAggregate GetFromIdentityMap<TAggregate>(Guid id) where TAggregate : class, IOrginator, IEventProvider, new()
         {
-            var entity = (IEventProvider) aggregateRoot;
+            var aggregate = _identityMap.GetById<TAggregate>(id);
+            if (aggregate == null)
+                return null;
 
-            _domainEventStorage.Save(entity);
-
-            entity.Clear();
+            _eventStoreUnitOfWork.RegisterForTracking(aggregate);
+            return aggregate;
         }
 
-        private void LoadSnapShotIfExists(Guid id, IOrginator aggregateRoot)
+        public void Add<TAggregate>(TAggregate aggregateRoot) where TAggregate : class, IOrginator, IEventProvider, new()
         {
-            var snapShot = _domainEventStorage.GetSnapShot(id);
-            if (snapShot == null)
-                return;
-
-            aggregateRoot.SetMemento(snapShot.Memento);
+            _eventStoreUnitOfWork.Add(aggregateRoot);
         }
 
-        private void loadRemainingHistoryEvents(Guid id, IEventProvider aggregateRoot)
+        public void Complete()
         {
-            var events = _domainEventStorage.GetEventsSinceLastSnapShot(id);
-            if (events.Count() > 0)
+            try
             {
-                aggregateRoot.LoadFromHistory(events);
-                return;
+                _eventStoreUnitOfWork.Complete();
+                //_eventHandlerUnitOfWork.Complete();
+                //_eventHandlerUnitOfWork.Commit();
+                _eventStoreUnitOfWork.Commit();
             }
-
-            aggregateRoot.LoadFromHistory(_domainEventStorage.GetAllEvents(id));
+            catch (Exception)
+            {
+                //_eventHandlerUnitOfWork.Rollback();
+                _eventStoreUnitOfWork.Rollback();
+                throw;
+            }
         }
     }
 }

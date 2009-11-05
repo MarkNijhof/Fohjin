@@ -19,7 +19,8 @@ namespace Fohjin.DDD.CommandHandlers
 
             client.ClientMoved(new Address(compensatingCommand.Street, compensatingCommand.StreetNumber, compensatingCommand.PostalCode, compensatingCommand.City));
 
-            _repository.Save(client);
+            //_repository.Add(client);
+            _repository.Complete();
         }
     }
 }

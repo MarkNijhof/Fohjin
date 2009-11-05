@@ -33,7 +33,7 @@ namespace Test.Fohjin.DDD.Scenarios.Client_wants_to_close_an_account
         [Then]
         public void Then_the_newly_created_closed_account_will_be_saved()
         {
-            OnDependency<IDomainRepository>().Verify(x => x.Save(It.IsAny<ClosedAccount>()));
+            OnDependency<IDomainRepository>().Verify(x => x.Add(It.IsAny<ClosedAccount>()));
         }
     }
 }

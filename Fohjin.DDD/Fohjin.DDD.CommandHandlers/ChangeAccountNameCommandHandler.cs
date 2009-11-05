@@ -19,7 +19,8 @@ namespace Fohjin.DDD.CommandHandlers
 
             activeAccount.ChangeAccountName(new AccountName(compensatingCommand.AccountName));
 
-            _repository.Save(activeAccount);
+            //_repository.Add(activeAccount);
+            _repository.Complete();
         }
     }
 }
