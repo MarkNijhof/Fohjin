@@ -1,8 +1,7 @@
-using Fohjin.DDD.EventStore;
 
 namespace Fohjin.DDD.EventHandlers
 {
-    public interface IEventHandler<TEvent> where TEvent : class, IMessage
+    public interface IEventHandler<TEvent> where TEvent : class
     {
         void Execute(TEvent theEvent);
     }

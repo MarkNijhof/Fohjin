@@ -7,7 +7,7 @@ namespace Fohjin.DDD.EventStore
 
     public interface IBus
     {
-        void Publish<TMessage>(TMessage message) where TMessage : class, IMessage;
-        void PublishMultiple<TMessage>(IEnumerable<TMessage> messages) where TMessage : class, IMessage;
+        void Publish<TMessage>(TMessage message) where TMessage : class;
+        void PublishMultiple<TMessage>(IEnumerable<TMessage> messages) where TMessage : class;
     }
 }

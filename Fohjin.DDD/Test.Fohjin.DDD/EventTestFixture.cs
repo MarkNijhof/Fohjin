@@ -1,17 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Fohjin.DDD.Bus;
 using Fohjin.DDD.Contracts;
 using Fohjin.DDD.EventHandlers;
-using Fohjin.DDD.EventStore;
 using Moq;
 
 namespace Test.Fohjin.DDD
 {
     [Specification]
     public abstract class EventTestFixture<TEvent, TEventHandler>
-        where TEvent : class, IMessage
+        where TEvent : class
         where TEventHandler : class, IEventHandler<TEvent>
     {
         private IDictionary<Type, object> mocks;

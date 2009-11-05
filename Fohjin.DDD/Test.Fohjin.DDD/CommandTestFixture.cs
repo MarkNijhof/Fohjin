@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Fohjin.DDD.Bus;
 using Fohjin.DDD.CommandHandlers;
 using Fohjin.DDD.Commands;
 using Fohjin.DDD.EventStore;
@@ -11,7 +10,7 @@ namespace Test.Fohjin.DDD
 {
     [Specification]
     public abstract class CommandTestFixture<TCommand, TCommandHandler, TAggregateRoot> 
-        where TCommand : class, ICommand, IMessage
+        where TCommand : class, ICommand
         where TCommandHandler : class, ICommandHandler<TCommand>
         where TAggregateRoot : class, IOrginator, IEventProvider, new()
     {

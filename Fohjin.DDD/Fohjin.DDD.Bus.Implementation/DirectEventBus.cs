@@ -17,7 +17,7 @@ namespace Fohjin.DDD.Bus.Implementation
             _methodInfo = GetType().GetMethod("Publish");
         }
 
-        public void Publish<TMessage>(TMessage message) where TMessage : class, IMessage
+        public void Publish<TMessage>(TMessage message) where TMessage : class
         {
             var eventHandlers = _container.GetAllInstances<IEventHandler<TMessage>>();
             foreach (var eventHandler in eventHandlers)
@@ -26,7 +26,7 @@ namespace Fohjin.DDD.Bus.Implementation
             }
         }
 
-        public void PublishMultiple<TMessage>(IEnumerable<TMessage> messages) where TMessage : class, IMessage
+        public void PublishMultiple<TMessage>(IEnumerable<TMessage> messages) where TMessage : class
         {
             foreach (var message in messages)
             {

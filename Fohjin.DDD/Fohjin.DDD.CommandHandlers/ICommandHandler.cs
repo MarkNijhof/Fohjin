@@ -2,7 +2,7 @@ using Fohjin.DDD.EventStore;
 
 namespace Fohjin.DDD.CommandHandlers
 {
-    public interface ICommandHandler<TCommand> where TCommand : class, IMessage
+    public interface ICommandHandler<TCommand> where TCommand : class
     {
         void Execute(TCommand compensatingCommand);
     }

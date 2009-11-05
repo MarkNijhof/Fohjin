@@ -4,7 +4,7 @@ using Fohjin.DDD.EventStore;
 namespace Fohjin.DDD.Events
 {
     [Serializable]
-    public class DomainEvent : IDomainEvent, IMessage
+    public class DomainEvent : IDomainEvent
     {
         public Guid Id { get; private set; }
         public Guid AggregateId { get; set; }

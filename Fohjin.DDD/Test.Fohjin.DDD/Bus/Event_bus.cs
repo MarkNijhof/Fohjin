@@ -1,11 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Fohjin.DDD.Bus;
 using Fohjin.DDD.Bus.Implementation;
 using Fohjin.DDD.EventHandlers;
 using Fohjin.DDD.Events;
-using Fohjin.DDD.EventStore;
 using StructureMap;
 
 namespace Test.Fohjin.DDD.Bus
@@ -62,7 +60,7 @@ namespace Test.Fohjin.DDD.Bus
 
         protected override void When()
         {
-            SubjectUnderTest.PublishMultiple(new List<IMessage> { _event });
+            SubjectUnderTest.PublishMultiple(new List<object> { _event });
         }
 
         [Then]
@@ -102,7 +100,7 @@ namespace Test.Fohjin.DDD.Bus
 
         protected override void When()
         {
-            SubjectUnderTest.PublishMultiple(new List<IMessage> { _event, _otherEvent });
+            SubjectUnderTest.PublishMultiple(new List<object> { _event, _otherEvent });
         }
 
         [Then]
