@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Fohjin.DDD.Bus.Implementation;
-using Fohjin.DDD.EventHandlers;
 using Fohjin.DDD.Events;
+using Fohjin.DDD.EventStore.Bus;
 using StructureMap;
 
 namespace Test.Fohjin.DDD.Bus
@@ -15,6 +15,8 @@ namespace Test.Fohjin.DDD.Bus
 
         protected override void SetupDependencies()
         {
+            DoNotMock.Add(typeof(IQueue), new InMemoryQueue());
+
             _handler = new FirstTestEventHandler();
             OnDependency<IContainer>()
                 .Setup(x => x.GetAllInstances<IEventHandler<TestEvent>>())
@@ -28,13 +30,18 @@ namespace Test.Fohjin.DDD.Bus
 
         protected override void When()
         {
-            SubjectUnderTest.Publish(_event);
+            SubjectUnderTest.PublishMultiple(new List<object> { _event });
         }
 
         [Then]
         public void Then_the_execute_method_on_the_returned_event_handler_is_invoked_with_the_provided_event()
         {
             _handler.Ids.First().WillBe(_event.Id);
+        }
+
+        protected override void Finally()
+        {
+            SubjectUnderTest.Dispose();
         }
     }
 
@@ -46,6 +53,8 @@ namespace Test.Fohjin.DDD.Bus
 
         protected override void SetupDependencies()
         {
+            DoNotMock.Add(typeof(IQueue), new InMemoryQueue());
+
             _handler = new FirstTestEventHandler();
             _secondHandler = new SecondTestEventHandler();
             OnDependency<IContainer>()
@@ -74,6 +83,11 @@ namespace Test.Fohjin.DDD.Bus
         {
             _secondHandler.Ids.First().WillBe(_event.Id);
         }
+
+        protected override void Finally()
+        {
+            SubjectUnderTest.Dispose();
+        }
     }
 
     public class When_multiple_events_gets_published_to_the_bus_containing_multiple_event_handlers : BaseTestFixture<DirectEventBus>
@@ -85,6 +99,8 @@ namespace Test.Fohjin.DDD.Bus
 
         protected override void SetupDependencies()
         {
+            DoNotMock.Add(typeof (IQueue), new InMemoryQueue());
+
             _handler = new FirstTestEventHandler();
             _otherHandler = new SecondTestEventHandler();
             OnDependency<IContainer>()
@@ -125,6 +141,11 @@ namespace Test.Fohjin.DDD.Bus
         public void Then_the_execute_method_on_the_second_returned_event_handler_is_invoked_with_the_second_provided_event()
         {
             _otherHandler.Ids[1].WillBe(_otherEvent.Id);
+        }
+
+        protected override void Finally()
+        {
+            SubjectUnderTest.Dispose();
         }
     }
 

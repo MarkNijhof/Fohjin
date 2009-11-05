@@ -1,8 +1,7 @@
-﻿using System;
-
+﻿
 namespace Fohjin.DDD.EventStore
 {
-    public interface IUnitOfWork : IDisposable
+    public interface IUnitOfWork
     {
         void Complete();
         void Commit();

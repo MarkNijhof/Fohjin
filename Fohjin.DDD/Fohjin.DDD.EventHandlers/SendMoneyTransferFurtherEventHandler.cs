@@ -1,4 +1,5 @@
 using Fohjin.DDD.Events.Account;
+using Fohjin.DDD.EventStore.Bus;
 using Fohjin.DDD.Services;
 
 namespace Fohjin.DDD.EventHandlers

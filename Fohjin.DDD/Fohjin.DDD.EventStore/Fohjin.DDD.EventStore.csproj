@@ -35,6 +35,7 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -45,7 +46,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bus\EventHandlerUnitOfWork.cs" />
     <Compile Include="Bus\IEventHandler.cs" />
+    <Compile Include="Bus\IEventHandlerUnitOfWork.cs" />
+    <Compile Include="Bus\InMemoryQueue.cs" />
     <Compile Include="DomainRepository.cs" />
     <Compile Include="ITransactional.cs" />
     <Compile Include="Storage\EventStoreIdentityMap.cs" />

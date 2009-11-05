@@ -96,10 +96,5 @@ namespace Fohjin.DDD.EventStore.Storage
 
             aggregateRoot.LoadFromHistory(_domainEventStorage.GetAllEvents(id));
         }
-
-        public void Dispose()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

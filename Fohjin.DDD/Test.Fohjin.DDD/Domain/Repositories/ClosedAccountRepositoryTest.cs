@@ -6,9 +6,11 @@ using System.Runtime.Serialization.Formatters.Binary;
 using Fohjin.DDD.Configuration;
 using Fohjin.DDD.Domain.Account;
 using Fohjin.DDD.EventStore;
+using Fohjin.DDD.EventStore.Bus;
 using Fohjin.DDD.EventStore.SQLite;
 using Fohjin.DDD.EventStore.Storage;
 using Fohjin.DDD.EventStore.Storage.Memento;
+using Moq;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 
@@ -35,7 +37,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
             _domainEventStorage = new DomainEventStorage(sqliteConnectionString, new BinaryFormatter());
             _eventStoreIdentityMap = new EventStoreIdentityMap();
             _eventStoreUnitOfWork = new EventStoreUnitOfWork(_domainEventStorage, _eventStoreIdentityMap);
-            _repository = new DomainRepository(_eventStoreUnitOfWork, _eventStoreIdentityMap);
+            _repository = new DomainRepository(_eventStoreUnitOfWork, new Mock<IEventHandlerUnitOfWork>().Object, _eventStoreIdentityMap);
         }
 
         [Test]

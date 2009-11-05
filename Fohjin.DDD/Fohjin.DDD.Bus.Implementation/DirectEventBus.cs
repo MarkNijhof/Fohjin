@@ -1,23 +1,48 @@
+using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Fohjin.DDD.EventHandlers;
+using System.Threading;
 using Fohjin.DDD.EventStore.Bus;
 using StructureMap;
 
 namespace Fohjin.DDD.Bus.Implementation
 {
-    public class DirectEventBus : IEventBus
+    public class DirectEventBus : IEventBus, IDisposable
     {
+        private bool _keepProcessing;
         private readonly IContainer _container;
         private readonly MethodInfo _methodInfo;
+        private readonly IQueue _inMemoryQueue;
+        private readonly Thread _queueProcessor;
 
-        public DirectEventBus(IContainer container)
+        public DirectEventBus(IContainer container, IQueue inMemoryQueue)
         {
+            _keepProcessing = true;
             _container = container;
-            _methodInfo = GetType().GetMethod("Publish");
+            _methodInfo = GetType().GetMethod("DoPublish");
+            _inMemoryQueue = inMemoryQueue;
+            _queueProcessor = new Thread(ProcessQueue);
+            _queueProcessor.Start();
         }
 
-        public void Publish<TMessage>(TMessage message) where TMessage : class
+        private void ProcessQueue()
+        {
+            _inMemoryQueue.Pop(PublishEvent);
+
+            while (_keepProcessing)
+            {
+                Thread.Sleep(500);
+            }
+        }
+
+        private void PublishEvent(object theEvent)
+        {
+            _methodInfo.MakeGenericMethod(theEvent.GetType()).Invoke(this, new [] { theEvent });
+
+            _inMemoryQueue.Pop(PublishEvent);
+        }
+
+        public void DoPublish<TMessage>(TMessage message) where TMessage : class
         {
             var eventHandlers = _container.GetAllInstances<IEventHandler<TMessage>>();
             foreach (var eventHandler in eventHandlers)
@@ -30,8 +55,13 @@ namespace Fohjin.DDD.Bus.Implementation
         {
             foreach (var message in messages)
             {
-                _methodInfo.MakeGenericMethod(message.GetType()).Invoke(this, new object[]{ message });
+                _inMemoryQueue.Put(message);
             }
+        }
+
+        public void Dispose()
+        {
+            _keepProcessing = false;
         }
     }
 }

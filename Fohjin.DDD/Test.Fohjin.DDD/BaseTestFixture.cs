@@ -9,8 +9,9 @@ namespace Test.Fohjin.DDD
     [Specification]
     public abstract class BaseTestFixture<TSubjectUnderTest>
     {
-        private IDictionary<Type, object> mocks;
+        private Dictionary<Type, object> mocks;
 
+        protected Dictionary<Type, object> DoNotMock;
         protected TSubjectUnderTest SubjectUnderTest;
         protected Exception CaughtException;
         protected virtual void SetupDependencies() { }
@@ -22,9 +23,13 @@ namespace Test.Fohjin.DDD
         public void Setup()
         {
             mocks = new Dictionary<Type, object>();
+            DoNotMock = new Dictionary<Type, object>();
             CaughtException = new ThereWasNoExceptionButOneWasExpectedException();
-            SubjectUnderTest = BuildSubjectUnderTest();
+
+            BuildMocks();
             SetupDependencies();
+            SubjectUnderTest = BuildSubjectUnderTest();
+            
             Given();
 
             try
@@ -41,7 +46,6 @@ namespace Test.Fohjin.DDD
             }
         }
 
-
         public Mock<TType> OnDependency<TType>() where TType : class
         {
             return (Mock<TType>)mocks[typeof(TType)];
@@ -51,12 +55,27 @@ namespace Test.Fohjin.DDD
         {
             var constructorInfo = typeof(TSubjectUnderTest).GetConstructors().First();
 
+            var parameters = new List<object>();
+            foreach (var mock in mocks)
+            {
+                object theObject;
+                if (!DoNotMock.TryGetValue(mock.Key, out theObject))
+                    theObject = ((Mock) mock.Value).Object;
+
+                parameters.Add(theObject);
+            }
+
+            return (TSubjectUnderTest)constructorInfo.Invoke(parameters.ToArray());
+        }
+
+        private void BuildMocks()
+        {
+            var constructorInfo = typeof(TSubjectUnderTest).GetConstructors().First();
+
             foreach (var parameter in constructorInfo.GetParameters())
             {
                 mocks.Add(parameter.ParameterType, CreateMock(parameter.ParameterType));
             }
-
-            return (TSubjectUnderTest)constructorInfo.Invoke(mocks.Values.Select(x => ((Mock)x).Object).ToArray());
         }
 
         private static object CreateMock(Type type)

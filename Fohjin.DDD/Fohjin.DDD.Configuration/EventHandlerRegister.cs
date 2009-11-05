@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Fohjin.DDD.EventHandlers;
 using Fohjin.DDD.Events;
+using Fohjin.DDD.EventStore.Bus;
 using StructureMap.Configuration.DSL;
 
 namespace Fohjin.DDD.Configuration

@@ -99,6 +99,7 @@
     <Compile Include="EventTestFixture.cs" />
     <Compile Include="PresenterTestFixture.cs" />
     <Compile Include="Presenter\PresenterTest.cs" />
+    <Compile Include="Queueing\InMemoryQueue_test.cs" />
     <Compile Include="Reporting\Infrastructure\SqlDeleteBuilderTest.cs" />
     <Compile Include="Reporting\Infrastructure\SqlUpdateBuilderTest.cs" />
     <Compile Include="Scenarios\Adding_a_new_client\When_creating_a_new_client.cs" />
@@ -292,6 +293,9 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="EventStore\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

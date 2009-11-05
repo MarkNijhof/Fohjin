@@ -15,12 +15,16 @@ namespace Fohjin.DDD.Configuration
 
         public DomainRegistry()
         {
+            ForRequestedType<IQueue>().TheDefault.Is.OfConcreteType<InMemoryQueue>();
+            ForRequestedType<IEventBus>().AsSingletons().TheDefault.Is.OfConcreteType<DirectEventBus>();
+
             ForRequestedType<ICommandBus>().TheDefault.Is.OfConcreteType<DirectCommandBus>();
             ForRequestedType<IFormatter>().TheDefault.Is.ConstructedBy(x => new BinaryFormatter());
             ForRequestedType<IDomainEventStorage>().TheDefault.Is.OfConcreteType<DomainEventStorage>().WithCtorArg("sqLiteConnectionString").EqualTo(sqLiteConnectionString);
 
             ForRequestedType<IIdentityMap>().TheDefault.Is.OfConcreteType<EventStoreIdentityMap>();
             ForRequestedType<IEventStoreUnitOfWork>().TheDefault.Is.OfConcreteType<EventStoreUnitOfWork>();
+            ForRequestedType<IEventHandlerUnitOfWork>().TheDefault.Is.OfConcreteType<EventHandlerUnitOfWork>();
             ForRequestedType<IDomainRepository>().TheDefault.Is.OfConcreteType<DomainRepository>();
         }
     }
