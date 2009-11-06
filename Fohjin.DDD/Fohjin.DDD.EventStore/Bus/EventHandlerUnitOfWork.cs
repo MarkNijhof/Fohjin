@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Transactions;
@@ -10,7 +9,7 @@ namespace Fohjin.DDD.EventStore.Bus
     {
         private readonly IEventBus _eventBus;
         private readonly List<IEventProvider> _events;
-        private TransactionScope _transactionScope;
+        private CommittableTransaction _transactionScope;
 
         public EventHandlerUnitOfWork(IEventBus eventBus)
         {
@@ -25,30 +24,22 @@ namespace Fohjin.DDD.EventStore.Bus
 
         public void Complete()
         {
-            //_transactionScope = new TransactionScope();
+            _transactionScope = new CommittableTransaction();
 
             _eventBus.PublishMultiple(_events.SelectMany(x => x.GetChanges()).ToList());
             _events.Clear();
-            //try
-            //{
-            //    _eventBus.PublishMultiple(_events);
-            //    _events.Clear();
-            //}
-            //catch (Exception Ex)
-            //{
-            //    Rollback();
-            //    throw;
-            //}
         }
 
         public void Commit()
         {
-            //_transactionScope.Complete();
+            _transactionScope.Commit();
+            _transactionScope.Dispose();
         }
 
         public void Rollback()
         {
-            //_transactionScope.Dispose();
+            _transactionScope.Rollback();
+            _transactionScope.Dispose();
             _events.Clear();
         }
     }

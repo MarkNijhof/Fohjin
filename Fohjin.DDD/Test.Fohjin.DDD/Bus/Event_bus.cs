@@ -38,11 +38,6 @@ namespace Test.Fohjin.DDD.Bus
         {
             _handler.Ids.First().WillBe(_event.Id);
         }
-
-        protected override void Finally()
-        {
-            SubjectUnderTest.Dispose();
-        }
     }
 
     public class When_a_single_event_gets_published_to_the_bus_containing_multiple_event_handlers : BaseTestFixture<DirectEventBus>
@@ -82,11 +77,6 @@ namespace Test.Fohjin.DDD.Bus
         public void Then_the_execute_method_on_the_second_returned_event_handler_is_invoked_with_the_first_provided_event()
         {
             _secondHandler.Ids.First().WillBe(_event.Id);
-        }
-
-        protected override void Finally()
-        {
-            SubjectUnderTest.Dispose();
         }
     }
 
@@ -141,11 +131,6 @@ namespace Test.Fohjin.DDD.Bus
         public void Then_the_execute_method_on_the_second_returned_event_handler_is_invoked_with_the_second_provided_event()
         {
             _otherHandler.Ids[1].WillBe(_otherEvent.Id);
-        }
-
-        protected override void Finally()
-        {
-            SubjectUnderTest.Dispose();
         }
     }
 

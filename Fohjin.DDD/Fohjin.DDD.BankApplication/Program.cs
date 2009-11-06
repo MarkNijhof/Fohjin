@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
 using Fohjin.DDD.BankApplication.Presenters;
-using Fohjin.DDD.EventStore.Bus;
 using StructureMap;
 
 namespace Fohjin.DDD.BankApplication
@@ -21,9 +20,6 @@ namespace Fohjin.DDD.BankApplication
             Application.EnableVisualStyles();
 
             clientSearchFormPresenter.Display();
-
-            var eventBus = (IDisposable) ObjectFactory.GetInstance<IEventBus>();
-            eventBus.Dispose();
         }
     }
 }

@@ -1,45 +1,34 @@
-using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Threading;
 using Fohjin.DDD.EventStore.Bus;
 using StructureMap;
 
 namespace Fohjin.DDD.Bus.Implementation
 {
-    public class DirectEventBus : IEventBus, IDisposable
+    public class DirectEventBus : IEventBus
     {
-        private bool _keepProcessing;
         private readonly IContainer _container;
         private readonly MethodInfo _methodInfo;
         private readonly IQueue _inMemoryQueue;
-        private readonly Thread _queueProcessor;
 
         public DirectEventBus(IContainer container, IQueue inMemoryQueue)
         {
-            _keepProcessing = true;
             _container = container;
             _methodInfo = GetType().GetMethod("DoPublish");
             _inMemoryQueue = inMemoryQueue;
-            _queueProcessor = new Thread(ProcessQueue);
-            _queueProcessor.Start();
-        }
-
-        private void ProcessQueue()
-        {
             _inMemoryQueue.Pop(PublishEvent);
-
-            while (_keepProcessing)
-            {
-                Thread.Sleep(500);
-            }
         }
 
         private void PublishEvent(object theEvent)
         {
-            _methodInfo.MakeGenericMethod(theEvent.GetType()).Invoke(this, new [] { theEvent });
-
-            _inMemoryQueue.Pop(PublishEvent);
+            try
+            {
+                _methodInfo.MakeGenericMethod(theEvent.GetType()).Invoke(this, new[] { theEvent });
+            }
+            finally
+            {
+                _inMemoryQueue.Pop(PublishEvent);
+            }
         }
 
         public void DoPublish<TMessage>(TMessage message) where TMessage : class
@@ -57,11 +46,6 @@ namespace Fohjin.DDD.Bus.Implementation
             {
                 _inMemoryQueue.Put(message);
             }
-        }
-
-        public void Dispose()
-        {
-            _keepProcessing = false;
         }
     }
 }
