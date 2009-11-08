@@ -19,7 +19,6 @@ namespace Fohjin.DDD.CommandHandlers
 
             activeAccount.Deposite(new Amount(compensatingCommand.Amount));
 
-            //_repository.Add(activeAccount);
             _repository.Complete();
         }
     }

@@ -19,7 +19,6 @@ namespace Fohjin.DDD.CommandHandlers
 
             activeAccount.SendTransferTo(new AccountNumber(compensatingCommand.AccountNumber), new Amount(compensatingCommand.Amount));
 
-            //_repository.Add(activeAccount);
             _repository.Complete();
         }
     }
