@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Fohjin.DDD.Contracts
+namespace Fohjin.DDD.Reporting
 {
     public interface IReportingRepository 
     {

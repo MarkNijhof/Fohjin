@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Fohjin.DDD.Events;
 using Fohjin.DDD.EventStore;
 using NUnit.Framework;
 
@@ -48,6 +47,10 @@ namespace Test.Fohjin.DDD
         public static TDomainEvent LastMinus<TDomainEvent>(this IEnumerable<IDomainEvent> events, int minus)
         {
             return (TDomainEvent) events.ToList()[events.Count() - minus];
+        }
+        public static TDomainEvent As<TDomainEvent>(this object theObject)
+        {
+            return (TDomainEvent) theObject;
         }
     }
 }

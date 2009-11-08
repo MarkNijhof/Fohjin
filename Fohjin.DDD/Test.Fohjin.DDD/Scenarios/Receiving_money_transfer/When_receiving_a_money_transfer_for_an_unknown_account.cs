@@ -1,5 +1,5 @@
 ﻿using System;
-using Fohjin.DDD.Contracts;
+using Fohjin.DDD.Reporting;
 using Fohjin.DDD.Reporting.Dto;
 using Fohjin.DDD.Services;
 using Moq;

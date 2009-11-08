@@ -1,7 +1,7 @@
 ﻿using System;
 using Fohjin.DDD.BankApplication.Presenters;
 using Fohjin.DDD.BankApplication.Views;
-using Fohjin.DDD.Bus.Implementation;
+using Fohjin.DDD.Bus;
 using Fohjin.DDD.Commands;
 using Moq;
 
@@ -9,7 +9,7 @@ namespace Test.Fohjin.DDD.Scenarios.Adding_a_new_client
 {
     public class When_in_the_GUI_the_phone_number_of_the_new_client_is_saved : PresenterTestFixture<ClientDetailsPresenter>
     {
-        private CreateClientCommand CreateClientCommand;
+        private object CreateClientCommand;
 
         protected override void SetupDependencies()
         {
@@ -17,9 +17,9 @@ namespace Test.Fohjin.DDD.Scenarios.Adding_a_new_client
                 .Setup(x => x.CatchPossibleException(It.IsAny<Action>()))
                 .Callback<Action>(x => x());
 
-            OnDependency<ICommandBus>()
-                .Setup(x => x.Publish(It.IsAny<CreateClientCommand>()))
-                .Callback<CreateClientCommand>(x => CreateClientCommand = x);
+            OnDependency<IBus>()
+                .Setup(x => x.Publish(It.IsAny<object>()))
+                .Callback<object>(x => CreateClientCommand = x);
         }
 
         protected override void Given()
@@ -55,14 +55,14 @@ namespace Test.Fohjin.DDD.Scenarios.Adding_a_new_client
         [Then]
         public void Then_a_create_client_command_with_all_collected_information_will_be_published()
         {
-            On<ICommandBus>().VerifyThat.Method(x => x.Publish(It.IsAny<CreateClientCommand>())).WasCalled();
+            On<IBus>().VerifyThat.Method(x => x.Publish(It.IsAny<CreateClientCommand>())).WasCalled();
 
-            CreateClientCommand.ClientName.WillBe("New Client Name");
-            CreateClientCommand.Street.WillBe("Street");
-            CreateClientCommand.StreetNumber.WillBe("123");
-            CreateClientCommand.PostalCode.WillBe("5000");
-            CreateClientCommand.City.WillBe("Bergen");
-            CreateClientCommand.PhoneNumber.WillBe("1234567890");
+            CreateClientCommand.As<CreateClientCommand>().ClientName.WillBe("New Client Name");
+            CreateClientCommand.As<CreateClientCommand>().Street.WillBe("Street");
+            CreateClientCommand.As<CreateClientCommand>().StreetNumber.WillBe("123");
+            CreateClientCommand.As<CreateClientCommand>().PostalCode.WillBe("5000");
+            CreateClientCommand.As<CreateClientCommand>().City.WillBe("Bergen");
+            CreateClientCommand.As<CreateClientCommand>().PhoneNumber.WillBe("1234567890");
         }
 
         [Then]

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Fohjin.DDD.CommandHandlers;
 using Fohjin.DDD.Commands;
-using Fohjin.DDD.Contracts;
 using Fohjin.DDD.Domain.Account;
 using Fohjin.DDD.Events;
 using Fohjin.DDD.Events.Account;

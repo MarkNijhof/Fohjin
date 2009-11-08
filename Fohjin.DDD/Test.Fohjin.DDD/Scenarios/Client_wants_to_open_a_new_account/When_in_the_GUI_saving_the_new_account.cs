@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using Fohjin.DDD.BankApplication.Presenters;
 using Fohjin.DDD.BankApplication.Views;
-using Fohjin.DDD.Bus.Implementation;
+using Fohjin.DDD.Bus;
 using Fohjin.DDD.Commands;
-using Fohjin.DDD.Contracts;
+using Fohjin.DDD.Reporting;
 using Fohjin.DDD.Reporting.Dto;
 using Moq;
 
@@ -40,7 +40,7 @@ namespace Test.Fohjin.DDD.Scenarios.Client_wants_to_open_a_new_account
         [Then]
         public void Then_a_add_new_account_to_client_command_will_be_published()
         {
-            On<ICommandBus>().VerifyThat.Method(x => x.Publish(It.IsAny<OpenNewAccountForClientCommand>())).WasCalled();
+            On<IBus>().VerifyThat.Method(x => x.Publish(It.IsAny<OpenNewAccountForClientCommand>())).WasCalled();
         }
 
         [Then]

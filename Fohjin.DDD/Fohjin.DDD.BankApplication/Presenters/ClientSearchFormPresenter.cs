@@ -1,6 +1,6 @@
 using Fohjin.DDD.BankApplication.Views;
-using Fohjin.DDD.Contracts;
 using Fohjin.DDD.Domain;
+using Fohjin.DDD.Reporting;
 using Fohjin.DDD.Reporting.Dto;
 
 namespace Fohjin.DDD.BankApplication.Presenters

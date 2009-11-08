@@ -1,10 +1,10 @@
 using System;
 using System.Linq;
 using Fohjin.DDD.BankApplication.Views;
-using Fohjin.DDD.Bus.Implementation;
+using Fohjin.DDD.Bus;
 using Fohjin.DDD.Commands;
-using Fohjin.DDD.Contracts;
 using Fohjin.DDD.Domain;
+using Fohjin.DDD.Reporting;
 using Fohjin.DDD.Reporting.Dto;
 
 namespace Fohjin.DDD.BankApplication.Presenters
@@ -16,10 +16,10 @@ namespace Fohjin.DDD.BankApplication.Presenters
         private AccountDetailsReport _accountDetailsReport;
         private readonly IAccountDetailsView _accountDetailsView;
         private readonly IPopupPresenter _popupPresenter;
-        private readonly ICommandBus _bus;
+        private readonly IBus _bus;
         private readonly IReportingRepository _reportingRepository;
 
-        public AccountDetailsPresenter(IAccountDetailsView accountDetailsView, IPopupPresenter popupPresenter, ICommandBus bus, IReportingRepository reportingRepository)
+        public AccountDetailsPresenter(IAccountDetailsView accountDetailsView, IPopupPresenter popupPresenter, IBus bus, IReportingRepository reportingRepository)
             : base(accountDetailsView)
         {
             _editStep = 0;
@@ -125,6 +125,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
 
                 _accountDetailsView.EnableMenuButtons();
                 _accountDetailsView.EnableDetailsPanel();
+                _bus.Commit();
                 SystemTimer.Trigger(LoadData).In(2000);
             });
         }
@@ -139,6 +140,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
 
                 _accountDetailsView.EnableMenuButtons();
                 _accountDetailsView.EnableDetailsPanel();
+                _bus.Commit();
                 SystemTimer.Trigger(LoadData).In(2000);
             });
         }
@@ -153,6 +155,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
 
                 _accountDetailsView.EnableMenuButtons();
                 _accountDetailsView.EnableDetailsPanel();
+                _bus.Commit();
                 SystemTimer.Trigger(LoadData).In(2000);
             });
         }
@@ -168,7 +171,9 @@ namespace Fohjin.DDD.BankApplication.Presenters
 
                 _accountDetailsView.EnableMenuButtons();
                 _accountDetailsView.EnableDetailsPanel();
+                _bus.Commit();
                 SystemTimer.Trigger(LoadData).In(2000);
+                SystemTimer.Trigger(LoadData).In(4000); // This one is because there is also a delay in the transfer service :)
             });
         }
 

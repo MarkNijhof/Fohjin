@@ -78,17 +78,13 @@
     <Compile Include="UnknownAccountException.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Fohjin.DDD.Bus.Implementation\Fohjin.DDD.Bus.Implementation.csproj">
-      <Project>{DA415B11-2B50-4635-9951-42AAAEFA38EF}</Project>
-      <Name>Fohjin.DDD.Bus.Implementation</Name>
+    <ProjectReference Include="..\Fohjin.DDD.Bus\Fohjin.DDD.Bus.csproj">
+      <Project>{809E2C9E-8ACD-40D5-86C8-43256C3D8AA8}</Project>
+      <Name>Fohjin.DDD.Bus</Name>
     </ProjectReference>
     <ProjectReference Include="..\Fohjin.DDD.Commands\Fohjin.DDD.Commands.csproj">
       <Project>{58D61FA0-D67F-4D72-81EA-2D709356AF95}</Project>
       <Name>Fohjin.DDD.Commands</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Fohjin.DDD.Contracts\Fohjin.DDD.Contracts.csproj">
-      <Project>{F18EACDA-7B90-4244-B5B8-9B764F46FF60}</Project>
-      <Name>Fohjin.DDD.Contracts</Name>
     </ProjectReference>
     <ProjectReference Include="..\Fohjin.DDD.Domain\Fohjin.DDD.Domain.csproj">
       <Project>{0FB24C8F-FA8C-409E-A71C-8580F7D78474}</Project>
@@ -101,6 +97,10 @@
     <ProjectReference Include="..\Fohjin.DDD.Reporting.Dto\Fohjin.DDD.Reporting.Dto.csproj">
       <Project>{44666AF0-AC7A-486E-AD1F-49FD0573ED43}</Project>
       <Name>Fohjin.DDD.Reporting.Dto</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fohjin.DDD.Reporting\Fohjin.DDD.Reporting.csproj">
+      <Project>{0E86D5C6-929D-4304-A00D-ADC9FB2AFE77}</Project>
+      <Name>Fohjin.DDD.Reporting</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

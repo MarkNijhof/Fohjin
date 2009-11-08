@@ -1,26 +1,23 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Fohjin.DDD.Bus.Implementation;
+using Fohjin.DDD.Bus.Direct;
+using Fohjin.DDD.EventHandlers;
 using Fohjin.DDD.Events;
-using Fohjin.DDD.EventStore.Bus;
-using StructureMap;
 
 namespace Test.Fohjin.DDD.Bus
 {
-    public class When_a_single_event_gets_published_to_the_bus_containing_an_sinlge_event_handler : BaseTestFixture<DirectEventBus>
+    public class When_a_single_event_gets_published_to_the_bus_containing_an_sinlge_event_handler : BaseTestFixture<DirectBus>
     {
         private FirstTestEventHandler _handler;
         private TestEvent _event;
 
         protected override void SetupDependencies()
         {
-            DoNotMock.Add(typeof(IQueue), new InMemoryQueue());
-
             _handler = new FirstTestEventHandler();
-            OnDependency<IContainer>()
-                .Setup(x => x.GetAllInstances<IEventHandler<TestEvent>>())
-                .Returns(new List<IEventHandler<TestEvent>> { _handler });
+            var messageRouter = new MessageRouter();
+            messageRouter.Register<TestEvent>(x => _handler.Execute(x));
+            DoNotMock.Add(typeof(IRouteMessages), messageRouter);
         }
 
         protected override void Given()
@@ -30,7 +27,8 @@ namespace Test.Fohjin.DDD.Bus
 
         protected override void When()
         {
-            SubjectUnderTest.PublishMultiple(new List<object> { _event });
+            SubjectUnderTest.Publish(new List<object> { _event });
+            SubjectUnderTest.Commit();
         }
 
         [Then]
@@ -40,7 +38,7 @@ namespace Test.Fohjin.DDD.Bus
         }
     }
 
-    public class When_a_single_event_gets_published_to_the_bus_containing_multiple_event_handlers : BaseTestFixture<DirectEventBus>
+    public class When_a_single_event_gets_published_to_the_bus_containing_multiple_event_handlers : BaseTestFixture<DirectBus>
     {
         private FirstTestEventHandler _handler;
         private SecondTestEventHandler _secondHandler;
@@ -48,13 +46,12 @@ namespace Test.Fohjin.DDD.Bus
 
         protected override void SetupDependencies()
         {
-            DoNotMock.Add(typeof(IQueue), new InMemoryQueue());
-
             _handler = new FirstTestEventHandler();
             _secondHandler = new SecondTestEventHandler();
-            OnDependency<IContainer>()
-                .Setup(x => x.GetAllInstances<IEventHandler<TestEvent>>())
-                .Returns(new List<IEventHandler<TestEvent>> { _handler, _secondHandler });
+            var messageRouter = new MessageRouter();
+            messageRouter.Register<TestEvent>(x => _handler.Execute(x));
+            messageRouter.Register<TestEvent>(x => _secondHandler.Execute(x));
+            DoNotMock.Add(typeof(IRouteMessages), messageRouter);
         }
 
         protected override void Given()
@@ -64,7 +61,8 @@ namespace Test.Fohjin.DDD.Bus
 
         protected override void When()
         {
-            SubjectUnderTest.PublishMultiple(new List<object> { _event });
+            SubjectUnderTest.Publish(new List<object> { _event });
+            SubjectUnderTest.Commit();
         }
 
         [Then]
@@ -80,22 +78,21 @@ namespace Test.Fohjin.DDD.Bus
         }
     }
 
-    public class When_multiple_events_gets_published_to_the_bus_containing_multiple_event_handlers : BaseTestFixture<DirectEventBus>
+    public class When_multiple_events_gets_published_to_the_bus_containing_multiple_event_handlers : BaseTestFixture<DirectBus>
     {
         private FirstTestEventHandler _handler;
-        private SecondTestEventHandler _otherHandler;
+        private SecondTestEventHandler _secondHandler;
         private TestEvent _event;
         private TestEvent _otherEvent;
 
         protected override void SetupDependencies()
         {
-            DoNotMock.Add(typeof (IQueue), new InMemoryQueue());
-
             _handler = new FirstTestEventHandler();
-            _otherHandler = new SecondTestEventHandler();
-            OnDependency<IContainer>()
-                .Setup(x => x.GetAllInstances<IEventHandler<TestEvent>>())
-                .Returns(new List<IEventHandler<TestEvent>> { _handler, _otherHandler });
+            _secondHandler = new SecondTestEventHandler();
+            var messageRouter = new MessageRouter();
+            messageRouter.Register<TestEvent>(x => _handler.Execute(x));
+            messageRouter.Register<TestEvent>(x => _secondHandler.Execute(x));
+            DoNotMock.Add(typeof(IRouteMessages), messageRouter);
         }
 
         protected override void Given()
@@ -106,7 +103,8 @@ namespace Test.Fohjin.DDD.Bus
 
         protected override void When()
         {
-            SubjectUnderTest.PublishMultiple(new List<object> { _event, _otherEvent });
+            SubjectUnderTest.Publish(new List<object> { _event, _otherEvent });
+            SubjectUnderTest.Commit();
         }
 
         [Then]
@@ -124,13 +122,13 @@ namespace Test.Fohjin.DDD.Bus
         [Then]
         public void Then_the_execute_method_on_the_second_returned_event_handler_is_invoked_with_the_first_provided_event()
         {
-            _otherHandler.Ids[0].WillBe(_event.Id);
+            _secondHandler.Ids[0].WillBe(_event.Id);
         }
 
         [Then]
         public void Then_the_execute_method_on_the_second_returned_event_handler_is_invoked_with_the_second_provided_event()
         {
-            _otherHandler.Ids[1].WillBe(_otherEvent.Id);
+            _secondHandler.Ids[1].WillBe(_otherEvent.Id);
         }
     }
 

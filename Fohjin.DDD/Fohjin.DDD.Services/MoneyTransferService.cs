@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Fohjin.DDD.Bus.Implementation;
+using Fohjin.DDD.Bus;
 using Fohjin.DDD.Commands;
-using Fohjin.DDD.Contracts;
 using Fohjin.DDD.Domain;
+using Fohjin.DDD.Reporting;
 using Fohjin.DDD.Reporting.Dto;
 
 namespace Fohjin.DDD.Services
@@ -16,14 +16,14 @@ namespace Fohjin.DDD.Services
 
     public class MoneyTransferService : ISendMoneyTransfer
     {
-        private readonly ICommandBus _commandBus;
+        private readonly IBus _bus;
         private readonly IReportingRepository _reportingRepository;
         private readonly IReceiveMoneyTransfers _receiveMoneyTransfers;
         private readonly IDictionary<int, Action<MoneyTransfer>> _moneyTransferOptions;
 
-        public MoneyTransferService(ICommandBus commandBus, IReportingRepository reportingRepository, IReceiveMoneyTransfers receiveMoneyTransfers)
+        public MoneyTransferService(IBus bus, IReportingRepository reportingRepository, IReceiveMoneyTransfers receiveMoneyTransfers)
         {
-            _commandBus = commandBus;
+            _bus = bus;
             _reportingRepository = reportingRepository;
             _receiveMoneyTransfers = receiveMoneyTransfers;
 
@@ -62,7 +62,8 @@ namespace Fohjin.DDD.Services
         private void MoneyTransferIsGoingToAnInternalAccount(MoneyTransfer moneyTransfer)
         {
             var account = _reportingRepository.GetByExample<AccountReport>(new { AccountNumber = moneyTransfer.TargetAccount }).First();
-            _commandBus.Publish(new ReceiveMoneyTransferCommand(account.Id, moneyTransfer.Ammount, moneyTransfer.SourceAccount));
+            _bus.Publish(new ReceiveMoneyTransferCommand(account.Id, moneyTransfer.Ammount, moneyTransfer.SourceAccount));
+            _bus.Commit();
         }
 
         private void MoneyTransferIsGoingToAnExternalAccount(MoneyTransfer moneyTransfer)
@@ -78,7 +79,7 @@ namespace Fohjin.DDD.Services
         private void CompensatingActionBecauseOfFailedMoneyTransfer(MoneyTransfer moneyTransfer)
         {
             var account = _reportingRepository.GetByExample<AccountReport>(new { AccountNumber = moneyTransfer.SourceAccount }).First();
-            _commandBus.Publish(new MoneyTransferFailedCompensatingCommand(account.Id, moneyTransfer.Ammount, moneyTransfer.TargetAccount));
+            _bus.Publish(new MoneyTransferFailedCompensatingCommand(account.Id, moneyTransfer.Ammount, moneyTransfer.TargetAccount));
         }
     }
 }

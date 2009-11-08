@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Fohjin.DDD.EventStore.Bus
+namespace Fohjin.DDD.Bus.Direct
 {
     public interface IQueue
     {
@@ -11,37 +11,36 @@ namespace Fohjin.DDD.EventStore.Bus
 
     public class InMemoryQueue : IQueue
     {
-        private readonly Queue<object> _queue;
-        private readonly Queue<Action<object>> _listeners;
+        private readonly Queue<object> _itemQueue;
+        private readonly Queue<Action<object>> _listenerQueue;
 
         public InMemoryQueue()
         {
-            _queue = new Queue<object>(32);
-            _listeners = new Queue<Action<object>>(32);
+            _itemQueue = new Queue<object>(32);
+            _listenerQueue = new Queue<Action<object>>(32);
         }
 
         public void Put(object item)
         {
-            if
-                (_listeners.Count == 0)
+            if (_listenerQueue.Count == 0)
             {
-                _queue.Enqueue(item);
+                _itemQueue.Enqueue(item);
                 return;
             }
 
-            var listener = _listeners.Dequeue();
+            var listener = _listenerQueue.Dequeue();
             listener(item);
         }
 
         public void Pop(Action<object> popAction)
         {
-            if (_queue.Count == 0)
+            if (_itemQueue.Count == 0)
             {
-                _listeners.Enqueue(popAction);
+                _listenerQueue.Enqueue(popAction);
                 return;
             }
 
-            var item = _queue.Dequeue();
+            var item = _itemQueue.Dequeue();
             popAction(item);
         }
     }

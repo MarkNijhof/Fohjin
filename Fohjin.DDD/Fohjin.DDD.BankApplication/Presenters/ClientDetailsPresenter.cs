@@ -1,10 +1,10 @@
 using System;
 using System.Linq;
 using Fohjin.DDD.BankApplication.Views;
-using Fohjin.DDD.Bus.Implementation;
+using Fohjin.DDD.Bus;
 using Fohjin.DDD.Commands;
-using Fohjin.DDD.Contracts;
 using Fohjin.DDD.Domain;
+using Fohjin.DDD.Reporting;
 using Fohjin.DDD.Reporting.Dto;
 
 namespace Fohjin.DDD.BankApplication.Presenters
@@ -19,10 +19,10 @@ namespace Fohjin.DDD.BankApplication.Presenters
         private readonly IClientDetailsView _clientDetailsView;
         private readonly IAccountDetailsPresenter _accountDetailsPresenter;
         private readonly IPopupPresenter _popupPresenter;
-        private readonly ICommandBus _bus;
+        private readonly IBus _bus;
         private readonly IReportingRepository _reportingRepository;
 
-        public ClientDetailsPresenter(IClientDetailsView clientDetailsView, IAccountDetailsPresenter accountDetailsPresenter, IPopupPresenter popupPresenter, ICommandBus bus, IReportingRepository reportingRepository)
+        public ClientDetailsPresenter(IClientDetailsView clientDetailsView, IAccountDetailsPresenter accountDetailsPresenter, IPopupPresenter popupPresenter, IBus bus, IReportingRepository reportingRepository)
             : base(clientDetailsView)
         {
             _editStep = 0;
@@ -144,6 +144,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
 
                 EnableAllMenuButtons();
                 _clientDetailsView.EnableOverviewPanel();
+                _bus.Commit();
                 SystemTimer.Trigger(LoadData).In(1000);
             });
         }
@@ -187,6 +188,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
 
                 EnableAllMenuButtons();
                 _clientDetailsView.EnableOverviewPanel();
+                _bus.Commit();
                 SystemTimer.Trigger(LoadData).In(2000);
             });
         }
@@ -208,6 +210,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
                                      _clientDetailsReport.City,
                                      _clientDetailsView.PhoneNumber));
 
+                    _bus.Commit();
                     _clientDetailsView.Close();
                     return;
                 }
@@ -227,6 +230,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
 
                 EnableAllMenuButtons();
                 _clientDetailsView.EnableOverviewPanel();
+                _bus.Commit();
                 SystemTimer.Trigger(LoadData).In(2000);
             });
         }
@@ -242,6 +246,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
                 _addNewAccountProcess = false;
                 EnableAllMenuButtons();
                 _clientDetailsView.EnableOverviewPanel();
+                _bus.Commit();
                 SystemTimer.Trigger(LoadData).In(2000);
             });
         }

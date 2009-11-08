@@ -90,10 +90,6 @@
       <Project>{58D61FA0-D67F-4D72-81EA-2D709356AF95}</Project>
       <Name>Fohjin.DDD.Commands</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Fohjin.DDD.Contracts\Fohjin.DDD.Contracts.csproj">
-      <Project>{F18EACDA-7B90-4244-B5B8-9B764F46FF60}</Project>
-      <Name>Fohjin.DDD.Contracts</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Fohjin.DDD.Domain\Fohjin.DDD.Domain.csproj">
       <Project>{0FB24C8F-FA8C-409E-A71C-8580F7D78474}</Project>
       <Name>Fohjin.DDD.Domain</Name>

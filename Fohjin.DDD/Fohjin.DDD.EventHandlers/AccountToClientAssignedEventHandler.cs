@@ -1,5 +1,4 @@
 using Fohjin.DDD.Events.Client;
-using Fohjin.DDD.EventStore.Bus;
 
 namespace Fohjin.DDD.EventHandlers
 {

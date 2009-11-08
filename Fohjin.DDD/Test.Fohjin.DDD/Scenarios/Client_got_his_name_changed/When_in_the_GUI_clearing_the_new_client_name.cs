@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Fohjin.DDD.BankApplication.Presenters;
 using Fohjin.DDD.BankApplication.Views;
-using Fohjin.DDD.Contracts;
+using Fohjin.DDD.Reporting;
 using Fohjin.DDD.Reporting.Dto;
 using Moq;
 

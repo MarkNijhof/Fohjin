@@ -1,4 +1,4 @@
-using Fohjin.DDD.Contracts;
+using Fohjin.DDD.Reporting;
 using Fohjin.DDD.Reporting.Infrastructure;
 using StructureMap.Configuration.DSL;
 

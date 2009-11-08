@@ -1,14 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Fohjin.DDD.Bus.Implementation;
+using Fohjin.DDD.Bus.Direct;
 using Fohjin.DDD.CommandHandlers;
 using Fohjin.DDD.Commands;
-using StructureMap;
 
 namespace Test.Fohjin.DDD.Bus
 {
-    public class When_a_single_command_gets_published_to_the_bus_containing_an_sinlge_command_handler : BaseTestFixture<DirectCommandBus>
+    public class When_a_single_command_gets_published_to_the_bus_containing_an_sinlge_command_handler : BaseTestFixture<DirectBus>
     {
         private FirstTestCommandHandler _handler;
         private TestCommand _command;
@@ -16,9 +15,9 @@ namespace Test.Fohjin.DDD.Bus
         protected override void SetupDependencies()
         {
             _handler = new FirstTestCommandHandler();
-            OnDependency<IContainer>()
-                .Setup(x => x.GetAllInstances<ICommandHandler<TestCommand>>())
-                .Returns(new List<ICommandHandler<TestCommand>> {_handler});
+            var messageRouter = new MessageRouter();
+            messageRouter.Register<TestCommand>(x => _handler.Execute(x));
+            DoNotMock.Add(typeof (IRouteMessages), messageRouter);
         }
 
         protected override void Given()
@@ -29,6 +28,7 @@ namespace Test.Fohjin.DDD.Bus
         protected override void When()
         {
             SubjectUnderTest.Publish(_command);
+            SubjectUnderTest.Commit();
         }
 
         [Then]
@@ -38,7 +38,7 @@ namespace Test.Fohjin.DDD.Bus
         }
     }
 
-    public class When_a_single_command_gets_published_to_the_bus_containing_multiple_command_handlers : BaseTestFixture<DirectCommandBus>
+    public class When_a_single_command_gets_published_to_the_bus_containing_multiple_command_handlers : BaseTestFixture<DirectBus>
     {
         private FirstTestCommandHandler _handler;
         private SecondTestCommandHandler _secondHandler;
@@ -48,9 +48,10 @@ namespace Test.Fohjin.DDD.Bus
         {
             _handler = new FirstTestCommandHandler();
             _secondHandler = new SecondTestCommandHandler();
-            OnDependency<IContainer>()
-                .Setup(x => x.GetAllInstances<ICommandHandler<TestCommand>>())
-                .Returns(new List<ICommandHandler<TestCommand>> { _handler, _secondHandler });
+            var messageRouter = new MessageRouter();
+            messageRouter.Register<TestCommand>(x => _handler.Execute(x));
+            messageRouter.Register<TestCommand>(x => _secondHandler.Execute(x));
+            DoNotMock.Add(typeof(IRouteMessages), messageRouter);
         }
 
         protected override void Given()
@@ -60,7 +61,8 @@ namespace Test.Fohjin.DDD.Bus
 
         protected override void When()
         {
-            SubjectUnderTest.PublishMultiple(new List<object> { _command });
+            SubjectUnderTest.Publish(new List<object> { _command });
+            SubjectUnderTest.Commit();
         }
 
         [Then]
@@ -76,20 +78,21 @@ namespace Test.Fohjin.DDD.Bus
         }
     }
 
-    public class When_multiple_commands_gets_published_to_the_bus_containing_multiple_command_handlers : BaseTestFixture<DirectCommandBus>
+    public class When_multiple_commands_gets_published_to_the_bus_containing_multiple_command_handlers : BaseTestFixture<DirectBus>
     {
         private FirstTestCommandHandler _handler;
-        private SecondTestCommandHandler _otherHandler;
+        private SecondTestCommandHandler _secondHandler;
         private TestCommand _command;
         private TestCommand _otherCommand;
 
         protected override void SetupDependencies()
         {
             _handler = new FirstTestCommandHandler();
-            _otherHandler = new SecondTestCommandHandler();
-            OnDependency<IContainer>()
-                .Setup(x => x.GetAllInstances<ICommandHandler<TestCommand>>())
-                .Returns(new List<ICommandHandler<TestCommand>> {_handler, _otherHandler});
+            _secondHandler = new SecondTestCommandHandler();
+            var messageRouter = new MessageRouter();
+            messageRouter.Register<TestCommand>(x => _handler.Execute(x));
+            messageRouter.Register<TestCommand>(x => _secondHandler.Execute(x));
+            DoNotMock.Add(typeof(IRouteMessages), messageRouter);
         }
 
         protected override void Given()
@@ -100,7 +103,8 @@ namespace Test.Fohjin.DDD.Bus
 
         protected override void When()
         {
-            SubjectUnderTest.PublishMultiple(new List<object>{ _command, _otherCommand });
+            SubjectUnderTest.Publish(new List<object>{ _command, _otherCommand });
+            SubjectUnderTest.Commit();
         }
 
         [Then]
@@ -118,13 +122,13 @@ namespace Test.Fohjin.DDD.Bus
         [Then]
         public void Then_the_execute_method_on_the_second_returned_command_handler_is_invoked_with_the_first_provided_command()
         {
-            _otherHandler.Ids[0].WillBe(_command.Id);
+            _secondHandler.Ids[0].WillBe(_command.Id);
         }
 
         [Then]
         public void Then_the_execute_method_on_the_second_returned_command_handler_is_invoked_with_the_second_provided_command()
         {
-            _otherHandler.Ids[1].WillBe(_otherCommand.Id);
+            _secondHandler.Ids[1].WillBe(_otherCommand.Id);
         }
     }
 

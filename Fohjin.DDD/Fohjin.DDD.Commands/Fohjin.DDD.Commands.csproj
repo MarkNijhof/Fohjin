@@ -83,10 +83,6 @@
     <Compile Include="MoneyTransferFailedCompensatingCommand.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Fohjin.DDD.Contracts\Fohjin.DDD.Contracts.csproj">
-      <Project>{F18EACDA-7B90-4244-B5B8-9B764F46FF60}</Project>
-      <Name>Fohjin.DDD.Contracts</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Fohjin.DDD.EventStore\Fohjin.DDD.EventStore.csproj">
       <Project>{318F1FE0-DA43-4A02-9956-361C9FE96915}</Project>
       <Name>Fohjin.DDD.EventStore</Name>

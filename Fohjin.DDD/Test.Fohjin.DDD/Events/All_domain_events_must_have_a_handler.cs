@@ -12,8 +12,8 @@ namespace Test.Fohjin.DDD.Events
         [Test]
         public void Verify_that_each_event_has_atleast_one_event_handler()
         {
-            var events = EventHandlerRegister.GetEvents();
-            var eventHandlers = EventHandlerRegister.GetEventHandlers();
+            var events = RegisterEventHandlersInMessageRouter.GetEvents();
+            var eventHandlers = RegisterEventHandlersInMessageRouter.GetEventHandlers();
 
             var stringBuilder = new StringBuilder();
             foreach (var theEvent in events.Where(theEvent => !eventHandlers.ContainsKey(theEvent)))

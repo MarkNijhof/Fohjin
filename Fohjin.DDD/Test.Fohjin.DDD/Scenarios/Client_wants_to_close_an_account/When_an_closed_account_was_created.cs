@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using Fohjin.DDD.Contracts;
 using Fohjin.DDD.EventHandlers;
 using Fohjin.DDD.Events.Account;
+using Fohjin.DDD.Reporting;
 using Fohjin.DDD.Reporting.Dto;
 using Moq;
 

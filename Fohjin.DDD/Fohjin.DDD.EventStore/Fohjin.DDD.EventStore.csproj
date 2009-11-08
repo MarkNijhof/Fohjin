@@ -46,15 +46,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Bus\EventHandlerUnitOfWork.cs" />
-    <Compile Include="Bus\IEventHandler.cs" />
-    <Compile Include="Bus\IEventHandlerUnitOfWork.cs" />
-    <Compile Include="Bus\InMemoryQueue.cs" />
     <Compile Include="DomainRepository.cs" />
     <Compile Include="ITransactional.cs" />
     <Compile Include="Storage\EventStoreIdentityMap.cs" />
     <Compile Include="Storage\EventStoreUnitOfWork.cs" />
-    <Compile Include="Bus\IEventBus.cs" />
     <Compile Include="IDomainEvent.cs" />
     <Compile Include="Storage\IDomainEventStorage.cs" />
     <Compile Include="IDomainRepository.cs" />
@@ -68,6 +63,12 @@
     <Compile Include="Storage\ISnapShotStorage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Storage\SnapShot.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Fohjin.DDD.Bus\Fohjin.DDD.Bus.csproj">
+      <Project>{809E2C9E-8ACD-40D5-86C8-43256C3D8AA8}</Project>
+      <Name>Fohjin.DDD.Bus</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

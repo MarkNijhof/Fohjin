@@ -16,11 +16,12 @@ namespace Fohjin.DDD.BankApplication
                 x.AddRegistry<ApplicationRegistry>();
                 x.AddRegistry<DomainRegistry>();
                 x.AddRegistry<ReportingRegistry>();
-                x.AddRegistry<CommandHandlerRegister>();
-                x.AddRegistry<EventHandlerRegister>();
                 x.AddRegistry<ServicesRegister>();
             });
             ObjectFactory.AssertConfigurationIsValid();
+
+            RegisterCommandHandlersInMessageRouter.BootStrap();
+            RegisterEventHandlersInMessageRouter.BootStrap();
         }
 
         public static void BootStrap()

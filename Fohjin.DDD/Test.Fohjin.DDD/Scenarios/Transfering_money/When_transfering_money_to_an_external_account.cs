@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Fohjin.DDD.Contracts;
 using Fohjin.DDD.Domain;
+using Fohjin.DDD.Reporting;
 using Fohjin.DDD.Reporting.Dto;
 using Fohjin.DDD.Services;
 using Moq;

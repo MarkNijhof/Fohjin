@@ -75,6 +75,7 @@
     <Compile Include="ClientPhoneNumberChangedEventHandler.cs" />
     <Compile Include="ClosedAccountCreatedEventHandler.cs" />
     <Compile Include="CashDepositeEventHandler.cs" />
+    <Compile Include="IEventHandler.cs" />
     <Compile Include="MoneyTransferFailedEventHandler.cs" />
     <Compile Include="MoneyTransferReceivedEventHandler.cs" />
     <Compile Include="MoneyTransferSendEventHandler.cs" />
@@ -87,10 +88,6 @@
     <ProjectReference Include="..\Fohjin.DDD.Commands\Fohjin.DDD.Commands.csproj">
       <Project>{58D61FA0-D67F-4D72-81EA-2D709356AF95}</Project>
       <Name>Fohjin.DDD.Commands</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Fohjin.DDD.Contracts\Fohjin.DDD.Contracts.csproj">
-      <Project>{F18EACDA-7B90-4244-B5B8-9B764F46FF60}</Project>
-      <Name>Fohjin.DDD.Contracts</Name>
     </ProjectReference>
     <ProjectReference Include="..\Fohjin.DDD.EventStore\Fohjin.DDD.EventStore.csproj">
       <Project>{318F1FE0-DA43-4A02-9956-361C9FE96915}</Project>

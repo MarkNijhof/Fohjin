@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Fohjin.DDD.Bus.Implementation;
+using Fohjin.DDD.Bus;
 using Fohjin.DDD.Commands;
-using Fohjin.DDD.Contracts;
+using Fohjin.DDD.Reporting;
 using Fohjin.DDD.Reporting.Dto;
 using Fohjin.DDD.Services;
 using Moq;
@@ -26,7 +26,7 @@ namespace Test.Fohjin.DDD.Scenarios.Receiving_money_transfer
         [Then]
         public void Then_the_newly_created_account_will_be_saved()
         {
-            OnDependency<ICommandBus>().Verify(x => x.Publish(It.IsAny<ReceiveMoneyTransferCommand>()));
+            OnDependency<IBus>().Verify(x => x.Publish(It.IsAny<ReceiveMoneyTransferCommand>()));
         }
     }
 }

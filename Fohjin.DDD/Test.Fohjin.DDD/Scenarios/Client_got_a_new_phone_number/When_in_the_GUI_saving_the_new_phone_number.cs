@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using Fohjin.DDD.BankApplication.Presenters;
 using Fohjin.DDD.BankApplication.Views;
-using Fohjin.DDD.Bus.Implementation;
+using Fohjin.DDD.Bus;
 using Fohjin.DDD.Commands;
-using Fohjin.DDD.Contracts;
+using Fohjin.DDD.Reporting;
 using Fohjin.DDD.Reporting.Dto;
 using Moq;
 
@@ -51,7 +51,7 @@ namespace Test.Fohjin.DDD.Scenarios.Client_got_a_new_phone_number
         [Then]
         public void Then_a_change_client_phone_number_command_will_be_published()
         {
-            On<ICommandBus>().VerifyThat.Method(x => x.Publish(It.IsAny<ChangeClientPhoneNumberCommand>())).WasCalled();
+            On<IBus>().VerifyThat.Method(x => x.Publish(It.IsAny<ChangeClientPhoneNumberCommand>())).WasCalled();
         }
 
         [Then]

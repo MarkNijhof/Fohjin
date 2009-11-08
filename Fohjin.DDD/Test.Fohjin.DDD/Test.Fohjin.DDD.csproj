@@ -224,9 +224,9 @@
       <Project>{672A4AB0-6972-49F1-86A6-C2B7DE5AD4D4}</Project>
       <Name>Fohjin.DDD.BankApplication</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Fohjin.DDD.Bus.Implementation\Fohjin.DDD.Bus.Implementation.csproj">
-      <Project>{DA415B11-2B50-4635-9951-42AAAEFA38EF}</Project>
-      <Name>Fohjin.DDD.Bus.Implementation</Name>
+    <ProjectReference Include="..\Fohjin.DDD.Bus\Fohjin.DDD.Bus.csproj">
+      <Project>{809E2C9E-8ACD-40D5-86C8-43256C3D8AA8}</Project>
+      <Name>Fohjin.DDD.Bus</Name>
     </ProjectReference>
     <ProjectReference Include="..\Fohjin.DDD.CommandHandlers\Fohjin.DDD.CommandHandlers.csproj">
       <Project>{7757DA0F-CD51-4753-95C8-8632177AA60E}</Project>
@@ -239,10 +239,6 @@
     <ProjectReference Include="..\Fohjin.DDD.Configuration\Fohjin.DDD.Configuration.csproj">
       <Project>{CF50373D-3EB9-492D-A88F-70D7D6756DFF}</Project>
       <Name>Fohjin.DDD.Configuration</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Fohjin.DDD.Contracts\Fohjin.DDD.Contracts.csproj">
-      <Project>{F18EACDA-7B90-4244-B5B8-9B764F46FF60}</Project>
-      <Name>Fohjin.DDD.Contracts</Name>
     </ProjectReference>
     <ProjectReference Include="..\Fohjin.DDD.Domain\Fohjin.DDD.Domain.csproj">
       <Project>{0FB24C8F-FA8C-409E-A71C-8580F7D78474}</Project>

@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Fohjin.EventStorage")]
+[assembly: AssemblyTitle("Fohjin.DDD.Bus")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Microsoft")]
-[assembly: AssemblyProduct("Fohjin.EventStorage")]
+[assembly: AssemblyProduct("Fohjin.DDD.Bus")]
 [assembly: AssemblyCopyright("Copyright © Microsoft 2009")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("d2e69445-9114-451a-bb76-ed0313b5181d")]
+[assembly: Guid("3b59e33e-4758-4e02-ba84-233e235f2551")]
 
 // Version information for an assembly consists of the following four values:
 //

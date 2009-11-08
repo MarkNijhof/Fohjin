@@ -1,4 +1,4 @@
-using Fohjin.DDD.EventStore.Bus;
+using Fohjin.DDD.Bus.Direct;
 using NUnit.Framework;
 using NUnit.Framework.SyntaxHelpers;
 

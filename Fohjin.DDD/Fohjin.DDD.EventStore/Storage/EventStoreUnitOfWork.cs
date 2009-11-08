@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Fohjin.DDD.Bus;
 using Fohjin.DDD.EventStore.Storage.Memento;
 
 namespace Fohjin.DDD.EventStore.Storage
@@ -9,12 +10,14 @@ namespace Fohjin.DDD.EventStore.Storage
     {
         private readonly IDomainEventStorage _domainEventStorage;
         private readonly IIdentityMap _identityMap;
+        private readonly IBus _bus;
         private readonly List<IEventProvider> _eventProviders;
 
-        public EventStoreUnitOfWork(IDomainEventStorage domainEventStorage, IIdentityMap identityMap)
+        public EventStoreUnitOfWork(IDomainEventStorage domainEventStorage, IIdentityMap identityMap, IBus bus)
         {
             _domainEventStorage = domainEventStorage;
             _identityMap = identityMap;
+            _bus = bus;
             _eventProviders = new List<IEventProvider>();
         }
 
@@ -42,32 +45,25 @@ namespace Fohjin.DDD.EventStore.Storage
             _identityMap.Add(aggregateRoot);
         }
 
-        public void Complete()
-        {
-            _domainEventStorage.BeginTransaction();
-            try
-            {
-                foreach (var eventProvider in _eventProviders)
-                {
-                    _domainEventStorage.Save(eventProvider);
-                    eventProvider.Clear();
-                }
-                _eventProviders.Clear();
-            }
-            catch (Exception)
-            {
-                Rollback();
-                throw;
-            }
-        }
-
         public void Commit()
         {
+            _domainEventStorage.BeginTransaction();
+
+            foreach (var eventProvider in _eventProviders)
+            {
+                _domainEventStorage.Save(eventProvider);
+                _bus.Publish(eventProvider.GetChanges().Select(x => (object)x));
+                eventProvider.Clear();
+            }
+            _eventProviders.Clear();
+
+            _bus.Commit();
             _domainEventStorage.Commit();
         }
 
         public void Rollback()
         {
+            _bus.Rollback();
             _domainEventStorage.Rollback();
             foreach (var eventProvider in _eventProviders)
             {

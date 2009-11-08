@@ -1,8 +1,8 @@
 using System;
 using System.Linq;
-using Fohjin.DDD.Bus.Implementation;
+using Fohjin.DDD.Bus;
 using Fohjin.DDD.Commands;
-using Fohjin.DDD.Contracts;
+using Fohjin.DDD.Reporting;
 using Fohjin.DDD.Reporting.Dto;
 
 namespace Fohjin.DDD.Services
@@ -14,12 +14,12 @@ namespace Fohjin.DDD.Services
 
     public class MoneyReceiveService : IReceiveMoneyTransfers
     {
-        private readonly ICommandBus _commandBus;
+        private readonly IBus _bus;
         private readonly IReportingRepository _reportingRepository;
 
-        public MoneyReceiveService(ICommandBus commandBus, IReportingRepository reportingRepository)
+        public MoneyReceiveService(IBus bus, IReportingRepository reportingRepository)
         {
-            _commandBus = commandBus;
+            _bus = bus;
             _reportingRepository = reportingRepository;
         }
 
@@ -33,7 +33,7 @@ namespace Fohjin.DDD.Services
             try
             {
                 var account = _reportingRepository.GetByExample<AccountReport>(new {moneyTransfer.TargetAccount}).First();
-                _commandBus.Publish(new ReceiveMoneyTransferCommand(account.Id, moneyTransfer.Ammount, moneyTransfer.SourceAccount));
+                _bus.Publish(new ReceiveMoneyTransferCommand(account.Id, moneyTransfer.Ammount, moneyTransfer.SourceAccount));
             }
             catch(Exception)
             {

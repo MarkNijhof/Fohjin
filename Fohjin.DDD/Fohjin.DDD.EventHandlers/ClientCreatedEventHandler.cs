@@ -1,6 +1,5 @@
-using Fohjin.DDD.Contracts;
 using Fohjin.DDD.Events.Client;
-using Fohjin.DDD.EventStore.Bus;
+using Fohjin.DDD.Reporting;
 using Fohjin.DDD.Reporting.Dto;
 
 namespace Fohjin.DDD.EventHandlers
