@@ -1,10 +1,8 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using Fohjin.DDD.Bus.Direct;
 using Fohjin.DDD.CommandHandlers;
-using Fohjin.DDD.Commands;
+using Fohjin.DDD.EventStore;
 using StructureMap;
 
 namespace Fohjin.DDD.Configuration
@@ -18,11 +16,11 @@ namespace Fohjin.DDD.Configuration
 
         public void RegisterRoutes(MessageRouter messageRouter)
         {
-            var createPublishAction = GetType().GetMethod("CreatePublishAction");
+            var createPublishAction = GetType().GetMethod("CreatePublishActionWrappedInTransaction");
             var register = messageRouter.GetType().GetMethod("Register");
 
-            var commands = GetCommands();
-            var commandHandlers = GetCommandHandlers();
+            var commands = CommandHandlerHelper.GetCommands();
+            var commandHandlers = CommandHandlerHelper.GetCommandHandlers();
 
             foreach (var command in commands)
             {
@@ -42,7 +40,8 @@ namespace Fohjin.DDD.Configuration
 
         private object CreateTheProperAction(Type command, MethodInfo createPublishAction, object instance)
         {
-            return createPublishAction.MakeGenericMethod(command, instance.GetType()).Invoke(this, new[] { instance });
+            var unitOfWork = ObjectFactory.GetInstance<IUnitOfWork>();
+            return createPublishAction.MakeGenericMethod(command, instance.GetType()).Invoke(this, new[] { unitOfWork, instance });
         }
 
         private static object GetCorrectlyInjectedCommandHandler(Type commandHandler)
@@ -50,46 +49,11 @@ namespace Fohjin.DDD.Configuration
             return ObjectFactory.GetInstance(commandHandler);
         }
 
-        public Action<TMessage> CreatePublishAction<TMessage, TMessageHandler>(TMessageHandler messageHandler) 
+        public Action<TMessage> CreatePublishActionWrappedInTransaction<TMessage, TMessageHandler>(IUnitOfWork unitOfWork, TMessageHandler messageHandler) 
             where TMessage : class 
             where TMessageHandler : ICommandHandler<TMessage>
         {
-            return messageHandler.Execute;
-        }
-
-        public static IDictionary<Type, IList<Type>> GetCommandHandlers()
-        {
-            IDictionary<Type, IList<Type>> commands = new Dictionary<Type, IList<Type>>();
-            typeof(ICommandHandler<>)
-                .Assembly
-                .GetExportedTypes()
-                .Where(x => x.GetInterfaces().Any(y => y.IsGenericType && y.GetGenericTypeDefinition() == typeof(ICommandHandler<>)))
-                .ToList()
-                .ForEach(x => AddItem(commands, x));
-            return commands;
-        }
-
-        public static IEnumerable<Type> GetCommands()
-        {
-            return typeof(Command)
-                .Assembly
-                .GetExportedTypes()
-                .Where(x => x.BaseType == typeof(Command))
-                .ToList();
-        }
-
-        private static void AddItem(IDictionary<Type, IList<Type>> dictionary, Type type)
-        {
-            var command = type.GetInterfaces()
-                .Where(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(ICommandHandler<>))
-                .First()
-                .GetGenericArguments()
-                .First();
-
-            if (!dictionary.ContainsKey(command))
-                dictionary.Add(command, new List<Type>());
-
-            dictionary[command].Add(type);
+            return message => ObjectFactory.GetInstance<TransactionHandler<TMessage, TMessageHandler>>().Execute(message, messageHandler);
         }
     }
 }

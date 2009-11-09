@@ -74,6 +74,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommandHandlerHelper.cs" />
+    <Compile Include="EventHandlerHelper.cs" />
     <Compile Include="RegisterCommandHandlersInMessageRouter.cs" />
     <Compile Include="RegisterEventHandlersInMessageRouter.cs" />
     <Compile Include="ReportingDatabaseBootStrapper.cs" />

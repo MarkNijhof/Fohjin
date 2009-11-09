@@ -18,8 +18,6 @@ namespace Fohjin.DDD.CommandHandlers
             var client = _repository.GetById<Client>(compensatingCommand.Id);
 
             client.UpdatePhoneNumber(new PhoneNumber(compensatingCommand.PhoneNumber));
-
-            _repository.Complete();
         }
     }
 }

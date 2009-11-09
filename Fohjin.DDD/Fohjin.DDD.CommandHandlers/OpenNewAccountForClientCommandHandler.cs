@@ -19,7 +19,6 @@ namespace Fohjin.DDD.CommandHandlers
             var activeAccount = client.CreateNewAccount(compensatingCommand.AccountName);
 
             _repository.Add(activeAccount);
-            _repository.Complete();
         }
     }
 }

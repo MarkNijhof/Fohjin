@@ -18,8 +18,6 @@ namespace Fohjin.DDD.CommandHandlers
             var activeAccount = _repository.GetById<ActiveAccount>(compensatingCommand.Id);
 
             activeAccount.ReceiveTransferFrom(new AccountNumber(compensatingCommand.AccountNumber), new Amount(compensatingCommand.Amount));
-
-            _repository.Complete();
         }
     }
 }

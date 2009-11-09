@@ -55,7 +55,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
             var closedAccount = ClosedAccount.CreateNew(Guid.NewGuid(), Guid.NewGuid(), _ledgers, new AccountName("AccountName"), new AccountNumber("1234567890"));
 
             _repository.Add(closedAccount);
-            _repository.Complete();
+            _eventStoreUnitOfWork.Commit();
 
             Assert.That(_domainEventStorage.GetEventsSinceLastSnapShot(closedAccount.Id).Count(), Is.EqualTo(1));
             Assert.That(_domainEventStorage.GetAllEvents(closedAccount.Id).Count(), Is.EqualTo(1));
@@ -76,7 +76,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
             var closedAccount = ClosedAccount.CreateNew(Guid.NewGuid(), Guid.NewGuid(), _ledgers, new AccountName("AccountName"), new AccountNumber("1234567890"));
 
             _repository.Add(closedAccount);
-            _repository.Complete();
+            _eventStoreUnitOfWork.Commit();
 
             var closedAccountForRepository = (IEventProvider)closedAccount;
 

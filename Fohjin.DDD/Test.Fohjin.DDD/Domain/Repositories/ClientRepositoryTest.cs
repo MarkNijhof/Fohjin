@@ -44,7 +44,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
             client.UpdatePhoneNumber(new PhoneNumber("1234567890"));
 
             _repository.Add(client);
-            _repository.Complete();
+            _eventStoreUnitOfWork.Commit();
 
             Assert.That(_domainEventStorage.GetEventsSinceLastSnapShot(client.Id).Count(), Is.EqualTo(3));
             Assert.That(_domainEventStorage.GetAllEvents(client.Id).Count(), Is.EqualTo(3));
@@ -58,7 +58,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
             client.UpdatePhoneNumber(new PhoneNumber("1234567890"));
 
             _repository.Add(client);
-            _repository.Complete();
+            _eventStoreUnitOfWork.Commit();
 
             var clientForRepository = (IEventProvider)client;
 
@@ -79,7 +79,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
             client.UpdatePhoneNumber(new PhoneNumber("1234567890"));
 
             _repository.Add(client);
-            _repository.Complete();
+            _eventStoreUnitOfWork.Commit();
 
             Assert.That(_domainEventStorage.GetSnapShot(client.Id), Is.Null);
         }
@@ -99,7 +99,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
             client.UpdatePhoneNumber(new PhoneNumber("1234567890"));
 
             _repository.Add(client);
-            _repository.Complete();
+            _eventStoreUnitOfWork.Commit();
             _domainEventStorage.SaveShapShot(client);
 
             var snapShot = _domainEventStorage.GetSnapShot(client.Id);
@@ -124,7 +124,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
             client.UpdatePhoneNumber(new PhoneNumber("1234567890"));
 
             _repository.Add(client);
-            _repository.Complete();
+            _eventStoreUnitOfWork.Commit();
             _domainEventStorage.SaveShapShot(client);
 
             var snapShot = _domainEventStorage.GetSnapShot(client.Id);
@@ -148,7 +148,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
             client.UpdatePhoneNumber(new PhoneNumber("1234567890"));
 
             _repository.Add(client);
-            _repository.Complete();
+            _eventStoreUnitOfWork.Commit();
             _domainEventStorage.SaveShapShot(client);
 
             client.UpdatePhoneNumber(new PhoneNumber("1234567890"));
@@ -165,7 +165,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
             client.UpdatePhoneNumber(new PhoneNumber("1234567890"));
 
             _repository.Add(client);
-            _repository.Complete();
+            _eventStoreUnitOfWork.Commit();
 
             var snapShot = _domainEventStorage.GetSnapShot(client.Id);
 
@@ -188,7 +188,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
             client.UpdatePhoneNumber(new PhoneNumber("1234567890"));
 
             _repository.Add(client);
-            _repository.Complete();
+            _eventStoreUnitOfWork.Commit();
             _domainEventStorage.SaveShapShot(client);
 
             client.UpdatePhoneNumber(new PhoneNumber("1234567890"));
@@ -202,7 +202,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
             client.UpdatePhoneNumber(new PhoneNumber("1234567890"));
 
             _repository.Add(client);
-            _repository.Complete();
+            _eventStoreUnitOfWork.Commit();
 
             var snapShot = _domainEventStorage.GetSnapShot(client.Id);
 
@@ -225,7 +225,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
             client.UpdatePhoneNumber(new PhoneNumber("1234567890"));
 
             _repository.Add(client);
-            _repository.Complete();
+            _eventStoreUnitOfWork.Commit();
             _domainEventStorage.SaveShapShot(client);
 
             client.UpdatePhoneNumber(new PhoneNumber("1234567890"));
@@ -239,7 +239,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
             client.UpdatePhoneNumber(new PhoneNumber("1234567890"));
 
             _repository.Add(client);
-            _repository.Complete();
+            _eventStoreUnitOfWork.Commit();
 
             Assert.That(_domainEventStorage.GetEventsSinceLastSnapShot(client.Id).Count(), Is.EqualTo(9));
             Assert.That(_domainEventStorage.GetAllEvents(client.Id).Count(), Is.EqualTo(19));
@@ -278,7 +278,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
             client.UpdatePhoneNumber(new PhoneNumber("0987654321"));
 
             _repository.Add(client);
-            _repository.Complete();
+            _eventStoreUnitOfWork.Commit();
 
             _repository.GetById<Client>(client.Id);
         }
@@ -299,7 +299,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
             client.UpdatePhoneNumber(new PhoneNumber("0987654321"));
 
             _repository.Add(client);
-            _repository.Complete();
+            _eventStoreUnitOfWork.Commit();
 
             _repository.GetById<Client>(client.Id);
         }

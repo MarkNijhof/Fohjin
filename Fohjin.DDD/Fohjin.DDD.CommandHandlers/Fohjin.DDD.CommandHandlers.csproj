@@ -79,6 +79,7 @@
     <Compile Include="CloseAnAccountCommandHandler.cs" />
     <Compile Include="ICommandHandler.cs" />
     <Compile Include="DepositeCashCommandHandler.cs" />
+    <Compile Include="TransactionHandler.cs" />
     <Compile Include="WithdrawlCashCommandHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReceiveMoneyTransferCommandHandler.cs" />

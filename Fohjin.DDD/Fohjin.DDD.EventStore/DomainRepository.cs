@@ -25,18 +25,18 @@ namespace Fohjin.DDD.EventStore
             _eventStoreUnitOfWork.Add(aggregateRoot);
         }
 
-        public void Complete()
-        {
-            try
-            {
-                _eventStoreUnitOfWork.Commit();
-            }
-            catch (Exception Ex)
-            {
-                _eventStoreUnitOfWork.Rollback();
-                throw;
-            }
-        }
+        //public void Complete()
+        //{
+        //    try
+        //    {
+        //        _eventStoreUnitOfWork.Commit();
+        //    }
+        //    catch (Exception Ex)
+        //    {
+        //        _eventStoreUnitOfWork.Rollback();
+        //        throw;
+        //    }
+        //}
 
         private TAggregate RegisterForTracking<TAggregate>(TAggregate aggregateRoot) where TAggregate : class, IOrginator, IEventProvider, new()
         {

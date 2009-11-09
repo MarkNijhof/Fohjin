@@ -45,7 +45,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
             activeAccount.Deposite(new Amount(1));
 
             _repository.Add(activeAccount);
-            _repository.Complete();
+            _eventStoreUnitOfWork.Commit();
 
             Assert.That(_domainEventStorage.GetEventsSinceLastSnapShot(activeAccount.Id).Count(), Is.EqualTo(3));
             Assert.That(_domainEventStorage.GetAllEvents(activeAccount.Id).Count(), Is.EqualTo(3));
@@ -59,7 +59,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
             activeAccount.Deposite(new Amount(1));
 
             _repository.Add(activeAccount);
-            _repository.Complete();
+            _eventStoreUnitOfWork.Commit();
 
             var activeAccountForRepository = (IEventProvider)activeAccount;
 
@@ -80,7 +80,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
             activeAccount.Deposite(new Amount(1));
 
             _repository.Add(activeAccount);
-            _repository.Complete();
+            _eventStoreUnitOfWork.Commit();
 
             Assert.That(_domainEventStorage.GetSnapShot(activeAccount.Id), Is.Null);
         }
@@ -100,7 +100,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
             activeAccount.Deposite(new Amount(1));
 
             _repository.Add(activeAccount);
-            _repository.Complete();
+            _eventStoreUnitOfWork.Commit();
             _domainEventStorage.SaveShapShot(activeAccount);
 
             var snapShot = _domainEventStorage.GetSnapShot(activeAccount.Id);
@@ -125,7 +125,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
             activeAccount.Deposite(new Amount(1));
 
             _repository.Add(activeAccount);
-            _repository.Complete();
+            _eventStoreUnitOfWork.Commit();
             _domainEventStorage.SaveShapShot(activeAccount);
 
             var snapShot = _domainEventStorage.GetSnapShot(activeAccount.Id);
@@ -149,7 +149,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
             activeAccount.Deposite(new Amount(1));
 
             _repository.Add(activeAccount);
-            _repository.Complete();
+            _eventStoreUnitOfWork.Commit();
             _domainEventStorage.SaveShapShot(activeAccount);
 
             activeAccount.Deposite(new Amount(1));
@@ -166,7 +166,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
             activeAccount.Deposite(new Amount(1));
 
             _repository.Add(activeAccount);
-            _repository.Complete();
+            _eventStoreUnitOfWork.Commit();
 
             var snapShot = _domainEventStorage.GetSnapShot(activeAccount.Id);
 
@@ -189,7 +189,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
             activeAccount.Deposite(new Amount(1));
 
             _repository.Add(activeAccount);
-            _repository.Complete();
+            _eventStoreUnitOfWork.Commit();
             _domainEventStorage.SaveShapShot(activeAccount);
 
             activeAccount.Deposite(new Amount(1));
@@ -203,7 +203,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
             activeAccount.Deposite(new Amount(1));
 
             _repository.Add(activeAccount);
-            _repository.Complete();
+            _eventStoreUnitOfWork.Commit();
 
             var snapShot = _domainEventStorage.GetSnapShot(activeAccount.Id);
 
@@ -226,7 +226,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
             activeAccount.Deposite(new Amount(1));
 
             _repository.Add(activeAccount);
-            _repository.Complete();
+            _eventStoreUnitOfWork.Commit();
             _domainEventStorage.SaveShapShot(activeAccount);
 
             activeAccount.Deposite(new Amount(1));
@@ -240,7 +240,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
             activeAccount.Deposite(new Amount(1));
 
             _repository.Add(activeAccount);
-            _repository.Complete();
+            _eventStoreUnitOfWork.Commit();
 
             Assert.That(_domainEventStorage.GetEventsSinceLastSnapShot(activeAccount.Id).Count(), Is.EqualTo(9));
             Assert.That(_domainEventStorage.GetAllEvents(activeAccount.Id).Count(), Is.EqualTo(19));
@@ -261,7 +261,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
             activeAccount.Deposite(new Amount(8));
 
             _repository.Add(activeAccount);
-            _repository.Complete();
+            _eventStoreUnitOfWork.Commit();
 
             var sut = _repository.GetById<ActiveAccount>(activeAccount.Id);
 
@@ -293,7 +293,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
             activeAccount.Deposite(new Amount(9));
 
             _repository.Add(activeAccount);
-            _repository.Complete();
+            _eventStoreUnitOfWork.Commit();
 
             var sut = _repository.GetById<ActiveAccount>(activeAccount.Id);
 
@@ -326,7 +326,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
             activeAccount.Deposite(new Amount(10));
 
             _repository.Add(activeAccount);
-            _repository.Complete();
+            _eventStoreUnitOfWork.Commit();
 
             var sut = _repository.GetById<ActiveAccount>(activeAccount.Id);
 

@@ -18,8 +18,6 @@ namespace Fohjin.DDD.CommandHandlers
             var client = _repository.GetById<Client>(compensatingCommand.Id);
 
             client.ClientMoved(new Address(compensatingCommand.Street, compensatingCommand.StreetNumber, compensatingCommand.PostalCode, compensatingCommand.City));
-
-            _repository.Complete();
         }
     }
 }

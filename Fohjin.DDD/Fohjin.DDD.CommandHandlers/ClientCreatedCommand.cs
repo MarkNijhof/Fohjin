@@ -18,7 +18,6 @@ namespace Fohjin.DDD.CommandHandlers
             var client = Client.CreateNew(new ClientName(compensatingCommand.ClientName), new Address(compensatingCommand.Street, compensatingCommand.StreetNumber, compensatingCommand.PostalCode, compensatingCommand.City), new PhoneNumber(compensatingCommand.PhoneNumber));
 
             _repository.Add(client);
-            _repository.Complete();
         }
     }
 }

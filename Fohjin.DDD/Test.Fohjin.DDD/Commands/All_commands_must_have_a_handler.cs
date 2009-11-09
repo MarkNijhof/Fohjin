@@ -12,8 +12,8 @@ namespace Test.Fohjin.DDD.Commands
         [Test]
         public void Verify_that_each_command_has_atleast_one_command_handler()
         {
-            var commands = RegisterCommandHandlersInMessageRouter.GetCommands();
-            var commandHandlers = RegisterCommandHandlersInMessageRouter.GetCommandHandlers();
+            var commands = CommandHandlerHelper.GetCommands();
+            var commandHandlers = CommandHandlerHelper.GetCommandHandlers();
 
             var stringBuilder = new StringBuilder();
             foreach (var command in commands.Where(command => !commandHandlers.ContainsKey(command)))

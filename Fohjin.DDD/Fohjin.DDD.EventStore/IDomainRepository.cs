@@ -10,7 +10,5 @@ namespace Fohjin.DDD.EventStore
 
         void Add<TAggregate>(TAggregate aggregateRoot)
             where TAggregate : class, IOrginator, IEventProvider, new();
-
-        void Complete();
     }
 }
