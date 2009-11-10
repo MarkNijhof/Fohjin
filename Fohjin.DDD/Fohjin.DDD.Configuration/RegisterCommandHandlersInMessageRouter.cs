@@ -2,13 +2,15 @@ using System;
 using System.Reflection;
 using Fohjin.DDD.Bus.Direct;
 using Fohjin.DDD.CommandHandlers;
-using Fohjin.DDD.EventStore;
 using StructureMap;
 
 namespace Fohjin.DDD.Configuration
 {
     public class RegisterCommandHandlersInMessageRouter
     {
+        private static MethodInfo _createPublishActionWrappedInTransactionMethod;
+        private static MethodInfo _registerMethod;
+
         public static void BootStrap()
         {
             new RegisterCommandHandlersInMessageRouter().RegisterRoutes(ObjectFactory.GetInstance<IRouteMessages>() as MessageRouter);
@@ -16,8 +18,8 @@ namespace Fohjin.DDD.Configuration
 
         public void RegisterRoutes(MessageRouter messageRouter)
         {
-            var createPublishAction = GetType().GetMethod("CreatePublishActionWrappedInTransaction");
-            var register = messageRouter.GetType().GetMethod("Register");
+            _createPublishActionWrappedInTransactionMethod = GetType().GetMethod("CreatePublishActionWrappedInTransaction");
+            _registerMethod = messageRouter.GetType().GetMethod("Register");
 
             var commands = CommandHandlerHelper.GetCommands();
             var commandHandlers = CommandHandlerHelper.GetCommandHandlers();
@@ -26,22 +28,11 @@ namespace Fohjin.DDD.Configuration
             {
                 foreach (var commandHandler in commandHandlers[command])
                 {
-                    var instance = GetCorrectlyInjectedCommandHandler(commandHandler);
-                    var action = CreateTheProperAction(command, createPublishAction, instance);
-                    RegisterTheCreatedActionWithTheMessageRouter(messageRouter, command, register, action);
+                    var injectedCommandHandler = GetCorrectlyInjectedCommandHandler(commandHandler);
+                    var action = CreateTheProperAction(command, injectedCommandHandler);
+                    RegisterTheCreatedActionWithTheMessageRouter(messageRouter, command, action);
                 }
             }
-        }
-
-        private static void RegisterTheCreatedActionWithTheMessageRouter(MessageRouter messageRouter, Type command, MethodInfo register, object action)
-        {
-            register.MakeGenericMethod(command).Invoke(messageRouter, new[] { action });
-        }
-
-        private object CreateTheProperAction(Type command, MethodInfo createPublishAction, object instance)
-        {
-            var unitOfWork = ObjectFactory.GetInstance<IUnitOfWork>();
-            return createPublishAction.MakeGenericMethod(command, instance.GetType()).Invoke(this, new[] { unitOfWork, instance });
         }
 
         private static object GetCorrectlyInjectedCommandHandler(Type commandHandler)
@@ -49,11 +40,21 @@ namespace Fohjin.DDD.Configuration
             return ObjectFactory.GetInstance(commandHandler);
         }
 
-        public Action<TMessage> CreatePublishActionWrappedInTransaction<TMessage, TMessageHandler>(IUnitOfWork unitOfWork, TMessageHandler messageHandler) 
-            where TMessage : class 
-            where TMessageHandler : ICommandHandler<TMessage>
+        private static void RegisterTheCreatedActionWithTheMessageRouter(MessageRouter messageRouter, Type commandType, object action)
         {
-            return message => ObjectFactory.GetInstance<TransactionHandler<TMessage, TMessageHandler>>().Execute(message, messageHandler);
+            _registerMethod.MakeGenericMethod(commandType).Invoke(messageRouter, new[] { action });
+        }
+
+        private object CreateTheProperAction(Type commandType, object commandHandler)
+        {
+            return _createPublishActionWrappedInTransactionMethod.MakeGenericMethod(commandType, commandHandler.GetType()).Invoke(this, new[] { commandHandler });
+        }
+
+        public Action<TCommand> CreatePublishActionWrappedInTransaction<TCommand, TCommandHandler>(TCommandHandler commandHandler) 
+            where TCommand : class 
+            where TCommandHandler : ICommandHandler<TCommand>
+        {
+            return command => ObjectFactory.GetInstance<TransactionHandler<TCommand, TCommandHandler>>().Execute(command, commandHandler);
         }
     }
 }

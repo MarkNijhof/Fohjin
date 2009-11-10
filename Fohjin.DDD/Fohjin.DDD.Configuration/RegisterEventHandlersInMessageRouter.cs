@@ -8,6 +8,9 @@ namespace Fohjin.DDD.Configuration
 {
     public class RegisterEventHandlersInMessageRouter
     {
+        private static MethodInfo _createPublishActionMethod;
+        private static MethodInfo _registerMethod;
+
         public static void BootStrap()
         {
             new RegisterEventHandlersInMessageRouter().RegisterRoutes(ObjectFactory.GetInstance<IRouteMessages>() as MessageRouter);
@@ -15,8 +18,8 @@ namespace Fohjin.DDD.Configuration
 
         public void RegisterRoutes(MessageRouter messageRouter)
         {
-            var createPublishAction = GetType().GetMethod("CreatePublishAction");
-            var register = messageRouter.GetType().GetMethod("Register");
+            _createPublishActionMethod = GetType().GetMethod("CreatePublishAction");
+            _registerMethod = messageRouter.GetType().GetMethod("Register");
 
             var events = EventHandlerHelper.GetEvents();
             var eventHandlers = EventHandlerHelper.GetEventHandlers();
@@ -25,9 +28,9 @@ namespace Fohjin.DDD.Configuration
             {
                 foreach (var eventHandler in eventHandlers[theEvent])
                 {
-                    var instance = GetCorrectlyInjectedEventHandler(eventHandler);
-                    var action = CreateTheProperAction(theEvent, createPublishAction, instance);
-                    RegisterTheCreatedActionWithTheMessageRouter(messageRouter, theEvent, register, action);
+                    var injectedEventHandler = GetCorrectlyInjectedEventHandler(eventHandler);
+                    var action = CreateTheProperAction(theEvent, injectedEventHandler);
+                    RegisterTheCreatedActionWithTheMessageRouter(messageRouter, theEvent, action);
                 }
             }
         }
@@ -39,14 +42,14 @@ namespace Fohjin.DDD.Configuration
             return messageHandler.Execute;
         }
 
-        private static void RegisterTheCreatedActionWithTheMessageRouter(MessageRouter messageRouter, Type theEvent, MethodInfo register, object action)
+        private static void RegisterTheCreatedActionWithTheMessageRouter(MessageRouter messageRouter, Type eventType, object action)
         {
-            register.MakeGenericMethod(theEvent).Invoke(messageRouter, new[] { action });
+            _registerMethod.MakeGenericMethod(eventType).Invoke(messageRouter, new[] { action });
         }
 
-        private object CreateTheProperAction(Type theEvent, MethodInfo createPublishAction, object instance)
+        private object CreateTheProperAction(Type eventType, object eventHandler)
         {
-            return createPublishAction.MakeGenericMethod(theEvent, instance.GetType()).Invoke(this, new[] { instance });
+            return _createPublishActionMethod.MakeGenericMethod(eventType, eventHandler.GetType()).Invoke(this, new[] { eventHandler });
         }
 
         private static object GetCorrectlyInjectedEventHandler(Type eventHandler)
