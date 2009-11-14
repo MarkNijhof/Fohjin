@@ -15,30 +15,17 @@ namespace Fohjin.DDD.EventStore
             _identityMap = identityMap;
         }
 
-        public TAggregate GetById<TAggregate>(Guid id) where TAggregate : class, IOrginator, IEventProvider, new()
+        public TAggregate GetById<TAggregate>(Guid id) where TAggregate : class, IOrginator, IAggregateRootEventProvider, new()
         {
             return RegisterForTracking(_identityMap.GetById<TAggregate>(id)) ?? _eventStoreUnitOfWork.GetById<TAggregate>(id);
         }
 
-        public void Add<TAggregate>(TAggregate aggregateRoot) where TAggregate : class, IOrginator, IEventProvider, new()
+        public void Add<TAggregate>(TAggregate aggregateRoot) where TAggregate : class, IOrginator, IAggregateRootEventProvider, new()
         {
             _eventStoreUnitOfWork.Add(aggregateRoot);
         }
 
-        //public void Complete()
-        //{
-        //    try
-        //    {
-        //        _eventStoreUnitOfWork.Commit();
-        //    }
-        //    catch (Exception Ex)
-        //    {
-        //        _eventStoreUnitOfWork.Rollback();
-        //        throw;
-        //    }
-        //}
-
-        private TAggregate RegisterForTracking<TAggregate>(TAggregate aggregateRoot) where TAggregate : class, IOrginator, IEventProvider, new()
+        private TAggregate RegisterForTracking<TAggregate>(TAggregate aggregateRoot) where TAggregate : class, IOrginator, IAggregateRootEventProvider, new()
         {
             if (aggregateRoot == null)
                 return aggregateRoot;

@@ -4,7 +4,6 @@ using System.Linq;
 using Fohjin.DDD.CommandHandlers;
 using Fohjin.DDD.Commands;
 using Fohjin.DDD.Domain.Account;
-using Fohjin.DDD.Events;
 using Fohjin.DDD.Events.Account;
 using Fohjin.DDD.EventStore;
 

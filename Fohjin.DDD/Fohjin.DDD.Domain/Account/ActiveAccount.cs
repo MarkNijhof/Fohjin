@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Fohjin.DDD.Domain.Mementos;
 using Fohjin.DDD.Events.Account;
-using Fohjin.DDD.EventStore;
 using Fohjin.DDD.EventStore.Storage.Memento;
 
 namespace Fohjin.DDD.Domain.Account

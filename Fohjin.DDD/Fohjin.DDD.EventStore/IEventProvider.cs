@@ -12,4 +12,8 @@ namespace Fohjin.DDD.EventStore
         Guid Id { get; }
         int Version { get; }
     }
+
+    public interface IAggregateRootEventProvider : IEventProvider
+    {
+    }
 }
