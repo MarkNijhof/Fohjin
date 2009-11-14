@@ -70,7 +70,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BaseAggregate.cs" />
+    <Compile Include="BaseEntity.cs" />
     <Compile Include="BaseAggregateRoot.cs" />
     <Compile Include="Account\ActiveAccount.cs" />
     <Compile Include="Client\Client.cs" />

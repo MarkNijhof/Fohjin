@@ -5,7 +5,7 @@ using Fohjin.DDD.EventStore;
 
 namespace Fohjin.DDD.Domain
 {
-    public class BaseAggregate : IEventProvider
+    public class BaseEntity : IEventProvider
     {
         private readonly Dictionary<Type, Action<IDomainEvent>> _events;
         private readonly List<IDomainEvent> _appliedEvents;
@@ -14,7 +14,7 @@ namespace Fohjin.DDD.Domain
         public int Version { get; protected set; }
         public int EventVersion { get; protected set; }
 
-        public BaseAggregate()
+        public BaseEntity()
         {
             _events = new Dictionary<Type, Action<IDomainEvent>>();
             _appliedEvents = new List<IDomainEvent>();
