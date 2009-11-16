@@ -49,10 +49,20 @@ namespace Fohjin.DDD.Domain
 
         IEnumerable<IDomainEvent> IEventProvider.GetChanges()
         {
+            return GetChanges();
+        }
+
+        protected IEnumerable<IDomainEvent> GetChanges()
+        {
             return _appliedEvents.AsReadOnly();
         }
 
         void IEventProvider.Clear()
+        {
+            Clear();
+        }
+
+        protected void Clear()
         {
             _appliedEvents.Clear();
         }

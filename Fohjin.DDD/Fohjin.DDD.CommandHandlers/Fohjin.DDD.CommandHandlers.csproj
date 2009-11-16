@@ -70,15 +70,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CancelBankCardCommandHandler.cs" />
     <Compile Include="ChangeAccountNameCommandHandler.cs" />
+    <Compile Include="AssignNewBankCardCommandHandler.cs" />
     <Compile Include="OpenNewAccountForClientCommandHandler.cs" />
     <Compile Include="ChangeClientNameCommandHandler.cs" />
-    <Compile Include="ClientCreatedCommand.cs" />
+    <Compile Include="CreateClientCommandHandler.cs" />
     <Compile Include="ClientIsMovingCommandHandler.cs" />
     <Compile Include="ChangeClientPhoneNumberCommandHandler.cs" />
     <Compile Include="CloseAnAccountCommandHandler.cs" />
     <Compile Include="ICommandHandler.cs" />
     <Compile Include="DepositeCashCommandHandler.cs" />
+    <Compile Include="ReportStolenBankCardCommandHandler.cs" />
     <Compile Include="TransactionHandler.cs" />
     <Compile Include="WithdrawlCashCommandHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

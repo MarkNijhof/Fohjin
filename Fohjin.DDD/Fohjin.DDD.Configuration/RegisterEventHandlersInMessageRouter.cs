@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using Fohjin.DDD.Bus.Direct;
 using Fohjin.DDD.EventHandlers;
@@ -26,7 +27,11 @@ namespace Fohjin.DDD.Configuration
 
             foreach (var theEvent in events)
             {
-                foreach (var eventHandler in eventHandlers[theEvent])
+                IList<Type> eventHandlerTypes;
+                if (!eventHandlers.TryGetValue(theEvent, out eventHandlerTypes))
+                    throw new Exception(string.Format("No event handlers found for event '{0}'", theEvent.FullName));
+
+                foreach (var eventHandler in eventHandlerTypes)
                 {
                     var injectedEventHandler = GetCorrectlyInjectedEventHandler(eventHandler);
                     var action = CreateTheProperAction(theEvent, injectedEventHandler);

@@ -17,7 +17,7 @@ namespace Fohjin.DDD.Domain.Account
 
         public ClosedAccount()
         {
-            Id = new Guid();
+            Id = Guid.Empty;
             _accountName = new AccountName(string.Empty);
             _accountNumber = new AccountNumber(string.Empty);
             Version = 0;

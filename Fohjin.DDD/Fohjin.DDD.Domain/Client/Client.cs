@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Fohjin.DDD.Domain.Account;
 using Fohjin.DDD.Domain.Mementos;
 using Fohjin.DDD.Events.Client;
+using Fohjin.DDD.EventStore;
 using Fohjin.DDD.EventStore.Storage.Memento;
 
 namespace Fohjin.DDD.Domain.Client
@@ -13,10 +15,12 @@ namespace Fohjin.DDD.Domain.Client
         private Address _address;
         private ClientName _clientName;
         private readonly List<Guid> _accounts;
+        private readonly EntityList<BankCard> _bankCards;
 
         public Client()
         {
             _accounts = new List<Guid>();
+            _bankCards = new EntityList<BankCard>(this);
 
             registerEvents();
         }
@@ -63,15 +67,42 @@ namespace Fohjin.DDD.Domain.Client
             return activeAccount;
         }
 
+        public void AssignNewBankCardForAccount(Guid accountId)
+        {
+            IsClientCreated();
+
+            DoesAccountBelongToClient(accountId);
+
+            Apply(new NewBankCardForAccountAsignedEvent(Guid.NewGuid(), accountId));
+        }
+
+        public IBankCard GetBankCard(Guid bankCardId)
+        {
+            var bankCard = _bankCards.Where(x => x.Id == bankCardId).FirstOrDefault();
+            if (bankCard == null)
+                throw new NonExistingBankCardException("The requested bank card does not exist!");
+
+            return bankCard;
+        }
+
+        private void DoesAccountBelongToClient(Guid accountId)
+        {
+            if (!_accounts.Contains(accountId))
+                throw new NonExistingAccountException("Client does not have the requested account");
+        }
+
         private void IsClientCreated()
         {
-            if (Id == new Guid())
+            if (Id == Guid.Empty)
                 throw new NonExistingClientException("The Client is not created and no opperations can be executed on it");
         }
 
         IMemento IOrginator.CreateMemento()
         {
-            return new ClientMemento(Id, Version, _clientName.Name, _address.Street, _address.StreetNumber, _address.PostalCode, _address.City, _phoneNumber.Number, _accounts);
+            var bankCardMementos = new List<IMemento>();
+            _bankCards.ForEach(x => bankCardMementos.Add(((IOrginator)x).CreateMemento()));
+
+            return new ClientMemento(Id, Version, _clientName.Name, _address.Street, _address.StreetNumber, _address.PostalCode, _address.City, _phoneNumber.Number, _accounts, bankCardMementos);
         }
 
         void IOrginator.SetMemento(IMemento memento)
@@ -83,6 +114,13 @@ namespace Fohjin.DDD.Domain.Client
             _address = new Address(clientMemento.Street, clientMemento.StreetNumber, clientMemento.PostalCode, clientMemento.City);
             _phoneNumber = new PhoneNumber(clientMemento.PhoneNumber);
             _accounts.AddRange(clientMemento.Accounts);
+
+            clientMemento.BankCardMementos.ForEach(x =>
+            {
+                var bankCard = new BankCard();
+                ((IOrginator)bankCard).SetMemento(x);
+                _bankCards.Add(bankCard);
+            });
         }
 
         private void registerEvents()
@@ -92,6 +130,24 @@ namespace Fohjin.DDD.Domain.Client
             RegisterEvent<ClientNameChangedEvent>(onClientNameWasChanged);
             RegisterEvent<ClientMovedEvent>(onNewClientMoved);
             RegisterEvent<AccountToClientAssignedEvent>(onAccountWasAssignedToClient);
+            RegisterEvent<NewBankCardForAccountAsignedEvent>(onNewBankCardForAccountAssigned);
+
+            RegisterEvent<BankCardWasReportedStolenEvent>(onAnyEventForABankCard);
+            RegisterEvent<BankCardWasCanceledByCLientEvent>(onAnyEventForABankCard);
+        }
+
+        private void onAnyEventForABankCard(IDomainEvent domainEvent)
+        {
+            IEventProvider bankCard;
+            if (!_bankCards.TryGetValueById(domainEvent.AggregateId, out bankCard))
+                throw new NonExistingBankCardException("The requested bank card does not exist!");
+
+            bankCard.LoadFromHistory(new[] { domainEvent });
+        }
+
+        private void onNewBankCardForAccountAssigned(NewBankCardForAccountAsignedEvent newBankCardForAccountAsignedEvent)
+        {
+            _bankCards.Add(new BankCard(newBankCardForAccountAsignedEvent.BankCardId, newBankCardForAccountAsignedEvent.AccountId));
         }
 
         private void onAccountWasAssignedToClient(AccountToClientAssignedEvent accountToClientAssignedEvent)

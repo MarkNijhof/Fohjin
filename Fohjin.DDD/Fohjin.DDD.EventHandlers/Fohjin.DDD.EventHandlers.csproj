@@ -70,6 +70,8 @@
     <Compile Include="AccountOpenedEventHandler.cs" />
     <Compile Include="AccountNameChangedEventHandler.cs" />
     <Compile Include="AccountToClientAssignedEventHandler.cs" />
+    <Compile Include="BankCardWasCanceledByCLientEventHandler.cs" />
+    <Compile Include="BankCardWasReportedStolenEventHandler.cs" />
     <Compile Include="ClientMovedEventHandler.cs" />
     <Compile Include="ClientNameChangedEventHandler.cs" />
     <Compile Include="ClientPhoneNumberChangedEventHandler.cs" />
@@ -80,6 +82,7 @@
     <Compile Include="MoneyTransferReceivedEventHandler.cs" />
     <Compile Include="MoneyTransferSendEventHandler.cs" />
     <Compile Include="ClientCreatedEventHandler.cs" />
+    <Compile Include="NewBankCardForAccountAssignedEventHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SendMoneyTransferFurtherEventHandler.cs" />
     <Compile Include="CashWithdrawnEventHandler.cs" />

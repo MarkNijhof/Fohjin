@@ -75,11 +75,14 @@
     <Compile Include="Account\MoneyTransferSendEvent.cs" />
     <Compile Include="Account\CashWithdrawnEvent.cs" />
     <Compile Include="Client\AccountToClientAssignedEvent.cs" />
+    <Compile Include="Client\BankCardWasCanceledByCLientEvent.cs" />
+    <Compile Include="Client\BankCardWasReportedStolenEvent.cs" />
     <Compile Include="Client\ClientMovedEvent.cs" />
     <Compile Include="Client\ClientNameChangedEvent.cs" />
     <Compile Include="Client\ClientPhoneNumberChangedEvent.cs" />
     <Compile Include="Client\ClientCreatedEvent.cs" />
     <Compile Include="Account\ClosedAccountCreatedEvent.cs" />
+    <Compile Include="Client\NewBankCardForAccountAsignedEvent.cs" />
     <Compile Include="DomainEvent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

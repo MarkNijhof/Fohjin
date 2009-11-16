@@ -109,6 +109,14 @@
     <Compile Include="Scenarios\Adding_a_new_client\When_in_the_GUI_the_name_of_the_new_client_is_saved.cs" />
     <Compile Include="Scenarios\Adding_a_new_client\When_in_the_GUI_the_new_client_form_is_displayed_.cs" />
     <Compile Include="Scenarios\Adding_a_new_client\When_in_the_GUI_the_phone_number_of_the_new_client_is_saved.cs" />
+    <Compile Include="Scenarios\Assign_new_bank_card\When_assigning_a_new_bank_card.cs" />
+    <Compile Include="Scenarios\Assign_new_bank_card\When_assigning_a_new_bank_card_on_a_non_existing_client.cs" />
+    <Compile Include="Scenarios\Assign_new_bank_card\When_canceling_a_bank_card.cs" />
+    <Compile Include="Scenarios\Assign_new_bank_card\When_canceling_a_disabled_bank_card.cs" />
+    <Compile Include="Scenarios\Assign_new_bank_card\When_canceling_a_non_existing_bank_card.cs" />
+    <Compile Include="Scenarios\Assign_new_bank_card\When_reporting_a_bank_card_stolen.cs" />
+    <Compile Include="Scenarios\Assign_new_bank_card\When_reporting_a_disabled_bank_card_stolen.cs" />
+    <Compile Include="Scenarios\Assign_new_bank_card\When_reporting_a_non_existing_bank_card_stolen.cs" />
     <Compile Include="Scenarios\Changing_the_name_of_an_account\When_changing_the_name_of_an_account.cs" />
     <Compile Include="Scenarios\Changing_the_name_of_an_account\When_changing_the_name_of_a_closed_account.cs" />
     <Compile Include="Scenarios\Changing_the_name_of_an_account\When_changing_the_name_of_a_non_existing_account.cs" />

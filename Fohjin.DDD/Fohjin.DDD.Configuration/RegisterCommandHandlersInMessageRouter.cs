@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using Fohjin.DDD.Bus.Direct;
 using Fohjin.DDD.CommandHandlers;
@@ -26,7 +27,11 @@ namespace Fohjin.DDD.Configuration
 
             foreach (var command in commands)
             {
-                foreach (var commandHandler in commandHandlers[command])
+                IList<Type> commandHandlerTypes;
+                if (!commandHandlers.TryGetValue(command, out commandHandlerTypes))
+                    throw new Exception(string.Format("No command handlers found for event '{0}'", command.FullName));
+
+                foreach (var commandHandler in commandHandlerTypes)
                 {
                     var injectedCommandHandler = GetCorrectlyInjectedCommandHandler(commandHandler);
                     var action = CreateTheProperAction(command, injectedCommandHandler);

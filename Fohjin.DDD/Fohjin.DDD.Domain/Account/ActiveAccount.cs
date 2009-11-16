@@ -18,7 +18,7 @@ namespace Fohjin.DDD.Domain.Account
 
         public ActiveAccount()
         {
-            Id = new Guid();
+            Id = Guid.Empty;
             Version = 0;
             EventVersion = 0;
             _accountName = new AccountName(string.Empty);
@@ -116,7 +116,7 @@ namespace Fohjin.DDD.Domain.Account
 
         private void IsAccountNotCreated()
         {
-            if (Id == new Guid())
+            if (Id == Guid.Empty)
                 throw new NonExitsingAccountException("The ActiveAcount is not created and no opperations can be executed on it");
         }
 

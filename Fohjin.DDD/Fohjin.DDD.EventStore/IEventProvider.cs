@@ -15,5 +15,6 @@ namespace Fohjin.DDD.EventStore
 
     public interface IAggregateRootEventProvider : IEventProvider
     {
+        void RegisterChildEventProvider(IEventProvider eventProvider);
     }
 }
