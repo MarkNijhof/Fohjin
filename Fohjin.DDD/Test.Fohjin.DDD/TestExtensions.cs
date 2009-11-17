@@ -44,9 +44,13 @@ namespace Test.Fohjin.DDD
         {
             return (TDomainEvent) events.Last();
         }
+        public static object LastMinus(this IEnumerable<IDomainEvent> events, int minus)
+        {
+            return events.ToList()[events.Count() - 1 - minus];
+        }
         public static TDomainEvent LastMinus<TDomainEvent>(this IEnumerable<IDomainEvent> events, int minus)
         {
-            return (TDomainEvent) events.ToList()[events.Count() - minus];
+            return (TDomainEvent) events.ToList()[events.Count() - 1 - minus];
         }
         public static TDomainEvent As<TDomainEvent>(this object theObject)
         {

@@ -1,6 +1,4 @@
-﻿using System.Transactions;
-
-namespace Fohjin.DDD.EventStore
+﻿namespace Fohjin.DDD.EventStore
 {
     public interface ITransactional
     {

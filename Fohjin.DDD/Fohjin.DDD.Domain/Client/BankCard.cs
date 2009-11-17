@@ -43,14 +43,13 @@ namespace Fohjin.DDD.Domain.Client
 
         IMemento IOrginator.CreateMemento()
         {
-            return new BankCardMemento(Id, Version, _accountId, _disabled);
+            return new BankCardMemento(Id, _accountId, _disabled);
         }
 
         void IOrginator.SetMemento(IMemento memento)
         {
             var bankCardMemento = (BankCardMemento)memento;
             Id = bankCardMemento.Id;
-            Version = bankCardMemento.Version;
             _accountId = bankCardMemento.AccountId;
             _disabled = bankCardMemento.Disabled;
         }

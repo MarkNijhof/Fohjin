@@ -53,7 +53,7 @@
     <Compile Include="IDomainEvent.cs" />
     <Compile Include="Storage\IDomainEventStorage.cs" />
     <Compile Include="IDomainRepository.cs" />
-    <Compile Include="IEventProvider.cs" />
+    <Compile Include="IEntityEventProvider.cs" />
     <Compile Include="Storage\IEventStoreUnitOfWork.cs" />
     <Compile Include="Storage\IIdentityMap.cs" />
     <Compile Include="IUnitOfWork.cs" />

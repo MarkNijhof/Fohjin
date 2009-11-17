@@ -6,9 +6,9 @@ namespace Fohjin.DDD.EventStore
     public interface IDomainRepository 
     {
         TAggregate GetById<TAggregate>(Guid id)
-            where TAggregate : class, IOrginator, IAggregateRootEventProvider, new();
+            where TAggregate : class, IOrginator, IEventProvider, new();
 
         void Add<TAggregate>(TAggregate aggregateRoot)
-            where TAggregate : class, IOrginator, IAggregateRootEventProvider, new();
+            where TAggregate : class, IOrginator, IEventProvider, new();
     }
 }

@@ -138,7 +138,7 @@ namespace Fohjin.DDD.Domain.Client
 
         private void onAnyEventForABankCard(IDomainEvent domainEvent)
         {
-            IEventProvider bankCard;
+            IEntityEventProvider bankCard;
             if (!_bankCards.TryGetValueById(domainEvent.AggregateId, out bankCard))
                 throw new NonExistingBankCardException("The requested bank card does not exist!");
 

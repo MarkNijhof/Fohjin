@@ -5,19 +5,19 @@ namespace Fohjin.DDD.Domain
 {
     public class EntityList<TEntity> : List<TEntity> where TEntity : BaseEntity
     {
-        private readonly IAggregateRootEventProvider _aggregateRoot;
+        private readonly IEventProvider _aggregateRoot;
 
-        public EntityList(IAggregateRootEventProvider aggregateRoot)
+        public EntityList(IEventProvider aggregateRoot)
         {
             _aggregateRoot = aggregateRoot;
         }
 
-        public EntityList(IAggregateRootEventProvider aggregateRoot, int capacity) : base(capacity)
+        public EntityList(IEventProvider aggregateRoot, int capacity) : base(capacity)
         {
             _aggregateRoot = aggregateRoot;
         }
 
-        public EntityList(IAggregateRootEventProvider aggregateRoot, IEnumerable<TEntity> collection) : base(collection)
+        public EntityList(IEventProvider aggregateRoot, IEnumerable<TEntity> collection) : base(collection)
         {
             _aggregateRoot = aggregateRoot;
         }
