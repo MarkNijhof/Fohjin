@@ -20,7 +20,7 @@ namespace Fohjin.DDD.EventStore.Storage
                 return null;
 
             object aggregate;
-            if (aggregates.TryGetValue(id, out aggregate))
+            if (!aggregates.TryGetValue(id, out aggregate))
                 return null;
 
             return (TAggregate) aggregate;

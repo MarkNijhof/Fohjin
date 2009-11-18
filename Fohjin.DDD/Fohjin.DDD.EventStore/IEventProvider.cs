@@ -1,14 +1,15 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace Fohjin.DDD.EventStore
 {
-    public interface IEntityEventProvider 
+    public interface IEventProvider
     {
         void Clear();
         void LoadFromHistory(IEnumerable<IDomainEvent> domainEvents);
-        void HookUpVersionProvider(Func<int> versionProvider);
-        IEnumerable<IDomainEvent> GetChanges();
+        void UpdateVersion(int version);
         Guid Id { get; }
+        int Version { get; }
+        IEnumerable<IDomainEvent> GetChanges();
     }
 }

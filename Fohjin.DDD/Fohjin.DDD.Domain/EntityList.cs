@@ -3,21 +3,21 @@ using Fohjin.DDD.EventStore;
 
 namespace Fohjin.DDD.Domain
 {
-    public class EntityList<TEntity> : List<TEntity> where TEntity : BaseEntity
+    public class EntityList<TEntity> : List<TEntity> where TEntity : IEntityEventProvider
     {
-        private readonly IEventProvider _aggregateRoot;
+        private readonly IRegisterChildEntities _aggregateRoot;
 
-        public EntityList(IEventProvider aggregateRoot)
+        public EntityList(IRegisterChildEntities aggregateRoot)
         {
             _aggregateRoot = aggregateRoot;
         }
 
-        public EntityList(IEventProvider aggregateRoot, int capacity) : base(capacity)
+        public EntityList(IRegisterChildEntities aggregateRoot, int capacity) : base(capacity)
         {
             _aggregateRoot = aggregateRoot;
         }
 
-        public EntityList(IEventProvider aggregateRoot, IEnumerable<TEntity> collection) : base(collection)
+        public EntityList(IRegisterChildEntities aggregateRoot, IEnumerable<TEntity> collection) : base(collection)
         {
             _aggregateRoot = aggregateRoot;
         }
