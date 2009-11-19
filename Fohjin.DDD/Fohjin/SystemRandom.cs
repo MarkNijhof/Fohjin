@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Fohjin.DDD.Domain
+namespace Fohjin
 {
     public static class SystemRandom
     {

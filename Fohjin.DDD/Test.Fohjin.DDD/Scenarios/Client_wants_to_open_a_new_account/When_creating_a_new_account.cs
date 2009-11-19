@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Fohjin;
 using Fohjin.DDD.Domain;
 using Fohjin.DDD.Domain.Account;
 using Fohjin.DDD.Events.Account;

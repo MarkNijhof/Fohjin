@@ -86,12 +86,6 @@
     <Compile Include="MoneyTransferFailedCompensatingCommand.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Fohjin.DDD.EventStore\Fohjin.DDD.EventStore.csproj">
-      <Project>{318F1FE0-DA43-4A02-9956-361C9FE96915}</Project>
-      <Name>Fohjin.DDD.EventStore</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
       <Visible>False</Visible>
       <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>

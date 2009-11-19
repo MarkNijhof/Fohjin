@@ -29,6 +29,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fohjin.DDD.EventStore", "Fo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fohjin.DDD.Bus", "Fohjin.DDD.Bus\Fohjin.DDD.Bus.csproj", "{809E2C9E-8ACD-40D5-86C8-43256C3D8AA8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fohjin", "Fohjin\Fohjin.csproj", "{202FEBE5-F8A1-4A68-8306-75FDE33E0D45}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -91,6 +93,10 @@ Global
 		{809E2C9E-8ACD-40D5-86C8-43256C3D8AA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{809E2C9E-8ACD-40D5-86C8-43256C3D8AA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{809E2C9E-8ACD-40D5-86C8-43256C3D8AA8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{202FEBE5-F8A1-4A68-8306-75FDE33E0D45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{202FEBE5-F8A1-4A68-8306-75FDE33E0D45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{202FEBE5-F8A1-4A68-8306-75FDE33E0D45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{202FEBE5-F8A1-4A68-8306-75FDE33E0D45}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

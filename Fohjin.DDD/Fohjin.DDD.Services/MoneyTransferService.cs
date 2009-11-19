@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Fohjin.DDD.Bus;
 using Fohjin.DDD.Commands;
-using Fohjin.DDD.Domain;
 using Fohjin.DDD.Reporting;
 using Fohjin.DDD.Reporting.Dto;
 

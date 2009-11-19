@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Fohjin;
 using Fohjin.DDD.Domain;
 using Fohjin.DDD.Reporting;
 using Fohjin.DDD.Reporting.Dto;

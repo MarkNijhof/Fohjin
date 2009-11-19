@@ -88,10 +88,6 @@
     <Compile Include="CashWithdrawnEventHandler.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Fohjin.DDD.Commands\Fohjin.DDD.Commands.csproj">
-      <Project>{58D61FA0-D67F-4D72-81EA-2D709356AF95}</Project>
-      <Name>Fohjin.DDD.Commands</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Fohjin.DDD.EventStore\Fohjin.DDD.EventStore.csproj">
       <Project>{318F1FE0-DA43-4A02-9956-361C9FE96915}</Project>
       <Name>Fohjin.DDD.EventStore</Name>

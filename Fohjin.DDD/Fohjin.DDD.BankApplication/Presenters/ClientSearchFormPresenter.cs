@@ -1,5 +1,4 @@
 using Fohjin.DDD.BankApplication.Views;
-using Fohjin.DDD.Domain;
 using Fohjin.DDD.Reporting;
 using Fohjin.DDD.Reporting.Dto;
 

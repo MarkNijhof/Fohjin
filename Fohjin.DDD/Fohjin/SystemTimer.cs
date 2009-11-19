@@ -2,7 +2,7 @@ using System;
 using System.ComponentModel;
 using System.Threading;
 
-namespace Fohjin.DDD.Domain
+namespace Fohjin
 {
     public interface IKnowWhen
     {

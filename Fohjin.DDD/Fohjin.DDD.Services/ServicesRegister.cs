@@ -1,4 +1,3 @@
-
 using StructureMap.Configuration.DSL;
 
 namespace Fohjin.DDD.Services

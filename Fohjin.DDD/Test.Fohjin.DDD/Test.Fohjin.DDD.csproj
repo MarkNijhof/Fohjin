@@ -280,6 +280,10 @@
       <Project>{B2428304-1BF2-4BCB-B250-7D09E536560A}</Project>
       <Name>Fohjin.DDD.Services</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Fohjin\Fohjin.csproj">
+      <Project>{202FEBE5-F8A1-4A68-8306-75FDE33E0D45}</Project>
+      <Name>Fohjin</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

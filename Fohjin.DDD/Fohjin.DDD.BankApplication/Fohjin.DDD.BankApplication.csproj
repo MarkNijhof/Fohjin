@@ -169,10 +169,6 @@
       <Project>{CF50373D-3EB9-492D-A88F-70D7D6756DFF}</Project>
       <Name>Fohjin.DDD.Configuration</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Fohjin.DDD.Domain\Fohjin.DDD.Domain.csproj">
-      <Project>{0FB24C8F-FA8C-409E-A71C-8580F7D78474}</Project>
-      <Name>Fohjin.DDD.Domain</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Fohjin.DDD.EventHandlers\Fohjin.DDD.EventHandlers.csproj">
       <Project>{2A96D452-7D1D-4118-B3D4-8EF543D1FBCB}</Project>
       <Name>Fohjin.DDD.EventHandlers</Name>
@@ -192,6 +188,10 @@
     <ProjectReference Include="..\Fohjin.DDD.Services\Fohjin.DDD.Services.csproj">
       <Project>{B2428304-1BF2-4BCB-B250-7D09E536560A}</Project>
       <Name>Fohjin.DDD.Services</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Fohjin\Fohjin.csproj">
+      <Project>{202FEBE5-F8A1-4A68-8306-75FDE33E0D45}</Project>
+      <Name>Fohjin</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
