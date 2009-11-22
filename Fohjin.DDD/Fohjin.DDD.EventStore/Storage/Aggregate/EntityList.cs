@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using Fohjin.DDD.EventStore;
 
-namespace Fohjin.DDD.Domain
+namespace Fohjin.DDD.EventStore.Storage.Aggregate
 {
     public class EntityList<TEntity, TDomainEvent> : List<TEntity>
         where TEntity : IEntityEventProvider<TDomainEvent>

@@ -2,6 +2,7 @@
 using Fohjin.DDD.Domain.Mementos;
 using Fohjin.DDD.Events.Client;
 using Fohjin.DDD.EventStore;
+using Fohjin.DDD.EventStore.Storage.Aggregate;
 using Fohjin.DDD.EventStore.Storage.Memento;
 
 namespace Fohjin.DDD.Domain.Client

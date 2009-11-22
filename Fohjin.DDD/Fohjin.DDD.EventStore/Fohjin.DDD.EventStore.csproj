@@ -72,6 +72,11 @@
     <Compile Include="IEventProvider.cs" />
     <Compile Include="IRegisterChildEntities.cs" />
     <Compile Include="ITransactional.cs" />
+    <Compile Include="Storage\Aggregate\BaseAggregateRoot.cs" />
+    <Compile Include="Storage\Aggregate\BaseEntity.cs" />
+    <Compile Include="Storage\Aggregate\BaseEntityExtensions.cs" />
+    <Compile Include="Storage\Aggregate\EntityList.cs" />
+    <Compile Include="Storage\Aggregate\UnregisteredDomainEventException.cs" />
     <Compile Include="Storage\EventStoreIdentityMap.cs" />
     <Compile Include="Storage\EventStoreUnitOfWork.cs" />
     <Compile Include="IDomainEvent.cs" />

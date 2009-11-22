@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Fohjin.DDD.EventStore;
 
-namespace Fohjin.DDD.Domain
+namespace Fohjin.DDD.EventStore.Storage.Aggregate
 {
     public static class TryGetByIdExtension
     {

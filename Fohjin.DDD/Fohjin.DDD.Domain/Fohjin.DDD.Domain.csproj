@@ -70,10 +70,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BaseEntity.cs" />
-    <Compile Include="BaseAggregateRoot.cs" />
     <Compile Include="Account\ActiveAccount.cs" />
-    <Compile Include="BaseEntityExtensions.cs" />
     <Compile Include="Client\BankCard.cs" />
     <Compile Include="Client\BankCardIsDisabledException.cs" />
     <Compile Include="Client\Client.cs" />
@@ -82,7 +79,6 @@
     <Compile Include="Client\IBankCard.cs" />
     <Compile Include="Client\NonExistingAccountException.cs" />
     <Compile Include="Client\NonExistingBankCardException.cs" />
-    <Compile Include="EntityList.cs" />
     <Compile Include="Mementos\ActiveAccountMemento.cs" />
     <Compile Include="Mementos\BankCardMemento.cs" />
     <Compile Include="Mementos\ClientMemento.cs" />
@@ -92,7 +88,6 @@
     <Compile Include="Account\ClosedAccountException.cs" />
     <Compile Include="Account\NonExitsingAccountException.cs" />
     <Compile Include="Client\NonExistingClientException.cs" />
-    <Compile Include="UnregisteredDomainEventException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Account\AccountName.cs" />
     <Compile Include="Account\AccountNumber.cs" />
