@@ -13,7 +13,7 @@ namespace Test.Fohjin.DDD
     public abstract class CommandTestFixture<TCommand, TCommandHandler, TAggregateRoot> 
         where TCommand : class, ICommand
         where TCommandHandler : class, ICommandHandler<TCommand>
-        where TAggregateRoot : class, IOrginator, IEventProvider, new()
+        where TAggregateRoot : class, IOrginator, IEventProvider<IDomainEvent>, new()
     {
         private IDictionary<Type, object> mocks;
 
@@ -66,9 +66,9 @@ namespace Test.Fohjin.DDD
 
             foreach (var parameter in constructorInfo.GetParameters())
             {
-                if (parameter.ParameterType == typeof(IDomainRepository))
+                if (parameter.ParameterType == typeof(IDomainRepository<IDomainEvent>))
                 {
-                    var repositoryMock = new Mock<IDomainRepository>();
+                    var repositoryMock = new Mock<IDomainRepository<IDomainEvent>>();
                     repositoryMock.Setup(x => x.GetById<TAggregateRoot>(It.IsAny<Guid>())).Returns(AggregateRoot);
                     repositoryMock.Setup(x => x.Add(It.IsAny<TAggregateRoot>())).Callback<TAggregateRoot>(x => AggregateRoot = x);
                     mocks.Add(parameter.ParameterType, repositoryMock);
@@ -78,7 +78,7 @@ namespace Test.Fohjin.DDD
                 mocks.Add(parameter.ParameterType, CreateMock(parameter.ParameterType));
             }
 
-            return (ICommandHandler<TCommand>)constructorInfo.Invoke(mocks.Values.Select(x => ((Mock)x).Object).ToArray());
+            return (ICommandHandler<TCommand>)constructorInfo.Invoke(mocks.Values.Select(x => ((Mock) x).Object).ToArray());
         }
 
         private static object CreateMock(Type type)

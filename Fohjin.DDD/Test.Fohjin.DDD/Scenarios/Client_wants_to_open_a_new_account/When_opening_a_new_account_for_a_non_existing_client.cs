@@ -30,7 +30,7 @@ namespace Test.Fohjin.DDD.Scenarios.Client_wants_to_open_a_new_account
         [Then]
         public void Then_there_is_no_new_account_to_be_saved()
         {
-            OnDependency<IDomainRepository>().Verify(x => x.Add(It.IsAny<ActiveAccount>()), Times.Never());
+            OnDependency<IDomainRepository<IDomainEvent>>().Verify(x => x.Add(It.IsAny<ActiveAccount>()), Times.Never());
         }
     }
 }

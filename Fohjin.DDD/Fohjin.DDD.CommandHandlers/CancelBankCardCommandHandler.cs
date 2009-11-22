@@ -6,9 +6,9 @@ namespace Fohjin.DDD.CommandHandlers
 {
     public class CancelBankCardCommandHandler : ICommandHandler<CancelBankCardCommand>
     {
-        private readonly IDomainRepository _repository;
+        private readonly IDomainRepository<IDomainEvent> _repository;
 
-        public CancelBankCardCommandHandler(IDomainRepository repository)
+        public CancelBankCardCommandHandler(IDomainRepository<IDomainEvent> repository)
         {
             _repository = repository;
         }

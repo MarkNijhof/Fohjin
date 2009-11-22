@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace Fohjin.DDD.EventStore
 {
-    public interface IEventProvider
+    public interface IEventProvider<TDomainEvent> where TDomainEvent : IDomainEvent
     {
         void Clear();
-        void LoadFromHistory(IEnumerable<IDomainEvent> domainEvents);
+        void LoadFromHistory(IEnumerable<TDomainEvent> domainEvents);
         void UpdateVersion(int version);
         Guid Id { get; }
         int Version { get; }
-        IEnumerable<IDomainEvent> GetChanges();
+        IEnumerable<TDomainEvent> GetChanges();
     }
 }

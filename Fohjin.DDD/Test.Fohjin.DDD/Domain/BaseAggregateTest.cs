@@ -84,13 +84,13 @@ namespace Test.Fohjin.DDD.Domain
 
     }
 
-    public class TestAggregateRoot : BaseAggregateRoot
+    public class TestAggregateRoot : BaseAggregateRoot<IDomainEvent>
     {
-        private readonly EntityList<TestEntity> TestEntities;
+        private readonly EntityList<TestEntity, IDomainEvent> TestEntities;
 
         public TestAggregateRoot()
         {
-            TestEntities = new EntityList<TestEntity>(this)
+            TestEntities = new EntityList<TestEntity, IDomainEvent>(this)
             {
                 new TestEntity()
             };
@@ -110,7 +110,7 @@ namespace Test.Fohjin.DDD.Domain
         }
     }
 
-    public class TestEntity : BaseEntity
+    public class TestEntity : BaseEntity<IDomainEvent>
     {
         public TestEntity()
         {

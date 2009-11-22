@@ -4,7 +4,7 @@ using Fohjin.DDD.EventStore.Storage.Memento;
 
 namespace Fohjin.DDD.EventStore.Storage
 {
-    public class EventStoreIdentityMap : IIdentityMap
+    public class EventStoreIdentityMap<TDomainEvent> : IIdentityMap<TDomainEvent> where TDomainEvent : IDomainEvent
     {
         private readonly Dictionary<Type, Dictionary<Guid, object>> _identityMap;
 
@@ -13,7 +13,7 @@ namespace Fohjin.DDD.EventStore.Storage
             _identityMap = new Dictionary<Type, Dictionary<Guid, object>>();
         }
 
-        public TAggregate GetById<TAggregate>(Guid id) where TAggregate : class, IOrginator, IEventProvider, new()
+        public TAggregate GetById<TAggregate>(Guid id) where TAggregate : class, IOrginator, IEventProvider<TDomainEvent>, new()
         {
             Dictionary<Guid, object> aggregates;
             if (!_identityMap.TryGetValue(typeof(TAggregate), out aggregates))
@@ -26,7 +26,7 @@ namespace Fohjin.DDD.EventStore.Storage
             return (TAggregate) aggregate;
         }
 
-        public void Add<TAggregate>(TAggregate aggregateRoot) where TAggregate : class, IOrginator, IEventProvider, new()
+        public void Add<TAggregate>(TAggregate aggregateRoot) where TAggregate : class, IOrginator, IEventProvider<TDomainEvent>, new()
         {
             Dictionary<Guid, object> aggregates;
             if (!_identityMap.TryGetValue(typeof(TAggregate), out aggregates))

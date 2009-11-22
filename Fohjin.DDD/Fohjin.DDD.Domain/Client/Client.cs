@@ -9,18 +9,18 @@ using Fohjin.DDD.EventStore.Storage.Memento;
 
 namespace Fohjin.DDD.Domain.Client
 {
-    public class Client : BaseAggregateRoot, IOrginator
+    public class Client : BaseAggregateRoot<IDomainEvent>, IOrginator
     {
         private PhoneNumber _phoneNumber;
         private Address _address;
         private ClientName _clientName;
         private readonly List<Guid> _accounts;
-        private readonly EntityList<BankCard> _bankCards;
+        private readonly EntityList<BankCard, IDomainEvent> _bankCards;
 
         public Client()
         {
             _accounts = new List<Guid>();
-            _bankCards = new EntityList<BankCard>(this);
+            _bankCards = new EntityList<BankCard, IDomainEvent>(this);
 
             registerEvents();
         }
@@ -138,7 +138,7 @@ namespace Fohjin.DDD.Domain.Client
 
         private void onAnyEventForABankCard(IDomainEvent domainEvent)
         {
-            IEntityEventProvider bankCard;
+            IEntityEventProvider<IDomainEvent> bankCard;
             if (!_bankCards.TryGetValueById(domainEvent.AggregateId, out bankCard))
                 throw new NonExistingBankCardException("The requested bank card does not exist!");
 

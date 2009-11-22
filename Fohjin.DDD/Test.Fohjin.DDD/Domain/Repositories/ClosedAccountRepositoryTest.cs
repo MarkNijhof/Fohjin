@@ -21,10 +21,10 @@ namespace Test.Fohjin.DDD.Domain.Repositories
     {
         private const string dataBaseFile = "domainDataBase.db3";
 
-        private IDomainRepository _repository;
-        private DomainEventStorage _domainEventStorage;
-        private EventStoreIdentityMap _eventStoreIdentityMap;
-        private EventStoreUnitOfWork _eventStoreUnitOfWork;
+        private IDomainRepository<IDomainEvent> _repository;
+        private DomainEventStorage<IDomainEvent> _domainEventStorage;
+        private EventStoreIdentityMap<IDomainEvent> _eventStoreIdentityMap;
+        private EventStoreUnitOfWork<IDomainEvent> _eventStoreUnitOfWork;
         private List<Ledger> _ledgers;
 
         [SetUp]
@@ -34,10 +34,10 @@ namespace Test.Fohjin.DDD.Domain.Repositories
 
             var sqliteConnectionString = string.Format("Data Source={0}", dataBaseFile);
 
-            _domainEventStorage = new DomainEventStorage(sqliteConnectionString, new BinaryFormatter());
-            _eventStoreIdentityMap = new EventStoreIdentityMap();
-            _eventStoreUnitOfWork = new EventStoreUnitOfWork(_domainEventStorage, _eventStoreIdentityMap, new Mock<IBus>().Object);
-            _repository = new DomainRepository(_eventStoreUnitOfWork, _eventStoreIdentityMap);
+            _domainEventStorage = new DomainEventStorage<IDomainEvent>(sqliteConnectionString, new BinaryFormatter());
+            _eventStoreIdentityMap = new EventStoreIdentityMap<IDomainEvent>();
+            _eventStoreUnitOfWork = new EventStoreUnitOfWork<IDomainEvent>(_domainEventStorage, _eventStoreIdentityMap, new Mock<IBus>().Object);
+            _repository = new DomainRepository<IDomainEvent>(_eventStoreUnitOfWork, _eventStoreIdentityMap);
         }
 
         [Test]
@@ -78,7 +78,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
             _repository.Add(closedAccount);
             _eventStoreUnitOfWork.Commit();
 
-            var closedAccountForRepository = (IEventProvider)closedAccount;
+            var closedAccountForRepository = (IEventProvider<IDomainEvent>)closedAccount;
 
             Assert.That(closedAccountForRepository.GetChanges().Count(), Is.EqualTo(0));
         }

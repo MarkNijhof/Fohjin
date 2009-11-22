@@ -6,9 +6,9 @@ namespace Fohjin.DDD.CommandHandlers
 {
     public class AssignNewBankCardCommandHandler : ICommandHandler<AssignNewBankCardCommand>
     {
-        private readonly IDomainRepository _repository;
+        private readonly IDomainRepository<IDomainEvent> _repository;
 
-        public AssignNewBankCardCommandHandler(IDomainRepository repository)
+        public AssignNewBankCardCommandHandler(IDomainRepository<IDomainEvent> repository)
         {
             _repository = repository;
         }

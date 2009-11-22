@@ -5,7 +5,7 @@ using Fohjin.DDD.EventStore;
 namespace Test.Fohjin.DDD
 {
     [Specification]
-    public abstract class AggregateRootTestFixture<TAggregateRoot> where TAggregateRoot : IEventProvider, new()
+    public abstract class AggregateRootTestFixture<TAggregateRoot> where TAggregateRoot : IEventProvider<IDomainEvent>, new()
     {
         protected TAggregateRoot AggregateRoot;
         protected Exception CaughtException;

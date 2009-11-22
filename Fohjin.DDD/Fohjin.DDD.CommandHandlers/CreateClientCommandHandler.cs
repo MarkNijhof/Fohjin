@@ -6,9 +6,9 @@ namespace Fohjin.DDD.CommandHandlers
 {
     public class CreateClientCommandHandler : ICommandHandler<CreateClientCommand>
     {
-        private readonly IDomainRepository _repository;
+        private readonly IDomainRepository<IDomainEvent> _repository;
 
-        public CreateClientCommandHandler(IDomainRepository repository)
+        public CreateClientCommandHandler(IDomainRepository<IDomainEvent> repository)
         {
             _repository = repository;
         }

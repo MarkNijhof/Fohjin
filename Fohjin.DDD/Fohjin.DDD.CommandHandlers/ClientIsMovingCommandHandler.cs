@@ -6,9 +6,9 @@ namespace Fohjin.DDD.CommandHandlers
 {
     public class ClientIsMovingCommandHandler : ICommandHandler<ClientIsMovingCommand>
     {
-        private readonly IDomainRepository _repository;
+        private readonly IDomainRepository<IDomainEvent> _repository;
 
-        public ClientIsMovingCommandHandler(IDomainRepository repository)
+        public ClientIsMovingCommandHandler(IDomainRepository<IDomainEvent> repository)
         {
             _repository = repository;
         }

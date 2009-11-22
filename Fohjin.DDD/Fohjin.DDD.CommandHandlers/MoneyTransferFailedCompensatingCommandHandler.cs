@@ -6,9 +6,9 @@ namespace Fohjin.DDD.CommandHandlers
 {
     public class MoneyTransferFailedCompensatingCommandHandler : ICommandHandler<MoneyTransferFailedCompensatingCommand>
     {
-        private readonly IDomainRepository _repository;
+        private readonly IDomainRepository<IDomainEvent> _repository;
 
-        public MoneyTransferFailedCompensatingCommandHandler(IDomainRepository repository)
+        public MoneyTransferFailedCompensatingCommandHandler(IDomainRepository<IDomainEvent> repository)
         {
             _repository = repository;
         }

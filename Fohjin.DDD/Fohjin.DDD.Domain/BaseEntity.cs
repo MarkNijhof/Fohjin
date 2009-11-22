@@ -5,25 +5,25 @@ using Fohjin.DDD.EventStore;
 
 namespace Fohjin.DDD.Domain
 {
-    public class BaseEntity : IEntityEventProvider
+    public class BaseEntity<TDomainEvent> : IEntityEventProvider<TDomainEvent> where TDomainEvent : IDomainEvent
     {
         public Guid Id { get; protected set; }
-        private readonly Dictionary<Type, Action<IDomainEvent>> _events;
-        private readonly List<IDomainEvent> _appliedEvents;
+        private readonly Dictionary<Type, Action<TDomainEvent>> _events;
+        private readonly List<TDomainEvent> _appliedEvents;
         private Func<int> _versionProvider;
 
         public BaseEntity()
         {
-            _events = new Dictionary<Type, Action<IDomainEvent>>();
-            _appliedEvents = new List<IDomainEvent>();
+            _events = new Dictionary<Type, Action<TDomainEvent>>();
+            _appliedEvents = new List<TDomainEvent>();
         }
 
-        protected void RegisterEvent<TEvent>(Action<TEvent> eventHandler) where TEvent : class, IDomainEvent
+        protected void RegisterEvent<TEvent>(Action<TEvent> eventHandler) where TEvent : class, TDomainEvent
         {
             _events.Add(typeof(TEvent), theEvent => eventHandler(theEvent as TEvent));
         }
 
-        protected void Apply<TEvent>(TEvent domainEvent) where TEvent : class, IDomainEvent
+        protected void Apply<TEvent>(TEvent domainEvent) where TEvent : class, TDomainEvent
         {
             domainEvent.AggregateId = Id;
             domainEvent.Version = _versionProvider();
@@ -31,7 +31,7 @@ namespace Fohjin.DDD.Domain
             _appliedEvents.Add(domainEvent);
         }
 
-        void IEntityEventProvider.LoadFromHistory(IEnumerable<IDomainEvent> domainEvents)
+        void IEntityEventProvider<TDomainEvent>.LoadFromHistory(IEnumerable<TDomainEvent> domainEvents)
         {
             if (domainEvents.Count() == 0)
                 return;
@@ -47,19 +47,19 @@ namespace Fohjin.DDD.Domain
             _versionProvider = versionProvider;
         }
 
-        IEnumerable<IDomainEvent> IEntityEventProvider.GetChanges()
+        IEnumerable<TDomainEvent> IEntityEventProvider<TDomainEvent>.GetChanges()
         {
             return _appliedEvents;
         }
 
-        void IEntityEventProvider.Clear()
+        void IEntityEventProvider<TDomainEvent>.Clear()
         {
             _appliedEvents.Clear();
         }
 
-        private void apply(Type eventType, IDomainEvent domainEvent)
+        private void apply(Type eventType, TDomainEvent domainEvent)
         {
-            Action<IDomainEvent> handler;
+            Action<TDomainEvent> handler;
 
             if (!_events.TryGetValue(eventType, out handler))
                 throw new UnregisteredDomainEventException(string.Format("The requested domain event '{0}' is not registered in '{1}'", eventType.FullName, GetType().FullName));

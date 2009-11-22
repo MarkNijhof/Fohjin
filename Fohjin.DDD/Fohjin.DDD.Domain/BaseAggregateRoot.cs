@@ -5,11 +5,11 @@ using Fohjin.DDD.EventStore;
 
 namespace Fohjin.DDD.Domain
 {
-    public class BaseAggregateRoot : IEventProvider, IRegisterChildEntities
+    public class BaseAggregateRoot<TDomainEvent> : IEventProvider<TDomainEvent>, IRegisterChildEntities<TDomainEvent> where TDomainEvent : IDomainEvent
     {
-        private readonly Dictionary<Type, Action<IDomainEvent>> _registeredEvents;
-        private readonly List<IDomainEvent> _appliedEvents;
-        private readonly List<IEntityEventProvider> _childEventProviders;
+        private readonly Dictionary<Type, Action<TDomainEvent>> _registeredEvents;
+        private readonly List<TDomainEvent> _appliedEvents;
+        private readonly List<IEntityEventProvider<TDomainEvent>> _childEventProviders;
 
         public Guid Id { get; protected set; }
         public int Version { get; protected set; }
@@ -17,17 +17,17 @@ namespace Fohjin.DDD.Domain
 
         public BaseAggregateRoot()
         {
-            _registeredEvents = new Dictionary<Type, Action<IDomainEvent>>();
-            _appliedEvents = new List<IDomainEvent>();
-            _childEventProviders = new List<IEntityEventProvider>();
+            _registeredEvents = new Dictionary<Type, Action<TDomainEvent>>();
+            _appliedEvents = new List<TDomainEvent>();
+            _childEventProviders = new List<IEntityEventProvider<TDomainEvent>>();
         }
 
-        protected void RegisterEvent<TEvent>(Action<TEvent> eventHandler) where TEvent : class, IDomainEvent
+        protected void RegisterEvent<TEvent>(Action<TEvent> eventHandler) where TEvent : class, TDomainEvent
         {
             _registeredEvents.Add(typeof(TEvent), theEvent => eventHandler(theEvent as TEvent));
         }
 
-        protected void Apply<TEvent>(TEvent domainEvent) where TEvent : class, IDomainEvent
+        protected void Apply<TEvent>(TEvent domainEvent) where TEvent : class, TDomainEvent
         {
             domainEvent.AggregateId = Id;
             domainEvent.Version = GetNewEventVersion();
@@ -35,7 +35,7 @@ namespace Fohjin.DDD.Domain
             _appliedEvents.Add(domainEvent);
         }
 
-        void IEventProvider.LoadFromHistory(IEnumerable<IDomainEvent> domainEvents)
+        void IEventProvider<TDomainEvent>.LoadFromHistory(IEnumerable<TDomainEvent> domainEvents)
         {
             if (domainEvents.Count() == 0)
                 return;
@@ -49,9 +49,9 @@ namespace Fohjin.DDD.Domain
             EventVersion = Version;
         }
 
-        private void apply(Type eventType, IDomainEvent domainEvent)
+        private void apply(Type eventType, TDomainEvent domainEvent)
         {
-            Action<IDomainEvent> handler;
+            Action<TDomainEvent> handler;
 
             if (!_registeredEvents.TryGetValue(eventType, out handler))
                 throw new UnregisteredDomainEventException(string.Format("The requested domain event '{0}' is not registered in '{1}'", eventType.FullName, GetType().FullName));
@@ -59,29 +59,29 @@ namespace Fohjin.DDD.Domain
             handler(domainEvent);
         }
 
-        IEnumerable<IDomainEvent> IEventProvider.GetChanges()
+        IEnumerable<TDomainEvent> IEventProvider<TDomainEvent>.GetChanges()
         {
             return _appliedEvents.Concat(GetChildEventsAndUpdateEventVersion()).OrderBy(x => x.Version).ToList();
         }
 
-        void IEventProvider.Clear()
+        void IEventProvider<TDomainEvent>.Clear()
         {
             _childEventProviders.ForEach(x => x.Clear());
             _appliedEvents.Clear();
         }
 
-        void IEventProvider.UpdateVersion(int version)
+        void IEventProvider<TDomainEvent>.UpdateVersion(int version)
         {
             Version = version;
         }
 
-        void IRegisterChildEntities.RegisterChildEventProvider(IEntityEventProvider entityEventProvider)
+        void IRegisterChildEntities<TDomainEvent>.RegisterChildEventProvider(IEntityEventProvider<TDomainEvent> entityEventProvider)
         {
             entityEventProvider.HookUpVersionProvider(GetNewEventVersion);
             _childEventProviders.Add(entityEventProvider);
         }
 
-        private IEnumerable<IDomainEvent> GetChildEventsAndUpdateEventVersion()
+        private IEnumerable<TDomainEvent> GetChildEventsAndUpdateEventVersion()
         {
             return _childEventProviders.SelectMany(entity => entity.GetChanges());
         }

@@ -6,9 +6,9 @@ namespace Fohjin.DDD.CommandHandlers
 {
     public class WithdrawlCashCommandHandler : ICommandHandler<WithdrawlCashCommand>
     {
-        private readonly IDomainRepository _repository;
+        private readonly IDomainRepository<IDomainEvent> _repository;
 
-        public WithdrawlCashCommandHandler(IDomainRepository repository)
+        public WithdrawlCashCommandHandler(IDomainRepository<IDomainEvent> repository)
         {
             _repository = repository;
         }

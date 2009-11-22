@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace Fohjin.DDD.EventStore.Storage
 {
-    public interface IDomainEventStorage : ISnapShotStorage, ITransactional
+    public interface IDomainEventStorage<TDomainEvent> : ISnapShotStorage<TDomainEvent>, ITransactional where TDomainEvent : IDomainEvent
     {
-        IEnumerable<IDomainEvent> GetAllEvents(Guid eventProviderId);
-        IEnumerable<IDomainEvent> GetEventsSinceLastSnapShot(Guid eventProviderId);
+        IEnumerable<TDomainEvent> GetAllEvents(Guid eventProviderId);
+        IEnumerable<TDomainEvent> GetEventsSinceLastSnapShot(Guid eventProviderId);
         int GetEventCountSinceLastSnapShot(Guid eventProviderId);
-        void Save(IEventProvider eventProvider);
+        void Save(IEventProvider<TDomainEvent> eventProvider);
     }
 }

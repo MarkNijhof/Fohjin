@@ -1,11 +1,12 @@
 ﻿using System;
 using Fohjin.DDD.Domain.Mementos;
 using Fohjin.DDD.Events.Client;
+using Fohjin.DDD.EventStore;
 using Fohjin.DDD.EventStore.Storage.Memento;
 
 namespace Fohjin.DDD.Domain.Client
 {
-    public class BankCard : BaseEntity, IOrginator, IBankCard
+    public class BankCard : BaseEntity<IDomainEvent>, IOrginator, IBankCard
     {
         private Guid _accountId;
         private bool _disabled;

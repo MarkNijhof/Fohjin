@@ -6,9 +6,9 @@ namespace Fohjin.DDD.CommandHandlers
 {
     public class ChangeAccountNameCommandHandler : ICommandHandler<ChangeAccountNameCommand>
     {
-        private readonly IDomainRepository _repository;
+        private readonly IDomainRepository<IDomainEvent> _repository;
 
-        public ChangeAccountNameCommandHandler(IDomainRepository repository)
+        public ChangeAccountNameCommandHandler(IDomainRepository<IDomainEvent> repository)
         {
             _repository = repository;
         }

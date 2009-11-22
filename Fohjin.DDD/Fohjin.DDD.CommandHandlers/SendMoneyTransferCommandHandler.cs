@@ -6,9 +6,9 @@ namespace Fohjin.DDD.CommandHandlers
 {
     public class SendMoneyTransferCommandHandler : ICommandHandler<SendMoneyTransferCommand>
     {
-        private readonly IDomainRepository _repository;
+        private readonly IDomainRepository<IDomainEvent> _repository;
 
-        public SendMoneyTransferCommandHandler(IDomainRepository repository)
+        public SendMoneyTransferCommandHandler(IDomainRepository<IDomainEvent> repository)
         {
             _repository = repository;
         }

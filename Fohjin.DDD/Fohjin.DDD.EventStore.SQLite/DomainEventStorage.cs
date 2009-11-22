@@ -9,7 +9,7 @@ using Fohjin.DDD.EventStore.Storage.Memento;
 
 namespace Fohjin.DDD.EventStore.SQLite
 {
-    public class DomainEventStorage : IDomainEventStorage
+    public class DomainEventStorage<TDomainEvent> : IDomainEventStorage<TDomainEvent> where TDomainEvent : IDomainEvent
     {
         private bool _isRunningWithinTransaction;
         private readonly string _sqLiteConnectionString;
@@ -23,11 +23,11 @@ namespace Fohjin.DDD.EventStore.SQLite
             _formatter = formatter;
         }
 
-        public IEnumerable<IDomainEvent> GetAllEvents(Guid eventProviderId)
+        public IEnumerable<TDomainEvent> GetAllEvents(Guid eventProviderId)
         {
             const string commandText = @"SELECT Event FROM Events WHERE EventProviderId = @eventProviderId ORDER BY Version ASC;";
 
-            var domainEvents = new List<IDomainEvent>();
+            var domainEvents = new List<TDomainEvent>();
 
             using (var sqliteConnection = new SQLiteConnection(_sqLiteConnectionString))
             {
@@ -44,7 +44,7 @@ namespace Fohjin.DDD.EventStore.SQLite
                             {
                                 while (sqLiteDataReader.Read())
                                 {
-                                    domainEvents.Add(Deserialize<IDomainEvent>((byte[])sqLiteDataReader["Event"]));
+                                    domainEvents.Add(Deserialize<TDomainEvent>((byte[])sqLiteDataReader["Event"]));
                                 }
                             }
                         }
@@ -60,7 +60,7 @@ namespace Fohjin.DDD.EventStore.SQLite
             return domainEvents;
         }
 
-        public IEnumerable<IDomainEvent> GetEventsSinceLastSnapShot(Guid eventProviderId)
+        public IEnumerable<TDomainEvent> GetEventsSinceLastSnapShot(Guid eventProviderId)
         {
             var snapShot = GetSnapShot(eventProviderId);
 
@@ -70,7 +70,7 @@ namespace Fohjin.DDD.EventStore.SQLite
 
             var commandText = string.Format(@"SELECT Event FROM Events WHERE EventProviderId = @eventProviderId AND Version > {0} ORDER BY Version ASC;", snapShotVersion);
 
-            var domainEvents = new List<IDomainEvent>();
+            var domainEvents = new List<TDomainEvent>();
 
             using (var sqliteConnection = new SQLiteConnection(_sqLiteConnectionString))
             {
@@ -87,7 +87,7 @@ namespace Fohjin.DDD.EventStore.SQLite
                             {
                                 while (sqLiteDataReader.Read())
                                 {
-                                    domainEvents.Add(Deserialize<IDomainEvent>((byte[])sqLiteDataReader["Event"]));
+                                    domainEvents.Add(Deserialize<TDomainEvent>((byte[])sqLiteDataReader["Event"]));
                                 }
                             }
                         }
@@ -139,7 +139,7 @@ namespace Fohjin.DDD.EventStore.SQLite
             return count;
         }
 
-        public void Save(IEventProvider eventProvider)
+        public void Save(IEventProvider<TDomainEvent> eventProvider)
         {
             if (!_isRunningWithinTransaction)
                 throw new Exception("Opperation is not running within a transaction");
@@ -190,7 +190,7 @@ namespace Fohjin.DDD.EventStore.SQLite
             return snapshot;
         }
 
-        public void SaveShapShot(IEventProvider entity)
+        public void SaveShapShot(IEventProvider<TDomainEvent> entity)
         {
             StoreSnapShot(new SnapShot(entity.Id, entity.Version, ((IOrginator)entity).CreateMemento()));
         }
@@ -221,7 +221,7 @@ namespace Fohjin.DDD.EventStore.SQLite
             _sqliteConnection.Dispose();
         }
 
-        private void SaveEvent(IDomainEvent domainEvent, IEventProvider eventProvider, SQLiteTransaction transaction)
+        private void SaveEvent(TDomainEvent domainEvent, IEventProvider<TDomainEvent> eventProvider, SQLiteTransaction transaction)
         {
             const string commandText = "INSERT INTO Events VALUES(@eventId, @eventProviderId, @event, @version)";
             using (var sqLiteCommand = new SQLiteCommand(commandText, transaction.Connection, transaction))
@@ -266,7 +266,7 @@ namespace Fohjin.DDD.EventStore.SQLite
             }
         }
 
-        private static void UpdateEventProviderVersion(IEventProvider eventProvider, SQLiteTransaction transaction)
+        private static void UpdateEventProviderVersion(IEventProvider<TDomainEvent> eventProvider, SQLiteTransaction transaction)
         {
             const string commandText = "UPDATE EventProviders SET Version = @version WHERE EventProviderId = @eventProviderId;";
             using (var sqLiteCommand = new SQLiteCommand(commandText, transaction.Connection, transaction))
@@ -278,7 +278,7 @@ namespace Fohjin.DDD.EventStore.SQLite
             }
         }
 
-        private static int GetEventProviderVersion(IEventProvider eventProvider, SQLiteTransaction transaction)
+        private static int GetEventProviderVersion(IEventProvider<TDomainEvent> eventProvider, SQLiteTransaction transaction)
         {
             const string commandText = @"
                 INSERT OR IGNORE INTO EventProviders VALUES (@eventProviderId, @type, 0);

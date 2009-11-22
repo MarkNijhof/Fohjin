@@ -6,22 +6,22 @@ using Fohjin.DDD.EventStore.Storage.Memento;
 
 namespace Fohjin.DDD.EventStore.Storage
 {
-    public class EventStoreUnitOfWork : IEventStoreUnitOfWork
+    public class EventStoreUnitOfWork<TDomainEvent> : IEventStoreUnitOfWork<TDomainEvent> where TDomainEvent : IDomainEvent
     {
-        private readonly IDomainEventStorage _domainEventStorage;
-        private readonly IIdentityMap _identityMap;
+        private readonly IDomainEventStorage<TDomainEvent> _domainEventStorage;
+        private readonly IIdentityMap<TDomainEvent> _identityMap;
         private readonly IBus _bus;
-        private readonly List<IEventProvider> _eventProviders;
+        private readonly List<IEventProvider<TDomainEvent>> _eventProviders;
 
-        public EventStoreUnitOfWork(IDomainEventStorage domainEventStorage, IIdentityMap identityMap, IBus bus)
+        public EventStoreUnitOfWork(IDomainEventStorage<TDomainEvent> domainEventStorage, IIdentityMap<TDomainEvent> identityMap, IBus bus)
         {
             _domainEventStorage = domainEventStorage;
             _identityMap = identityMap;
             _bus = bus;
-            _eventProviders = new List<IEventProvider>();
+            _eventProviders = new List<IEventProvider<TDomainEvent>>();
         }
 
-        public TAggregate GetById<TAggregate>(Guid id) where TAggregate : class, IOrginator, IEventProvider, new()
+        public TAggregate GetById<TAggregate>(Guid id) where TAggregate : class, IOrginator, IEventProvider<TDomainEvent>, new()
         {
             var aggregateRoot = new TAggregate();
 
@@ -34,12 +34,12 @@ namespace Fohjin.DDD.EventStore.Storage
             return aggregateRoot;
         }
 
-        public void Add<TAggregate>(TAggregate aggregateRoot) where TAggregate : class, IOrginator, IEventProvider, new()
+        public void Add<TAggregate>(TAggregate aggregateRoot) where TAggregate : class, IOrginator, IEventProvider<TDomainEvent>, new()
         {
             RegisterForTracking(aggregateRoot);
         }
 
-        public void RegisterForTracking<TAggregate>(TAggregate aggregateRoot) where TAggregate : class, IOrginator, IEventProvider, new()
+        public void RegisterForTracking<TAggregate>(TAggregate aggregateRoot) where TAggregate : class, IOrginator, IEventProvider<TDomainEvent>, new()
         {
             _eventProviders.Add(aggregateRoot);
             _identityMap.Add(aggregateRoot);
@@ -81,7 +81,7 @@ namespace Fohjin.DDD.EventStore.Storage
             aggregateRoot.SetMemento(snapShot.Memento);
         }
 
-        private void loadRemainingHistoryEvents(Guid id, IEventProvider aggregateRoot)
+        private void loadRemainingHistoryEvents(Guid id, IEventProvider<TDomainEvent> aggregateRoot)
         {
             var events = _domainEventStorage.GetEventsSinceLastSnapShot(id);
             if (events.Count() > 0)
