@@ -1,6 +1,6 @@
 using Fohjin.DDD.Events;
 using Fohjin.DDD.EventStore;
-using Fohjin.DDD.EventStore.Storage.Aggregate;
+using Fohjin.DDD.EventStore.Aggregate;
 
 namespace Test.Fohjin.DDD.Domain
 {

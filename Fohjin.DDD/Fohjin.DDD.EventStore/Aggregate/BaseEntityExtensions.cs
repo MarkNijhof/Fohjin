@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Fohjin.DDD.EventStore.Storage.Aggregate
+namespace Fohjin.DDD.EventStore.Aggregate
 {
     public static class TryGetByIdExtension
     {

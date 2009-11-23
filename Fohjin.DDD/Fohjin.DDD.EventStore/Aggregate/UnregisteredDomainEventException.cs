@@ -1,6 +1,6 @@
 using System;
 
-namespace Fohjin.DDD.EventStore.Storage.Aggregate
+namespace Fohjin.DDD.EventStore.Aggregate
 {
     public class UnregisteredDomainEventException : Exception
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Fohjin.DDD.EventStore.Storage.Aggregate
+namespace Fohjin.DDD.EventStore.Aggregate
 {
     public class BaseEntity<TDomainEvent> : IEntityEventProvider<TDomainEvent> where TDomainEvent : IDomainEvent
     {

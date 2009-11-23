@@ -7,6 +7,35 @@ using NUnit.Framework;
 namespace Test.Fohjin.DDD
 {
     [Specification]
+    public abstract class BaseTestFixture
+    {
+        protected Exception CaughtException;
+        protected virtual void Given() { }
+        protected abstract void When();
+        protected virtual void Finally() { }
+
+        [Given]
+        public void Setup()
+        {
+            CaughtException = new ThereWasNoExceptionButOneWasExpectedException();            
+            Given();
+
+            try
+            {
+                When();
+            }
+            catch (Exception exception)
+            {
+                CaughtException = exception;
+            }
+            finally
+            {
+                Finally();
+            }
+        }
+    }
+
+    [Specification]
     public abstract class BaseTestFixture<TSubjectUnderTest>
     {
         private Dictionary<Type, object> mocks;
