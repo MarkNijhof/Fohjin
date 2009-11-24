@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fohjin.EventStore", "Fohjin.EventStore\Fohjin.EventStore.csproj", "{8DB1E26D-388E-48EC-AAD6-85E8A12E7D5A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.Fohjin.EventStore", "Test.Fohjin.EventStore\Test.Fohjin.EventStore.csproj", "{CD4A1CFC-5451-4C10-9313-221F2D0A343C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8DB1E26D-388E-48EC-AAD6-85E8A12E7D5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8DB1E26D-388E-48EC-AAD6-85E8A12E7D5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8DB1E26D-388E-48EC-AAD6-85E8A12E7D5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8DB1E26D-388E-48EC-AAD6-85E8A12E7D5A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CD4A1CFC-5451-4C10-9313-221F2D0A343C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CD4A1CFC-5451-4C10-9313-221F2D0A343C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CD4A1CFC-5451-4C10-9313-221F2D0A343C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CD4A1CFC-5451-4C10-9313-221F2D0A343C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
