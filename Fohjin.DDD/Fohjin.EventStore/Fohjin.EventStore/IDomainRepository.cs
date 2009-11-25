@@ -1,3 +1,5 @@
+using Fohjin.EventStore.Infrastructure;
+
 namespace Fohjin.EventStore
 {
     public interface IDomainRepository

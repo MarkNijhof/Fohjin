@@ -1,86 +1,35 @@
-﻿using Fohjin.EventStore;
+﻿using System;
+using System.Collections.Generic;
+using Fohjin.EventStore;
+using Fohjin.EventStore.Infrastructure;
 
 namespace Test.Fohjin.EventStore
 {
-    public class When_requesting_a_new_object_from_the_repository_that_has_no_private_apply_method_declared : BaseTestFixture
+    public class When_requesting_a_new_object_from_the_repository_that_has_no_proteced_virtual_apply_method_declared : BaseTestFixture
     {
         protected override void When()
         {
-            new DomainRepository(new AggregateRootFactory()).CreateNew<TestObjectWithoutPrivateApplyMethod>();
+            new DomainRepository(new AggregateRootFactory(new RegisteredEventsCache())).CreateNew<TestObjectWithoutApplyMethod>();
         }
 
         [Then]
         public void The_an_exception_will_be_thrown()
         {
-            CaughtException.WillBeOfType<PublicVirtualApplyMethodException>();
+            CaughtException.WillBeOfType<ProtectedApplyMethodMissingException>();
         }
 
         [Then]
         public void The_exception_message_will_be()
         {
-            CaughtException.Message.WillBe(string.Format("Object '{0}' does not have a private 'void Apply(object @event);' method", typeof(TestObjectWithoutPrivateApplyMethod).FullName));
+            CaughtException.Message.WillBe(string.Format("Object '{0}' needs to have a 'proteced virtual void Apply(object @event)' method declared", typeof(TestObjectWithoutApplyMethod).FullName));
         }
     }
 
-    public class TestObjectWithoutPrivateApplyMethod
+    public class TestObjectWithoutApplyMethod
     {
-        public void Apply(object @event)
+        protected IEnumerable<Type> RegisteredEvents()
         {
-        }
-    }
-
-    public class When_requesting_a_new_object_from_the_repository_that_has_no_private_void_apply_method_declared : BaseTestFixture
-    {
-        protected override void When()
-        {
-            new DomainRepository(new AggregateRootFactory()).CreateNew<TestObjectWithoutPrivateVoidApplyMethod>();
-        }
-
-        [Then]
-        public void The_an_exception_will_be_thrown()
-        {
-            CaughtException.WillBeOfType<PublicVirtualApplyMethodException>();
-        }
-
-        [Then]
-        public void The_exception_message_will_be()
-        {
-            CaughtException.Message.WillBe(string.Format("The Apply method in Object '{0}' does not return 'void'", typeof(TestObjectWithoutPrivateVoidApplyMethod).FullName));
-        }
-    }
-
-    public class TestObjectWithoutPrivateVoidApplyMethod
-    {
-        private string Apply(object @event)
-        {
-            return string.Empty;
-        }
-    }
-
-    public class When_requesting_a_new_object_from_the_repository_that_has_a_private_void_apply_method_with_the_wrong_signature_declared : BaseTestFixture
-    {
-        protected override void When()
-        {
-            new DomainRepository(new AggregateRootFactory()).CreateNew<TestObjectWithWrongSignatureApplyMethod>();
-        }
-
-        [Then]
-        public void The_an_exception_will_be_thrown()
-        {
-            CaughtException.WillBeOfType<PublicVirtualApplyMethodException>();
-        }
-
-        [Then]
-        public void The_exception_message_will_be()
-        {
-            CaughtException.Message.WillBe(string.Format("The Apply method in Object '{0}' does not have the correct signature 'Apply(object @event)'", typeof(TestObjectWithWrongSignatureApplyMethod).FullName));
-        }
-    }
-
-    public class TestObjectWithWrongSignatureApplyMethod
-    {
-        private void Apply(string @event)
-        {
+            return new List<Type>();
         }
     }
 }

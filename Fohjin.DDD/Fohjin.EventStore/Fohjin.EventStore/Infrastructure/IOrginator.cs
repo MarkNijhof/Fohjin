@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Fohjin.EventStore
+namespace Fohjin.EventStore.Infrastructure
 {
     public interface IOrginator
     {
@@ -18,6 +18,10 @@ namespace Fohjin.EventStore
         public void SetMemento(IMemento memento)
         {
             throw new NotImplementedException();
+        }
+
+        public void SetProxy(object proxy)
+        {
         }
     }
 }

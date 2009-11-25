@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Fohjin.EventStore
+namespace Fohjin.EventStore.Infrastructure
 {
     public class UnregisteredDomainEventException : Exception
     {
