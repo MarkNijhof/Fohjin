@@ -19,9 +19,9 @@ namespace Fohjin.EventStore.Infrastructure
 
     public class EventProvider : IEventProvider, IInterceptor
     {
+        private object _proxy;
         private readonly List<IDomainEvent> _appliedEvents;
         private Dictionary<Type, List<Action<object, object>>> _registeredEventHandlers;
-        private object _proxy;
 
         public Guid Id { get; protected set; }
         public int Version { get; protected set; }
@@ -29,9 +29,9 @@ namespace Fohjin.EventStore.Infrastructure
 
         public EventProvider()
         {
-            _registeredEventHandlers = new Dictionary<Type, List<Action<object, object>>>();
-            _appliedEvents = new List<IDomainEvent>();
             EventVersion = 0;
+            _appliedEvents = new List<IDomainEvent>();
+            _registeredEventHandlers = new Dictionary<Type, List<Action<object, object>>>();
         }
 
         IEnumerable<IDomainEvent> IEventProvider.GetChanges()
@@ -75,6 +75,10 @@ namespace Fohjin.EventStore.Infrastructure
                 _appliedEvents.Add(domainEvent);
                 return;
             }
+            //if (invocation.Method.Name.StartsWith("get_"))
+            //{
+
+            //}
             invocation.Proceed();
         }
 
@@ -91,19 +95,26 @@ namespace Fohjin.EventStore.Infrastructure
             }
         }
 
-        public void SetProxy(object proxy, Dictionary<Type, List<Action<object, object>>> registeredEvents)
+        public void SetProxy(object proxy)
         {
             _proxy = proxy;
-            _registeredEventHandlers = registeredEvents;
         }
 
-        public Dictionary<Type, List<Action<object, object>>> SetProxy(object proxy, Type hostType)
+        public void SetProxy(object proxy, Type hostType)
         {
             _proxy = proxy;
-            var proxyType = proxy.GetType();
-            var proxyProperties = GetProxyProperties(proxyType, hostType);
-            var registeredEvents = GetRegisteredEvents(proxyType, proxy);
+            var proxyProperties = GetProxyProperties(hostType);
+            var registeredEvents = GetRegisteredEvents(hostType, proxy);
             ProcessRegisteredEvents(registeredEvents, proxyProperties);
+        }
+
+        public void SetRegisteredEventHandlers(Dictionary<Type, List<Action<object, object>>> cache)
+        {
+            _registeredEventHandlers = cache;
+        }
+
+        public Dictionary<Type, List<Action<object, object>>> GetRegisteredEventHandlers()
+        {
             return _registeredEventHandlers;
         }
 
@@ -140,11 +151,10 @@ namespace Fohjin.EventStore.Infrastructure
                                           .Invoke(proxy, new object[] { });
         }
 
-        private static IEnumerable<PropertyInfo> GetProxyProperties(IReflect proxyType, Type hostType)
+        private static IEnumerable<PropertyInfo> GetProxyProperties(IReflect hostType)
         {
-            return proxyType
-                .GetProperties(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.GetProperty)
-                .Where(x => x.DeclaringType == hostType);
+            return hostType
+                .GetProperties(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.GetProperty);
         }
 
         private static Action<object, object> CreateAction(PropertyInfo proxyProperty, PropertyInfo eventProperty)

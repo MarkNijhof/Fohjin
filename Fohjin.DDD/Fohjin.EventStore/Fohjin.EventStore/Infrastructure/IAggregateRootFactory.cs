@@ -40,21 +40,24 @@ namespace Fohjin.EventStore.Infrastructure
 
             orginator.SetProxy(proxy);
 
-            Dictionary<Type, List<Action<object, object>>> cache;
-            if (_cacheRegisteredEvents.TryGetValue(type, out cache))
-            {
-                eventProvider.SetProxy(proxy, cache);
-                return proxy;
-            }
+            var cache = _cacheRegisteredEvents.Get(type);
+            return cache == null
+                ? SetProxyAndSaveRegisteredEventsInCache(eventProvider, proxy, type)
+                : SetProxyAndRegisteredEventsFromCache(eventProvider, proxy, cache);
+        }
 
-            SaveRegisteredEventsInCache(type, eventProvider, proxy);
+        private static object SetProxyAndRegisteredEventsFromCache(EventProvider eventProvider, object proxy, Dictionary<Type, List<Action<object, object>>> cache)
+        {
+            eventProvider.SetProxy(proxy);
+            eventProvider.SetRegisteredEventHandlers(cache);
             return proxy;
         }
 
-        private void SaveRegisteredEventsInCache(Type type, EventProvider eventProvider, object proxy)
+        private object SetProxyAndSaveRegisteredEventsInCache(EventProvider eventProvider, object proxy, Type type)
         {
-            var cache = eventProvider.SetProxy(proxy, type);
-            _cacheRegisteredEvents.Add(type, cache);
+            eventProvider.SetProxy(proxy, type);
+            _cacheRegisteredEvents.Add(type, eventProvider.GetRegisteredEventHandlers());
+            return proxy;
         }
 
         private object CreateProxy(Type type, IInterceptor eventProvider, Orginator orginator)
@@ -64,9 +67,9 @@ namespace Fohjin.EventStore.Infrastructure
             proxyGenerationOptions.AddMixinInstance(orginator);
 
             return _proxyGenerator.CreateClassProxy(
-                type, 
-                proxyGenerationOptions,
-                eventProvider
+                    type, 
+                    proxyGenerationOptions,
+                    eventProvider
                 );
         }
 

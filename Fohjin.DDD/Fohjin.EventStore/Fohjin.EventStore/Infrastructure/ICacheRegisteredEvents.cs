@@ -5,8 +5,8 @@ namespace Fohjin.EventStore.Infrastructure
 {
     public interface ICacheRegisteredEvents
     {
-        bool TryGetValue(Type type, out Dictionary<Type, List<Action<object, object>>> cache);
         void Add(Type type, Dictionary<Type, List<Action<object, object>>> cache);
+        Dictionary<Type, List<Action<object, object>>> Get(Type type);
     }
 
     public class RegisteredEventsCache : ICacheRegisteredEvents
@@ -18,14 +18,16 @@ namespace Fohjin.EventStore.Infrastructure
             _cache = new Dictionary<Type, Dictionary<Type, List<Action<object, object>>>>();
         }
 
-        public bool TryGetValue(Type type, out Dictionary<Type, List<Action<object, object>>> cache)
-        {
-            return _cache.TryGetValue(type, out cache);
-        }
-
         public void Add(Type type, Dictionary<Type, List<Action<object, object>>> cache)
         {
             _cache.Add(type, cache);
+        }
+
+        public Dictionary<Type, List<Action<object, object>>> Get(Type type)
+        {
+            Dictionary<Type, List<Action<object, object>>> cache;
+            _cache.TryGetValue(type, out cache);
+            return cache;
         }
     }
 }

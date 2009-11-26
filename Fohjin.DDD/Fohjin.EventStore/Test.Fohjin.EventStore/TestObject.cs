@@ -14,7 +14,7 @@ namespace Test.Fohjin.EventStore
         }
 
         // All internal state needs to be declared as protected proterties
-        protected string Value { get; set; }
+        protected virtual string Value { get; set; }
 
         // Domain behavior
         public void DoSomething(string value)
