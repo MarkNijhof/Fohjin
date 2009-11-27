@@ -33,7 +33,7 @@ namespace Fohjin.EventStore.Infrastructure
             HasApplyMethod(type);
             HasRegiteredEventsMethod(type);
 
-            var eventProvider = new EventProvider();
+            var eventProvider = new EventProvider(type);
             var orginator = new Orginator();
             
             var proxy = CreateProxy(type, eventProvider, orginator);
@@ -46,16 +46,15 @@ namespace Fohjin.EventStore.Infrastructure
                 : SetProxyAndRegisteredEventsFromCache(eventProvider, proxy, cache);
         }
 
-        private static object SetProxyAndRegisteredEventsFromCache(EventProvider eventProvider, object proxy, Dictionary<Type, List<Action<object, object>>> cache)
+        private static object SetProxyAndRegisteredEventsFromCache(EventProvider eventProvider, object proxy, Dictionary<Type, List<Action<object>>> cache)
         {
-            eventProvider.SetProxy(proxy);
             eventProvider.SetRegisteredEventHandlers(cache);
             return proxy;
         }
 
         private object SetProxyAndSaveRegisteredEventsInCache(EventProvider eventProvider, object proxy, Type type)
         {
-            eventProvider.SetProxy(proxy, type);
+            eventProvider.RegisterEventHandlers(proxy, type);
             _cacheRegisteredEvents.Add(type, eventProvider.GetRegisteredEventHandlers());
             return proxy;
         }

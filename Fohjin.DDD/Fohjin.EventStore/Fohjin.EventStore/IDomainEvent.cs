@@ -4,8 +4,8 @@ namespace Fohjin.EventStore
 {
     public interface IDomainEvent
     {
-        Guid Id { get; }
+        Guid EventId { get; }
         Guid AggregateId { get; set; }
-        int Version { get; set; }
+        int EventVersion { get; set; }
     }
 }

@@ -5,35 +5,35 @@ namespace Test.Fohjin.EventStore
 {
     public class When_requesting_a_new_object_from_the_repository : BaseTestFixture
     {
-        private TestObject CreatedObject;
+        private TestClient _createdClient;
 
         protected override void When()
         {
-            CreatedObject = new DomainRepository(new AggregateRootFactory(new RegisteredEventsCache())).CreateNew<TestObject>();
+            _createdClient = new DomainRepository(new AggregateRootFactory(new RegisteredEventsCache())).CreateNew<TestClient>();
         }
 
         [Then]
         public void The_created_object_will_not_be_null()
         {
-            CreatedObject.WillNotBe(null);
+            _createdClient.WillNotBe(null);
         }
 
         [Then]
         public void The_created_object_will_be_of_the_requested_type()
         {
-            CreatedObject.WillActLikeType<TestObject>();
+            _createdClient.WillActLikeType<TestClient>();
         }
 
         [Then]
         public void The_created_object_will_implement_the_IEventProvider_interface()
         {
-            CreatedObject.WillImplementInterface<IEventProvider>();
+            _createdClient.WillImplementInterface<IEventProvider>();
         }
 
         [Then]
         public void The_created_object_will_implement_the_IOrginator_interface()
         {
-            CreatedObject.WillImplementInterface<IOrginator>();
+            _createdClient.WillImplementInterface<IOrginator>();
         }
     }
 }
