@@ -79,9 +79,14 @@ namespace Fohjin.EventStore.Infrastructure
                 InterceptApplyMethod(invocation);
                 return;
             }
-            if (IsInternalStateProperty(invocation))
+            if (IsInternalStateGetProperty(invocation))
             {
-                InterceptInternalStateProperty(invocation);
+                InterceptInternalStateGetProperty(invocation);
+                return;
+            }
+            if (IsInternalStateSetProperty(invocation))
+            {
+                InterceptInternalStateSetProperty(invocation);
                 return;
             }
             invocation.Proceed();
@@ -112,7 +117,7 @@ namespace Fohjin.EventStore.Infrastructure
             _appliedEvents.Add(domainEvent);
         }
 
-        private bool IsInternalStateProperty(IInvocation invocation)
+        private bool IsInternalStateGetProperty(IInvocation invocation)
         {
             return
                 invocation.Method.DeclaringType == _hostType &&
@@ -120,9 +125,21 @@ namespace Fohjin.EventStore.Infrastructure
                 _internalState.ContainsKey(invocation.Method.Name.Substring(4));
         }
 
-        private void InterceptInternalStateProperty(IInvocation invocation)
+        private void InterceptInternalStateGetProperty(IInvocation invocation)
         {
             invocation.ReturnValue = _internalState[invocation.Method.Name.Substring(4)];
+        }
+
+        private bool IsInternalStateSetProperty(IInvocation invocation)
+        {
+            return
+                invocation.Method.DeclaringType == _hostType &&
+                invocation.Method.Name.StartsWith("set_");
+        }
+
+        private static void InterceptInternalStateSetProperty(IInvocation invocation)
+        {
+            throw new IlligalStateAssignmentException(string.Format("Internal state is not allowed to be altered directly using property '{0}' and should always be done through the publishing of an event!", invocation.Method.Name.Substring(4)));
         }
 
         private void apply(Type eventType, IDomainEvent domainEvent)

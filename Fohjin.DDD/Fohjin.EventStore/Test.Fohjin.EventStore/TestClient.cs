@@ -22,6 +22,11 @@ namespace Test.Fohjin.EventStore
             Apply(new ClientMovedEvent(address));
         }
 
+        public void ClientMovesIlligalAction(Address address)
+        {
+            Address = address;
+        }
+
         // Only needed to retrieve internal state for test
         public Address GetAddress()
         {
