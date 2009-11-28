@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Reflection;
 using Castle.Core.Interceptor;
 
 namespace Fohjin.EventStore.Infrastructure
@@ -21,28 +19,23 @@ namespace Fohjin.EventStore.Infrastructure
     public class EventProvider : IEventProvider, IInterceptor
     {
         private readonly Type _hostType;
+        private readonly IEventRegistrator _eventRegistrator;
+        private readonly ICacheRegisteredEvents _cacheRegisteredEvents;
         private readonly List<IDomainEvent> _appliedEvents;
-        private Dictionary<Type, List<Action<object>>> _registeredEventHandlers;
         private readonly Dictionary<string, object> _internalState;
-        private static readonly MethodInfo _buildEventPropertyAccessor;
-        private static readonly MethodInfo _buildLambda;
+        private Dictionary<Type, List<Action<object, Dictionary<string, object>>>> _registeredEventHandlers;
 
         public Guid Id { get; protected set; }
         public int Version { get; protected set; }
         public int EventVersion { get; protected set; }
 
-        static EventProvider()
-        {
-            _buildEventPropertyAccessor = typeof(EventProvider).GetMethod("CreateToInternalStateCopyLambda", BindingFlags.Instance | BindingFlags.NonPublic);
-            _buildLambda = typeof(EventProvider).GetMethod("CreateEventPropertyAccessorLabmda", BindingFlags.Instance | BindingFlags.NonPublic);
-        }
-
-        public EventProvider(Type hostType)
+        public EventProvider(Type hostType, IEventRegistrator eventRegistrator, ICacheRegisteredEvents cacheRegisteredEvents)
         {
             _hostType = hostType;
+            _eventRegistrator = eventRegistrator;
+            _cacheRegisteredEvents = cacheRegisteredEvents;
             EventVersion = 0;
             _appliedEvents = new List<IDomainEvent>();
-            _registeredEventHandlers = new Dictionary<Type, List<Action<object>>>();
             _internalState = new Dictionary<string, object>();
         }
 
@@ -61,10 +54,9 @@ namespace Fohjin.EventStore.Infrastructure
             if (domainEvents.Count() == 0)
                 return;
 
-            foreach (var domainEvent in domainEvents)
-            {
-                apply(domainEvent.GetType(), domainEvent);
-            }
+            domainEvents
+                .ToList()
+                .ForEach(domainEvent => apply(domainEvent.GetType(), domainEvent));
 
             Version = domainEvents.Last().EventVersion;
             EventVersion = Version;
@@ -77,102 +69,69 @@ namespace Fohjin.EventStore.Infrastructure
 
         void IInterceptor.Intercept(IInvocation invocation)
         {
-            if (invocation.Method.Name == "Apply")
-            {
-                var domainEvent = (IDomainEvent)invocation.Arguments.First();
+            Intercept(invocation);
+        }
 
-                domainEvent.AggregateId = Id;
-                domainEvent.EventVersion = ++EventVersion;
-                apply(domainEvent.GetType(), domainEvent);
-                _appliedEvents.Add(domainEvent);
+        private void Intercept(IInvocation invocation)
+        {
+            if (IsApplyMethod(invocation))
+            {
+                InterceptApplyMethod(invocation);
                 return;
             }
-            if (invocation.Method.DeclaringType == _hostType && invocation.Method.Name.StartsWith("get_") && _internalState.ContainsKey(invocation.Method.Name.Substring(4)))
+            if (IsInternalStateProperty(invocation))
             {
-                invocation.ReturnValue = _internalState[invocation.Method.Name.Substring(4)];
+                InterceptInternalStateProperty(invocation);
                 return;
             }
             invocation.Proceed();
         }
 
+        public void RegisterEventHandlers(object proxy)
+        {
+            _registeredEventHandlers = _cacheRegisteredEvents.Get(_hostType);
+            if (_registeredEventHandlers != null)
+                return;
+
+            _registeredEventHandlers = _eventRegistrator.RegisterEventHandlers(_hostType, proxy);
+            _cacheRegisteredEvents.Add(_hostType, _registeredEventHandlers);
+        }
+
+        private static bool IsApplyMethod(IInvocation invocation)
+        {
+            return invocation.Method.Name == "Apply";
+        }
+
+        private void InterceptApplyMethod(IInvocation invocation)
+        {
+            var domainEvent = (IDomainEvent)invocation.Arguments.First();
+
+            domainEvent.AggregateId = Id;
+            domainEvent.EventVersion = ++EventVersion;
+            apply(domainEvent.GetType(), domainEvent);
+            _appliedEvents.Add(domainEvent);
+        }
+
+        private bool IsInternalStateProperty(IInvocation invocation)
+        {
+            return
+                invocation.Method.DeclaringType == _hostType &&
+                invocation.Method.Name.StartsWith("get_") &&
+                _internalState.ContainsKey(invocation.Method.Name.Substring(4));
+        }
+
+        private void InterceptInternalStateProperty(IInvocation invocation)
+        {
+            invocation.ReturnValue = _internalState[invocation.Method.Name.Substring(4)];
+        }
+
         private void apply(Type eventType, IDomainEvent domainEvent)
         {
-            List<Action<object>> handlers;
-
+            List<Action<object, Dictionary<string, object>>> handlers;
             if (!_registeredEventHandlers.TryGetValue(domainEvent.GetType(), out handlers))
                 throw new UnregisteredDomainEventException(string.Format("The requested domain event '{0}' is not registered in '{1}'", eventType.FullName, GetType().FullName));
 
-            foreach (var handler in handlers)
-            {
-                handler(domainEvent);
-            }
-        }
-
-        public void RegisterEventHandlers(object proxy, Type hostType)
-        {
-            var registeredEvents = GetRegisteredEvents(hostType, proxy);
-            ProcessRegisteredEvents(registeredEvents);
-        }
-
-        private static IEnumerable<Type> GetRegisteredEvents(IReflect proxyType, object proxy)
-        {
-            return (IEnumerable<Type>) proxyType
-                .GetMethod("RegisteredEvents", BindingFlags.Instance | BindingFlags.NonPublic)
-                .Invoke(proxy, new object[] { });
-        }
-
-        private void ProcessRegisteredEvents(IEnumerable<Type> registeredEvents)
-        {
-            foreach (var registeredEvent in registeredEvents)
-            {
-                var interfaceProperties = typeof (IDomainEvent).GetProperties().Select(x => x.Name);
-                var eventProperties = registeredEvent.GetProperties(BindingFlags.Instance | BindingFlags.Public).Where(x => !interfaceProperties.Contains(x.Name)).ToList();
-                if (eventProperties.Count() == 0)
-                    continue;
-
-                _registeredEventHandlers.Add(registeredEvent, new List<Action<object>>());
-                ProcessEventProperties(registeredEvent, eventProperties);
-            }
-        }
-
-        private void ProcessEventProperties(Type registeredEvent, IEnumerable<PropertyInfo> eventProperties)
-        {
-            foreach (var eventProperty in eventProperties)
-            {
-                var invoke = _buildLambda.MakeGenericMethod(registeredEvent).Invoke(this, new object[] { eventProperty });
-
-                var makeGenericMethod = _buildEventPropertyAccessor.MakeGenericMethod(registeredEvent, eventProperty.PropertyType);
-                var func = makeGenericMethod.Invoke(this, new [] { eventProperty, invoke }) as Action<object>;
-
-                _registeredEventHandlers[registeredEvent].Add(func);
-            }
-        }
-
-        private Action<object> CreateToInternalStateCopyLambda<TEventType, TPropertyType>(MemberInfo property, object func) where TEventType : class, IDomainEvent
-        {
-            return eventType =>
-            {
-                if (!_internalState.ContainsKey(property.Name))
-                    _internalState.Add(property.Name, new object());
-
-                _internalState[property.Name] = (TPropertyType) ((Expression<Func<TEventType, TPropertyType>>) func).Compile().Invoke(eventType as TEventType);
-            };
-        }
-
-        private object CreateEventPropertyAccessorLabmda<TEventType>(MemberInfo property)
-        {
-            var expression = Expression.Parameter(typeof(TEventType), "x");
-            return Expression.Lambda(Expression.MakeMemberAccess(expression, property), new[] { expression });
-        }
-
-        public void SetRegisteredEventHandlers(Dictionary<Type, List<Action<object>>> cache)
-        {
-            _registeredEventHandlers = cache;
-        }
-
-        public Dictionary<Type, List<Action<object>>> GetRegisteredEventHandlers()
-        {
-            return _registeredEventHandlers;
+            handlers.ForEach(handler => handler(domainEvent, _internalState));
         }
     }
 }

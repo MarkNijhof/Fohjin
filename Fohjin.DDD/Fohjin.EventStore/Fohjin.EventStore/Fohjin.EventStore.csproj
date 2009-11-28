@@ -59,6 +59,7 @@
     <Compile Include="IDomainRepository.cs" />
     <Compile Include="Infrastructure\IEventProvider.cs" />
     <Compile Include="IMemento.cs" />
+    <Compile Include="Infrastructure\IEventRegistrator.cs" />
     <Compile Include="Infrastructure\IOrginator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Infrastructure\ProtectedApplyMethodMissingException.cs" />

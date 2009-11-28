@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Reflection;
 using Castle.Core.Interceptor;
 using Castle.DynamicProxy;
@@ -14,11 +13,13 @@ namespace Fohjin.EventStore.Infrastructure
 
     public class AggregateRootFactory : IAggregateRootFactory
     {
+        private readonly IEventRegistrator _eventRegistrator;
         private readonly ICacheRegisteredEvents _cacheRegisteredEvents;
         private readonly ProxyGenerator _proxyGenerator;
 
-        public AggregateRootFactory(ICacheRegisteredEvents cacheRegisteredEvents)
+        public AggregateRootFactory(IEventRegistrator eventRegistrator, ICacheRegisteredEvents cacheRegisteredEvents)
         {
+            _eventRegistrator = eventRegistrator;
             _cacheRegisteredEvents = cacheRegisteredEvents;
             _proxyGenerator = new ProxyGenerator();
         }
@@ -33,29 +34,15 @@ namespace Fohjin.EventStore.Infrastructure
             HasApplyMethod(type);
             HasRegiteredEventsMethod(type);
 
-            var eventProvider = new EventProvider(type);
+            var eventProvider = new EventProvider(type, _eventRegistrator, _cacheRegisteredEvents);
             var orginator = new Orginator();
             
             var proxy = CreateProxy(type, eventProvider, orginator);
 
             orginator.SetProxy(proxy);
 
-            var cache = _cacheRegisteredEvents.Get(type);
-            return cache == null
-                ? SetProxyAndSaveRegisteredEventsInCache(eventProvider, proxy, type)
-                : SetProxyAndRegisteredEventsFromCache(eventProvider, proxy, cache);
-        }
+            eventProvider.RegisterEventHandlers(proxy);
 
-        private static object SetProxyAndRegisteredEventsFromCache(EventProvider eventProvider, object proxy, Dictionary<Type, List<Action<object>>> cache)
-        {
-            eventProvider.SetRegisteredEventHandlers(cache);
-            return proxy;
-        }
-
-        private object SetProxyAndSaveRegisteredEventsInCache(EventProvider eventProvider, object proxy, Type type)
-        {
-            eventProvider.RegisterEventHandlers(proxy, type);
-            _cacheRegisteredEvents.Add(type, eventProvider.GetRegisteredEventHandlers());
             return proxy;
         }
 

@@ -9,7 +9,7 @@ namespace Test.Fohjin.EventStore
     {
         protected override void When()
         {
-            new DomainRepository(new AggregateRootFactory(new RegisteredEventsCache())).CreateNew<TestObjectWithoutApplyMethod>();
+            new DomainRepository(new AggregateRootFactory(new EventRegistrator(), new RegisteredEventsCache())).CreateNew<TestObjectWithoutApplyMethod>();
         }
 
         [Then]

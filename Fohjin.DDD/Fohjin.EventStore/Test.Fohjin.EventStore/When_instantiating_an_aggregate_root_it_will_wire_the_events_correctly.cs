@@ -4,13 +4,13 @@ using Fohjin.EventStore.Infrastructure;
 
 namespace Test.Fohjin.EventStore
 {
-    public class When_executing_some_behavior_on_an_aggregate_root : BaseTestFixture
+    public class When_instantiating_an_aggregate_root_it_will_wire_the_events_correctly : BaseTestFixture
     {
         private TestClient _createdClient;
 
         protected override void Given()
         {
-            _createdClient = new DomainRepository(new AggregateRootFactory(new RegisteredEventsCache())).CreateNew<TestClient>();
+            _createdClient = new DomainRepository(new AggregateRootFactory(new EventRegistrator(), new RegisteredEventsCache())).CreateNew<TestClient>();
         }
 
         protected override void When()

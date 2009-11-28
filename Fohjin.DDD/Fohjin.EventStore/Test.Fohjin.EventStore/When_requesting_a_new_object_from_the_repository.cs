@@ -9,7 +9,7 @@ namespace Test.Fohjin.EventStore
 
         protected override void When()
         {
-            _createdClient = new DomainRepository(new AggregateRootFactory(new RegisteredEventsCache())).CreateNew<TestClient>();
+            _createdClient = new DomainRepository(new AggregateRootFactory(new EventRegistrator(), new RegisteredEventsCache())).CreateNew<TestClient>();
         }
 
         [Then]
