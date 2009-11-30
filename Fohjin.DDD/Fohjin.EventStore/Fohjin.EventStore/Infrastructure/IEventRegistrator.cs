@@ -37,8 +37,8 @@ namespace Fohjin.EventStore.Infrastructure
         private static IEnumerable<Type> GetRegisteredEvents(IReflect proxyType, object proxy)
         {
             return (IEnumerable<Type>)proxyType
-                .GetMethod("RegisteredEvents", BindingFlags.Instance | BindingFlags.NonPublic)
-                .Invoke(proxy, new object[] { });
+                .GetMethod("RegisteredEvents", BindingFlags.Static | BindingFlags.NonPublic)
+                .Invoke(null, new object[] { });
         }
 
         private Dictionary<Type, List<Action<object, Dictionary<string, object>>>> ProcessRegisteredEvents(IEnumerable<Type> registeredEvents)

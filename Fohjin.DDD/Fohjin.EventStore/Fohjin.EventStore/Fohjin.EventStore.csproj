@@ -53,6 +53,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configuration\EventProcessor.cs" />
+    <Compile Include="Configuration\EventProcessorCache.cs" />
+    <Compile Include="Configuration\MethodMissingException.cs" />
+    <Compile Include="Configuration\PreProcessor.cs" />
     <Compile Include="Infrastructure\IAggregateRootFactory.cs" />
     <Compile Include="Infrastructure\ICacheRegisteredEvents.cs" />
     <Compile Include="IDomainEvent.cs" />
@@ -66,6 +70,9 @@
     <Compile Include="Infrastructure\ProtectedApplyMethodMissingException.cs" />
     <Compile Include="Infrastructure\ProtectedRegisteredEventsMethodMissingException.cs" />
     <Compile Include="Infrastructure\UnregisteredDomainEventException.cs" />
+    <Compile Include="Reflection\DomainEventLocator.cs" />
+    <Compile Include="Reflection\DomainEventPropertyLocator.cs" />
+    <Compile Include="Reflection\EventAccessor.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

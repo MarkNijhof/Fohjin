@@ -6,9 +6,8 @@ namespace Test.Fohjin.EventStore
 {
     public class TestClient
     {
-        // Methods needed for plumbing
         protected virtual void Apply(object @event) { }
-        protected IEnumerable<Type> RegisteredEvents()
+        protected static IEnumerable<Type> RegisteredEvents()
         {
             yield return typeof(ClientMovedEvent);
         }

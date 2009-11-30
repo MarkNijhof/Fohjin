@@ -69,7 +69,7 @@ namespace Fohjin.EventStore.Infrastructure
 
         private static void HasRegiteredEventsMethod(Type type)
         {
-            var regiteredEventsMethod = type.GetMethod("RegisteredEvents", BindingFlags.Instance | BindingFlags.NonPublic);
+            var regiteredEventsMethod = type.GetMethod("RegisteredEvents", BindingFlags.Static | BindingFlags.NonPublic);
 
             if (regiteredEventsMethod == null || regiteredEventsMethod.ToString() != "System.Collections.Generic.IEnumerable`1[System.Type] RegisteredEvents()")
                 throw new ProtectedRegisteredEventsMethodMissingException(string.Format("Object '{0}' needs to have a 'protected IEnumerable<Type> RegisteredEvents()' method declared", type.FullName));
