@@ -19,9 +19,5 @@ namespace Fohjin.EventStore.Infrastructure
         {
             throw new NotImplementedException();
         }
-
-        public void SetProxy(object proxy)
-        {
-        }
     }
 }

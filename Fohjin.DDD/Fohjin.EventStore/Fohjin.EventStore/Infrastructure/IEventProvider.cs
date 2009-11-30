@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Collections.Generic;
 using Castle.Core.Interceptor;
+using Fohjin.EventStore.Configuration;
 
 namespace Fohjin.EventStore.Infrastructure
 {
@@ -19,21 +20,18 @@ namespace Fohjin.EventStore.Infrastructure
     public class EventProvider : IEventProvider, IInterceptor
     {
         private readonly Type _hostType;
-        private readonly IEventRegistrator _eventRegistrator;
-        private readonly ICacheRegisteredEvents _cacheRegisteredEvents;
+        private readonly EventProcessorCache _eventProcessorCache;
         private readonly List<IDomainEvent> _appliedEvents;
         private readonly Dictionary<string, object> _internalState;
-        private Dictionary<Type, List<Action<object, Dictionary<string, object>>>> _registeredEventHandlers;
 
         public Guid Id { get; protected set; }
         public int Version { get; protected set; }
         public int EventVersion { get; protected set; }
 
-        public EventProvider(Type hostType, IEventRegistrator eventRegistrator, ICacheRegisteredEvents cacheRegisteredEvents)
+        public EventProvider(Type hostType, EventProcessorCache eventProcessorCache)
         {
             _hostType = hostType;
-            _eventRegistrator = eventRegistrator;
-            _cacheRegisteredEvents = cacheRegisteredEvents;
+            _eventProcessorCache = eventProcessorCache;
             EventVersion = 0;
             _appliedEvents = new List<IDomainEvent>();
             _internalState = new Dictionary<string, object>();
@@ -92,16 +90,6 @@ namespace Fohjin.EventStore.Infrastructure
             invocation.Proceed();
         }
 
-        public void RegisterEventHandlers(object proxy)
-        {
-            _registeredEventHandlers = _cacheRegisteredEvents.Get(_hostType);
-            if (_registeredEventHandlers != null)
-                return;
-
-            _registeredEventHandlers = _eventRegistrator.RegisterEventHandlers(_hostType, proxy);
-            _cacheRegisteredEvents.Add(_hostType, _registeredEventHandlers);
-        }
-
         private static bool IsApplyMethod(IInvocation invocation)
         {
             return invocation.Method.Name == "Apply";
@@ -144,11 +132,13 @@ namespace Fohjin.EventStore.Infrastructure
 
         private void apply(Type eventType, IDomainEvent domainEvent)
         {
-            List<Action<object, Dictionary<string, object>>> handlers;
-            if (!_registeredEventHandlers.TryGetValue(domainEvent.GetType(), out handlers))
-                throw new UnregisteredDomainEventException(string.Format("The requested domain event '{0}' is not registered in '{1}'", eventType.FullName, GetType().FullName));
+            IEnumerable<EventProcessor> eventProcessors; 
+            if (!_eventProcessorCache.TryGetEventProcessorsFor(eventType, out eventProcessors))
+                throw new UnregisteredDomainEventException(string.Format("The requested class '{0}' is not registered as a domain event", eventType.FullName));
 
-            handlers.ForEach(handler => handler(domainEvent, _internalState));
+            eventProcessors
+                .ToList()
+                .ForEach(eventProcessor => eventProcessor.EventPropertyProcessor(domainEvent, _internalState));
         }
     }
 }

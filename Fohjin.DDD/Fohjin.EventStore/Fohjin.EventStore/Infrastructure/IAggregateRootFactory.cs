@@ -2,25 +2,26 @@ using System;
 using System.Reflection;
 using Castle.Core.Interceptor;
 using Castle.DynamicProxy;
+using Fohjin.EventStore.Configuration;
 
 namespace Fohjin.EventStore.Infrastructure
 {
     public interface IAggregateRootFactory
     {
         TAggregateRoot Create<TAggregateRoot>();
-        object Create(Type type);
+        object Create(Type entityType);
     }
 
     public class AggregateRootFactory : IAggregateRootFactory
     {
-        private readonly IEventRegistrator _eventRegistrator;
-        private readonly ICacheRegisteredEvents _cacheRegisteredEvents;
+        private readonly EventProcessorCache _eventProcessorCache;
+        private readonly ApprovedEntitiesCache _approvedEntitiesCache;
         private readonly ProxyGenerator _proxyGenerator;
 
-        public AggregateRootFactory(IEventRegistrator eventRegistrator, ICacheRegisteredEvents cacheRegisteredEvents)
+        public AggregateRootFactory(EventProcessorCache eventProcessorCache, ApprovedEntitiesCache approvedEntitiesCache)
         {
-            _eventRegistrator = eventRegistrator;
-            _cacheRegisteredEvents = cacheRegisteredEvents;
+            _eventProcessorCache = eventProcessorCache;
+            _approvedEntitiesCache = approvedEntitiesCache;
             _proxyGenerator = new ProxyGenerator();
         }
 
@@ -29,50 +30,40 @@ namespace Fohjin.EventStore.Infrastructure
             return (TAggregateRoot)Create(typeof(TAggregateRoot));
         }
 
-        public object Create(Type type)
+        public object Create(Type entityType)
         {
-            HasApplyMethod(type);
-            HasRegiteredEventsMethod(type);
+            HasApplyMethod(entityType);
 
-            var eventProvider = new EventProvider(type, _eventRegistrator, _cacheRegisteredEvents);
+            var eventProvider = new EventProvider(entityType, _eventProcessorCache);
             var orginator = new Orginator();
             
-            var proxy = CreateProxy(type, eventProvider, orginator);
-
-            orginator.SetProxy(proxy);
-
-            eventProvider.RegisterEventHandlers(proxy);
-
-            return proxy;
+            return CreateProxy(entityType, eventProvider, orginator);
         }
 
-        private object CreateProxy(Type type, IInterceptor eventProvider, Orginator orginator)
+        private object CreateProxy(Type entityType, IInterceptor eventProvider, Orginator orginator)
         {
             var proxyGenerationOptions = new ProxyGenerationOptions();
             proxyGenerationOptions.AddMixinInstance(eventProvider);
             proxyGenerationOptions.AddMixinInstance(orginator);
 
             return _proxyGenerator.CreateClassProxy(
-                    type, 
+                    entityType, 
                     proxyGenerationOptions,
                     eventProvider
                 );
         }
 
-        private static void HasApplyMethod(Type type)
+        private void HasApplyMethod(Type entityType)
         {
-            var applyMethod = type.GetMethod("Apply", BindingFlags.Instance | BindingFlags.NonPublic);
+            if (_approvedEntitiesCache.IsEntityApproved(entityType))
+                return;
+
+            var applyMethod = entityType.GetMethod("Apply", BindingFlags.Instance | BindingFlags.NonPublic);
 
             if (applyMethod == null || applyMethod.ToString() != "Void Apply(System.Object)")
-                throw new ProtectedApplyMethodMissingException(string.Format("Object '{0}' needs to have a 'proteced virtual void Apply(object @event)' method declared", type.FullName));
-        }
+                throw new MethodMissingException(string.Format("Object '{0}' needs to have a 'proteced virtual void Apply(object @event)' method declared", entityType.FullName));
 
-        private static void HasRegiteredEventsMethod(Type type)
-        {
-            var regiteredEventsMethod = type.GetMethod("RegisteredEvents", BindingFlags.Static | BindingFlags.NonPublic);
-
-            if (regiteredEventsMethod == null || regiteredEventsMethod.ToString() != "System.Collections.Generic.IEnumerable`1[System.Type] RegisteredEvents()")
-                throw new ProtectedRegisteredEventsMethodMissingException(string.Format("Object '{0}' needs to have a 'protected IEnumerable<Type> RegisteredEvents()' method declared", type.FullName));
+            _approvedEntitiesCache.RegisterApprovedEntity(entityType);
         }
     }
 }

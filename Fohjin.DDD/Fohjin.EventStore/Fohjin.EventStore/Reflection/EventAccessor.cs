@@ -18,16 +18,16 @@ namespace Fohjin.EventStore.Reflection
             _createEventPropertyAccessorLabmdaMethod = typeof(EventAccessor).GetMethod("CreateEventPropertyAccessorLabmda", BindingFlags.Instance | BindingFlags.NonPublic);
         }
 
-        private readonly DomainEventPropertyLocator _domainEventPropertyLocator;
+        private readonly EventPropertyLocator _eventPropertyLocator;
 
-        public EventAccessor(DomainEventPropertyLocator domainEventPropertyLocator)
+        public EventAccessor(EventPropertyLocator eventPropertyLocator)
         {
-            _domainEventPropertyLocator = domainEventPropertyLocator;
+            _eventPropertyLocator = eventPropertyLocator;
         }
 
         public IEnumerable<EventProcessor> BuildEventProcessors(Type registeredEvent)
         {
-            var eventProperties = _domainEventPropertyLocator.RetrieveDomainEventProperties(registeredEvent);
+            var eventProperties = _eventPropertyLocator.RetrieveDomainEventProperties(registeredEvent);
             return eventProperties.Select(eventProperty => new EventProcessor(registeredEvent, eventProperty, ProcessEventProperty(registeredEvent, eventProperty)));
         }
 

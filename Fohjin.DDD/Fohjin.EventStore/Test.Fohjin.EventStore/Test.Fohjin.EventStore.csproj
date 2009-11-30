@@ -54,7 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseTestFixture.cs" />
-    <Compile Include="Configuration\When_registering_a_class.cs" />
+    <Compile Include="Configuration\When_registering_an_domain_event.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestExtensions.cs" />
     <Compile Include="TestClient.cs" />
@@ -62,7 +62,6 @@
     <Compile Include="When_instantiating_an_aggregate_root_it_will_wire_the_events_correctly.cs" />
     <Compile Include="When_instantiating_two_of_the_same_aggregate_roots_it_will_wire_the_events_correctly_without_mixing_them_together.cs" />
     <Compile Include="When_requesting_a_new_object_from_the_repository.cs" />
-    <Compile Include="When_requesting_a_new_object_from_the_repository_that_has_no_private_void_apply_method_declared.cs" />
     <Compile Include="When_requesting_a_new_object_from_the_repository_that_has_no_virtual_apply_method.cs" />
   </ItemGroup>
   <ItemGroup>

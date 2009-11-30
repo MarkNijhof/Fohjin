@@ -8,44 +8,35 @@ namespace Fohjin.EventStore.Configuration
     public class PreProcessor
     {
         private readonly EventProcessorCache _eventProcessorCache;
-        private readonly DomainEventLocator _domainEventLocator;
         private readonly EventAccessor _eventAccessor;
-        private readonly List<Type> _registeredTypes;
+        private readonly List<Type> _registeredEventTypes;
 
-        public PreProcessor(EventProcessorCache eventProcessorCache, DomainEventLocator domainEventLocator, EventAccessor eventAccessor)
+        public PreProcessor(EventProcessorCache eventProcessorCache, EventAccessor eventAccessor)
         {
             _eventProcessorCache = eventProcessorCache;
-            _domainEventLocator = domainEventLocator;
             _eventAccessor = eventAccessor;
-            _registeredTypes = new List<Type>();
+            _registeredEventTypes = new List<Type>();
         }
 
-        public void RegisterForProcessing<TEntity>()
+        public void RegisterForPreProcessing<TEvent>()
         {
-            RegisterForProcessing(typeof(TEntity));
+            RegisterForPreProcessing(typeof(TEvent));
         }
 
-        public void RegisterForProcessing(Type entityType)
+        public void RegisterForPreProcessing(Type eventType)
         {
-            if (!_domainEventLocator.HasRequiredMethod(entityType))
-                throw new MethodMissingException(string.Format("Object '{0}' needs to have a method declared to provide the domain events that the type can handle", entityType.FullName));
-
-            _registeredTypes.Add(entityType);
+            _registeredEventTypes.Add(eventType);
         }
 
         public void Process()
         {
-            _registeredTypes.ForEach(ProcessEntity);
+            _registeredEventTypes.ForEach(ProcessEvent);
         }
 
-        private void ProcessEntity(Type entityType)
+        private void ProcessEvent(Type eventType)
         {
-            var RegisteredEvents = _domainEventLocator.RetrieveDomainEvents(entityType);
-            foreach (var registeredEvent in RegisteredEvents)
-            {
-                var eventProcessors = _eventAccessor.BuildEventProcessors(registeredEvent);
-                _eventProcessorCache.RegisterEventProcessors(entityType, registeredEvent, eventProcessors);
-            }
+            var eventProcessors = _eventAccessor.BuildEventProcessors(eventType);
+            _eventProcessorCache.RegisterEventProcessors(eventType, eventProcessors);
         }
     }
 }

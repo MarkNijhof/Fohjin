@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using Fohjin.EventStore;
+﻿using Fohjin.EventStore;
+using Fohjin.EventStore.Configuration;
 using Fohjin.EventStore.Infrastructure;
 
 namespace Test.Fohjin.EventStore
@@ -9,13 +8,13 @@ namespace Test.Fohjin.EventStore
     {
         protected override void When()
         {
-            new DomainRepository(new AggregateRootFactory(new EventRegistrator(), new RegisteredEventsCache())).CreateNew<TestObjectWithoutApplyMethod>();
+            new DomainRepository(new AggregateRootFactory(new EventProcessorCache(), new ApprovedEntitiesCache())).CreateNew<TestObjectWithoutApplyMethod>();
         }
 
         [Then]
         public void The_an_exception_will_be_thrown()
         {
-            CaughtException.WillBeOfType<ProtectedApplyMethodMissingException>();
+            CaughtException.WillBeOfType<MethodMissingException>();
         }
 
         [Then]
@@ -27,9 +26,5 @@ namespace Test.Fohjin.EventStore
 
     public class TestObjectWithoutApplyMethod
     {
-        protected IEnumerable<Type> RegisteredEvents()
-        {
-            return new List<Type>();
-        }
     }
 }

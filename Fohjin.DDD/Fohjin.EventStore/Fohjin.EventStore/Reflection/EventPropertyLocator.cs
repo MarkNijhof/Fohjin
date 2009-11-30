@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace Fohjin.EventStore.Reflection
 {
-    public class DomainEventPropertyLocator
+    public class EventPropertyLocator
     {
         public IEnumerable<PropertyInfo> RetrieveDomainEventProperties(Type registeredEvent)
         {

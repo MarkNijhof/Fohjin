@@ -1,16 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using Fohjin.EventStore;
+using Fohjin.EventStore.Configuration;
+using Fohjin.EventStore.Reflection;
 
 namespace Test.Fohjin.EventStore
 {
     public class TestClient
     {
         protected virtual void Apply(object @event) { }
-        protected static IEnumerable<Type> RegisteredEvents()
-        {
-            yield return typeof(ClientMovedEvent);
-        }
 
         // All internal state needs to be declared as protected proterties
         protected virtual Address Address { get; set; }
@@ -61,6 +58,18 @@ namespace Test.Fohjin.EventStore
             Number = nUmber;
             PostalCode = postalCode;
             City = city;
+        }
+    }
+
+    public class PreProcessorHelper
+    {
+        public static EventProcessorCache CreateEventProcessorCache()
+        {
+            var eventProcessorCache = new EventProcessorCache();
+            var preProcessor = new PreProcessor(eventProcessorCache, new EventAccessor(new EventPropertyLocator()));
+            preProcessor.RegisterForPreProcessing<ClientMovedEvent>();
+            preProcessor.Process();
+            return eventProcessorCache;
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Fohjin.EventStore;
+using Fohjin.EventStore.Configuration;
 using Fohjin.EventStore.Infrastructure;
 
 namespace Test.Fohjin.EventStore
@@ -9,7 +10,7 @@ namespace Test.Fohjin.EventStore
 
         protected override void Given()
         {
-            _testClient = new DomainRepository(new AggregateRootFactory(new EventRegistrator(), new RegisteredEventsCache())).CreateNew<TestClient>();
+            _testClient = new DomainRepository(new AggregateRootFactory(new EventProcessorCache(), new ApprovedEntitiesCache())).CreateNew<TestClient>();
         }
 
         protected override void When()
