@@ -34,8 +34,7 @@ namespace Fohjin.EventStore.Configuration
 
         private void ProcessEvent(Type eventType)
         {
-            var eventProcessors = _eventAccessor.BuildEventProcessors(eventType);
-            _eventProcessorCache.RegisterEventProcessors(eventType, eventProcessors);
+            _eventProcessorCache.RegisterEventProcessors(eventType, _eventAccessor.BuildEventProcessors(eventType));
         }
     }
 }

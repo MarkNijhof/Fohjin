@@ -27,37 +27,39 @@ namespace Fohjin.EventStore.Reflection
 
         public IEnumerable<EventProcessor> BuildEventProcessors(Type registeredEvent)
         {
-            var eventProperties = _eventPropertyLocator.RetrieveDomainEventProperties(registeredEvent);
-            return eventProperties.Select(eventProperty => new EventProcessor(registeredEvent, eventProperty, ProcessEventProperty(registeredEvent, eventProperty)));
+            return _eventPropertyLocator
+                .RetrieveDomainEventProperties(registeredEvent)
+                .Select(eventProperty => new EventProcessor(registeredEvent, eventProperty, ProcessEventProperty(registeredEvent, eventProperty)));
         }
 
         private Action<object, Dictionary<string, object>> ProcessEventProperty(Type registeredEvent, PropertyInfo eventProperty)
         {
-            var genericBuildLambdaMethod = _createEventPropertyAccessorLabmdaMethod.MakeGenericMethod(registeredEvent);
+            var eventPropertyAccessor = _createEventPropertyAccessorLabmdaMethod
+                .MakeGenericMethod(registeredEvent)
+                .Invoke(this, new object[] { eventProperty });
 
-            var invoke = genericBuildLambdaMethod.Invoke(this, new object[] { eventProperty });
-
-            var makeGenericMethod = _createToInternalStateCopyLambdaMethod.MakeGenericMethod(registeredEvent, eventProperty.PropertyType);
-            var internalStateCopyLambda = makeGenericMethod.Invoke(this, new[] { eventProperty, invoke }) as Action<object, Dictionary<string, object>>;
-
-            return internalStateCopyLambda;
+            return (Action<object, Dictionary<string, object>>)_createToInternalStateCopyLambdaMethod
+                .MakeGenericMethod(registeredEvent, eventProperty.PropertyType)
+                .Invoke(this, new[] { eventProperty, eventPropertyAccessor });
         }
 
-        protected Action<object, Dictionary<string, object>> CreateToInternalStateCopyLambda<TEventType, TPropertyType>(MemberInfo property, object func) where TEventType : class, IDomainEvent
+        protected Action<object, Dictionary<string, object>> CreateToInternalStateCopyLambda<TEventType, TPropertyType>(MemberInfo property, Func<TEventType, TPropertyType> func) where TEventType : class, IDomainEvent
         {
             return (eventType, internalState) =>
             {
                 if (!internalState.ContainsKey(property.Name))
-                    internalState.Add(property.Name, new object());
+                    internalState.Add(property.Name, null);
 
-                internalState[property.Name] = ((Expression<Func<TEventType, TPropertyType>>)func).Compile().Invoke(eventType as TEventType);
+                internalState[property.Name] = func(eventType as TEventType);
             };
         }
 
         protected object CreateEventPropertyAccessorLabmda<TEventType>(MemberInfo property)
         {
             var expression = Expression.Parameter(typeof(TEventType), "x");
-            return Expression.Lambda(Expression.MakeMemberAccess(expression, property), new[] { expression });
+            return Expression
+                .Lambda(Expression.MakeMemberAccess(expression, property), new[] { expression })
+                .Compile();
         }
     
     }

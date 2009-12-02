@@ -56,8 +56,7 @@ namespace Fohjin.EventStore.Infrastructure
                 .ToList()
                 .ForEach(domainEvent => apply(domainEvent.GetType(), domainEvent));
 
-            Version = domainEvents.Last().EventVersion;
-            EventVersion = Version;
+            EventVersion = Version = domainEvents.Last().EventVersion;
         }
 
         void IEventProvider.UpdateVersion(int version)
@@ -137,7 +136,7 @@ namespace Fohjin.EventStore.Infrastructure
 
             eventProcessors
                 .ToList()
-                .ForEach(eventProcessor => eventProcessor.EventPropertyProcessor(domainEvent, _internalState));
+                .ForEach(eventProcessor => eventProcessor.ProcessorEventProperty(domainEvent, _internalState));
         }
     }
 }
