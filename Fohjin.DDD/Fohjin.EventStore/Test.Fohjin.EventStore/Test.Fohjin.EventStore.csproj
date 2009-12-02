@@ -55,14 +55,22 @@
   <ItemGroup>
     <Compile Include="BaseTestFixture.cs" />
     <Compile Include="Configuration\When_registering_an_domain_event.cs" />
+    <Compile Include="Infrastructure\When_an_event_gets_published.cs" />
+    <Compile Include="Infrastructure\When_loading_an_empty_history_event_collection.cs" />
+    <Compile Include="Infrastructure\When_loading_an_history_event_collection_containing_one_event.cs" />
+    <Compile Include="Infrastructure\When_loading_an_history_event_collection_containing_two_event.cs" />
+    <Compile Include="Infrastructure\When_multiple_events_gets_published.cs" />
+    <Compile Include="Infrastructure\When_the_internal_collection_of_published_events_gets_cleared.cs" />
+    <Compile Include="Infrastructure\When_updating_the_version.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestExtensions.cs" />
     <Compile Include="TestClient.cs" />
-    <Compile Include="When_executing_behavior_that_diretly_sets_the_internal_state.cs" />
-    <Compile Include="When_instantiating_an_aggregate_root_it_will_wire_the_events_correctly.cs" />
-    <Compile Include="When_instantiating_two_of_the_same_aggregate_roots_it_will_wire_the_events_correctly_without_mixing_them_together.cs" />
-    <Compile Include="When_requesting_a_new_object_from_the_repository.cs" />
-    <Compile Include="When_requesting_a_new_object_from_the_repository_that_has_no_virtual_apply_method.cs" />
+    <Compile Include="Infrastructure\When_an_unregistered_event_gets_published.cs" />
+    <Compile Include="Infrastructure\When_executing_behavior_that_diretly_sets_the_internal_state.cs" />
+    <Compile Include="Infrastructure\When_instantiating_an_aggregate_root_it_will_wire_the_events_correctly.cs" />
+    <Compile Include="Infrastructure\When_instantiating_two_of_the_same_aggregate_roots_it_will_wire_the_events_correctly_without_mixing_them_together.cs" />
+    <Compile Include="Infrastructure\When_requesting_a_new_object_from_the_repository.cs" />
+    <Compile Include="Infrastructure\When_requesting_a_new_object_from_the_repository_that_has_no_virtual_apply_method.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Fohjin.EventStore\Fohjin.EventStore.csproj">

@@ -85,7 +85,6 @@ namespace Fohjin.EventStore.Infrastructure
             if (IsInternalStateSetProperty(invocation))
             {
                 InterceptInternalStateSetProperty(invocation);
-                return;
             }
             invocation.Proceed();
         }

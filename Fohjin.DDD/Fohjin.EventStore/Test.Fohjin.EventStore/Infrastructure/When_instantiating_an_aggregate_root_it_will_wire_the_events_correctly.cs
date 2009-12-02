@@ -3,7 +3,7 @@ using Fohjin.EventStore;
 using Fohjin.EventStore.Configuration;
 using Fohjin.EventStore.Infrastructure;
 
-namespace Test.Fohjin.EventStore
+namespace Test.Fohjin.EventStore.Infrastructure
 {
     public class When_instantiating_an_aggregate_root_it_will_wire_the_events_correctly : BaseTestFixture
     {
