@@ -11,8 +11,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
         private readonly IClientDetailsPresenter _clientDetailsPresenter;
         private readonly IReportingRepository _reportingRepository;
 
-        public ClientSearchFormPresenter(IClientSearchFormView clientSearchFormView, IClientDetailsPresenter clientDetailsPresenter, IPopupPresenter popupPresenter, IReportingRepository reportingRepository)
-            : base(clientSearchFormView)
+        public ClientSearchFormPresenter(IClientSearchFormView clientSearchFormView, IClientDetailsPresenter clientDetailsPresenter, IPopupPresenter popupPresenter, IReportingRepository reportingRepository) : base(clientSearchFormView)
         {
             _clientSearchFormView = clientSearchFormView;
             _popupPresenter = popupPresenter;
