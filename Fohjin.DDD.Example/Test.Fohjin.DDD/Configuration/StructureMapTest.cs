@@ -18,9 +18,8 @@ namespace Test.Fohjin.DDD.Configuration
                 x.AddRegistry<ServicesRegister>();
             });
 
-            ObjectFactory.AssertConfigurationIsValid();
-
-            ObjectFactory.ResetDefaults();
+            //ObjectFactory.AssertConfigurationIsValid();
+            //ObjectFactory.ResetDefaults();
         }
     }
 }

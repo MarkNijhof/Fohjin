@@ -10,7 +10,7 @@ using Fohjin.DDD.EventStore.SQLite;
 using Fohjin.DDD.EventStore.Storage;
 using Moq;
 using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
+
 
 namespace Test.Fohjin.DDD.Domain.Repositories
 {

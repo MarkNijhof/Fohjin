@@ -3,7 +3,7 @@ using System.Windows.Forms;
 using Fohjin.DDD.BankApplication.Presenters;
 using Fohjin.DDD.BankApplication.Views;
 using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
+
 
 namespace Test.Fohjin.DDD.Presenter
 {

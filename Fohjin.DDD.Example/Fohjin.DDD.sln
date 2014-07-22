@@ -1,6 +1,8 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30501.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fohjin.DDD.Reporting", "Fohjin.DDD.Reporting\Fohjin.DDD.Reporting.csproj", "{0E86D5C6-929D-4304-A00D-ADC9FB2AFE77}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.Fohjin.DDD", "Test.Fohjin.DDD\Test.Fohjin.DDD.csproj", "{CEBF24CE-3326-464B-B6C5-463E7F4BF4BC}"
@@ -30,6 +32,13 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fohjin.DDD.Bus", "Fohjin.DDD.Bus\Fohjin.DDD.Bus.csproj", "{809E2C9E-8ACD-40D5-86C8-43256C3D8AA8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fohjin", "Fohjin\Fohjin.csproj", "{202FEBE5-F8A1-4A68-8306-75FDE33E0D45}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{7CDDB56E-4189-4FF7-A012-C42BD051EC73}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

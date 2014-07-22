@@ -8,15 +8,15 @@ namespace Fohjin.DDD.BankApplication
     {
         public ApplicationRegistry()
         {
-            ForRequestedType<IClientSearchFormPresenter>().TheDefaultIsConcreteType<ClientSearchFormPresenter>();
-            ForRequestedType<IClientDetailsPresenter>().TheDefaultIsConcreteType<ClientDetailsPresenter>();
-            ForRequestedType<IAccountDetailsPresenter>().TheDefaultIsConcreteType<AccountDetailsPresenter>();
-            ForRequestedType<IPopupPresenter>().TheDefaultIsConcreteType<PopupPresenter>();
+            For<IClientSearchFormPresenter>().UseIfNone<ClientSearchFormPresenter>();
+            For<IClientDetailsPresenter>().UseIfNone<ClientDetailsPresenter>();
+            For<IAccountDetailsPresenter>().UseIfNone<AccountDetailsPresenter>();
+            For<IPopupPresenter>().UseIfNone<PopupPresenter>();
 
-            ForRequestedType<IClientSearchFormView>().TheDefaultIsConcreteType<ClientSearchForm>();
-            ForRequestedType<IClientDetailsView>().TheDefaultIsConcreteType<ClientDetails>();
-            ForRequestedType<IAccountDetailsView>().TheDefaultIsConcreteType<AccountDetails>();
-            ForRequestedType<IPopupView>().TheDefaultIsConcreteType<Popup>();
+            For<IClientSearchFormView>().UseIfNone<ClientSearchForm>();
+            For<IClientDetailsView>().UseIfNone<ClientDetails>();
+            For<IAccountDetailsView>().UseIfNone<AccountDetails>();
+            For<IPopupView>().UseIfNone<Popup>();
         }
     }
 }
