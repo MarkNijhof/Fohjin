@@ -12,7 +12,7 @@ using Fohjin.DDD.EventStore.Storage;
 using Fohjin.DDD.EventStore.Storage.Memento;
 using Moq;
 using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
+
 
 namespace Test.Fohjin.DDD.Domain.Repositories
 {

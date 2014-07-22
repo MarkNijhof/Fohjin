@@ -10,14 +10,13 @@ namespace Fohjin.DDD.Configuration
 
         public ReportingRegistry()
         {
-            ForRequestedType<ISqlCreateBuilder>().TheDefault.Is.OfConcreteType<SqlCreateBuilder>();
-            ForRequestedType<ISqlInsertBuilder>().TheDefault.Is.OfConcreteType<SqlInsertBuilder>();
-            ForRequestedType<ISqlSelectBuilder>().TheDefault.Is.OfConcreteType<SqlSelectBuilder>();
-            ForRequestedType<ISqlUpdateBuilder>().TheDefault.Is.OfConcreteType<SqlUpdateBuilder>();
-            ForRequestedType<ISqlDeleteBuilder>().TheDefault.Is.OfConcreteType<SqlDeleteBuilder>();
+            For<ISqlCreateBuilder>().Use<SqlCreateBuilder>();
+            For<ISqlInsertBuilder>().Use<SqlInsertBuilder>();
+            For<ISqlSelectBuilder>().Use<SqlSelectBuilder>();
+            For<ISqlUpdateBuilder>().Use<SqlUpdateBuilder>();
+            For<ISqlDeleteBuilder>().Use<SqlDeleteBuilder>();
 
-            ForRequestedType<IReportingRepository>().TheDefault.Is.OfConcreteType<SQLiteReportingRepository>()
-                .WithCtorArg("sqLiteConnectionString").EqualTo(sqLiteConnectionString);
+            For<IReportingRepository>().Use<SQLiteReportingRepository>().Ctor<string>("sqLiteConnectionString").Is(sqLiteConnectionString);
         }
     }
 }
