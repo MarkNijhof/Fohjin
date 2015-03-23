@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using Fohjin.DDD.Reporting.Infrastructure;
 using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
 
 namespace Test.Fohjin.DDD.Reporting.Infrastructure
 {

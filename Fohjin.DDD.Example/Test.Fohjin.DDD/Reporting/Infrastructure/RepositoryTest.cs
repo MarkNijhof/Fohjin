@@ -4,7 +4,6 @@ using Fohjin.DDD.Configuration;
 using Fohjin.DDD.Reporting.Dto;
 using Fohjin.DDD.Reporting.Infrastructure;
 using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
 
 namespace Test.Fohjin.DDD.Reporting.Infrastructure
 {

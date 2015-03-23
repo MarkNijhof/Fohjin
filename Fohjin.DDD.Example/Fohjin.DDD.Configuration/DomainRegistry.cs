@@ -5,7 +5,7 @@ using Fohjin.DDD.Bus.Direct;
 using Fohjin.DDD.EventStore;
 using Fohjin.DDD.EventStore.SQLite;
 using Fohjin.DDD.EventStore.Storage;
-using StructureMap.Attributes;
+using StructureMap;
 using StructureMap.Configuration.DSL;
 using IUnitOfWork = Fohjin.DDD.EventStore.IUnitOfWork;
 
@@ -22,7 +22,7 @@ namespace Fohjin.DDD.Configuration
                 .TheDefault.Is.OfConcreteType<DirectBus>();
             
             ForRequestedType<IRouteMessages>()
-                .AsSingletons()
+                .Singleton()
                 .TheDefault.Is.OfConcreteType<MessageRouter>();
 
             ForRequestedType<IFormatter>()
