@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Collections.Generic;
-using Castle.Core.Interceptor;
 using Fohjin.EventStore.Configuration;
+using Castle.DynamicProxy;
 
 namespace Fohjin.EventStore.Infrastructure
 {

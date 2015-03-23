@@ -1,6 +1,5 @@
 using System;
 using System.Reflection;
-using Castle.Core.Interceptor;
 using Castle.DynamicProxy;
 using Fohjin.EventStore.Configuration;
 

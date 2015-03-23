@@ -12,3 +12,5 @@ _ReSharper.*
 NDependOut
 .svn
 *.chm
+/Fohjin.DDD.Example/packages
+/Fohjin.DDD.MakeReusable/Fohjin.EventStore/packages
