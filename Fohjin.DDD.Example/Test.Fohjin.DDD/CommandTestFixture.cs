@@ -18,7 +18,7 @@ namespace Test.Fohjin.DDD
         private IDictionary<Type, object> mocks;
 
         protected TAggregateRoot AggregateRoot;
-        protected ICommandHandler<TCommand> CommandHandler;
+        protected TCommandHandler CommandHandler;
         protected Exception CaughtException;
         protected IEnumerable<IDomainEvent> PublishedEvents;
         protected virtual void SetupDependencies() { }
@@ -60,7 +60,7 @@ namespace Test.Fohjin.DDD
             return (Mock<TType>)mocks[typeof(TType)];
         }
 
-        private ICommandHandler<TCommand> BuildCommandHandler()
+        private TCommandHandler BuildCommandHandler()
         {
             var constructorInfo = typeof(TCommandHandler).GetConstructors().First();
 
@@ -78,7 +78,7 @@ namespace Test.Fohjin.DDD
                 mocks.Add(parameter.ParameterType, CreateMock(parameter.ParameterType));
             }
 
-            return (ICommandHandler<TCommand>)constructorInfo.Invoke(mocks.Values.Select(x => ((Mock) x).Object).ToArray());
+            return (TCommandHandler)constructorInfo.Invoke(mocks.Values.Select(x => ((Mock) x).Object).ToArray());
         }
 
         private static object CreateMock(Type type)
