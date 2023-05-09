@@ -1,11 +1,11 @@
 namespace Fohjin.DDD.Commands
 {
     [Serializable]
-    public class WithdrawlCashCommand : Command
+    public class WithdrawCashCommand : Command
     {
-        public decimal Amount { get; private set; }
+        public decimal Amount { get; init; }
 
-        public WithdrawlCashCommand(Guid id, decimal amount) : base(id)
+        public WithdrawCashCommand(Guid id, decimal amount) : base(id)
         {
             Amount = amount;
         }

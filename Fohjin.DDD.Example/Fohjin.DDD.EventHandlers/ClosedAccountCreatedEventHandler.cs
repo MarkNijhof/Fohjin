@@ -1,4 +1,3 @@
-using System;
 using Fohjin.DDD.Events.Account;
 using Fohjin.DDD.Reporting;
 using Fohjin.DDD.Reporting.Dto;

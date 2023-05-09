@@ -3,7 +3,7 @@
     [Serializable]
     public class ReportStolenBankCardCommand : Command
     {
-        public Guid BankCardId { get; private set; }
+        public Guid BankCardId { get; init; }
 
         public ReportStolenBankCardCommand(Guid id, Guid bankCardId) : base(id)
         {

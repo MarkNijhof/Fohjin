@@ -3,7 +3,7 @@
     [Serializable]
     public class CancelBankCardCommand : Command
     {
-        public Guid BankCardId { get; private set; }
+        public Guid BankCardId { get; init; }
 
         public CancelBankCardCommand(Guid id, Guid bankCardId) : base(id)
         {

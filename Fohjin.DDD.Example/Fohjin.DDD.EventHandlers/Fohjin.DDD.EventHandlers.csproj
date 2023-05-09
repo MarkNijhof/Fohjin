@@ -6,4 +6,9 @@
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\Fohjin.DDD.Events\Fohjin.DDD.Events.csproj" />
+	  <ProjectReference Include="..\Fohjin.DDD.Services\Fohjin.DDD.Services.csproj" />
+	</ItemGroup>
+
 </Project>

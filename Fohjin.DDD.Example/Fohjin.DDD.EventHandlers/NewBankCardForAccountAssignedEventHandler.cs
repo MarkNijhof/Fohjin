@@ -1,5 +1,4 @@
-﻿using System;
-using Fohjin.DDD.Events.Client;
+﻿using Fohjin.DDD.Events.Client;
 using Fohjin.DDD.Reporting;
 
 namespace Fohjin.DDD.EventHandlers
