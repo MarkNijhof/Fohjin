@@ -29,17 +29,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fohjin.DDD.EventStore", "Fo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fohjin.DDD.Bus", "Fohjin.DDD.Bus\Fohjin.DDD.Bus.csproj", "{809E2C9E-8ACD-40D5-86C8-43256C3D8AA8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fohjin", "Fohjin\Fohjin.csproj", "{202FEBE5-F8A1-4A68-8306-75FDE33E0D45}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{06C083C9-EA81-4321-908A-C8CFCF273E73}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
 		readme.md = readme.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fohjin.DDD.Common", "Fohjin.DDD.Common\Fohjin.DDD.Common.csproj", "{EDC737EE-F959-4F18-99D0-C212B9AEA153}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fohjin.DDD.Common", "Fohjin.DDD.Common\Fohjin.DDD.Common.csproj", "{EDC737EE-F959-4F18-99D0-C212B9AEA153}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fohjin.DDD.Abstractions", "Fohjin.DDD.Abstractions\Fohjin.DDD.Abstractions.csproj", "{0F98118F-7546-4F24-B808-0973D16D0D62}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fohjin.DDD.Abstractions", "Fohjin.DDD.Abstractions\Fohjin.DDD.Abstractions.csproj", "{0F98118F-7546-4F24-B808-0973D16D0D62}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -99,10 +97,6 @@ Global
 		{809E2C9E-8ACD-40D5-86C8-43256C3D8AA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{809E2C9E-8ACD-40D5-86C8-43256C3D8AA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{809E2C9E-8ACD-40D5-86C8-43256C3D8AA8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{202FEBE5-F8A1-4A68-8306-75FDE33E0D45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{202FEBE5-F8A1-4A68-8306-75FDE33E0D45}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{202FEBE5-F8A1-4A68-8306-75FDE33E0D45}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{202FEBE5-F8A1-4A68-8306-75FDE33E0D45}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EDC737EE-F959-4F18-99D0-C212B9AEA153}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EDC737EE-F959-4F18-99D0-C212B9AEA153}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EDC737EE-F959-4F18-99D0-C212B9AEA153}.Release|Any CPU.ActiveCfg = Release|Any CPU
