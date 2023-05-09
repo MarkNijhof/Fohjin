@@ -1,4 +1,3 @@
-using System;
 using Fohjin.DDD.EventStore;
 
 namespace Fohjin.DDD.Events

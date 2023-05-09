@@ -1,5 +1,3 @@
-using System;
-
 namespace Fohjin.DDD.Events.Client
 {
     [Serializable]
