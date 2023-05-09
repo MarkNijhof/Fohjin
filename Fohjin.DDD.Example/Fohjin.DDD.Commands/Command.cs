@@ -1,7 +1,6 @@
 namespace Fohjin.DDD.Commands
 {
-    [Serializable]
-    public class Command : ICommand
+    public abstract class Command : ICommand
     {
         public Guid Id { get; init; }
 

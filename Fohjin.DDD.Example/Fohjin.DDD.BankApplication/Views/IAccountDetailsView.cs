@@ -14,8 +14,8 @@ namespace Fohjin.DDD.BankApplication.Views
         IEnumerable<AccountReport> TransferAccounts { get; set; }
         AccountReport GetSelectedTransferAccount();
 
-        decimal DepositeAmount { get; set; }
-        decimal WithdrawlAmount { get; set; }
+        decimal DepositAmount { get; set; }
+        decimal WithdrawalAmount { get; set; }
         decimal TransferAmount { get; set; }
 
         void EnableSaveButton();
@@ -25,8 +25,8 @@ namespace Fohjin.DDD.BankApplication.Views
 
         void EnableDetailsPanel();
         void EnableAccountNameChangePanel();
-        void EnableDepositePanel();
-        void EnableWithdrawlPanel();
+        void EnableDepositPanel();
+        void EnableWithdrawalPanel();
         void EnableTransferPanel();
 
         event EventAction OnCloseTheAccount;
@@ -35,13 +35,13 @@ namespace Fohjin.DDD.BankApplication.Views
         event EventAction OnCancel;
 
         event EventAction OnInitiateAccountNameChange;
-        event EventAction OnInitiateMoneyDeposite;
-        event EventAction OnInitiateMoneyWithdrawl;
+        event EventAction OnInitiateMoneyDeposit;
+        event EventAction OnInitiateMoneyWithdrawal;
         event EventAction OnInitiateMoneyTransfer;
 
         event EventAction OnChangeAccountName;
-        event EventAction OnDepositeMoney;
-        event EventAction OnWithdrawlMoney;
+        event EventAction OnDepositMoney;
+        event EventAction OnWithdrawalMoney;
         event EventAction OnTransferMoney;
     }
 }

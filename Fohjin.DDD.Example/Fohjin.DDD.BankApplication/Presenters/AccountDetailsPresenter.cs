@@ -86,17 +86,17 @@ namespace Fohjin.DDD.BankApplication.Presenters
         public void InitiateMoneyDeposite()
         {
             _editStep = 1;
-            _accountDetailsView.DepositeAmount = 0M;
+            _accountDetailsView.DepositAmount = 0M;
             _accountDetailsView.DisableMenuButtons();
-            _accountDetailsView.EnableDepositePanel();
+            _accountDetailsView.EnableDepositPanel();
         }
 
         public void InitiateMoneyWithdrawl()
         {
             _editStep = 2;
-            _accountDetailsView.WithdrawlAmount = 0M;
+            _accountDetailsView.WithdrawalAmount = 0M;
             _accountDetailsView.DisableMenuButtons();
-            _accountDetailsView.EnableWithdrawlPanel();
+            _accountDetailsView.EnableWithdrawalPanel();
         }
 
         public void InitiateMoneyTransfer()
@@ -143,7 +143,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
             {
                 _bus.Publish(new DepositeCashCommand(
                                  _accountDetailsReport.Id,
-                                 _accountDetailsView.DepositeAmount));
+                                 _accountDetailsView.DepositAmount));
 
                 _accountDetailsView.EnableMenuButtons();
                 _accountDetailsView.EnableDetailsPanel();
@@ -158,7 +158,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
             {
                 _bus.Publish(new WithdrawalCashCommand(
                                  _accountDetailsReport.Id,
-                                 _accountDetailsView.WithdrawlAmount));
+                                 _accountDetailsView.WithdrawalAmount));
 
                 _accountDetailsView.EnableMenuButtons();
                 _accountDetailsView.EnableDetailsPanel();
@@ -228,12 +228,12 @@ namespace Fohjin.DDD.BankApplication.Presenters
 
         private bool WithdrawlAmountHasChanged()
         {
-            return _accountDetailsView.WithdrawlAmount > decimal.Zero;
+            return _accountDetailsView.WithdrawalAmount > decimal.Zero;
         }
 
         private bool DepositeAmountHasChanged()
         {
-            return _accountDetailsView.DepositeAmount > decimal.Zero;
+            return _accountDetailsView.DepositAmount > decimal.Zero;
         }
 
         private bool AccountNameHasChanged()

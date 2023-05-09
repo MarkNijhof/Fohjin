@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using Fohjin.DDD.BankApplication.Views;
@@ -29,6 +30,11 @@ namespace Fohjin.DDD.BankApplication.Presenters
                 var eventInfo = viewEvents[viewDefinedEvent];
                 var methodInfo = GetTheEventHandler(viewDefinedEvent, presenterEventHandlers, eventInfo);
 
+                if (methodInfo == null)
+                {
+                    Debug.WriteLine($"There is no event handler for event '{eventInfo.Name}' on presenter '{GetType().FullName}' expected '{viewDefinedEvent}");
+                    continue;
+                }
                 WireUpTheEventAndEventHandler(view, eventInfo, methodInfo);
             }
         }
@@ -37,7 +43,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
         {
             var substring = viewDefinedEvent.Substring(2);
             if (!presenterEventHandlers.ContainsKey(substring))
-                throw new Exception(string.Format("\n\nThere is no event handler for event '{0}' on presenter '{1}' expected '{2}'\n\n", eventInfo.Name, GetType().FullName, substring));
+                return null;
 
             return presenterEventHandlers[substring];
         }

@@ -14,32 +14,32 @@ namespace Fohjin.DDD.BankApplication.Views
             tabControl1.Appearance = TabAppearance.FlatButtons;
             tabControl1.ItemSize = new Size(0, 1);
             tabControl1.SizeMode = TabSizeMode.Fixed;
-            RegisterCLientEvents();
+            RegisterClientEvents();
         }
 
         public event EventAction OnCloseTheAccount;
         public event EventAction OnFormElementGotChanged;
         public event EventAction OnCancel;
         public event EventAction OnInitiateAccountNameChange;
-        public event EventAction OnInitiateMoneyDeposite;
-        public event EventAction OnInitiateMoneyWithdrawl;
+        public event EventAction OnInitiateMoneyDeposit;
+        public event EventAction OnInitiateMoneyWithdrawal;
         public event EventAction OnInitiateMoneyTransfer;
         public event EventAction OnChangeAccountName;
-        public event EventAction OnDepositeMoney;
-        public event EventAction OnWithdrawlMoney;
+        public event EventAction OnDepositMoney;
+        public event EventAction OnWithdrawalMoney;
         public event EventAction OnTransferMoney;
 
-        private void RegisterCLientEvents()
+        private void RegisterClientEvents()
         {
             changeAccountNameToolStripMenuItem.Click += (s, e) => OnInitiateAccountNameChange();
             closeAccountToolStripMenuItem.Click += (s, e) => OnCloseTheAccount();
-            makeCashMutationToolStripMenuItem.Click += (s, e) => OnInitiateMoneyDeposite();
-            makeCashWithdrawlToolStripMenuItem.Click += (s, e) => OnInitiateMoneyWithdrawl();
+            makeCashMutationToolStripMenuItem.Click += (s, e) => OnInitiateMoneyDeposit();
+            makeCashWithdrawlToolStripMenuItem.Click += (s, e) => OnInitiateMoneyWithdrawal();
             transferMoneyToolStripMenuItem.Click += (s, e) => OnInitiateMoneyTransfer();
             _depositeCancelButton.Click += (s, e) => OnCancel();
-            _depositeButton.Click += (s, e) => OnDepositeMoney();
+            _depositeButton.Click += (s, e) => OnDepositMoney();
             _withdrawlCancelButton.Click += (s, e) => OnCancel();
-            _withdrawlButton.Click += (s, e) => OnWithdrawlMoney();
+            _withdrawlButton.Click += (s, e) => OnWithdrawalMoney();
             _transferCancelButton.Click += (s, e) => OnCancel();
             _transferButton.Click += (s, e) => OnTransferMoney();
             _newAccountNameCancelButton.Click += (s, e) => OnCancel();
@@ -73,13 +73,13 @@ namespace Fohjin.DDD.BankApplication.Views
             tabControl1.SelectedIndex = 0;
         }
 
-        public void EnableDepositePanel()
+        public void EnableDepositPanel()
         {
             tabControl1.SelectedIndex = 1;
             _depositeAmount.Focus();
         }
 
-        public void EnableWithdrawlPanel()
+        public void EnableWithdrawalPanel()
         {
             tabControl1.SelectedIndex = 2;
             _withdrawlAmount.Focus();
@@ -136,13 +136,13 @@ namespace Fohjin.DDD.BankApplication.Views
             return (AccountReport)_transferAccounts.SelectedItem;
         }
 
-        public decimal DepositeAmount
+        public decimal DepositAmount
         {
             get { return _depositeAmount.Text.Trim() == "," ? 0 : Convert.ToDecimal(_depositeAmount.Text.Trim()); }
             set { _depositeAmount.Text = value.ToString(); }
         }
 
-        public decimal WithdrawlAmount
+        public decimal WithdrawalAmount
         {
             get { return _withdrawlAmount.Text.Trim() == "," ? 0 : Convert.ToDecimal(_withdrawlAmount.Text.Trim()); }
             set { _withdrawlAmount.Text = value.ToString(); }
@@ -171,7 +171,7 @@ namespace Fohjin.DDD.BankApplication.Views
             e.Handled = !Decimal.TryParse(e.KeyChar.ToString(), out value);
         }
 
-        private void _depositeAmount_TextChanged(object sender, EventArgs e)
+        private void _depositAmount_TextChanged(object sender, EventArgs e)
         {
             if (OnFormElementGotChanged != null)
                OnFormElementGotChanged();

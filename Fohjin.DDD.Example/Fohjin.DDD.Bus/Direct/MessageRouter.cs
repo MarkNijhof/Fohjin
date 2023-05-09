@@ -2,11 +2,10 @@
 {
     public class MessageRouter : IRouteMessages
     {
-        private readonly IDictionary<Type, ICollection<Action<object>>> _routes;
+        private readonly Dictionary<Type, ICollection<Action<object>>> _routes = new();
 
         public MessageRouter()
         {
-            _routes = new Dictionary<Type, ICollection<Action<object>>>();
         }
 
         public void Register<TMessage>(Action<TMessage> route) where TMessage : class

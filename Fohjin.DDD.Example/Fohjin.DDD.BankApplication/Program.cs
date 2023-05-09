@@ -1,7 +1,9 @@
 ﻿using Fohjin.DDD.BankApplication.Presenters;
 using Fohjin.DDD.Bus;
-using Fohjin.DDD.Configuration;
+using Fohjin.DDD.Commands;
 using Fohjin.DDD.Common;
+using Fohjin.DDD.Configuration;
+using Fohjin.DDD.EventStore;
 using Fohjin.DDD.Reporting;
 using Fohjin.DDD.Services;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,8 +20,10 @@ namespace Fohjin.DDD.BankApplication
         {
             var services = new ServiceCollection()
                 .AddBusServices()
-                .AddConfigurationServices()
+                .AddCommandsServices()
                 .AddCommonServices()
+                .AddConfigurationServices()
+                .AddEventStoreServices()
                 .AddReportingServices()
                 .AddDddServices()
                 .AddBankApplicationServices()
