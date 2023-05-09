@@ -1,10 +1,9 @@
-using System;
-using System.Linq;
 using Fohjin.DDD.BankApplication.Views;
 using Fohjin.DDD.Bus;
 using Fohjin.DDD.Commands;
+using Fohjin.DDD.Common;
 using Fohjin.DDD.Reporting;
-using Fohjin.DDD.Reporting.Dto;
+using Fohjin.DDD.Reporting.Dtos;
 
 namespace Fohjin.DDD.BankApplication.Presenters
 {
@@ -20,8 +19,16 @@ namespace Fohjin.DDD.BankApplication.Presenters
         private readonly IPopupPresenter _popupPresenter;
         private readonly IBus _bus;
         private readonly IReportingRepository _reportingRepository;
+        private readonly ISystemTimer _systemTimer;
 
-        public ClientDetailsPresenter(IClientDetailsView clientDetailsView, IAccountDetailsPresenter accountDetailsPresenter, IPopupPresenter popupPresenter, IBus bus, IReportingRepository reportingRepository)
+        public ClientDetailsPresenter(
+            IClientDetailsView clientDetailsView,
+            IAccountDetailsPresenter accountDetailsPresenter,
+            IPopupPresenter popupPresenter,
+            IBus bus,
+            IReportingRepository reportingRepository,
+            ISystemTimer systemTimer
+            )
             : base(clientDetailsView)
         {
             _editStep = 0;
@@ -32,6 +39,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
             _popupPresenter = popupPresenter;
             _bus = bus;
             _reportingRepository = reportingRepository;
+            _systemTimer = systemTimer;
         }
 
         public void Display()
@@ -144,7 +152,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
                 EnableAllMenuButtons();
                 _clientDetailsView.EnableOverviewPanel();
                 _bus.Commit();
-                SystemTimer.Trigger(LoadData).In(1000);
+                _systemTimer.Trigger(LoadData, 1000);
             });
         }
 
@@ -188,7 +196,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
                 EnableAllMenuButtons();
                 _clientDetailsView.EnableOverviewPanel();
                 _bus.Commit();
-                SystemTimer.Trigger(LoadData).In(2000);
+                _systemTimer.Trigger(LoadData, 2000);
             });
         }
 
@@ -230,7 +238,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
                 EnableAllMenuButtons();
                 _clientDetailsView.EnableOverviewPanel();
                 _bus.Commit();
-                SystemTimer.Trigger(LoadData).In(2000);
+                _systemTimer.Trigger(LoadData, 2000);
             });
         }
 
@@ -246,7 +254,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
                 EnableAllMenuButtons();
                 _clientDetailsView.EnableOverviewPanel();
                 _bus.Commit();
-                SystemTimer.Trigger(LoadData).In(2000);
+                _systemTimer.Trigger(LoadData, 2000);
             });
         }
 
@@ -297,7 +305,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
             _clientDetailsView.EnableAddNewAccountPanel();
         }
 
-        private void SetReadOnlyData() 
+        private void SetReadOnlyData()
         {
             _clientDetailsView.ClientNameLabel = _clientDetailsReport.ClientName;
             _clientDetailsView.PhoneNumberLabel = _clientDetailsReport.PhoneNumber;
@@ -305,7 +313,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
             _clientDetailsView.AddressLine2Label = string.Format("{0} {1}", _clientDetailsReport.PostalCode, _clientDetailsReport.City);
         }
 
-        private void ResetForm() 
+        private void ResetForm()
         {
             _clientDetailsView.ClientName = string.Empty;
             _clientDetailsView.Street = string.Empty;
@@ -317,7 +325,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
             _clientDetailsView.ClosedAccounts = null;
         }
 
-        private void DisableAllMenuButtons() 
+        private void DisableAllMenuButtons()
         {
             _clientDetailsView.DisableAddNewAccountMenu();
             _clientDetailsView.DisableClientHasMovedMenu();
@@ -337,7 +345,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
             _clientDetailsView.ClosedAccounts = _clientDetailsReport.ClosedAccounts;
         }
 
-        private void EnableAllMenuButtons() 
+        private void EnableAllMenuButtons()
         {
             _clientDetailsView.EnableAddNewAccountMenu();
             _clientDetailsView.EnableClientHasMovedMenu();
@@ -364,7 +372,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
                 return !string.IsNullOrEmpty(_clientDetailsView.PhoneNumber);
 
             if (_editStep == 4)
-                return 
+                return
                     !string.IsNullOrEmpty(_clientDetailsView.NewAccountName);
 
             throw new Exception("Edit step was not properly initialized!");

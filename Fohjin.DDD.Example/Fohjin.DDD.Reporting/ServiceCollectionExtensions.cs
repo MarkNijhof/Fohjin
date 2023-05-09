@@ -1,6 +1,4 @@
-using Fohjin.DDD.Bus.Direct;
 using Fohjin.DDD.Reporting.Infrastructure;
-using Fohjin.DDD.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -10,7 +8,7 @@ namespace Fohjin.DDD.Reporting
     {
         private const string sqLiteConnectionString = "Data Source=reportingDataBase.db3";
 
-        public static T AddConfigurationServices<T>(this T service) where T : IServiceCollection
+        public static T AddReportingServices<T>(this T service) where T : IServiceCollection
         {
             service.TryAddTransient<ISqlCreateBuilder, SqlCreateBuilder>();
             service.TryAddTransient<ISqlInsertBuilder, SqlInsertBuilder>();

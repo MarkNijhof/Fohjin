@@ -3,8 +3,9 @@ using System.Linq;
 using Fohjin.DDD.BankApplication.Views;
 using Fohjin.DDD.Bus;
 using Fohjin.DDD.Commands;
+using Fohjin.DDD.Common;
 using Fohjin.DDD.Reporting;
-using Fohjin.DDD.Reporting.Dto;
+using Fohjin.DDD.Reporting.Dtos;
 
 namespace Fohjin.DDD.BankApplication.Presenters
 {
@@ -17,8 +18,14 @@ namespace Fohjin.DDD.BankApplication.Presenters
         private readonly IPopupPresenter _popupPresenter;
         private readonly IBus _bus;
         private readonly IReportingRepository _reportingRepository;
+        private readonly ISystemTimer _systemTimer;
 
-        public AccountDetailsPresenter(IAccountDetailsView accountDetailsView, IPopupPresenter popupPresenter, IBus bus, IReportingRepository reportingRepository)
+        public AccountDetailsPresenter(
+            IAccountDetailsView accountDetailsView,
+            IPopupPresenter popupPresenter,
+            IBus bus,
+            IReportingRepository reportingRepository,
+            ISystemTimer systemTimer)
             : base(accountDetailsView)
         {
             _editStep = 0;
@@ -26,6 +33,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
             _popupPresenter = popupPresenter;
             _bus = bus;
             _reportingRepository = reportingRepository;
+            _systemTimer = systemTimer;
         }
 
         public void Display()
@@ -58,8 +66,8 @@ namespace Fohjin.DDD.BankApplication.Presenters
         {
             _popupPresenter.CatchPossibleException(() =>
             {
-//                if (_accountDetailsReport == null)
-//                    return;
+                //                if (_accountDetailsReport == null)
+                //                    return;
 
                 _bus.Publish(new CloseAccountCommand(_accountReport.Id));
 
@@ -125,7 +133,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
                 _accountDetailsView.EnableMenuButtons();
                 _accountDetailsView.EnableDetailsPanel();
                 _bus.Commit();
-                SystemTimer.Trigger(LoadData).In(2000);
+                _systemTimer.Trigger(LoadData, 2000);
             });
         }
 
@@ -140,7 +148,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
                 _accountDetailsView.EnableMenuButtons();
                 _accountDetailsView.EnableDetailsPanel();
                 _bus.Commit();
-                SystemTimer.Trigger(LoadData).In(2000);
+                _systemTimer.Trigger(LoadData, 2000);
             });
         }
 
@@ -148,14 +156,14 @@ namespace Fohjin.DDD.BankApplication.Presenters
         {
             _popupPresenter.CatchPossibleException(() =>
             {
-                _bus.Publish(new WithdrawlCashCommand(
+                _bus.Publish(new WithdrawCashCommand(
                                  _accountDetailsReport.Id,
                                  _accountDetailsView.WithdrawlAmount));
 
                 _accountDetailsView.EnableMenuButtons();
                 _accountDetailsView.EnableDetailsPanel();
                 _bus.Commit();
-                SystemTimer.Trigger(LoadData).In(2000);
+                _systemTimer.Trigger(LoadData, 2000);
             });
         }
 
@@ -171,8 +179,8 @@ namespace Fohjin.DDD.BankApplication.Presenters
                 _accountDetailsView.EnableMenuButtons();
                 _accountDetailsView.EnableDetailsPanel();
                 _bus.Commit();
-                SystemTimer.Trigger(LoadData).In(2000);
-                SystemTimer.Trigger(LoadData).In(4000); // This one is because there is also a delay in the transfer service :)
+                _systemTimer.Trigger(LoadData, 2000);
+                _systemTimer.Trigger(LoadData, 4000); // This one is because there is also a delay in the transfer service :)
             });
         }
 
@@ -192,9 +200,9 @@ namespace Fohjin.DDD.BankApplication.Presenters
 
         private bool FormIsValid()
         {
-            if (_editStep == 0 || 
-                _editStep == 1 || 
-                _editStep == 2 || 
+            if (_editStep == 0 ||
+                _editStep == 1 ||
+                _editStep == 2 ||
                 _editStep == 3)
                 return true;
 

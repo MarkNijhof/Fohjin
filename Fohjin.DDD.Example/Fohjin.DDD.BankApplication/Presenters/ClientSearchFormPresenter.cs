@@ -1,6 +1,8 @@
 using Fohjin.DDD.BankApplication.Views;
+using Fohjin.DDD.Common;
 using Fohjin.DDD.Reporting;
-using Fohjin.DDD.Reporting.Dto;
+using Fohjin.DDD.Reporting.Dtos;
+using System.Configuration.Internal;
 
 namespace Fohjin.DDD.BankApplication.Presenters
 {
@@ -10,20 +12,28 @@ namespace Fohjin.DDD.BankApplication.Presenters
         private readonly IPopupPresenter _popupPresenter;
         private readonly IClientDetailsPresenter _clientDetailsPresenter;
         private readonly IReportingRepository _reportingRepository;
+        private readonly ISystemTimer _systemTimer;
 
-        public ClientSearchFormPresenter(IClientSearchFormView clientSearchFormView, IClientDetailsPresenter clientDetailsPresenter, IPopupPresenter popupPresenter, IReportingRepository reportingRepository) : base(clientSearchFormView)
+        public ClientSearchFormPresenter(
+            IClientSearchFormView clientSearchFormView,
+            IClientDetailsPresenter clientDetailsPresenter,
+            IPopupPresenter popupPresenter,
+            IReportingRepository reportingRepository,
+            ISystemTimer systemTimer
+            ) : base(clientSearchFormView)
         {
             _clientSearchFormView = clientSearchFormView;
             _popupPresenter = popupPresenter;
             _clientDetailsPresenter = clientDetailsPresenter;
             _reportingRepository = reportingRepository;
+            _systemTimer = systemTimer;
         }
 
         public void CreateNewClient()
         {
             _clientDetailsPresenter.SetClient(null);
             _clientDetailsPresenter.Display();
-            SystemTimer.Trigger(LoadData).In(2000);
+            _systemTimer.Trigger(LoadData, 2000);
         }
 
         public void OpenSelectedClient()
