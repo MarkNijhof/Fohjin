@@ -39,6 +39,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		readme.md = readme.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fohjin.DDD.Common", "Fohjin.DDD.Common\Fohjin.DDD.Common.csproj", "{EDC737EE-F959-4F18-99D0-C212B9AEA153}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -105,6 +107,10 @@ Global
 		{202FEBE5-F8A1-4A68-8306-75FDE33E0D45}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{202FEBE5-F8A1-4A68-8306-75FDE33E0D45}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{202FEBE5-F8A1-4A68-8306-75FDE33E0D45}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDC737EE-F959-4F18-99D0-C212B9AEA153}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDC737EE-F959-4F18-99D0-C212B9AEA153}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDC737EE-F959-4F18-99D0-C212B9AEA153}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDC737EE-F959-4F18-99D0-C212B9AEA153}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

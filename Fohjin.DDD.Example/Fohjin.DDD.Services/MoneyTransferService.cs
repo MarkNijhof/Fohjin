@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Fohjin.DDD.Bus;
 using Fohjin.DDD.Commands;
+using Fohjin.DDD.Common;
 using Fohjin.DDD.Reporting;
 using Fohjin.DDD.Reporting.Dto;
 
@@ -15,12 +16,22 @@ namespace Fohjin.DDD.Services
         private readonly IReportingRepository _reportingRepository;
         private readonly IReceiveMoneyTransfers _receiveMoneyTransfers;
         private readonly IDictionary<int, Action<MoneyTransfer>> _moneyTransferOptions;
+        private readonly ISystemTimer _systemTimer;
+        private readonly ISystemRandom _systemRandom;
 
-        public MoneyTransferService(IBus bus, IReportingRepository reportingRepository, IReceiveMoneyTransfers receiveMoneyTransfers)
+        public MoneyTransferService(
+            IBus bus, 
+            IReportingRepository reportingRepository,
+            IReceiveMoneyTransfers receiveMoneyTransfers,
+            ISystemTimer systemTimer,
+            ISystemRandom systemRandom
+            )
         {
             _bus = bus;
             _reportingRepository = reportingRepository;
             _receiveMoneyTransfers = receiveMoneyTransfers;
+            _systemTimer = systemTimer;
+            _systemRandom = systemRandom;
 
             _moneyTransferOptions = new Dictionary<int, Action<MoneyTransfer>>
             {
@@ -38,7 +49,7 @@ namespace Fohjin.DDD.Services
 
         public void Send(MoneyTransfer moneyTransfer)
         {
-            SystemTimer.Trigger(() => DoSend(moneyTransfer)).In(5000);
+            _systemTimer.Trigger(() => DoSend(moneyTransfer), @in: 5000);
         }
 
         private void DoSend(MoneyTransfer moneyTransfer)
@@ -46,7 +57,7 @@ namespace Fohjin.DDD.Services
             try
             {
                 // I didn't want to introduce an actual external bank, so that's why you see this nice construct :)
-                _moneyTransferOptions[SystemRandom.Next(0, 9)](moneyTransfer);
+                _moneyTransferOptions[_systemRandom.Next(start:0, end: 9)](moneyTransfer);
             }
             catch(Exception)
             {

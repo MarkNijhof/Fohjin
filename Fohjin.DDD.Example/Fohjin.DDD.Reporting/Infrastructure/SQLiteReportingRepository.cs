@@ -160,7 +160,7 @@ namespace Fohjin.DDD.Reporting.Infrastructure
 
                     var childDtos = GetType()
                         .GetMethod("DoGetByExample", BindingFlags.NonPublic | BindingFlags.Instance)
-                        .MakeGenericMethod(childDtoType)
+                        ?.MakeGenericMethod(childDtoType)
                         .Invoke(this, new[] { sqliteTransaction, childDtoType, CreateSelectObject(dto) as object });
                     
                     property.SetValue(dto, childDtos, new object[] { });
@@ -171,7 +171,7 @@ namespace Fohjin.DDD.Reporting.Infrastructure
         private static IEnumerable<KeyValuePair<string, object>> CreateSelectObject<TDto>(TDto parentDto)
         {
             var columnName = string.Format("{0}Id", parentDto.GetType().Name);
-            var columnValue = parentDto.GetType().GetProperty("Id").GetValue(parentDto, new object[] {});
+            var columnValue = parentDto.GetType().GetProperty("Id")?.GetValue(parentDto, new object[] {});
          
             return new Dictionary<string, object> { {columnName, columnValue} };
         }
