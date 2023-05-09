@@ -23,7 +23,7 @@ namespace Fohjin.DDD.Configuration
             RegisterRoutes();
         }
 
-        public void RegisterRoutes()
+        private void RegisterRoutes()
         {
             _createPublishActionWrappedInTransactionMethod = GetType().GetMethod("CreatePublishActionWrappedInTransaction");
             _registerMethod = _routeMessages.GetType().GetMethod("Register");

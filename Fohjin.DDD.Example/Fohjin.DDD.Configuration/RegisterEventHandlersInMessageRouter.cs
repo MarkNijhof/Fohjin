@@ -20,13 +20,13 @@ namespace Fohjin.DDD.Configuration
         {
             _serviceProvider = serviceProvider;
             _routeMessages = routeMessages;
-            RegisterRoutes(routeMessages);
+            RegisterRoutes();
         }
 
-        public void RegisterRoutes(IRouteMessages messageRouter)
+        private void RegisterRoutes()
         {
             _createPublishActionMethod ??= GetType().GetMethod("CreatePublishAction");
-            _registerMethod ??= messageRouter.GetType().GetMethod("Register");
+            _registerMethod ??= _routeMessages.GetType().GetMethod("Register");
 
             var events = EventHandlerHelper.GetEvents();
             var eventHandlers = EventHandlerHelper.GetEventHandlers();

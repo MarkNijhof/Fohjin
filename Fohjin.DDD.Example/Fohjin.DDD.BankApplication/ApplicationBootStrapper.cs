@@ -1,32 +1,19 @@
-//using Fohjin.DDD.Configuration;
-//using Fohjin.DDD.Services;
-//using StructureMap;
+using Fohjin.DDD.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
-//namespace Fohjin.DDD.BankApplication
-//{
-//    public class ApplicationBootStrapper
-//    {
-//        public void BootStrapTheApplication()
-//        {
-//            DomainDatabaseBootStrapper.BootStrap();
-//            ReportingDatabaseBootStrapper.BootStrap();
+namespace Fohjin.DDD.BankApplication
+{
+    public static class ServiceProviderExtensions
+    {
+        public static T BootStrapApplication<T>(this T serviceProvider) where T: IServiceProvider
+        {
+            ActivatorUtilities.CreateInstance<DomainDatabaseBootStrapper>(serviceProvider).CreateDatabaseSchemaIfNeeded();
+            ActivatorUtilities.CreateInstance<ReportingDatabaseBootStrapper>(serviceProvider).CreateDatabaseSchemaIfNeeded();
 
-//            ObjectFactory.Initialize(x =>
-//            {
-//                x.AddRegistry<ApplicationRegistry>();
-//                x.AddRegistry<DomainRegistry>();
-//                x.AddRegistry<ReportingRegistry>();
-//                x.AddRegistry<ServicesRegister>();
-//            });
-//            ObjectFactory.AssertConfigurationIsValid();
+            ActivatorUtilities.CreateInstance<RegisterCommandHandlersInMessageRouter>(serviceProvider);
+            ActivatorUtilities.CreateInstance<RegisterEventHandlersInMessageRouter>(serviceProvider);
 
-//            RegisterCommandHandlersInMessageRouter.BootStrap();
-//            RegisterEventHandlersInMessageRouter.BootStrap();
-//        }
-
-//        public static void BootStrap()
-//        {
-//            new ApplicationBootStrapper().BootStrapTheApplication();
-//        }
-//    }
-//}
+            return serviceProvider;
+        }
+    }
+}

@@ -16,17 +16,17 @@ namespace Fohjin.DDD.BankApplication
         [STAThread]
         static void Main()
         {
-
-            //ApplicationBootStrapper.BootStrap();
-
             var services = new ServiceCollection()
                 .AddBusServices()
                 .AddConfigurationServices()
                 .AddCommonServices()
                 .AddReportingServices()
                 .AddDddServices()
+                .AddBankApplicationServices()
                 ;
-            var service = services.BuildServiceProvider();
+            var service = services.BuildServiceProvider()
+                .BootStrapApplication()
+                ;
 
             var clientSearchFormPresenter = service.GetRequiredService<IClientSearchFormPresenter>();
             Application.EnableVisualStyles();

@@ -1,16 +1,11 @@
 using Microsoft.Data.Sqlite;
 using System.Data.Common;
 
-namespace Fohjin.DDD.Configuration
+namespace Fohjin.DDD.BankApplication
 {
     public class DomainDatabaseBootStrapper
     {
         public const string dataBaseFile = "domainDataBase.db3";
-
-        public static void BootStrap()
-        {
-            new DomainDatabaseBootStrapper().CreateDatabaseSchemaIfNeeded();
-        }
 
         public void ReCreateDatabaseSchema()
         {
