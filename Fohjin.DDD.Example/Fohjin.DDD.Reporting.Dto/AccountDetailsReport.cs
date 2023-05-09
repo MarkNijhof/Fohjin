@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-
 namespace Fohjin.DDD.Reporting.Dto
 {
     public class AccountDetailsReport

@@ -13,6 +13,7 @@
 	<ItemGroup>
 	  <ProjectReference Include="..\Fohjin.DDD.Bus\Fohjin.DDD.Bus.csproj" />
 	  <ProjectReference Include="..\Fohjin.DDD.Commands\Fohjin.DDD.Commands.csproj" />
+	  <ProjectReference Include="..\Fohjin.DDD.Reporting.Dto\Fohjin.DDD.Reporting.Dto.csproj" />
 	  <ProjectReference Include="..\Fohjin.DDD.Reporting\Fohjin.DDD.Reporting.csproj" />
 	</ItemGroup>
 

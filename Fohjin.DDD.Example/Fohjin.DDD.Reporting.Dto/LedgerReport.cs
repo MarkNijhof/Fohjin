@@ -1,5 +1,3 @@
-using System;
-
 namespace Fohjin.DDD.Reporting.Dto
 {
     public class LedgerReport
