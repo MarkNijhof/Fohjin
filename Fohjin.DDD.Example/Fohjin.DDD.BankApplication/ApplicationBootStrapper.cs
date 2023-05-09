@@ -1,3 +1,4 @@
+using Fohjin.DDD.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Fohjin.DDD.BankApplication
@@ -8,9 +9,6 @@ namespace Fohjin.DDD.BankApplication
         {
             ActivatorUtilities.CreateInstance<DomainDatabaseBootStrapper>(serviceProvider).CreateDatabaseSchemaIfNeeded();
             ActivatorUtilities.CreateInstance<ReportingDatabaseBootStrapper>(serviceProvider).CreateDatabaseSchemaIfNeeded();
-
-            //ActivatorUtilities.CreateInstance<RegisterCommandHandlersInMessageRouter>(serviceProvider);
-            //ActivatorUtilities.CreateInstance<RegisterEventHandlersInMessageRouter>(serviceProvider);
 
             return serviceProvider;
         }

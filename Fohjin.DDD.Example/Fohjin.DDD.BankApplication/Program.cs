@@ -10,7 +10,7 @@ using Fohjin.DDD.Reporting;
 using Fohjin.DDD.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace Fohjin.DDD.BankApplication
 {
@@ -32,6 +32,13 @@ namespace Fohjin.DDD.BankApplication
                 ;
 
             var services = new ServiceCollection()
+                .AddLogging(opt=>opt.AddConsole().AddDebug()
+#if DEBUG
+                    .SetMinimumLevel(LogLevel.Debug)
+#else
+                    .SetMinimumLevel(LogLevel.Information)
+#endif
+                    )
                 .AddTransient<IConfiguration>(_ => configBuilder.Build())
                 .AddBusServices()
                 .AddCommandHandlersServices()

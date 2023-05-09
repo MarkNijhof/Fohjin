@@ -1,5 +1,6 @@
 ﻿using Fohjin.DDD.CommandHandlers;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace Fohjin.DDD.Bus.Direct
 {
@@ -7,27 +8,21 @@ namespace Fohjin.DDD.Bus.Direct
     {
         private ICommandHandlerHelper _commandHandlerHelper;
         private readonly IServiceProvider _serviceProvider;
+        private readonly ILogger _log;
 
-        public MessageRouter(IServiceProvider serviceProvider)
+        public MessageRouter(
+            IServiceProvider serviceProvider,
+            ILogger<MessageRouter> log
+            )
         {
             _serviceProvider = serviceProvider;
+            _log = log;
         }
-
-        //public void Register<TMessage>(Action<TMessage> route) where TMessage : class
-        //{
-        //    var routingKey = typeof(TMessage);
-
-        //    if (!_routes.TryGetValue(routingKey, out var routes))
-        //        _routes[routingKey] = routes = new LinkedList<Action<object>>();
-
-        //    routes.Add(message => route(message as TMessage));
-        //}
 
         public async Task RouteAsync(object message)
         {
-            var messageType = message.GetType();
+            _log.LogInformation($"RouteAsync> {{type}}: {{{nameof(message)}}}", message.GetType(), message);
             _commandHandlerHelper ??= _serviceProvider.GetRequiredService<ICommandHandlerHelper>();
-
             await _commandHandlerHelper.RouteAsync(message);
         }
     }
