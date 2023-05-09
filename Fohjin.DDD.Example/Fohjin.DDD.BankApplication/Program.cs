@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
 using Fohjin.DDD.BankApplication.Presenters;
-using StructureMap;
 
 namespace Fohjin.DDD.BankApplication
 {
