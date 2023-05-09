@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Fohjin.DDD.EventHandlers;
+﻿using Fohjin.DDD.EventHandlers;
 using Fohjin.DDD.Events;
 
 namespace Fohjin.DDD.Configuration

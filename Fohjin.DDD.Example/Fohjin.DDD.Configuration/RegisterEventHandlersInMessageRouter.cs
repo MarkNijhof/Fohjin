@@ -1,9 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Reflection;
 using Fohjin.DDD.Bus.Direct;
 using Fohjin.DDD.EventHandlers;
-using StructureMap;
+using System.Reflection;
 
 namespace Fohjin.DDD.Configuration
 {
@@ -12,15 +9,24 @@ namespace Fohjin.DDD.Configuration
         private static MethodInfo _createPublishActionMethod;
         private static MethodInfo _registerMethod;
 
-        public static void BootStrap()
+        private IServiceProvider _serviceProvider;
+        private IRouteMessages _routeMessages;
+
+
+        public RegisterEventHandlersInMessageRouter(
+            IServiceProvider serviceProvider,
+            IRouteMessages routeMessages
+            )
         {
-            new RegisterEventHandlersInMessageRouter().RegisterRoutes(ObjectFactory.GetInstance<IRouteMessages>() as MessageRouter);
+            _serviceProvider = serviceProvider;
+            _routeMessages = routeMessages;
+            RegisterRoutes(routeMessages);
         }
 
-        public void RegisterRoutes(MessageRouter messageRouter)
+        public void RegisterRoutes(IRouteMessages messageRouter)
         {
-            _createPublishActionMethod = GetType().GetMethod("CreatePublishAction");
-            _registerMethod = messageRouter.GetType().GetMethod("Register");
+            _createPublishActionMethod ??= GetType().GetMethod("CreatePublishAction");
+            _registerMethod ??= messageRouter.GetType().GetMethod("Register");
 
             var events = EventHandlerHelper.GetEvents();
             var eventHandlers = EventHandlerHelper.GetEventHandlers();
@@ -35,7 +41,7 @@ namespace Fohjin.DDD.Configuration
                 {
                     var injectedEventHandler = GetCorrectlyInjectedEventHandler(eventHandler);
                     var action = CreateTheProperAction(theEvent, injectedEventHandler);
-                    RegisterTheCreatedActionWithTheMessageRouter(messageRouter, theEvent, action);
+                    RegisterTheCreatedActionWithTheMessageRouter(_routeMessages, theEvent, action);
                 }
             }
         }
@@ -47,19 +53,14 @@ namespace Fohjin.DDD.Configuration
             return messageHandler.Execute;
         }
 
-        private static void RegisterTheCreatedActionWithTheMessageRouter(MessageRouter messageRouter, Type eventType, object action)
-        {
+        private static void RegisterTheCreatedActionWithTheMessageRouter(IRouteMessages messageRouter, Type eventType, object action) =>
             _registerMethod.MakeGenericMethod(eventType).Invoke(messageRouter, new[] { action });
-        }
 
-        private object CreateTheProperAction(Type eventType, object eventHandler)
-        {
-            return _createPublishActionMethod.MakeGenericMethod(eventType, eventHandler.GetType()).Invoke(this, new[] { eventHandler });
-        }
+        private object CreateTheProperAction(Type eventType, object eventHandler) =>
+            _createPublishActionMethod.MakeGenericMethod(eventType, eventHandler.GetType()).Invoke(this, new[] { eventHandler });
 
-        private static object GetCorrectlyInjectedEventHandler(Type eventHandler)
-        {
-            return ObjectFactory.GetInstance(eventHandler);
-        }
+        private object GetCorrectlyInjectedEventHandler(Type eventHandler) =>
+            _serviceProvider.GetService(eventHandler)
+                ?? throw new ApplicationException($"unable to locate handler for {eventHandler}");
     }
 }

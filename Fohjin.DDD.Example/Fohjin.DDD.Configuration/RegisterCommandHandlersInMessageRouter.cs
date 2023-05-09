@@ -1,9 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Reflection;
 using Fohjin.DDD.Bus.Direct;
 using Fohjin.DDD.CommandHandlers;
-using StructureMap;
+using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 
 namespace Fohjin.DDD.Configuration
 {
@@ -12,15 +10,23 @@ namespace Fohjin.DDD.Configuration
         private static MethodInfo _createPublishActionWrappedInTransactionMethod;
         private static MethodInfo _registerMethod;
 
-        public static void BootStrap()
+        private IServiceProvider _serviceProvider;
+        private IRouteMessages _routeMessages;
+
+        public RegisterCommandHandlersInMessageRouter(
+            IServiceProvider serviceProvider,
+            IRouteMessages routeMessages
+            )
         {
-            new RegisterCommandHandlersInMessageRouter().RegisterRoutes(ObjectFactory.GetInstance<IRouteMessages>() as MessageRouter);
+            _serviceProvider = serviceProvider;
+            _routeMessages = routeMessages;
+            RegisterRoutes();
         }
 
-        public void RegisterRoutes(MessageRouter messageRouter)
+        public void RegisterRoutes()
         {
             _createPublishActionWrappedInTransactionMethod = GetType().GetMethod("CreatePublishActionWrappedInTransaction");
-            _registerMethod = messageRouter.GetType().GetMethod("Register");
+            _registerMethod = _routeMessages.GetType().GetMethod("Register");
 
             var commands = CommandHandlerHelper.GetCommands();
             var commandHandlers = CommandHandlerHelper.GetCommandHandlers();
@@ -35,31 +41,25 @@ namespace Fohjin.DDD.Configuration
                 {
                     var injectedCommandHandler = GetCorrectlyInjectedCommandHandler(commandHandler);
                     var action = CreateTheProperAction(command, injectedCommandHandler);
-                    RegisterTheCreatedActionWithTheMessageRouter(messageRouter, command, action);
+                    RegisterTheCreatedActionWithTheMessageRouter(_routeMessages, command, action);
                 }
             }
         }
 
-        private static object GetCorrectlyInjectedCommandHandler(Type commandHandler)
-        {
-            return ObjectFactory.GetInstance(commandHandler);
-        }
+        private object GetCorrectlyInjectedCommandHandler(Type commandHandler) =>
+            _serviceProvider.GetService(commandHandler);
 
-        private static void RegisterTheCreatedActionWithTheMessageRouter(MessageRouter messageRouter, Type commandType, object action)
-        {
+        private static void RegisterTheCreatedActionWithTheMessageRouter(IRouteMessages messageRouter, Type commandType, object action) =>
             _registerMethod.MakeGenericMethod(commandType).Invoke(messageRouter, new[] { action });
-        }
 
-        private object CreateTheProperAction(Type commandType, object commandHandler)
-        {
-            return _createPublishActionWrappedInTransactionMethod.MakeGenericMethod(commandType, commandHandler.GetType()).Invoke(this, new[] { commandHandler });
-        }
+        private object CreateTheProperAction(Type commandType, object commandHandler) =>
+            _createPublishActionWrappedInTransactionMethod.MakeGenericMethod(commandType, commandHandler.GetType()).Invoke(this, new[] { commandHandler });
 
-        public Action<TCommand> CreatePublishActionWrappedInTransaction<TCommand, TCommandHandler>(TCommandHandler commandHandler) 
-            where TCommand : class 
+        public Action<TCommand> CreatePublishActionWrappedInTransaction<TCommand, TCommandHandler>(TCommandHandler commandHandler)
+            where TCommand : class
             where TCommandHandler : ICommandHandler<TCommand>
         {
-            return command => ObjectFactory.GetInstance<TransactionHandler<TCommand, TCommandHandler>>().Execute(command, commandHandler);
+            return command => _serviceProvider.GetService<TransactionHandler<TCommand, TCommandHandler>>().Execute(command, commandHandler);
         }
     }
 }

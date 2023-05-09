@@ -1,6 +1,5 @@
+using Microsoft.Data.Sqlite;
 using System.Data.Common;
-using System.Data.SQLite;
-using System.IO;
 
 namespace Fohjin.DDD.Configuration
 {
@@ -18,7 +17,7 @@ namespace Fohjin.DDD.Configuration
             if (File.Exists(dataBaseFile))
                 File.Delete(dataBaseFile);
 
-            DoCreateDatabaseSchema();            
+            DoCreateDatabaseSchema();
         }
 
         public void CreateDatabaseSchemaIfNeeded()
@@ -31,9 +30,9 @@ namespace Fohjin.DDD.Configuration
 
         private static void DoCreateDatabaseSchema()
         {
-            SQLiteConnection.CreateFile(dataBaseFile);
+            //SqliteConnection.CreateFile(dataBaseFile);
 
-            var sqLiteConnection = new SQLiteConnection(string.Format("Data Source={0}", dataBaseFile));
+            var sqLiteConnection = new SqliteConnection(string.Format("Data Source={0}", dataBaseFile));
 
             sqLiteConnection.Open();
 

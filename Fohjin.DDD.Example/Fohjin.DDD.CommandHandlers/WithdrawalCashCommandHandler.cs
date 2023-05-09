@@ -4,11 +4,11 @@ using Fohjin.DDD.EventStore;
 
 namespace Fohjin.DDD.CommandHandlers
 {
-    public class WithdrawlCashCommandHandler : ICommandHandler<WithdrawCashCommand>
+    public class WithdrawalCashCommandHandler : ICommandHandler<WithdrawCashCommand>
     {
         private readonly IDomainRepository<IDomainEvent> _repository;
 
-        public WithdrawlCashCommandHandler(IDomainRepository<IDomainEvent> repository)
+        public WithdrawalCashCommandHandler(IDomainRepository<IDomainEvent> repository)
         {
             _repository = repository;
         }
