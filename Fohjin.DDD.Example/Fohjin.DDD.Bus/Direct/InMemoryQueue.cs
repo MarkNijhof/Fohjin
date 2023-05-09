@@ -1,14 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Fohjin.DDD.Bus.Direct
+﻿namespace Fohjin.DDD.Bus.Direct
 {
-    public interface IQueue
-    {
-        void Put(object item);
-        void Pop(Action<object> popAction);
-    }
-
     public class InMemoryQueue : IQueue
     {
         private readonly Queue<object> _itemQueue;

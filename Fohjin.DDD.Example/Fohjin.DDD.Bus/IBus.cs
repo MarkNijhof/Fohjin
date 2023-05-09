@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace Fohjin.DDD.Bus
 {
     public interface IBus : IUnitOfWork

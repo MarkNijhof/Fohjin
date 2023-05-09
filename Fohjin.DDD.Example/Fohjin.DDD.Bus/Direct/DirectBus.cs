@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace Fohjin.DDD.Bus.Direct
 {
     public class DirectBus : IBus

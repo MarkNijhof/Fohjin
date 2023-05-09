@@ -8,10 +8,6 @@ using Fohjin.DDD.Reporting.Dto;
 
 namespace Fohjin.DDD.Services
 {
-    public interface ISendMoneyTransfer
-    {
-        void Send(MoneyTransfer moneyTransfer);
-    }
 
     public class MoneyTransferService : ISendMoneyTransfer
     {

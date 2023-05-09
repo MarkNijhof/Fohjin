@@ -7,10 +7,6 @@ using Fohjin.DDD.Reporting.Dto;
 
 namespace Fohjin.DDD.Services
 {
-    public interface IReceiveMoneyTransfers
-    {
-        void Receive(MoneyTransfer moneyTransfer);
-    }
 
     public class MoneyReceiveService : IReceiveMoneyTransfers
     {

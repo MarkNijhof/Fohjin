@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Fohjin.DDD.Bus.Direct
+﻿namespace Fohjin.DDD.Bus.Direct
 {
     public class RouteNotRegisteredException : Exception
     {
