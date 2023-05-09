@@ -13,7 +13,7 @@ namespace Fohjin.DDD.Domain.Client
 
         public BankCard()
         {
-            registerEvents();
+            RegisterEvents();
         }
 
         public BankCard(Guid bankCardId, Guid accountId) : this()
@@ -39,7 +39,7 @@ namespace Fohjin.DDD.Domain.Client
         private void IsDisabled()
         {
             if (_disabled)
-                throw new BankCardIsDisabledException("The bank card is disabled and no opperations can be executed on it");
+                throw new BankCardIsDisabledException("The bank card is disabled and no operations can be executed on it");
         }
 
         IMemento IOrginator.CreateMemento()
@@ -55,18 +55,18 @@ namespace Fohjin.DDD.Domain.Client
             _disabled = bankCardMemento.Disabled;
         }
 
-        private void registerEvents()
+        private void RegisterEvents()
         {
-            RegisterEvent<BankCardWasReportedStolenEvent>(onBankCardWasReportedStolenEvent);
-            RegisterEvent<BankCardWasCanceledByCLientEvent>(onBankCardWasCanceledByCLientEvent);
+            RegisterEvent<BankCardWasReportedStolenEvent>(OnBankCardWasReportedStolenEvent);
+            RegisterEvent<BankCardWasCanceledByCLientEvent>(OnBankCardWasCanceledByCLientEvent);
         }
 
-        private void onBankCardWasReportedStolenEvent(BankCardWasReportedStolenEvent obj)
+        private void OnBankCardWasReportedStolenEvent(BankCardWasReportedStolenEvent obj)
         {
             _disabled = true;
         }
 
-        private void onBankCardWasCanceledByCLientEvent(BankCardWasCanceledByCLientEvent obj)
+        private void OnBankCardWasCanceledByCLientEvent(BankCardWasCanceledByCLientEvent obj)
         {
             _disabled = true;
         }

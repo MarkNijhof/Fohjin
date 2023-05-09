@@ -2,10 +2,9 @@ using Fohjin.DDD.EventStore;
 
 namespace Fohjin.DDD.Events
 {
-    [Serializable]
-    public class DomainEvent : IDomainEvent
+    public record DomainEvent : IDomainEvent
     {
-        public Guid Id { get; private set; }
+        public Guid Id { get; init; }
         public Guid AggregateId { get; set; }
         int IDomainEvent.Version { get; set; }
 

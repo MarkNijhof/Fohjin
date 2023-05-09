@@ -143,7 +143,7 @@ namespace Fohjin.DDD.Reporting.Infrastructure
                         ?.MakeGenericMethod(childDtoType)
                         .Invoke(this, new[] { sqliteTransaction, childDtoType, CreateSelectObject(dto) as object });
 
-                    property.SetValue(dto, childDtos, new object[] { });
+                    property.SetValue(dto, childDtos, Array.Empty<object>());
                 }
             }
         }
@@ -151,7 +151,7 @@ namespace Fohjin.DDD.Reporting.Infrastructure
         private static IEnumerable<KeyValuePair<string, object>> CreateSelectObject<TDto>(TDto parentDto)
         {
             var columnName = string.Format("{0}Id", parentDto.GetType().Name);
-            var columnValue = parentDto.GetType().GetProperty("Id")?.GetValue(parentDto, new object[] { });
+            var columnValue = parentDto.GetType().GetProperty("Id")?.GetValue(parentDto, Array.Empty<object>());
 
             return new Dictionary<string, object> { { columnName, columnValue } };
         }
@@ -165,7 +165,7 @@ namespace Fohjin.DDD.Reporting.Infrastructure
             AddParameters(sqliteCommand, example);
 
             using var sqLiteDataReader = sqliteCommand.ExecuteReader();
-            var dtoConstructor = dtoType.GetConstructors().OrderBy(x => x.GetParameters().Count()).FirstOrDefault();
+            var dtoConstructor = dtoType.GetConstructors().OrderBy(x => x.GetParameters().Length).FirstOrDefault();
 
             while (sqLiteDataReader.Read())
             {
@@ -187,7 +187,7 @@ namespace Fohjin.DDD.Reporting.Infrastructure
         {
             var exampleData = new Dictionary<string, object>();
 
-            example.GetType().GetProperties().Where(Where).ToList().ForEach(x => exampleData.Add(x.Name, x.GetValue(example, new object[] { })));
+            example.GetType().GetProperties().Where(Where).ToList().ForEach(x => exampleData.Add(x.Name, x.GetValue(example, Array.Empty<object>())));
             return exampleData;
         }
 

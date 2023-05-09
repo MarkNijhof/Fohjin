@@ -8,20 +8,20 @@ namespace Fohjin.DDD.Reporting.Infrastructure
         public string GetUpdateString<TDto>(object update, object where) where TDto : class
         {
             if (update == null)
-                throw new ArgumentNullException("update");
+                throw new ArgumentNullException(nameof(update));
 
             if (where == null)
-                throw new ArgumentNullException("where");
+                throw new ArgumentNullException(nameof(where));
 
             var type = typeof(TDto);
             var updateProperties = update.GetType().GetProperties().Where(Where);
             var whereProperties = where.GetType().GetProperties().Where(Where);
 
-            if (updateProperties.Count() == 0)
-                throw new ArgumentNullException("update");
+            if (!updateProperties.Any())
+                throw new ArgumentNullException(nameof(update));
 
-            if (whereProperties.Count() == 0)
-                throw new ArgumentNullException("where");
+            if (!whereProperties.Any())
+                throw new ArgumentNullException(nameof(where));
 
             var tableName = type.Name;
 

@@ -2,6 +2,7 @@ using Fohjin.DDD.Common;
 using Fohjin.DDD.EventStore.Storage;
 using Fohjin.DDD.EventStore.Storage.Memento;
 using Microsoft.Data.Sqlite;
+using Microsoft.Extensions.Configuration;
 
 namespace Fohjin.DDD.EventStore.SQLite
 {
@@ -13,9 +14,9 @@ namespace Fohjin.DDD.EventStore.SQLite
         private SqliteTransaction _sqLiteTransaction;
         private SqliteConnection _sqliteConnection;
 
-        public DomainEventStorage(string sqLiteConnectionString, IExtendedFormatter formatter)
+        public DomainEventStorage(IConfiguration configuration, IExtendedFormatter formatter)
         {
-            _sqLiteConnectionString = sqLiteConnectionString;
+            _sqLiteConnectionString = configuration["DomainEventStorage:SqliteConnectionString"];
             _formatter = formatter;
         }
 

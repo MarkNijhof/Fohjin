@@ -33,8 +33,7 @@ namespace Fohjin.DDD.Configuration
 
             foreach (var theEvent in events)
             {
-                IList<Type> eventHandlerTypes;
-                if (!eventHandlers.TryGetValue(theEvent, out eventHandlerTypes))
+                if (!eventHandlers.TryGetValue(theEvent, out IList<Type> eventHandlerTypes))
                     throw new Exception(string.Format("No event handlers found for event '{0}'", theEvent.FullName));
 
                 foreach (var eventHandler in eventHandlerTypes)

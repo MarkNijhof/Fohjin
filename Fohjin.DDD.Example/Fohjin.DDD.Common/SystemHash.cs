@@ -8,10 +8,8 @@ namespace Fohjin.DDD.Common
         public string Hash(string input)
         {
             using var md5 = MD5.Create();
-            var bytes = Encoding.UTF8.GetBytes(input);
-            var hash = md5.ComputeHash(bytes);
-            var guid = new Guid(hash);
-            return guid.ToString();
+            var hash = md5.ComputeHash(Encoding.UTF8.GetBytes(input));
+            return new Guid(hash).ToString();
         }
     }
 }

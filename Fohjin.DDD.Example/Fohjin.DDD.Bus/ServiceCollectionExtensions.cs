@@ -9,7 +9,7 @@ namespace Fohjin.DDD.Bus
         public static T AddBusServices<T>(this T service) where T : IServiceCollection
         {
             service.TryAddSingleton<IRouteMessages, MessageRouter>();
-            service.TryAddTransient<IBus, DirectBus>();
+            service.TryAddSingleton<IBus>(sp=> ActivatorUtilities.CreateInstance<DirectBus>(sp));
             return service;
         }
     }

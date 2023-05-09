@@ -1,12 +1,11 @@
 namespace Fohjin.DDD.Events.Client
 {
-    [Serializable]
-    public class ClientMovedEvent : DomainEvent
+    public record ClientMovedEvent : DomainEvent
     {
-        public string Street { get; private set; }
-        public string StreetNumber { get; private set; }
-        public string PostalCode { get; private set; }
-        public string City { get; private set; }
+        public string Street { get; init; }
+        public string StreetNumber { get; init; }
+        public string PostalCode { get; init; }
+        public string City { get; init; }
 
         public ClientMovedEvent(string street, string streetNumber, string postalCode, string city)
         {

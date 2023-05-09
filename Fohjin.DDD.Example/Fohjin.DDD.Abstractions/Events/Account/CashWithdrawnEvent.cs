@@ -1,10 +1,9 @@
 namespace Fohjin.DDD.Events.Account
 {
-    [Serializable]
-    public class CashWithdrawnEvent : DomainEvent
+    public record CashWithdrawnEvent : DomainEvent
     {
-        public decimal Balance { get; private set; }
-        public decimal Amount { get; private set; }
+        public decimal Balance { get; init; }
+        public decimal Amount { get; init; }
 
         public CashWithdrawnEvent(decimal balance, decimal amount)
         {

@@ -1,8 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using NUnit.Framework;
 
 namespace Test.Fohjin.DDD
 {
@@ -14,7 +11,7 @@ namespace Test.Fohjin.DDD
         protected abstract void When();
         protected virtual void Finally() { }
 
-        [Given]
+        //[Given]
         public void Setup()
         {
             CaughtException = new ThereWasNoExceptionButOneWasExpectedException();            
@@ -48,7 +45,7 @@ namespace Test.Fohjin.DDD
         protected abstract void When();
         protected virtual void Finally() { }
 
-        [Given]
+        //[Given]
         public void Setup()
         {
             mocks = new Dictionary<Type, object>();
@@ -114,9 +111,9 @@ namespace Test.Fohjin.DDD
         }
     }
 
-    public class GivenAttribute : SetUpAttribute { }
+    //public class GivenAttribute : SetUpAttribute { }
 
-    public class ThenAttribute : TestAttribute { }
+    public class ThenAttribute : TestMethodAttribute { }
 
-    public class SpecificationAttribute : TestFixtureAttribute { }
+    public class SpecificationAttribute : TestClassAttribute { }
 }

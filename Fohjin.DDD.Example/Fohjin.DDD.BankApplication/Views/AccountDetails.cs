@@ -161,16 +161,14 @@ namespace Fohjin.DDD.BankApplication.Views
             set { _accountName.Text = value; }
         }
 
-        private void _amount_KeyPress(object sender, KeyPressEventArgs e)
+        private void Amount_KeyPress(object sender, KeyPressEventArgs e)
         {
-            decimal value;
-            e.Handled = !Decimal.TryParse(e.KeyChar.ToString(), out value);
+            e.Handled = !Decimal.TryParse(e.KeyChar.ToString(), out _);
         }
 
-        private void _depositAmount_TextChanged(object sender, EventArgs e)
+        private void DepositAmount_TextChanged(object sender, EventArgs e)
         {
-            if (OnFormElementGotChanged != null)
-                OnFormElementGotChanged();
+            OnFormElementGotChanged?.Invoke();
         }
     }
 }

@@ -2,7 +2,8 @@
 {
     public interface ICommandHandlerHelper
     {
-        IDictionary<Type, IList<Type>> GetCommandHandlers();
+        IDictionary<Type, IEnumerable<Type>> GetCommandHandlers();
         IEnumerable<Type> GetCommands();
+        Task RouteAsync(object message);
     }
 }

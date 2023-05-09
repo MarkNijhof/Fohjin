@@ -2,8 +2,9 @@ using Fohjin.DDD.EventStore;
 
 namespace Fohjin.DDD.CommandHandlers
 {
-    public class TransactionHandler<TCommand, TCommandHandler>
-        where TCommandHandler : ICommandHandler<TCommand>
+    public class TransactionHandler<TCommand, TCommandHandler> :
+        ITransactionHandler<TCommand, TCommandHandler>
+        where TCommandHandler : CommandHandlerBase<TCommand>
         where TCommand : class
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -13,11 +14,11 @@ namespace Fohjin.DDD.CommandHandlers
             _unitOfWork = unitOfWork;
         }
 
-        public void Execute(TCommand command, TCommandHandler commandHandler)
+        public async Task ExecuteAsync(TCommand command, TCommandHandler commandHandler)
         {
             try
             {
-                commandHandler.Execute(command);
+                await commandHandler.ExecuteAsync(command);
                 _unitOfWork.Commit();
             }
             catch

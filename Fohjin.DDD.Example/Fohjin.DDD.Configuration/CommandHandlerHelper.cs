@@ -1,43 +1,41 @@
 ﻿using Fohjin.DDD.CommandHandlers;
-using Fohjin.DDD.Commands;
 
 namespace Fohjin.DDD.Configuration
 {
     public class CommandHandlerHelper : ICommandHandlerHelper
     {
-        private readonly IEnumerable<ICommand> _commands;
+        private IDictionary<Type, IEnumerable<Type>> _handlersCache;
+        private IEnumerable<Type> _commandCache;
 
-        public CommandHandlerHelper(IEnumerable<ICommand> commands)
+        private readonly IEnumerable<ICommandHandler> _handlers;
+
+        public CommandHandlerHelper(
+            IEnumerable<ICommandHandler> handlers
+            )
         {
-            _commands = commands;
+            _handlers = handlers;
         }
 
-        public IDictionary<Type, IList<Type>> GetCommandHandlers()
+        public IDictionary<Type, IEnumerable<Type>> GetCommandHandlers() =>
+            _handlersCache ??= _handlers.ToDictionary(
+                t => t.GetType(),
+                t => (from i in t.GetType().GetInterfaces()
+                      where i.IsGenericType
+                      where i.GetGenericTypeDefinition() == typeof(ICommandHandler<>)
+                      select i.GetGenericArguments().First()).ToList().AsEnumerable());
+
+        public IEnumerable<Type> GetCommands() =>
+            _commandCache ??= GetCommandHandlers().SelectMany(i => i.Value).Distinct().ToList();
+
+        public async Task RouteAsync(object message)
         {
-            IDictionary<Type, IList<Type>> commands = new Dictionary<Type, IList<Type>>();
-            typeof(ICommandHandler<>)
-                .Assembly
-                .GetExportedTypes()
-                .Where(x => x.GetInterfaces().Any(y => y.IsGenericType && y.GetGenericTypeDefinition() == typeof(ICommandHandler<>)))
-                .ToList()
-                .ForEach(x => AddItem(commands, x));
-            return commands;
-        }
+            var targetHandler = typeof(ICommandHandler<>).MakeGenericType(message.GetType());
+            var selectedHandlers = _handlers.Where(i => i.GetType().IsAssignableTo(targetHandler));
 
-        public IEnumerable<Type> GetCommands() => _commands.Select(c => c.GetType());
-
-        private void AddItem(IDictionary<Type, IList<Type>> dictionary, Type type)
-        {
-            var command = type.GetInterfaces()
-                .Where(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(ICommandHandler<>))
-                .First()
-                .GetGenericArguments()
-                .First();
-
-            if (!dictionary.ContainsKey(command))
-                dictionary.Add(command, new List<Type>());
-
-            dictionary[command].Add(type);
+            foreach(var handler in selectedHandlers)
+            {
+                await handler.ExecuteAsync(message);
+            }
         }
     }
 }

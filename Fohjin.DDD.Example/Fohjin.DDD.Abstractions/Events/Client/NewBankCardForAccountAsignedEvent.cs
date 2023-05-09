@@ -1,10 +1,9 @@
 ﻿namespace Fohjin.DDD.Events.Client
 {
-    [Serializable]
-    public class NewBankCardForAccountAsignedEvent : DomainEvent
+    public record NewBankCardForAccountAsignedEvent : DomainEvent
     {
-        public Guid BankCardId { get; private set; }
-        public Guid AccountId { get; private set; }
+        public Guid BankCardId { get; init; }
+        public Guid AccountId { get; init; }
 
         public NewBankCardForAccountAsignedEvent(Guid bankCardId, Guid accountId)
         {

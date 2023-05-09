@@ -2,10 +2,10 @@ namespace Fohjin.DDD.Reporting.Dtos
 {
     public class LedgerReport
     {
-        public Guid Id { get; private set; }
-        public Guid AccountDetailsReportId { get; private set; }
-        public string Action { get; private set; }
-        public decimal Amount { get; private set; }
+        public Guid Id { get; init; }
+        public Guid AccountDetailsReportId { get; init; }
+        public string Action { get; init; }
+        public decimal Amount { get; init; }
 
         public LedgerReport(Guid id, Guid accountDetailsId, string action, decimal amount)
         {

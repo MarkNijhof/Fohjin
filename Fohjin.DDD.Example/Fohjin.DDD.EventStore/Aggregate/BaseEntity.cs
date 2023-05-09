@@ -22,41 +22,25 @@
         {
             domainEvent.AggregateId = Id;
             domainEvent.Version = _versionProvider();
-            apply(domainEvent.GetType(), domainEvent);
+            Apply(domainEvent.GetType(), domainEvent);
             _appliedEvents.Add(domainEvent);
         }
 
         void IEntityEventProvider<TDomainEvent>.LoadFromHistory(IEnumerable<TDomainEvent> domainEvents)
         {
-            if (domainEvents.Count() == 0)
-                return;
-
             foreach (var domainEvent in domainEvents)
             {
-                apply(domainEvent.GetType(), domainEvent);
+                Apply(domainEvent.GetType(), domainEvent);
             }
         }
 
-        public void HookUpVersionProvider(Func<int> versionProvider)
-        {
-            _versionProvider = versionProvider;
-        }
+        public void HookUpVersionProvider(Func<int> versionProvider) => _versionProvider = versionProvider;
+        IEnumerable<TDomainEvent> IEntityEventProvider<TDomainEvent>.GetChanges() => _appliedEvents;
+        void IEntityEventProvider<TDomainEvent>.Clear() => _appliedEvents.Clear();
 
-        IEnumerable<TDomainEvent> IEntityEventProvider<TDomainEvent>.GetChanges()
+        private void Apply(Type eventType, TDomainEvent domainEvent)
         {
-            return _appliedEvents;
-        }
-
-        void IEntityEventProvider<TDomainEvent>.Clear()
-        {
-            _appliedEvents.Clear();
-        }
-
-        private void apply(Type eventType, TDomainEvent domainEvent)
-        {
-            Action<TDomainEvent> handler;
-
-            if (!_events.TryGetValue(eventType, out handler))
+            if (!_events.TryGetValue(eventType, out Action<TDomainEvent> handler))
                 throw new UnregisteredDomainEventException(string.Format("The requested domain event '{0}' is not registered in '{1}'", eventType.FullName, GetType().FullName));
 
             handler(domainEvent);

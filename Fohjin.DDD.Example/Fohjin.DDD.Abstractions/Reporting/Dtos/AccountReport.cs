@@ -2,10 +2,10 @@ namespace Fohjin.DDD.Reporting.Dtos
 {
     public class AccountReport
     {
-        public Guid Id { get; private set; }
-        public Guid ClientDetailsReportId { get; private set; }
-        public string AccountName { get; private set; }
-        public string AccountNumber { get; private set; }
+        public Guid Id { get; init; }
+        public Guid ClientDetailsReportId { get; init; }
+        public string AccountName { get; init; }
+        public string AccountNumber { get; init; }
 
         public AccountReport(Guid id, Guid clientDetailsId, string accountName, string accountNumber)
         {

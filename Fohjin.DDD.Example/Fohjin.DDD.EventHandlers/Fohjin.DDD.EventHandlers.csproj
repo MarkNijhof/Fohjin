@@ -7,7 +7,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Fohjin.DDD.Events\Fohjin.DDD.Events.csproj" />
 		<ProjectReference Include="..\Fohjin.DDD.Reporting\Fohjin.DDD.Reporting.csproj" />
 	</ItemGroup>
 

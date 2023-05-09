@@ -26,29 +26,28 @@ namespace Fohjin.DDD.EventStore.Aggregate
         {
             domainEvent.AggregateId = Id;
             domainEvent.Version = GetNewEventVersion();
-            apply(domainEvent.GetType(), domainEvent);
+            Apply(domainEvent.GetType(), domainEvent);
             _appliedEvents.Add(domainEvent);
         }
 
         void IEventProvider<TDomainEvent>.LoadFromHistory(IEnumerable<TDomainEvent> domainEvents)
         {
-            if (domainEvents.Count() == 0)
+            if (!domainEvents.Any())
                 return;
 
             foreach (var domainEvent in domainEvents)
             {
-                apply(domainEvent.GetType(), domainEvent);
+                Apply(domainEvent.GetType(), domainEvent);
             }
 
             Version = domainEvents.Last().Version;
             EventVersion = Version;
         }
 
-        private void apply(Type eventType, TDomainEvent domainEvent)
+        private void Apply(Type eventType, TDomainEvent domainEvent)
         {
-            Action<TDomainEvent> handler;
 
-            if (!_registeredEvents.TryGetValue(eventType, out handler))
+            if (!_registeredEvents.TryGetValue(eventType, out Action<TDomainEvent> handler))
                 throw new UnregisteredDomainEventException(string.Format("The requested domain event '{0}' is not registered in '{1}'", eventType.FullName, GetType().FullName));
 
             handler(domainEvent);

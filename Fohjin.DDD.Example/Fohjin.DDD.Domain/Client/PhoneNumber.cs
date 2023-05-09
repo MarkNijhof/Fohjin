@@ -2,7 +2,7 @@ namespace Fohjin.DDD.Domain.Client
 {
     public class PhoneNumber
     {
-        public string Number { get; private set; }
+        public string Number { get; init; }
 
         public PhoneNumber(string number)
         {

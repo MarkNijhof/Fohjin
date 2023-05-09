@@ -2,6 +2,6 @@
 {
     public interface IRouteMessages
     {
-        void Route(object message);
+        Task RouteAsync(object message);
     }
 }

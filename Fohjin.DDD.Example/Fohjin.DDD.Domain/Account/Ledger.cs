@@ -2,8 +2,8 @@ namespace Fohjin.DDD.Domain.Account
 {
     public abstract class Ledger
     {
-        public Amount Amount { get; private set; }
-        public AccountNumber Account { get; private set; }
+        public Amount Amount { get; init; }
+        public AccountNumber Account { get; init; }
 
         protected Ledger(Amount amount, AccountNumber account)
         {

@@ -2,14 +2,8 @@
 {
     public class InMemoryQueue : IQueue
     {
-        private readonly Queue<object> _itemQueue;
-        private readonly Queue<Action<object>> _listenerQueue;
-
-        public InMemoryQueue()
-        {
-            _itemQueue = new Queue<object>(32);
-            _listenerQueue = new Queue<Action<object>>(32);
-        }
+        private readonly Queue<object> _itemQueue = new(32);
+        private readonly Queue<Func<object, Task>> _listenerQueue = new(32);
 
         public void Put(object item)
         {
@@ -23,7 +17,7 @@
             listener(item);
         }
 
-        public void Pop(Action<object> popAction)
+        public async Task PopAsync(Func<object, Task> popAction)
         {
             if (_itemQueue.Count == 0)
             {

@@ -27,7 +27,7 @@ namespace Fohjin.DDD.Domain.Account
             _ledgers = new List<Ledger>();
             _closed = false;
 
-            registerEvents();
+            RegisterEvents();
         }
 
         private ActiveAccount(Guid clientId, string accountName, string accountNumber) : this()
@@ -73,7 +73,7 @@ namespace Fohjin.DDD.Domain.Account
 
             var newBalance = _balance.Deposit(amount);
 
-            Apply(new CashDepositdEvent(newBalance, amount));
+            Apply(new CashDepositedEvent(newBalance, amount));
         }
 
         public void ReceiveTransferFrom(AccountNumber sourceAccountNumber, Amount amount)
@@ -114,13 +114,13 @@ namespace Fohjin.DDD.Domain.Account
         private void IsAccountNotCreated()
         {
             if (Id == Guid.Empty)
-                throw new NonExitsingAccountException("The ActiveAcount is not created and no opperations can be executed on it");
+                throw new NonExitsingAccountException("The ActiveAccount is not created and no operations can be executed on it");
         }
 
         private void IsAccountClosed()
         {
             if (_closed)
-                throw new ClosedAccountException("The ActiveAcount is closed and no opperations can be executed on it");
+                throw new ClosedAccountException("The ActiveAccount is closed and no operations can be executed on it");
         }
 
         private void IsBalanceHighEnough(Amount amount)
@@ -171,42 +171,42 @@ namespace Fohjin.DDD.Domain.Account
             return (TRequestedType)Activator.CreateInstance(classType, constructorArguments);
         }
 
-        private void registerEvents()
+        private void RegisterEvents()
         {
-            RegisterEvent<AccountOpenedEvent>(onAccountCreated);
-            RegisterEvent<AccountClosedEvent>(onAccountClosed);
-            RegisterEvent<CashWithdrawnEvent>(onWithdrawal);
-            RegisterEvent<CashDepositdEvent>(onDeposit);
-            RegisterEvent<AccountNameChangedEvent>(onAccountNameGotChanged);
-            RegisterEvent<MoneyTransferReceivedEvent>(onMoneyTransferedFromAnOtherAccount);
-            RegisterEvent<MoneyTransferSendEvent>(onMoneyTransferedToAnOtherAccount);
-            RegisterEvent<MoneyTransferFailedEvent>(onMoneyTransferFailed);
+            RegisterEvent<AccountOpenedEvent>(OnAccountCreated);
+            RegisterEvent<AccountClosedEvent>(OnAccountClosed);
+            RegisterEvent<CashWithdrawnEvent>(OnWithdrawal);
+            RegisterEvent<CashDepositedEvent>(OnDeposit);
+            RegisterEvent<AccountNameChangedEvent>(OnAccountNameGotChanged);
+            RegisterEvent<MoneyTransferReceivedEvent>(OnMoneyTransferredFromAnOtherAccount);
+            RegisterEvent<MoneyTransferSendEvent>(OnMoneyTransferredToAnOtherAccount);
+            RegisterEvent<MoneyTransferFailedEvent>(OnMoneyTransferFailed);
         }
 
-        private void onMoneyTransferFailed(MoneyTransferFailedEvent moneyTransferFailedEvent)
+        private void OnMoneyTransferFailed(MoneyTransferFailedEvent moneyTransferFailedEvent)
         {
             _ledgers.Add(new DebitTransferFailed(moneyTransferFailedEvent.Amount, new AccountNumber(string.Empty)));
             _balance = moneyTransferFailedEvent.Balance;
         }
 
-        private void onMoneyTransferedToAnOtherAccount(MoneyTransferSendEvent moneyTransferSendEvent)
+        private void OnMoneyTransferredToAnOtherAccount(MoneyTransferSendEvent moneyTransferSendEvent)
         {
             _ledgers.Add(new CreditTransfer(moneyTransferSendEvent.Amount, new AccountNumber(moneyTransferSendEvent.TargetAccount)));
             _balance = moneyTransferSendEvent.Balance;
         }
 
-        private void onMoneyTransferedFromAnOtherAccount(MoneyTransferReceivedEvent moneyTransferReceivedEvent)
+        private void OnMoneyTransferredFromAnOtherAccount(MoneyTransferReceivedEvent moneyTransferReceivedEvent)
         {
             _ledgers.Add(new DebitTransfer(moneyTransferReceivedEvent.Amount, new AccountNumber(moneyTransferReceivedEvent.TargetAccount)));
             _balance = moneyTransferReceivedEvent.Balance;
         }
 
-        private void onAccountNameGotChanged(AccountNameChangedEvent accountNameChangedEvent)
+        private void OnAccountNameGotChanged(AccountNameChangedEvent accountNameChangedEvent)
         {
             _accountName = new AccountName(accountNameChangedEvent.AccountName);
         }
 
-        private void onAccountCreated(AccountOpenedEvent accountOpenedEvent)
+        private void OnAccountCreated(AccountOpenedEvent accountOpenedEvent)
         {
             Id = accountOpenedEvent.AccountId;
             _clientId = accountOpenedEvent.ClientId;
@@ -214,21 +214,21 @@ namespace Fohjin.DDD.Domain.Account
             _accountNumber = new AccountNumber(accountOpenedEvent.AccountNumber);
         }
 
-        private void onAccountClosed(AccountClosedEvent accountClosedEvent)
+        private void OnAccountClosed(AccountClosedEvent accountClosedEvent)
         {
             _closed = true;
         }
 
-        private void onWithdrawal(CashWithdrawnEvent cashWithdrawnEvent)
+        private void OnWithdrawal(CashWithdrawnEvent cashWithdrawnEvent)
         {
             _ledgers.Add(new DebitMutation(cashWithdrawnEvent.Amount, new AccountNumber(string.Empty)));
             _balance = cashWithdrawnEvent.Balance;
         }
 
-        private void onDeposit(CashDepositdEvent cashDepositdEvent)
+        private void OnDeposit(CashDepositedEvent cashDepositedEvent)
         {
-            _ledgers.Add(new CreditMutation(cashDepositdEvent.Amount, new AccountNumber(string.Empty)));
-            _balance = cashDepositdEvent.Balance;
+            _ledgers.Add(new CreditMutation(cashDepositedEvent.Amount, new AccountNumber(string.Empty)));
+            _balance = cashDepositedEvent.Balance;
         }
     }
 }

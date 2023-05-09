@@ -1,33 +1,34 @@
-﻿namespace Fohjin.DDD.Bus.Direct
+﻿using Fohjin.DDD.CommandHandlers;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace Fohjin.DDD.Bus.Direct
 {
     public class MessageRouter : IRouteMessages
     {
-        private readonly Dictionary<Type, ICollection<Action<object>>> _routes = new();
+        private ICommandHandlerHelper _commandHandlerHelper;
+        private readonly IServiceProvider _serviceProvider;
 
-        public MessageRouter()
+        public MessageRouter(IServiceProvider serviceProvider)
         {
+            _serviceProvider = serviceProvider;
         }
 
-        public void Register<TMessage>(Action<TMessage> route) where TMessage : class
+        //public void Register<TMessage>(Action<TMessage> route) where TMessage : class
+        //{
+        //    var routingKey = typeof(TMessage);
+
+        //    if (!_routes.TryGetValue(routingKey, out var routes))
+        //        _routes[routingKey] = routes = new LinkedList<Action<object>>();
+
+        //    routes.Add(message => route(message as TMessage));
+        //}
+
+        public async Task RouteAsync(object message)
         {
-            var routingKey = typeof(TMessage);
-            ICollection<Action<object>> routes;
+            var messageType = message.GetType();
+            _commandHandlerHelper ??= _serviceProvider.GetRequiredService<ICommandHandlerHelper>();
 
-            if (!_routes.TryGetValue(routingKey, out routes))
-                _routes[routingKey] = routes = new LinkedList<Action<object>>();
-
-            routes.Add(message => route(message as TMessage));
-        }
-
-        public void Route(object message)
-        {
-            ICollection<Action<object>> routes;
-
-            if (!_routes.TryGetValue(message.GetType(), out routes))
-                throw new RouteNotRegisteredException(message.GetType());
-
-            foreach (var route in routes)
-                route(message);
+            await _commandHandlerHelper.RouteAsync(message);
         }
     }
 }

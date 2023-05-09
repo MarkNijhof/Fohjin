@@ -6,13 +6,13 @@ namespace Fohjin.DDD.Domain.Mementos
     [Serializable]
     public class ClosedAccountMemento : IMemento
     {
-        internal Guid Id { get; private set; }
-        internal int Version { get; private set; }
-        internal Guid OriginalAccountId { get; private set; }
-        internal Guid ClientId { get; private set; }
-        internal string AccountName { get; private set; }
-        internal string AccountNumber { get; private set; }
-        internal List<KeyValuePair<string, string>> Ledgers { get; private set; }
+        internal Guid Id { get; init; }
+        internal int Version { get; init; }
+        internal Guid OriginalAccountId { get; init; }
+        internal Guid ClientId { get; init; }
+        internal string AccountName { get; init; }
+        internal string AccountNumber { get; init; }
+        internal List<KeyValuePair<string, string>> Ledgers { get; init; }
 
         public ClosedAccountMemento(Guid id, int version, Guid originalAccountId, Guid clientId, string accountName, string accountNumber, List<Ledger> ledgers)
         {

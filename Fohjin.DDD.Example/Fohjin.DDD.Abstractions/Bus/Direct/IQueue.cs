@@ -3,6 +3,6 @@
     public interface IQueue
     {
         void Put(object item);
-        void Pop(Action<object> popAction);
+        Task PopAsync(Func<object, Task> popAction);
     }
 }

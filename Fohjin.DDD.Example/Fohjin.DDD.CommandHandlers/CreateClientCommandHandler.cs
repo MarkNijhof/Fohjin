@@ -4,7 +4,7 @@ using Fohjin.DDD.EventStore;
 
 namespace Fohjin.DDD.CommandHandlers
 {
-    public class CreateClientCommandHandler : ICommandHandler<CreateClientCommand>
+    public class CreateClientCommandHandler : CommandHandlerBase<CreateClientCommand>
     {
         private readonly IDomainRepository<IDomainEvent> _repository;
 
@@ -13,7 +13,7 @@ namespace Fohjin.DDD.CommandHandlers
             _repository = repository;
         }
 
-        public void Execute(CreateClientCommand compensatingCommand)
+        public override Task ExecuteAsync(CreateClientCommand compensatingCommand)
         {
             var client = Client.CreateNew(
                 new ClientName(compensatingCommand.ClientName),
@@ -22,6 +22,7 @@ namespace Fohjin.DDD.CommandHandlers
                 );
 
             _repository.Add(client);
+            return Task.CompletedTask;
         }
     }
 }

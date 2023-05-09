@@ -8,7 +8,6 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\Fohjin.DDD.EventStore\Fohjin.DDD.EventStore.csproj" />
-	  <ProjectReference Include="..\Fohjin.DDD.Events\Fohjin.DDD.Events.csproj" />
 	</ItemGroup>
 
 </Project>

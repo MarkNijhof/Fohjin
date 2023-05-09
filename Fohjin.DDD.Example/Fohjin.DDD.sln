@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fohjin.DDD.Reporting", "Foh
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test.Fohjin.DDD", "Test.Fohjin.DDD\Test.Fohjin.DDD.csproj", "{CEBF24CE-3326-464B-B6C5-463E7F4BF4BC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fohjin.DDD.Events", "Fohjin.DDD.Events\Fohjin.DDD.Events.csproj", "{CFB4C037-822D-470E-8A01-832957D193C9}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fohjin.DDD.Commands", "Fohjin.DDD.Commands\Fohjin.DDD.Commands.csproj", "{58D61FA0-D67F-4D72-81EA-2D709356AF95}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fohjin.DDD.Domain", "Fohjin.DDD.Domain\Fohjin.DDD.Domain.csproj", "{0FB24C8F-FA8C-409E-A71C-8580F7D78474}"
@@ -53,10 +51,6 @@ Global
 		{CEBF24CE-3326-464B-B6C5-463E7F4BF4BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CEBF24CE-3326-464B-B6C5-463E7F4BF4BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CEBF24CE-3326-464B-B6C5-463E7F4BF4BC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CFB4C037-822D-470E-8A01-832957D193C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CFB4C037-822D-470E-8A01-832957D193C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CFB4C037-822D-470E-8A01-832957D193C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CFB4C037-822D-470E-8A01-832957D193C9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{58D61FA0-D67F-4D72-81EA-2D709356AF95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{58D61FA0-D67F-4D72-81EA-2D709356AF95}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{58D61FA0-D67F-4D72-81EA-2D709356AF95}.Release|Any CPU.ActiveCfg = Release|Any CPU

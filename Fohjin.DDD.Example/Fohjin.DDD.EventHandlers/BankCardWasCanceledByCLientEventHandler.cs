@@ -3,11 +3,11 @@ using Fohjin.DDD.Reporting;
 
 namespace Fohjin.DDD.EventHandlers
 {
-    public class BankCardWasCanceledByCLientEventHandler : IEventHandler<BankCardWasCanceledByCLientEvent>
+    public class BankCardWasCanceledByClientEventHandler : IEventHandler<BankCardWasCanceledByCLientEvent>
     {
         private readonly IReportingRepository _reportingRepository;
 
-        public BankCardWasCanceledByCLientEventHandler(IReportingRepository reportingRepository)
+        public BankCardWasCanceledByClientEventHandler(IReportingRepository reportingRepository)
         {
             _reportingRepository = reportingRepository;
         }

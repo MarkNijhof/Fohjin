@@ -62,7 +62,9 @@ namespace Fohjin.DDD.Configuration
             where TCommand : class
             where TCommandHandler : ICommandHandler<TCommand>
         {
-            return command => _serviceProvider.GetService<TransactionHandler<TCommand, TCommandHandler>>().Execute(command, commandHandler);
+            return command => _serviceProvider.GetService<ITransactionHandler<TCommand, TCommandHandler>>()
+            .ExecuteAsync(command, commandHandler)
+            .GetAwaiter().GetResult();
         }
     }
 }

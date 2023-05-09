@@ -1,9 +1,8 @@
 namespace Fohjin.DDD.Events.Account
 {
-    [Serializable]
-    public class AccountNameChangedEvent : DomainEvent
+    public record AccountNameChangedEvent : DomainEvent
     {
-        public string AccountName { get; private set; }
+        public string AccountName { get; init; }
 
         public AccountNameChangedEvent(string accountName)
         {

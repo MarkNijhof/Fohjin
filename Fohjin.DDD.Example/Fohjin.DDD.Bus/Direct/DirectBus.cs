@@ -1,16 +1,20 @@
+using Microsoft.Extensions.DependencyInjection;
+
 namespace Fohjin.DDD.Bus.Direct
 {
     public class DirectBus : IBus
     {
-        private readonly IRouteMessages _routeMessages;
+        private IRouteMessages _routeMessages;
+        private readonly IServiceProvider _serviceProvider;
+
         private readonly object _lockObject = new();
         private readonly Queue<object> _preCommitQueue = new(32);
         private readonly InMemoryQueue _postCommitQueue = new();
 
-        public DirectBus(IRouteMessages routeMessages)
+        public DirectBus(IServiceProvider serviceProvider)
         {
-            _routeMessages = routeMessages;
-            _postCommitQueue.Pop(DoPublish);
+            _serviceProvider = serviceProvider;
+            _postCommitQueue.PopAsync(DoPublishAsync).GetAwaiter().GetResult();
         }
 
         public void Publish(object message)
@@ -51,15 +55,16 @@ namespace Fohjin.DDD.Bus.Direct
             }
         }
 
-        private void DoPublish(object message)
+        private async Task DoPublishAsync(object message)
         {
+            _routeMessages ??= _serviceProvider.GetRequiredService<IRouteMessages>();
             try
             {
-                _routeMessages.Route(message);
+                await _routeMessages.RouteAsync(message);
             }
             finally
             {
-                _postCommitQueue.Pop(DoPublish);
+                await _postCommitQueue.PopAsync(DoPublishAsync);
             }
         }
     }

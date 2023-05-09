@@ -5,9 +5,9 @@ namespace Fohjin.DDD.Domain.Mementos
     [Serializable]
     public class BankCardMemento : IMemento
     {
-        internal Guid Id { get; private set; }
-        internal Guid AccountId { get; private set; }
-        internal bool Disabled { get; private set; }
+        internal Guid Id { get; init; }
+        internal Guid AccountId { get; init; }
+        internal bool Disabled { get; init; }
 
         public BankCardMemento(Guid id, Guid accountId, bool disabled)
         {

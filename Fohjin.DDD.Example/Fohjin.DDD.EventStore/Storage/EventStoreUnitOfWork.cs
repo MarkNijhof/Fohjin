@@ -24,7 +24,7 @@ namespace Fohjin.DDD.EventStore.Storage
 
             LoadSnapShotIfExists(id, aggregateRoot);
 
-            loadRemainingHistoryEvents(id, aggregateRoot);
+            LoadRemainingHistoryEvents(id, aggregateRoot);
 
             RegisterForTracking(aggregateRoot);
 
@@ -78,10 +78,10 @@ namespace Fohjin.DDD.EventStore.Storage
             aggregateRoot.SetMemento(snapShot.Memento);
         }
 
-        private void loadRemainingHistoryEvents(Guid id, IEventProvider<TDomainEvent> aggregateRoot)
+        private void LoadRemainingHistoryEvents(Guid id, IEventProvider<TDomainEvent> aggregateRoot)
         {
             var events = _domainEventStorage.GetEventsSinceLastSnapShot(id);
-            if (events.Count() > 0)
+            if (events.Any())
             {
                 aggregateRoot.LoadFromHistory(events);
                 return;

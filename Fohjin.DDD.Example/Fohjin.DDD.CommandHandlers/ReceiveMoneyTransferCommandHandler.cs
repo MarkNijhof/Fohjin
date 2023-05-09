@@ -4,7 +4,7 @@ using Fohjin.DDD.EventStore;
 
 namespace Fohjin.DDD.CommandHandlers
 {
-    public class ReceiveMoneyTransferCommandHandler : ICommandHandler<ReceiveMoneyTransferCommand>
+    public class ReceiveMoneyTransferCommandHandler : CommandHandlerBase<ReceiveMoneyTransferCommand>
     {
         private readonly IDomainRepository<IDomainEvent> _repository;
 
@@ -13,11 +13,13 @@ namespace Fohjin.DDD.CommandHandlers
             _repository = repository;
         }
 
-        public void Execute(ReceiveMoneyTransferCommand compensatingCommand)
+        public override Task ExecuteAsync(ReceiveMoneyTransferCommand compensatingCommand)
         {
             var activeAccount = _repository.GetById<ActiveAccount>(compensatingCommand.Id);
 
             activeAccount.ReceiveTransferFrom(new AccountNumber(compensatingCommand.AccountNumber), new Amount(compensatingCommand.Amount));
+
+            return Task.CompletedTask;
         }
     }
 }

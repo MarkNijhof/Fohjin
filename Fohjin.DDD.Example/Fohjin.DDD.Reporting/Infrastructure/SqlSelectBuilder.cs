@@ -33,7 +33,7 @@ namespace Fohjin.DDD.Reporting.Infrastructure
 
         private static string GetWhereString(IEnumerable<KeyValuePair<string, object>> example)
         {
-            return example.Count() > 0
+            return example.Any()
                        ? string.Format("WHERE {0}", string.Join(" AND ", example.Select(x => string.Format("{0} = @{1}", x.Key, x.Key.ToLower())).ToArray()))
                        : string.Empty;
         }

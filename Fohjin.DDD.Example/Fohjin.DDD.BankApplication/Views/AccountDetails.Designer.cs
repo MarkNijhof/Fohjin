@@ -297,8 +297,8 @@ namespace Fohjin.DDD.BankApplication.Views
             this._depositAmount.Size = new System.Drawing.Size(273, 20);
             this._depositAmount.TabIndex = 0;
             this._depositAmount.Text = "0";
-            this._depositAmount.TextChanged += new System.EventHandler(this._depositAmount_TextChanged);
-            this._depositAmount.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this._amount_KeyPress);
+            this._depositAmount.TextChanged += new System.EventHandler(this.DepositAmount_TextChanged);
+            this._depositAmount.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Amount_KeyPress);
             // 
             // _depositCancelButton
             // 
@@ -349,8 +349,8 @@ namespace Fohjin.DDD.BankApplication.Views
             this._withdrawalAmount.Size = new System.Drawing.Size(273, 20);
             this._withdrawalAmount.TabIndex = 0;
             this._withdrawalAmount.Text = "0";
-            this._withdrawalAmount.TextChanged += new System.EventHandler(this._depositAmount_TextChanged);
-            this._withdrawalAmount.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this._amount_KeyPress);
+            this._withdrawalAmount.TextChanged += new System.EventHandler(this.DepositAmount_TextChanged);
+            this._withdrawalAmount.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Amount_KeyPress);
             // 
             // _withdrawalCancelButton
             // 
@@ -404,7 +404,7 @@ namespace Fohjin.DDD.BankApplication.Views
             this._transferAccounts.Name = "_transferAccounts";
             this._transferAccounts.Size = new System.Drawing.Size(273, 21);
             this._transferAccounts.TabIndex = 1;
-            this._transferAccounts.SelectedIndexChanged += new System.EventHandler(this._depositAmount_TextChanged);
+            this._transferAccounts.SelectedIndexChanged += new System.EventHandler(this.DepositAmount_TextChanged);
             // 
             // label12
             // 
@@ -422,8 +422,8 @@ namespace Fohjin.DDD.BankApplication.Views
             this._transferAmount.Size = new System.Drawing.Size(273, 20);
             this._transferAmount.TabIndex = 0;
             this._transferAmount.Text = "0";
-            this._transferAmount.TextChanged += new System.EventHandler(this._depositAmount_TextChanged);
-            this._transferAmount.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this._amount_KeyPress);
+            this._transferAmount.TextChanged += new System.EventHandler(this.DepositAmount_TextChanged);
+            this._transferAmount.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Amount_KeyPress);
             // 
             // label13
             // 
@@ -482,7 +482,7 @@ namespace Fohjin.DDD.BankApplication.Views
             this._accountName.Name = "_accountName";
             this._accountName.Size = new System.Drawing.Size(273, 20);
             this._accountName.TabIndex = 0;
-            this._accountName.TextChanged += new System.EventHandler(this._depositAmount_TextChanged);
+            this._accountName.TextChanged += new System.EventHandler(this.DepositAmount_TextChanged);
             // 
             // _newAccountNameCancelButton
             // 

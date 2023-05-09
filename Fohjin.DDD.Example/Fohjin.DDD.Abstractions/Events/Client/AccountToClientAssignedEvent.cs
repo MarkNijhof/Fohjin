@@ -1,9 +1,8 @@
 namespace Fohjin.DDD.Events.Client
 {
-    [Serializable]
-    public class AccountToClientAssignedEvent : DomainEvent
+    public record AccountToClientAssignedEvent : DomainEvent
     {
-        public Guid AccountId { get; private set; }
+        public Guid AccountId { get; init; }
 
         public AccountToClientAssignedEvent(Guid accountId)
         {

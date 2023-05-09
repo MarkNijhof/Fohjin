@@ -4,7 +4,7 @@ using Fohjin.DDD.EventStore;
 
 namespace Test.Fohjin.DDD
 {
-    [Specification]
+    //[Specification]
     public abstract class AggregateRootTestFixture<TAggregateRoot> where TAggregateRoot : IEventProvider<IDomainEvent>, new()
     {
         protected TAggregateRoot AggregateRoot;
@@ -17,7 +17,7 @@ namespace Test.Fohjin.DDD
         protected virtual void Finally() {}
         protected abstract void When();
 
-        [Given]
+        //[Given]
         public void Setup()
         {
             CaughtException = new ThereWasNoExceptionButOneWasExpectedException();

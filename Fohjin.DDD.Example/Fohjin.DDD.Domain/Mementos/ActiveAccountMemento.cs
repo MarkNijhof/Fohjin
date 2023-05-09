@@ -6,14 +6,14 @@ namespace Fohjin.DDD.Domain.Mementos
     [Serializable]
     public class ActiveAccountMemento : IMemento
     {
-        internal Guid Id { get; private set; }
-        internal int Version { get; private set; }
-        internal Guid ClientId { get; private set; }
-        internal string AccountName { get; private set; }
+        internal Guid Id { get; init; }
+        internal int Version { get; init; }
+        internal Guid ClientId { get; init; }
+        internal string AccountName { get; init; }
         internal string AccountNumber { get; set; }
-        internal decimal Balance { get; private set; }
-        internal bool Closed { get; private set; }
-        internal List<KeyValuePair<string, string>> Ledgers { get; private set; }
+        internal decimal Balance { get; init; }
+        internal bool Closed { get; init; }
+        internal List<KeyValuePair<string, string>> Ledgers { get; init; }
 
         public ActiveAccountMemento(Guid id, int version, Guid clientId, string accountName, string accountNumber, decimal balance, List<Ledger> ledgers, bool closed)
         {

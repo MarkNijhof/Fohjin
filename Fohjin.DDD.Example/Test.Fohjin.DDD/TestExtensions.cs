@@ -1,8 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Fohjin.DDD.EventStore;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Test.Fohjin.DDD
 {

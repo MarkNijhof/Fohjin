@@ -2,14 +2,14 @@ namespace Fohjin.DDD.Reporting.Dtos
 {
     public class ClientDetailsReport
     {
-        public Guid Id { get; private set; }
-        public IEnumerable<AccountReport> Accounts { get; private set; }
-        public IEnumerable<ClosedAccountReport> ClosedAccounts { get; private set; }
-        public string ClientName { get; private set; }
-        public string Street { get; private set; }
-        public string StreetNumber { get; private set; }
-        public string PostalCode { get; private set; }
-        public string City { get; private set; }
+        public Guid Id { get; init; }
+        public IEnumerable<AccountReport> Accounts { get; init; }
+        public IEnumerable<ClosedAccountReport> ClosedAccounts { get; init; }
+        public string ClientName { get; init; }
+        public string Street { get; init; }
+        public string StreetNumber { get; init; }
+        public string PostalCode { get; init; }
+        public string City { get; init; }
         public string PhoneNumber { get; set; }
 
         public ClientDetailsReport(Guid id, string clientName, string street, string streetNumber, string postalCode, string city, string phoneNumber)

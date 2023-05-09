@@ -9,6 +9,7 @@ namespace Fohjin.DDD.EventStore
         {
             service.AddTransient(typeof(IDomainRepository<>), typeof(DomainRepository<>));
             service.AddTransient(typeof(IEventStoreUnitOfWork<>), typeof(EventStoreUnitOfWork<>));
+            service.AddTransient(typeof(IIdentityMap<>), typeof(EventStoreIdentityMap<>));
             return service;
         }
     }

@@ -5,7 +5,7 @@ using Fohjin.DDD.EventStore;
 
 namespace Fohjin.DDD.CommandHandlers
 {
-    public class OpenNewAccountForClientCommandHandler : ICommandHandler<OpenNewAccountForClientCommand>
+    public class OpenNewAccountForClientCommandHandler : CommandHandlerBase<OpenNewAccountForClientCommand>
     {
         private readonly IDomainRepository<IDomainEvent> _repository;
         private readonly ISystemHash _systemHash;
@@ -19,12 +19,14 @@ namespace Fohjin.DDD.CommandHandlers
             _systemHash = systemHash;
         }
 
-        public void Execute(OpenNewAccountForClientCommand compensatingCommand)
+        public override Task ExecuteAsync(OpenNewAccountForClientCommand compensatingCommand)
         {
             var client = _repository.GetById<Client>(compensatingCommand.Id);
             var activeAccount = client.CreateNewAccount(compensatingCommand.AccountName, _systemHash.Hash(compensatingCommand.AccountName));
 
             _repository.Add(activeAccount);
+
+            return Task.CompletedTask;
         }
     }
 }

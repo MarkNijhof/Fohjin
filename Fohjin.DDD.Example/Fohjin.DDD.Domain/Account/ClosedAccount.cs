@@ -23,7 +23,7 @@ namespace Fohjin.DDD.Domain.Account
             EventVersion = 0;
             _ledgers = new List<Ledger>();
 
-            registerEvents();
+            RegisterEvents();
         }
 
         private ClosedAccount(Guid accountId, Guid clientId, List<Ledger> ledgers, string accountName, string accountNumber) : this()
@@ -74,12 +74,12 @@ namespace Fohjin.DDD.Domain.Account
             return (TRequestedType)Activator.CreateInstance(classType, constructorArguments);
         }
 
-        private void registerEvents()
+        private void RegisterEvents()
         {
-            RegisterEvent<ClosedAccountCreatedEvent>(onClosedAccountCreated);
+            RegisterEvent<ClosedAccountCreatedEvent>(OnClosedAccountCreated);
         }
 
-        private void onClosedAccountCreated(ClosedAccountCreatedEvent closedAccountCreatedEvent)
+        private void OnClosedAccountCreated(ClosedAccountCreatedEvent closedAccountCreatedEvent)
         {
             Id = closedAccountCreatedEvent.AccountId;
             _originalAccountId = closedAccountCreatedEvent.OriginalAccountId;
