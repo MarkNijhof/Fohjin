@@ -1,5 +1,3 @@
-using System;
-using System.Linq;
 using System.Reflection;
 
 namespace Fohjin.DDD.Reporting.Infrastructure
@@ -27,7 +25,7 @@ namespace Fohjin.DDD.Reporting.Infrastructure
 
             var tableName = type.Name;
 
-            return string.Format("UPDATE {0} SET {1} WHERE {2};", 
+            return string.Format("UPDATE {0} SET {1} WHERE {2};",
                                  tableName,
                                  string.Join(",", updateProperties.Select(x => string.Format("{0}=@update_{1}", x.Name, x.Name.ToLower())).ToArray()),
                                  string.Join(",", whereProperties.Select(x => string.Format("{0}=@{1}", x.Name, x.Name.ToLower())).ToArray()));

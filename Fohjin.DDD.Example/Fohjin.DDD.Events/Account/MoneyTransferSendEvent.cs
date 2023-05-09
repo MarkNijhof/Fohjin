@@ -1,7 +1,7 @@
 namespace Fohjin.DDD.Events.Account
 {
     [Serializable]
-    public class MoneyTransferSendEvent : DomainEvent 
+    public class MoneyTransferSendEvent : DomainEvent
     {
         public decimal Balance { get; private set; }
         public decimal Amount { get; private set; }

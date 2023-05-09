@@ -1,8 +1,6 @@
-using System.Collections.Generic;
-
 namespace Fohjin.DDD.Reporting
 {
-    public interface IReportingRepository 
+    public interface IReportingRepository
     {
         IEnumerable<TDto> GetByExample<TDto>(object example) where TDto : class;
         void Save<TDto>(TDto dto) where TDto : class;

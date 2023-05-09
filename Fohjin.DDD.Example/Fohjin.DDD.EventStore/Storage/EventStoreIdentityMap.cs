@@ -21,7 +21,7 @@ namespace Fohjin.DDD.EventStore.Storage
             if (!aggregates.TryGetValue(id, out aggregate))
                 return null;
 
-            return (TAggregate) aggregate;
+            return (TAggregate)aggregate;
         }
 
         public void Add<TAggregate>(TAggregate aggregateRoot) where TAggregate : class, IOrginator, IEventProvider<TDomainEvent>, new()

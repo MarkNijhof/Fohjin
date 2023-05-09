@@ -2,7 +2,6 @@ using Fohjin.DDD.BankApplication.Views;
 using Fohjin.DDD.Common;
 using Fohjin.DDD.Reporting;
 using Fohjin.DDD.Reporting.Dtos;
-using System.Configuration.Internal;
 
 namespace Fohjin.DDD.BankApplication.Presenters
 {

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Windows.Forms;
-using Fohjin.DDD.Reporting.Dtos;
+﻿using Fohjin.DDD.Reporting.Dtos;
 
 namespace Fohjin.DDD.BankApplication.Views
 {
@@ -174,7 +170,7 @@ namespace Fohjin.DDD.BankApplication.Views
         private void _depositAmount_TextChanged(object sender, EventArgs e)
         {
             if (OnFormElementGotChanged != null)
-               OnFormElementGotChanged();
+                OnFormElementGotChanged();
         }
     }
 }

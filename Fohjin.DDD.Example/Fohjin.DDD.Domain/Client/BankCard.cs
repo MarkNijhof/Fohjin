@@ -1,5 +1,4 @@
-﻿using System;
-using Fohjin.DDD.Domain.Mementos;
+﻿using Fohjin.DDD.Domain.Mementos;
 using Fohjin.DDD.Events.Client;
 using Fohjin.DDD.EventStore;
 using Fohjin.DDD.EventStore.Aggregate;

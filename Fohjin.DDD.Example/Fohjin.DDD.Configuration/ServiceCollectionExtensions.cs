@@ -1,6 +1,4 @@
-using Fohjin.DDD.Bus.Direct;
 using Fohjin.DDD.CommandHandlers;
-using Fohjin.DDD.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 

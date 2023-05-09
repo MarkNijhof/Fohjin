@@ -1,9 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Reflection;
 using Fohjin.DDD.BankApplication.Views;
+using System.Diagnostics;
+using System.Reflection;
 
 namespace Fohjin.DDD.BankApplication.Presenters
 {

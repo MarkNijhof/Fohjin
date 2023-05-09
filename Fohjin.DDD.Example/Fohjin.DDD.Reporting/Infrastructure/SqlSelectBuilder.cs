@@ -1,5 +1,3 @@
-using System.Linq;
-using System.Collections.Generic;
 using System.Reflection;
 
 namespace Fohjin.DDD.Reporting.Infrastructure
@@ -7,19 +5,19 @@ namespace Fohjin.DDD.Reporting.Infrastructure
 
     public class SqlSelectBuilder : ISqlSelectBuilder
     {
-        public string CreateSqlSelectStatementFromDto<TDto>() 
+        public string CreateSqlSelectStatementFromDto<TDto>()
         {
             return string.Format("{0};", GetSelectString<TDto>());
         }
 
         public string CreateSqlSelectStatementFromDto<TDto>(IEnumerable<KeyValuePair<string, object>> example) where TDto : class
         {
-            return example != null 
+            return example != null
                 ? string.Format("{0} {1};", GetSelectString<TDto>(), GetWhereString(example))
                 : string.Format("{0};", GetSelectString<TDto>());
         }
 
-        private static string GetSelectString<TDto>() 
+        private static string GetSelectString<TDto>()
         {
             var type = typeof(TDto);
             var properties = type.GetProperties();
@@ -33,7 +31,7 @@ namespace Fohjin.DDD.Reporting.Infrastructure
             return !propertyInfo.PropertyType.IsGenericType;
         }
 
-        private static string GetWhereString(IEnumerable<KeyValuePair<string, object>> example) 
+        private static string GetWhereString(IEnumerable<KeyValuePair<string, object>> example)
         {
             return example.Count() > 0
                        ? string.Format("WHERE {0}", string.Join(" AND ", example.Select(x => string.Format("{0} = @{1}", x.Key, x.Key.ToLower())).ToArray()))

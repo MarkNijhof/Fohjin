@@ -37,8 +37,7 @@ namespace Fohjin.DDD.Configuration
 
             foreach (var command in commands)
             {
-                IList<Type> commandHandlerTypes;
-                if (!commandHandlers.TryGetValue(command, out commandHandlerTypes))
+                if (!commandHandlers.TryGetValue(command, out var commandHandlerTypes))
                     throw new Exception(string.Format("No command handlers found for event '{0}'", command.FullName));
 
                 foreach (var commandHandler in commandHandlerTypes)

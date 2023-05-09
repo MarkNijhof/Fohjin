@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Fohjin.DDD.Domain.Mementos;
 using Fohjin.DDD.Events.Account;
 using Fohjin.DDD.EventStore;
@@ -49,7 +46,7 @@ namespace Fohjin.DDD.Domain.Account
 
         void IOrginator.SetMemento(IMemento memento)
         {
-            var closedAccountMemento = (ClosedAccountMemento) memento;
+            var closedAccountMemento = (ClosedAccountMemento)memento;
             Id = closedAccountMemento.Id;
             Version = closedAccountMemento.Version;
             _originalAccountId = closedAccountMemento.OriginalAccountId;
@@ -59,7 +56,7 @@ namespace Fohjin.DDD.Domain.Account
 
             foreach (var ledger in closedAccountMemento.Ledgers)
             {
-                var split = ledger.Value.Split(new[] {'|'});
+                var split = ledger.Value.Split(new[] { '|' });
                 var amount = new Amount(Convert.ToDecimal(split[0]));
                 var account = new AccountNumber(split[1]);
                 _ledgers.Add(InstantiateClassFromStringValue<Ledger>(ledger.Key, amount, account));

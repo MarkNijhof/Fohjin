@@ -23,7 +23,7 @@ namespace Fohjin.DDD.Domain.Account
         {
             return new Balance(_amount.Add(amount));
         }
-        
+
         public bool WithdrawalWillResultInNegativeBalance(Amount amount)
         {
             return new Amount(_amount).Substract(amount).IsNegative();

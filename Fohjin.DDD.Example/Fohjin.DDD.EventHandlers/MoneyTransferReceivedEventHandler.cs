@@ -15,7 +15,7 @@ namespace Fohjin.DDD.EventHandlers
 
         public void Execute(MoneyTransferReceivedEvent theEvent)
         {
-            _reportingRepository.Update<AccountDetailsReport>(new {theEvent.Balance }, new { Id = theEvent.AggregateId });
+            _reportingRepository.Update<AccountDetailsReport>(new { theEvent.Balance }, new { Id = theEvent.AggregateId });
             _reportingRepository.Save(new LedgerReport(theEvent.Id, theEvent.AggregateId, string.Format("Transfer from {0}", theEvent.SourceAccount), theEvent.Amount));
         }
     }

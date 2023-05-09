@@ -1,5 +1,3 @@
-using System;
-
 namespace Fohjin.DDD.BankApplication.Presenters
 {
     public interface IPopupPresenter : IPresenter

@@ -1,4 +1,3 @@
-using System;
 using Fohjin.DDD.EventStore;
 
 namespace Fohjin.DDD.CommandHandlers
@@ -21,7 +20,7 @@ namespace Fohjin.DDD.CommandHandlers
                 commandHandler.Execute(command);
                 _unitOfWork.Commit();
             }
-            catch (Exception Ex)
+            catch
             {
                 _unitOfWork.Rollback();
                 throw;

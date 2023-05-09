@@ -1,4 +1,3 @@
-using Fohjin.DDD.Common;
 using Fohjin.DDD.Domain.Account;
 using Fohjin.DDD.Domain.Mementos;
 using Fohjin.DDD.Events.Client;

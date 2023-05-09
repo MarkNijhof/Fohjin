@@ -1,5 +1,3 @@
-using System;
-
 namespace Fohjin.DDD.Services
 {
     public class UnknownAccountException : Exception

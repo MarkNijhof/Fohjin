@@ -1,5 +1,3 @@
-using System;
-using System.Linq;
 using Fohjin.DDD.Bus;
 using Fohjin.DDD.Commands;
 using Fohjin.DDD.Reporting;
@@ -29,10 +27,10 @@ namespace Fohjin.DDD.Services
         {
             try
             {
-                var account = _reportingRepository.GetByExample<AccountReport>(new {moneyTransfer.TargetAccount}).First();
+                var account = _reportingRepository.GetByExample<AccountReport>(new { moneyTransfer.TargetAccount }).First();
                 _bus.Publish(new ReceiveMoneyTransferCommand(account.Id, moneyTransfer.Ammount, moneyTransfer.SourceAccount));
             }
-            catch(Exception)
+            catch (Exception)
             {
                 RequestedAccountDoesNotExist(moneyTransfer);
             }

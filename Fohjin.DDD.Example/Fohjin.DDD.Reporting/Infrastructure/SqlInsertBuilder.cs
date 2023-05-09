@@ -1,4 +1,3 @@
-using System.Linq;
 using System.Reflection;
 
 namespace Fohjin.DDD.Reporting.Infrastructure
@@ -17,8 +16,8 @@ namespace Fohjin.DDD.Reporting.Infrastructure
             var properties = type.GetProperties().Where(Where);
             var tableName = type.Name;
 
-            return string.Format("INSERT INTO {0} ({1}) VALUES ({2});", 
-                tableName, 
+            return string.Format("INSERT INTO {0} ({1}) VALUES ({2});",
+                tableName,
                 string.Join(",", properties.Select(x => x.Name).ToArray()),
                 string.Join(",", properties.Select(x => string.Format("@{0}", x.Name.ToLower())).ToArray()));
         }

@@ -18,7 +18,7 @@ namespace Fohjin.DDD.BankApplication
             typeof(ClosedAccountDetailsReport),
             typeof(LedgerReport),
         };
-        private readonly SqlCreateBuilder _sqlCreateBuilder = new ();
+        private readonly SqlCreateBuilder _sqlCreateBuilder = new();
 
         public void ReCreateDatabaseSchema()
         {

@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Fohjin.DDD.Reporting.Dtos;
 
 namespace Fohjin.DDD.BankApplication.Views
@@ -12,7 +11,7 @@ namespace Fohjin.DDD.BankApplication.Views
         string City { get; set; }
         string PhoneNumber { get; set; }
         string NewAccountName { get; set; }
-        
+
         string ClientNameLabel { set; }
         string AddressLine1Label { set; }
         string AddressLine2Label { set; }
@@ -23,7 +22,7 @@ namespace Fohjin.DDD.BankApplication.Views
 
         IEnumerable<ClosedAccountReport> ClosedAccounts { get; set; }
         ClosedAccountReport GetSelectedClosedAccount();
-        
+
         void EnableAddNewAccountMenu();
         void DisableAddNewAccountMenu();
         void EnableClientHasMovedMenu();

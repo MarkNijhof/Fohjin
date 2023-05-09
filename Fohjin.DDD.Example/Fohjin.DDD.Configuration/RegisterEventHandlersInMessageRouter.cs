@@ -9,8 +9,8 @@ namespace Fohjin.DDD.Configuration
         private static MethodInfo _createPublishActionMethod;
         private static MethodInfo _registerMethod;
 
-        private IServiceProvider _serviceProvider;
-        private IRouteMessages _routeMessages;
+        private readonly IServiceProvider _serviceProvider;
+        private readonly IRouteMessages _routeMessages;
 
 
         public RegisterEventHandlersInMessageRouter(

@@ -2,7 +2,6 @@ using Fohjin.DDD.Common;
 using Fohjin.DDD.EventStore.Storage;
 using Fohjin.DDD.EventStore.Storage.Memento;
 using Microsoft.Data.Sqlite;
-using System.Runtime.Serialization;
 
 namespace Fohjin.DDD.EventStore.SQLite
 {
@@ -26,34 +25,27 @@ namespace Fohjin.DDD.EventStore.SQLite
 
             var domainEvents = new List<TDomainEvent>();
 
-            using (var sqliteConnection = new SqliteConnection(_sqLiteConnectionString))
-            {
-                sqliteConnection.Open();
+            using var sqliteConnection = new SqliteConnection(_sqLiteConnectionString);
+            sqliteConnection.Open();
 
-                using (var sqliteTransaction = sqliteConnection.BeginTransaction())
+            using var sqliteTransaction = sqliteConnection.BeginTransaction();
+            try
+            {
+                using var sqliteCommand = new SqliteCommand(commandText, sqliteTransaction.Connection, sqliteTransaction);
+                sqliteCommand.Parameters.Add(new SqliteParameter("@eventProviderId", eventProviderId));
+                using var sqLiteDataReader = sqliteCommand.ExecuteReader();
+                while (sqLiteDataReader.Read())
                 {
-                    try
-                    {
-                        using (var sqliteCommand = new SqliteCommand(commandText, sqliteTransaction.Connection, sqliteTransaction))
-                        {
-                            sqliteCommand.Parameters.Add(new SqliteParameter("@eventProviderId", eventProviderId));
-                            using (var sqLiteDataReader = sqliteCommand.ExecuteReader())
-                            {
-                                while (sqLiteDataReader.Read())
-                                {
-                                    domainEvents.Add(Deserialize<TDomainEvent>((byte[])sqLiteDataReader["Event"]));
-                                }
-                            }
-                        }
-                        sqliteTransaction.Commit();
-                    }
-                    catch (Exception)
-                    {
-                        sqliteTransaction.Rollback();
-                        throw;
-                    }
+                    domainEvents.Add(Deserialize<TDomainEvent>((byte[])sqLiteDataReader["Event"]));
                 }
+                sqliteTransaction.Commit();
             }
+            catch (Exception)
+            {
+                sqliteTransaction.Rollback();
+                throw;
+            }
+
             return domainEvents;
         }
 
@@ -69,33 +61,25 @@ namespace Fohjin.DDD.EventStore.SQLite
 
             var domainEvents = new List<TDomainEvent>();
 
-            using (var sqliteConnection = new SqliteConnection(_sqLiteConnectionString))
-            {
-                sqliteConnection.Open();
+            using var sqliteConnection = new SqliteConnection(_sqLiteConnectionString);
+            sqliteConnection.Open();
 
-                using (var sqliteTransaction = sqliteConnection.BeginTransaction())
+            using var sqliteTransaction = sqliteConnection.BeginTransaction();
+            try
+            {
+                using var sqliteCommand = new SqliteCommand(commandText, sqliteTransaction.Connection, sqliteTransaction);
+                sqliteCommand.Parameters.Add(new SqliteParameter("@eventProviderId", eventProviderId));
+                using var sqLiteDataReader = sqliteCommand.ExecuteReader();
+                while (sqLiteDataReader.Read())
                 {
-                    try
-                    {
-                        using (var sqliteCommand = new SqliteCommand(commandText, sqliteTransaction.Connection, sqliteTransaction))
-                        {
-                            sqliteCommand.Parameters.Add(new SqliteParameter("@eventProviderId", eventProviderId));
-                            using (var sqLiteDataReader = sqliteCommand.ExecuteReader())
-                            {
-                                while (sqLiteDataReader.Read())
-                                {
-                                    domainEvents.Add(Deserialize<TDomainEvent>((byte[])sqLiteDataReader["Event"]));
-                                }
-                            }
-                        }
-                        sqliteTransaction.Commit();
-                    }
-                    catch (Exception)
-                    {
-                        sqliteTransaction.Rollback();
-                        throw;
-                    }
+                    domainEvents.Add(Deserialize<TDomainEvent>((byte[])sqLiteDataReader["Event"]));
                 }
+                sqliteTransaction.Commit();
+            }
+            catch (Exception)
+            {
+                sqliteTransaction.Rollback();
+                throw;
             }
             return domainEvents;
         }
@@ -111,27 +95,21 @@ namespace Fohjin.DDD.EventStore.SQLite
 
             var commandText = string.Format(@"SELECT COUNT(*) FROM Events WHERE EventProviderId = @eventProviderId AND Version > {0};", snapShotVersion);
 
-            using (var sqliteConnection = new SqliteConnection(_sqLiteConnectionString))
-            {
-                sqliteConnection.Open();
+            using var sqliteConnection = new SqliteConnection(_sqLiteConnectionString);
+            sqliteConnection.Open();
 
-                using (var sqliteTransaction = sqliteConnection.BeginTransaction())
-                {
-                    try
-                    {
-                        using (var sqliteCommand = new SqliteCommand(commandText, sqliteTransaction.Connection, sqliteTransaction))
-                        {
-                            sqliteCommand.Parameters.Add(new SqliteParameter("@eventProviderId", eventProviderId));
-                            count = Convert.ToInt32(sqliteCommand.ExecuteScalar());
-                        }
-                        sqliteTransaction.Commit();
-                    }
-                    catch (Exception)
-                    {
-                        sqliteTransaction.Rollback();
-                        throw;
-                    }
-                }
+            using var sqliteTransaction = sqliteConnection.BeginTransaction();
+            try
+            {
+                using var sqliteCommand = new SqliteCommand(commandText, sqliteTransaction.Connection, sqliteTransaction);
+                sqliteCommand.Parameters.Add(new SqliteParameter("@eventProviderId", eventProviderId));
+                count = Convert.ToInt32(sqliteCommand.ExecuteScalar());
+                sqliteTransaction.Commit();
+            }
+            catch (Exception)
+            {
+                sqliteTransaction.Rollback();
+                throw;
             }
             return count;
         }
@@ -139,7 +117,7 @@ namespace Fohjin.DDD.EventStore.SQLite
         public void Save(IEventProvider<TDomainEvent> eventProvider)
         {
             if (!_isRunningWithinTransaction)
-                throw new Exception("Opperation is not running within a transaction");
+                throw new Exception("Operation is not running within a transaction");
 
             var version = GetEventProviderVersion(eventProvider, _sqLiteTransaction);
 
@@ -160,29 +138,23 @@ namespace Fohjin.DDD.EventStore.SQLite
             ISnapShot snapshot = null;
             const string commandText = @"SELECT SnapShot FROM SnapShots WHERE EventProviderId = @eventProviderId AND Version != -1;";
 
-            using (var sqliteConnection = new SqliteConnection(_sqLiteConnectionString))
-            {
-                sqliteConnection.Open();
+            using var sqliteConnection = new SqliteConnection(_sqLiteConnectionString);
+            sqliteConnection.Open();
 
-                using (var sqliteTransaction = sqliteConnection.BeginTransaction())
-                {
-                    try
-                    {
-                        using (var sqliteCommand = new SqliteCommand(commandText, sqliteTransaction.Connection, sqliteTransaction))
-                        {
-                            sqliteCommand.Parameters.Add(new SqliteParameter("@eventProviderId", eventProviderId));
-                            var bytes = (byte[])sqliteCommand.ExecuteScalar();
-                            if (bytes != null)
-                                snapshot = Deserialize<ISnapShot>(bytes);
-                        }
-                        sqliteTransaction.Commit();
-                    }
-                    catch (Exception)
-                    {
-                        sqliteTransaction.Rollback();
-                        throw;
-                    }
-                }
+            using var sqliteTransaction = sqliteConnection.BeginTransaction();
+            try
+            {
+                using var sqliteCommand = new SqliteCommand(commandText, sqliteTransaction.Connection, sqliteTransaction);
+                sqliteCommand.Parameters.Add(new SqliteParameter("@eventProviderId", eventProviderId));
+                var bytes = (byte[])sqliteCommand.ExecuteScalar();
+                if (bytes != null)
+                    snapshot = Deserialize<ISnapShot>(bytes);
+                sqliteTransaction.Commit();
+            }
+            catch (Exception)
+            {
+                sqliteTransaction.Rollback();
+                throw;
             }
             return snapshot;
         }
@@ -221,58 +193,48 @@ namespace Fohjin.DDD.EventStore.SQLite
         private void SaveEvent(TDomainEvent domainEvent, IEventProvider<TDomainEvent> eventProvider, SqliteTransaction transaction)
         {
             const string commandText = "INSERT INTO Events VALUES(@eventId, @eventProviderId, @event, @version)";
-            using (var sqLiteCommand = new SqliteCommand(commandText, transaction.Connection, transaction))
-            {
-                sqLiteCommand.Parameters.Add(new SqliteParameter("@eventId", domainEvent.Id));
-                sqLiteCommand.Parameters.Add(new SqliteParameter("@eventProviderId", eventProvider.Id));
-                sqLiteCommand.Parameters.Add(new SqliteParameter("@event", Serialize(domainEvent)));
-                sqLiteCommand.Parameters.Add(new SqliteParameter("@version", domainEvent.Version));
+            using var sqLiteCommand = new SqliteCommand(commandText, transaction.Connection, transaction);
+            sqLiteCommand.Parameters.Add(new SqliteParameter("@eventId", domainEvent.Id));
+            sqLiteCommand.Parameters.Add(new SqliteParameter("@eventProviderId", eventProvider.Id));
+            sqLiteCommand.Parameters.Add(new SqliteParameter("@event", Serialize(domainEvent)));
+            sqLiteCommand.Parameters.Add(new SqliteParameter("@version", domainEvent.Version));
 
-                sqLiteCommand.ExecuteNonQuery();
-            }
+            sqLiteCommand.ExecuteNonQuery();
         }
 
         private void StoreSnapShot(ISnapShot snapShot)
         {
             const string commandText = "INSERT OR REPLACE INTO SnapShots (EventProviderId, SnapShot, Version) VALUES (@eventProviderId, @snapShot, @version);";
 
-            using (var sqliteConnection = new SqliteConnection(_sqLiteConnectionString))
+            using var sqliteConnection = new SqliteConnection(_sqLiteConnectionString);
+            sqliteConnection.Open();
+
+            using var sqliteTransaction = sqliteConnection.BeginTransaction();
+            try
             {
-                sqliteConnection.Open();
+                using var sqliteCommand = new SqliteCommand(commandText, sqliteTransaction.Connection, sqliteTransaction);
+                sqliteCommand.Parameters.Add(new SqliteParameter("@eventProviderId", snapShot.EventProviderId));
+                sqliteCommand.Parameters.Add(new SqliteParameter("@snapShot", Serialize(snapShot)));
+                sqliteCommand.Parameters.Add(new SqliteParameter("@version", snapShot.Version));
 
-                using (var sqliteTransaction = sqliteConnection.BeginTransaction())
-                {
-                    try
-                    {
-                        using (var sqliteCommand = new SqliteCommand(commandText, sqliteTransaction.Connection, sqliteTransaction))
-                        {
-                            sqliteCommand.Parameters.Add(new SqliteParameter("@eventProviderId", snapShot.EventProviderId));
-                            sqliteCommand.Parameters.Add(new SqliteParameter("@snapShot", Serialize(snapShot)));
-                            sqliteCommand.Parameters.Add(new SqliteParameter("@version", snapShot.Version));
-
-                            sqliteCommand.ExecuteNonQuery();
-                        }
-                        sqliteTransaction.Commit();
-                    }
-                    catch (Exception)
-                    {
-                        sqliteTransaction.Rollback();
-                        throw;
-                    }
-                }
+                sqliteCommand.ExecuteNonQuery();
+                sqliteTransaction.Commit();
+            }
+            catch (Exception)
+            {
+                sqliteTransaction.Rollback();
+                throw;
             }
         }
 
         private static void UpdateEventProviderVersion(IEventProvider<TDomainEvent> eventProvider, SqliteTransaction transaction)
         {
             const string commandText = "UPDATE EventProviders SET Version = @version WHERE EventProviderId = @eventProviderId;";
-            using (var sqLiteCommand = new SqliteCommand(commandText, transaction.Connection, transaction))
-            {
-                sqLiteCommand.Parameters.Add(new SqliteParameter("@eventProviderId", eventProvider.Id));
-                sqLiteCommand.Parameters.Add(new SqliteParameter("@version", eventProvider.Version));
+            using var sqLiteCommand = new SqliteCommand(commandText, transaction.Connection, transaction);
+            sqLiteCommand.Parameters.Add(new SqliteParameter("@eventProviderId", eventProvider.Id));
+            sqLiteCommand.Parameters.Add(new SqliteParameter("@version", eventProvider.Version));
 
-                sqLiteCommand.ExecuteNonQuery();
-            }
+            sqLiteCommand.ExecuteNonQuery();
         }
 
         private static int GetEventProviderVersion(IEventProvider<TDomainEvent> eventProvider, SqliteTransaction transaction)
@@ -280,31 +242,25 @@ namespace Fohjin.DDD.EventStore.SQLite
             const string commandText = @"
                 INSERT OR IGNORE INTO EventProviders VALUES (@eventProviderId, @type, 0);
                 SELECT Version FROM EventProviders WHERE EventProviderId = @eventProviderId";
-            using (var sqLiteCommand = new SqliteCommand(commandText, transaction.Connection, transaction))
-            {
-                sqLiteCommand.Parameters.Add(new SqliteParameter("@eventProviderId", eventProvider.Id));
-                sqLiteCommand.Parameters.Add(new SqliteParameter("@type", eventProvider.GetType().FullName));
-                sqLiteCommand.Parameters.Add(new SqliteParameter("@version", eventProvider.Version));
+            using var sqLiteCommand = new SqliteCommand(commandText, transaction.Connection, transaction);
+            sqLiteCommand.Parameters.Add(new SqliteParameter("@eventProviderId", eventProvider.Id));
+            sqLiteCommand.Parameters.Add(new SqliteParameter("@type", eventProvider.GetType().FullName));
+            sqLiteCommand.Parameters.Add(new SqliteParameter("@version", eventProvider.Version));
 
-                return Convert.ToInt32(sqLiteCommand.ExecuteScalar());
-            }
+            return Convert.ToInt32(sqLiteCommand.ExecuteScalar());
         }
 
         private byte[] Serialize<T>(T theObject)
         {
-            using (var memoryStream = new MemoryStream())
-            {
-                _formatter.Serialize(memoryStream, theObject);
-                return memoryStream.ToArray();
-            }
+            using var memoryStream = new MemoryStream();
+            _formatter.Serialize(memoryStream, theObject);
+            return memoryStream.ToArray();
         }
 
         private TType Deserialize<TType>(byte[] bytes)
         {
-            using (var memoryStream = new MemoryStream(bytes))
-            {
-                return _formatter.Deserialize<TType>(memoryStream);
-            }
+            using var memoryStream = new MemoryStream(bytes);
+            return _formatter.Deserialize<TType>(memoryStream);
         }
     }
 }

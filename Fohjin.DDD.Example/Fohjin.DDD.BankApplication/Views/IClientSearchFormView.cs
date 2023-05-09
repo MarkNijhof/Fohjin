@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Fohjin.DDD.Reporting.Dtos;
 
 namespace Fohjin.DDD.BankApplication.Views

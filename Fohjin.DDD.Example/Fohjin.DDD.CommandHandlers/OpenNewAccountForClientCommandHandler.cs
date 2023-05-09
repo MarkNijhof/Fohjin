@@ -7,7 +7,7 @@ namespace Fohjin.DDD.CommandHandlers
 {
     public class OpenNewAccountForClientCommandHandler : ICommandHandler<OpenNewAccountForClientCommand>
     {
-        private readonly IDomainRepository<IDomainEvent> _repository; 
+        private readonly IDomainRepository<IDomainEvent> _repository;
         private readonly ISystemHash _systemHash;
 
         public OpenNewAccountForClientCommandHandler(

@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Fohjin.DDD.Bus;
 using Fohjin.DDD.Commands;
 using Fohjin.DDD.Common;
@@ -21,7 +18,7 @@ namespace Fohjin.DDD.Services
         private readonly ISystemRandom _systemRandom;
 
         public MoneyTransferService(
-            IBus bus, 
+            IBus bus,
             IReportingRepository reportingRepository,
             IReceiveMoneyTransfers receiveMoneyTransfers,
             ISystemTimer systemTimer,
@@ -58,9 +55,9 @@ namespace Fohjin.DDD.Services
             try
             {
                 // I didn't want to introduce an actual external bank, so that's why you see this nice construct :)
-                _moneyTransferOptions[_systemRandom.Next(start:0, end: 9)](moneyTransfer);
+                _moneyTransferOptions[_systemRandom.Next(start: 0, end: 9)](moneyTransfer);
             }
-            catch(Exception)
+            catch (Exception)
             {
                 CompensatingActionBecauseOfFailedMoneyTransfer(moneyTransfer);
             }

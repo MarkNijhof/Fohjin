@@ -1,5 +1,3 @@
-using System;
-
 namespace Fohjin.DDD.Domain.Account
 {
     public class ClosedAccountException : Exception

@@ -1,4 +1,3 @@
-using System;
 using Fohjin.DDD.BankApplication.Views;
 
 namespace Fohjin.DDD.BankApplication.Presenters
