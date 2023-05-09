@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using Fohjin.DDD.Domain.Account;
 using Fohjin.DDD.EventStore.Storage.Memento;
 

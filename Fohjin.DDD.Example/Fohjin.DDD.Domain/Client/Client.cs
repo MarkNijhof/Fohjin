@@ -1,6 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using Fohjin.DDD.Common;
 using Fohjin.DDD.Domain.Account;
 using Fohjin.DDD.Domain.Mementos;
 using Fohjin.DDD.Events.Client;
@@ -16,24 +14,26 @@ namespace Fohjin.DDD.Domain.Client
         private Address _address;
         private ClientName _clientName;
         private readonly List<Guid> _accounts;
+        private readonly ISystemDateTime _systemDateTime;
         private readonly EntityList<BankCard, IDomainEvent> _bankCards;
 
-        public Client()
+        public Client(ISystemDateTime systemDateTime)
         {
+            _systemDateTime = systemDateTime;
             _accounts = new List<Guid>();
             _bankCards = new EntityList<BankCard, IDomainEvent>(this);
 
             registerEvents();
         }
 
-        private Client(ClientName clientName, Address address, PhoneNumber phoneNumber) : this()
+        private Client(ISystemDateTime systemDateTime, ClientName clientName, Address address, PhoneNumber phoneNumber) : this(systemDateTime)
         {
             Apply(new ClientCreatedEvent(Guid.NewGuid(), clientName.Name, address.Street, address.StreetNumber, address.PostalCode, address.City, phoneNumber.Number));
         }
 
-        public static Client CreateNew(ClientName clientName, Address address, PhoneNumber phoneNumber)
+        public static Client CreateNew(ISystemDateTime systemDateTime, ClientName clientName, Address address, PhoneNumber phoneNumber)
         {
-            return new Client(clientName, address, phoneNumber);
+            return new Client(systemDateTime, clientName, address, phoneNumber);
         }
 
         public void UpdatePhoneNumber(PhoneNumber phoneNumber)
@@ -61,7 +61,7 @@ namespace Fohjin.DDD.Domain.Client
         {
             IsClientCreated();
 
-            var activeAccount = ActiveAccount.CreateNew(Id, accountName);
+            var activeAccount = ActiveAccount.CreateNew(_systemDateTime, Id, accountName);
 
             Apply(new AccountToClientAssignedEvent(activeAccount.Id));
 

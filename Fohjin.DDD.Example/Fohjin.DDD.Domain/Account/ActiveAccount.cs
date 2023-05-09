@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Fohjin.DDD.Common;
 using Fohjin.DDD.Domain.Mementos;
 using Fohjin.DDD.Events.Account;
 using Fohjin.DDD.EventStore;
@@ -11,15 +12,19 @@ namespace Fohjin.DDD.Domain.Account
 {
     public class ActiveAccount : BaseAggregateRoot<IDomainEvent>, IOrginator
     {
+        private readonly ISystemDateTime _systemDateTime;
+        private readonly List<Ledger> _ledgers;
+
         private Guid _clientId;
         private AccountName _accountName;
         private AccountNumber _accountNumber;
         private Balance _balance;
-        private readonly List<Ledger> _ledgers;
         private bool _closed;
 
-        public ActiveAccount()
+        public ActiveAccount(ISystemDateTime systemDateTime)
         {
+            _systemDateTime = systemDateTime;
+
             Id = Guid.Empty;
             Version = 0;
             EventVersion = 0;
@@ -32,16 +37,14 @@ namespace Fohjin.DDD.Domain.Account
             registerEvents();
         }
 
-        private ActiveAccount(Guid clientId, string accountName) : this()
+        private ActiveAccount(ISystemDateTime systemDateTime, Guid clientId, string accountName) : this(systemDateTime)
         {
-            var accountNumber = SystemDateTime.Now().Ticks.ToString();
+            var accountNumber = _systemDateTime.Now().Ticks.ToString();
             Apply(new AccountOpenedEvent(Guid.NewGuid(), clientId, accountName, accountNumber));
         }
 
-        public static ActiveAccount CreateNew(Guid clientId, string accountName)
-        {
-            return new ActiveAccount(clientId, accountName);
-        }
+        public static ActiveAccount CreateNew(ISystemDateTime systemDateTime, Guid clientId, string accountName) =>
+            new ActiveAccount(systemDateTime, clientId, accountName);
 
         public void ChangeAccountName(AccountName accountName)
         {
@@ -147,7 +150,7 @@ namespace Fohjin.DDD.Domain.Account
 
         void IOrginator.SetMemento(IMemento memento)
         {
-            var activeAccountMemento = (ActiveAccountMemento) memento;
+            var activeAccountMemento = (ActiveAccountMemento)memento;
             Id = activeAccountMemento.Id;
             Version = activeAccountMemento.Version;
             _clientId = activeAccountMemento.ClientId;
