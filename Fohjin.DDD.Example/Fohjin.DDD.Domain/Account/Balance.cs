@@ -14,17 +14,17 @@ namespace Fohjin.DDD.Domain.Account
             _amount = new Amount(decimalAmount);
         }
 
-        public Balance Withdrawl(Amount amount)
+        public Balance Withdrawal(Amount amount)
         {
             return new Balance(_amount.Substract(amount));
         }
 
-        public Balance Deposite(Amount amount)
+        public Balance Deposit(Amount amount)
         {
             return new Balance(_amount.Add(amount));
         }
         
-        public bool WithdrawlWillResultInNegativeBalance(Amount amount)
+        public bool WithdrawalWillResultInNegativeBalance(Amount amount)
         {
             return new Amount(_amount).Substract(amount).IsNegative();
         }

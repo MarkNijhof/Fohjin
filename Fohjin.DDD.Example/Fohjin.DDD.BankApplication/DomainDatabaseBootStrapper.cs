@@ -35,7 +35,7 @@ namespace Fohjin.DDD.BankApplication
             {
                 using (DbCommand sqLiteCommand = sqLiteConnection.CreateCommand())
                 {
-                    const string eventprovidersTables = @"
+                    const string eventProvidersTables = @"
                         CREATE TABLE EventProviders
                         (
                             [EventProviderId] [uniqueidentifier] primary key,
@@ -43,7 +43,7 @@ namespace Fohjin.DDD.BankApplication
                             [Version] [int] not null
                         );
                         ";
-                    sqLiteCommand.CommandText = eventprovidersTables;
+                    sqLiteCommand.CommandText = eventProvidersTables;
                     sqLiteCommand.ExecuteNonQuery();
 
                     const string eventsTables = @"

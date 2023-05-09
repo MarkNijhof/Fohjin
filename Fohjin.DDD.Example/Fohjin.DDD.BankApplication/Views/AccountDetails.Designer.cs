@@ -36,7 +36,7 @@ namespace Fohjin.DDD.BankApplication.Views
             this.closeAccountToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.transferToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.makeCashMutationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.makeCashWithdrawlToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.makeCashWithdrawalToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.transferMoneyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this._detailsTab = new System.Windows.Forms.TabPage();
@@ -49,16 +49,16 @@ namespace Fohjin.DDD.BankApplication.Views
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
-            this._depositeTab = new System.Windows.Forms.TabPage();
+            this._depositTab = new System.Windows.Forms.TabPage();
             this._phoneNumberGroupBox = new System.Windows.Forms.GroupBox();
-            this._depositeAmount = new System.Windows.Forms.TextBox();
-            this._depositeCancelButton = new System.Windows.Forms.Button();
-            this._depositeButton = new System.Windows.Forms.Button();
-            this._withdrawlTab = new System.Windows.Forms.TabPage();
+            this._depositAmount = new System.Windows.Forms.TextBox();
+            this._depositCancelButton = new System.Windows.Forms.Button();
+            this._depositButton = new System.Windows.Forms.Button();
+            this._withdrawalTab = new System.Windows.Forms.TabPage();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
-            this._withdrawlAmount = new System.Windows.Forms.TextBox();
-            this._withdrawlCancelButton = new System.Windows.Forms.Button();
-            this._withdrawlButton = new System.Windows.Forms.Button();
+            this._withdrawalAmount = new System.Windows.Forms.TextBox();
+            this._withdrawalCancelButton = new System.Windows.Forms.Button();
+            this._withdrawalButton = new System.Windows.Forms.Button();
             this._transferTab = new System.Windows.Forms.TabPage();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this._transferAccounts = new System.Windows.Forms.ComboBox();
@@ -77,9 +77,9 @@ namespace Fohjin.DDD.BankApplication.Views
             this._detailsTab.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox4.SuspendLayout();
-            this._depositeTab.SuspendLayout();
+            this._depositTab.SuspendLayout();
             this._phoneNumberGroupBox.SuspendLayout();
-            this._withdrawlTab.SuspendLayout();
+            this._withdrawalTab.SuspendLayout();
             this.groupBox6.SuspendLayout();
             this._transferTab.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -124,7 +124,7 @@ namespace Fohjin.DDD.BankApplication.Views
             // 
             this.transferToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.makeCashMutationToolStripMenuItem,
-            this.makeCashWithdrawlToolStripMenuItem,
+            this.makeCashWithdrawalToolStripMenuItem,
             this.transferMoneyToolStripMenuItem});
             this.transferToolStripMenuItem.Name = "transferToolStripMenuItem";
             this.transferToolStripMenuItem.Size = new System.Drawing.Size(62, 20);
@@ -135,14 +135,14 @@ namespace Fohjin.DDD.BankApplication.Views
             this.makeCashMutationToolStripMenuItem.Name = "makeCashMutationToolStripMenuItem";
             this.makeCashMutationToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D)));
             this.makeCashMutationToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
-            this.makeCashMutationToolStripMenuItem.Text = "Make cash deposite";
+            this.makeCashMutationToolStripMenuItem.Text = "Make cash deposit";
             // 
-            // makeCashWithdrawlToolStripMenuItem
+            // makeCashWithdrawalToolStripMenuItem
             // 
-            this.makeCashWithdrawlToolStripMenuItem.Name = "makeCashWithdrawlToolStripMenuItem";
-            this.makeCashWithdrawlToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.W)));
-            this.makeCashWithdrawlToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
-            this.makeCashWithdrawlToolStripMenuItem.Text = "Make cash withdrawl";
+            this.makeCashWithdrawalToolStripMenuItem.Name = "makeCashWithdrawalToolStripMenuItem";
+            this.makeCashWithdrawalToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.W)));
+            this.makeCashWithdrawalToolStripMenuItem.Size = new System.Drawing.Size(226, 22);
+            this.makeCashWithdrawalToolStripMenuItem.Text = "Make cash withdrawal";
             // 
             // transferMoneyToolStripMenuItem
             // 
@@ -154,8 +154,8 @@ namespace Fohjin.DDD.BankApplication.Views
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this._detailsTab);
-            this.tabControl1.Controls.Add(this._depositeTab);
-            this.tabControl1.Controls.Add(this._withdrawlTab);
+            this.tabControl1.Controls.Add(this._depositTab);
+            this.tabControl1.Controls.Add(this._withdrawalTab);
             this.tabControl1.Controls.Add(this._transferTab);
             this.tabControl1.Controls.Add(this._nameChangeTab);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -267,110 +267,110 @@ namespace Fohjin.DDD.BankApplication.Views
             this.label8.TabIndex = 0;
             this.label8.Text = "Name:";
             // 
-            // _depositeTab
+            // _depositTab
             // 
-            this._depositeTab.Controls.Add(this._phoneNumberGroupBox);
-            this._depositeTab.Controls.Add(this._depositeCancelButton);
-            this._depositeTab.Controls.Add(this._depositeButton);
-            this._depositeTab.Location = new System.Drawing.Point(4, 22);
-            this._depositeTab.Name = "_depositeTab";
-            this._depositeTab.Padding = new System.Windows.Forms.Padding(3);
-            this._depositeTab.Size = new System.Drawing.Size(298, 228);
-            this._depositeTab.TabIndex = 1;
-            this._depositeTab.Text = "tabPage2";
-            this._depositeTab.UseVisualStyleBackColor = true;
+            this._depositTab.Controls.Add(this._phoneNumberGroupBox);
+            this._depositTab.Controls.Add(this._depositCancelButton);
+            this._depositTab.Controls.Add(this._depositButton);
+            this._depositTab.Location = new System.Drawing.Point(4, 22);
+            this._depositTab.Name = "_depositTab";
+            this._depositTab.Padding = new System.Windows.Forms.Padding(3);
+            this._depositTab.Size = new System.Drawing.Size(298, 228);
+            this._depositTab.TabIndex = 1;
+            this._depositTab.Text = "tabPage2";
+            this._depositTab.UseVisualStyleBackColor = true;
             // 
             // _phoneNumberGroupBox
             // 
-            this._phoneNumberGroupBox.Controls.Add(this._depositeAmount);
+            this._phoneNumberGroupBox.Controls.Add(this._depositAmount);
             this._phoneNumberGroupBox.Location = new System.Drawing.Point(3, 3);
             this._phoneNumberGroupBox.Name = "_phoneNumberGroupBox";
             this._phoneNumberGroupBox.Size = new System.Drawing.Size(285, 49);
             this._phoneNumberGroupBox.TabIndex = 19;
             this._phoneNumberGroupBox.TabStop = false;
-            this._phoneNumberGroupBox.Text = "Specify the amount to be deposite";
+            this._phoneNumberGroupBox.Text = "Specify the amount to be deposit";
             // 
-            // _depositeAmount
+            // _depositAmount
             // 
-            this._depositeAmount.Location = new System.Drawing.Point(6, 19);
-            this._depositeAmount.Name = "_depositeAmount";
-            this._depositeAmount.Size = new System.Drawing.Size(273, 20);
-            this._depositeAmount.TabIndex = 0;
-            this._depositeAmount.Text = "0";
-            this._depositeAmount.TextChanged += new System.EventHandler(this._depositAmount_TextChanged);
-            this._depositeAmount.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this._amount_KeyPress);
+            this._depositAmount.Location = new System.Drawing.Point(6, 19);
+            this._depositAmount.Name = "_depositAmount";
+            this._depositAmount.Size = new System.Drawing.Size(273, 20);
+            this._depositAmount.TabIndex = 0;
+            this._depositAmount.Text = "0";
+            this._depositAmount.TextChanged += new System.EventHandler(this._depositAmount_TextChanged);
+            this._depositAmount.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this._amount_KeyPress);
             // 
-            // _depositeCancelButton
+            // _depositCancelButton
             // 
-            this._depositeCancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this._depositeCancelButton.Location = new System.Drawing.Point(142, 205);
-            this._depositeCancelButton.Name = "_depositeCancelButton";
-            this._depositeCancelButton.Size = new System.Drawing.Size(75, 23);
-            this._depositeCancelButton.TabIndex = 2;
-            this._depositeCancelButton.Text = "Cancel";
-            this._depositeCancelButton.UseVisualStyleBackColor = true;
+            this._depositCancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this._depositCancelButton.Location = new System.Drawing.Point(142, 205);
+            this._depositCancelButton.Name = "_depositCancelButton";
+            this._depositCancelButton.Size = new System.Drawing.Size(75, 23);
+            this._depositCancelButton.TabIndex = 2;
+            this._depositCancelButton.Text = "Cancel";
+            this._depositCancelButton.UseVisualStyleBackColor = true;
             // 
-            // _depositeButton
+            // _depositButton
             // 
-            this._depositeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this._depositeButton.Location = new System.Drawing.Point(223, 205);
-            this._depositeButton.Name = "_depositeButton";
-            this._depositeButton.Size = new System.Drawing.Size(75, 23);
-            this._depositeButton.TabIndex = 1;
-            this._depositeButton.Text = "Deposite";
-            this._depositeButton.UseVisualStyleBackColor = true;
+            this._depositButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this._depositButton.Location = new System.Drawing.Point(223, 205);
+            this._depositButton.Name = "_depositButton";
+            this._depositButton.Size = new System.Drawing.Size(75, 23);
+            this._depositButton.TabIndex = 1;
+            this._depositButton.Text = "Deposit";
+            this._depositButton.UseVisualStyleBackColor = true;
             // 
-            // _withdrawlTab
+            // _withdrawalTab
             // 
-            this._withdrawlTab.Controls.Add(this.groupBox6);
-            this._withdrawlTab.Controls.Add(this._withdrawlCancelButton);
-            this._withdrawlTab.Controls.Add(this._withdrawlButton);
-            this._withdrawlTab.Location = new System.Drawing.Point(4, 22);
-            this._withdrawlTab.Name = "_withdrawlTab";
-            this._withdrawlTab.Size = new System.Drawing.Size(298, 228);
-            this._withdrawlTab.TabIndex = 2;
-            this._withdrawlTab.Text = "tabPage3";
-            this._withdrawlTab.UseVisualStyleBackColor = true;
+            this._withdrawalTab.Controls.Add(this.groupBox6);
+            this._withdrawalTab.Controls.Add(this._withdrawalCancelButton);
+            this._withdrawalTab.Controls.Add(this._withdrawalButton);
+            this._withdrawalTab.Location = new System.Drawing.Point(4, 22);
+            this._withdrawalTab.Name = "_withdrawalTab";
+            this._withdrawalTab.Size = new System.Drawing.Size(298, 228);
+            this._withdrawalTab.TabIndex = 2;
+            this._withdrawalTab.Text = "tabPage3";
+            this._withdrawalTab.UseVisualStyleBackColor = true;
             // 
             // groupBox6
             // 
-            this.groupBox6.Controls.Add(this._withdrawlAmount);
+            this.groupBox6.Controls.Add(this._withdrawalAmount);
             this.groupBox6.Location = new System.Drawing.Point(3, 3);
             this.groupBox6.Name = "groupBox6";
             this.groupBox6.Size = new System.Drawing.Size(285, 49);
             this.groupBox6.TabIndex = 19;
             this.groupBox6.TabStop = false;
-            this.groupBox6.Text = "Specify the amount to withdrawl";
+            this.groupBox6.Text = "Specify the amount to withdrawal";
             // 
-            // _withdrawlAmount
+            // _withdrawalAmount
             // 
-            this._withdrawlAmount.Location = new System.Drawing.Point(6, 19);
-            this._withdrawlAmount.Name = "_withdrawlAmount";
-            this._withdrawlAmount.Size = new System.Drawing.Size(273, 20);
-            this._withdrawlAmount.TabIndex = 0;
-            this._withdrawlAmount.Text = "0";
-            this._withdrawlAmount.TextChanged += new System.EventHandler(this._depositAmount_TextChanged);
-            this._withdrawlAmount.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this._amount_KeyPress);
+            this._withdrawalAmount.Location = new System.Drawing.Point(6, 19);
+            this._withdrawalAmount.Name = "_withdrawalAmount";
+            this._withdrawalAmount.Size = new System.Drawing.Size(273, 20);
+            this._withdrawalAmount.TabIndex = 0;
+            this._withdrawalAmount.Text = "0";
+            this._withdrawalAmount.TextChanged += new System.EventHandler(this._depositAmount_TextChanged);
+            this._withdrawalAmount.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this._amount_KeyPress);
             // 
-            // _withdrawlCancelButton
+            // _withdrawalCancelButton
             // 
-            this._withdrawlCancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this._withdrawlCancelButton.Location = new System.Drawing.Point(142, 205);
-            this._withdrawlCancelButton.Name = "_withdrawlCancelButton";
-            this._withdrawlCancelButton.Size = new System.Drawing.Size(75, 23);
-            this._withdrawlCancelButton.TabIndex = 2;
-            this._withdrawlCancelButton.Text = "Cancel";
-            this._withdrawlCancelButton.UseVisualStyleBackColor = true;
+            this._withdrawalCancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this._withdrawalCancelButton.Location = new System.Drawing.Point(142, 205);
+            this._withdrawalCancelButton.Name = "_withdrawalCancelButton";
+            this._withdrawalCancelButton.Size = new System.Drawing.Size(75, 23);
+            this._withdrawalCancelButton.TabIndex = 2;
+            this._withdrawalCancelButton.Text = "Cancel";
+            this._withdrawalCancelButton.UseVisualStyleBackColor = true;
             // 
-            // _withdrawlButton
+            // _withdrawalButton
             // 
-            this._withdrawlButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this._withdrawlButton.Location = new System.Drawing.Point(223, 205);
-            this._withdrawlButton.Name = "_withdrawlButton";
-            this._withdrawlButton.Size = new System.Drawing.Size(75, 23);
-            this._withdrawlButton.TabIndex = 1;
-            this._withdrawlButton.Text = "Withdrawl";
-            this._withdrawlButton.UseVisualStyleBackColor = true;
+            this._withdrawalButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this._withdrawalButton.Location = new System.Drawing.Point(223, 205);
+            this._withdrawalButton.Name = "_withdrawalButton";
+            this._withdrawalButton.Size = new System.Drawing.Size(75, 23);
+            this._withdrawalButton.TabIndex = 1;
+            this._withdrawalButton.Text = "Withdrawal";
+            this._withdrawalButton.UseVisualStyleBackColor = true;
             // 
             // _transferTab
             // 
@@ -432,7 +432,7 @@ namespace Fohjin.DDD.BankApplication.Views
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(120, 13);
             this.label13.TabIndex = 8;
-            this.label13.Text = "Amount to be transfered";
+            this.label13.Text = "Amount to be transferred";
             // 
             // _transferCancelButton
             // 
@@ -523,10 +523,10 @@ namespace Fohjin.DDD.BankApplication.Views
             this.groupBox5.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
-            this._depositeTab.ResumeLayout(false);
+            this._depositTab.ResumeLayout(false);
             this._phoneNumberGroupBox.ResumeLayout(false);
             this._phoneNumberGroupBox.PerformLayout();
-            this._withdrawlTab.ResumeLayout(false);
+            this._withdrawalTab.ResumeLayout(false);
             this.groupBox6.ResumeLayout(false);
             this.groupBox6.PerformLayout();
             this._transferTab.ResumeLayout(false);
@@ -558,29 +558,29 @@ namespace Fohjin.DDD.BankApplication.Views
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.ToolStripMenuItem makeCashWithdrawlToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem makeCashWithdrawalToolStripMenuItem;
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.ListBox _ledgers;
-        private System.Windows.Forms.TabPage _withdrawlTab;
+        private System.Windows.Forms.TabPage _withdrawalTab;
         private System.Windows.Forms.TabPage _transferTab;
         private System.Windows.Forms.TabPage _nameChangeTab;
-        private System.Windows.Forms.Button _withdrawlCancelButton;
-        private System.Windows.Forms.Button _withdrawlButton;
+        private System.Windows.Forms.Button _withdrawalCancelButton;
+        private System.Windows.Forms.Button _withdrawalButton;
         private System.Windows.Forms.Button _transferCancelButton;
         private System.Windows.Forms.Button _transferButton;
         private System.Windows.Forms.Button _newAccountNameCancelButton;
         private System.Windows.Forms.Button _newAccountNameSaveButton;
-        private System.Windows.Forms.TabPage _depositeTab;
-        private System.Windows.Forms.Button _depositeCancelButton;
-        private System.Windows.Forms.Button _depositeButton;
+        private System.Windows.Forms.TabPage _depositTab;
+        private System.Windows.Forms.Button _depositCancelButton;
+        private System.Windows.Forms.Button _depositButton;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.TextBox _transferAmount;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.GroupBox _phoneNumberGroupBox;
-        private System.Windows.Forms.TextBox _depositeAmount;
+        private System.Windows.Forms.TextBox _depositAmount;
         private System.Windows.Forms.GroupBox groupBox6;
-        private System.Windows.Forms.TextBox _withdrawlAmount;
+        private System.Windows.Forms.TextBox _withdrawalAmount;
         private System.Windows.Forms.GroupBox groupBox7;
         private System.Windows.Forms.TextBox _accountName;
         private System.Windows.Forms.ComboBox _transferAccounts;

@@ -14,7 +14,7 @@ namespace Fohjin.DDD.Commands
             service.AddTransient<ICommand, ClientIsMovingCommand>();
             service.AddTransient<ICommand, CloseAccountCommand>();
             service.AddTransient<ICommand, CreateClientCommand>();
-            service.AddTransient<ICommand, DepositeCashCommand>();
+            service.AddTransient<ICommand, DepositCashCommand>();
             service.AddTransient<ICommand, MoneyTransferFailedCompensatingCommand>();
             service.AddTransient<ICommand, OpenNewAccountForClientCommand>();
             service.AddTransient<ICommand, ReceiveMoneyTransferCommand>();

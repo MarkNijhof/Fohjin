@@ -1,7 +1,6 @@
 namespace Fohjin.DDD.Commands
 {
-    [Serializable]
-    public class WithdrawalCashCommand : Command
+    public record WithdrawalCashCommand : Command
     {
         public decimal Amount { get; init; }
 

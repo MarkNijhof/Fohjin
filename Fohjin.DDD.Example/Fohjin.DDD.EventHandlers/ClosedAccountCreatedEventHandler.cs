@@ -33,10 +33,10 @@ namespace Fohjin.DDD.EventHandlers
         private static string GetDescription(string transferType, string accountNumber)
         {
             if (transferType == "CreditMutation")
-                return "Deposite";
+                return "Deposit";
 
             if (transferType == "DebitMutation")
-                return "Withdrawl";
+                return "Withdrawal";
 
             if (transferType == "CreditTransfer")
                 return string.Format("Transfer to {0}", accountNumber);

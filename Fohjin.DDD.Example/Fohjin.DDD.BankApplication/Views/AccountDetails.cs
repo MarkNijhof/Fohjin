@@ -34,12 +34,12 @@ namespace Fohjin.DDD.BankApplication.Views
             changeAccountNameToolStripMenuItem.Click += (s, e) => OnInitiateAccountNameChange();
             closeAccountToolStripMenuItem.Click += (s, e) => OnCloseTheAccount();
             makeCashMutationToolStripMenuItem.Click += (s, e) => OnInitiateMoneyDeposit();
-            makeCashWithdrawlToolStripMenuItem.Click += (s, e) => OnInitiateMoneyWithdrawal();
+            makeCashWithdrawalToolStripMenuItem.Click += (s, e) => OnInitiateMoneyWithdrawal();
             transferMoneyToolStripMenuItem.Click += (s, e) => OnInitiateMoneyTransfer();
-            _depositeCancelButton.Click += (s, e) => OnCancel();
-            _depositeButton.Click += (s, e) => OnDepositMoney();
-            _withdrawlCancelButton.Click += (s, e) => OnCancel();
-            _withdrawlButton.Click += (s, e) => OnWithdrawalMoney();
+            _depositCancelButton.Click += (s, e) => OnCancel();
+            _depositButton.Click += (s, e) => OnDepositMoney();
+            _withdrawalCancelButton.Click += (s, e) => OnCancel();
+            _withdrawalButton.Click += (s, e) => OnWithdrawalMoney();
             _transferCancelButton.Click += (s, e) => OnCancel();
             _transferButton.Click += (s, e) => OnTransferMoney();
             _newAccountNameCancelButton.Click += (s, e) => OnCancel();
@@ -76,13 +76,13 @@ namespace Fohjin.DDD.BankApplication.Views
         public void EnableDepositPanel()
         {
             tabControl1.SelectedIndex = 1;
-            _depositeAmount.Focus();
+            _depositAmount.Focus();
         }
 
         public void EnableWithdrawalPanel()
         {
             tabControl1.SelectedIndex = 2;
-            _withdrawlAmount.Focus();
+            _withdrawalAmount.Focus();
         }
 
         public void EnableTransferPanel()
@@ -99,16 +99,16 @@ namespace Fohjin.DDD.BankApplication.Views
 
         public void EnableSaveButton()
         {
-            _depositeButton.Enabled = true;
-            _withdrawlButton.Enabled = true;
+            _depositButton.Enabled = true;
+            _withdrawalButton.Enabled = true;
             _transferButton.Enabled = true;
             _newAccountNameSaveButton.Enabled = true;
         }
 
         public void DisableSaveButton()
         {
-            _depositeButton.Enabled = false;
-            _withdrawlButton.Enabled = false;
+            _depositButton.Enabled = false;
+            _withdrawalButton.Enabled = false;
             _transferButton.Enabled = false;
             _newAccountNameSaveButton.Enabled = false;
         }
@@ -117,7 +117,7 @@ namespace Fohjin.DDD.BankApplication.Views
         {
             changeAccountNameToolStripMenuItem.Enabled = true;
             closeAccountToolStripMenuItem.Enabled = true;
-            makeCashWithdrawlToolStripMenuItem.Enabled = true;
+            makeCashWithdrawalToolStripMenuItem.Enabled = true;
             makeCashMutationToolStripMenuItem.Enabled = true;
             transferMoneyToolStripMenuItem.Enabled = true;
         }
@@ -126,7 +126,7 @@ namespace Fohjin.DDD.BankApplication.Views
         {
             changeAccountNameToolStripMenuItem.Enabled = false;
             closeAccountToolStripMenuItem.Enabled = false;
-            makeCashWithdrawlToolStripMenuItem.Enabled = false;
+            makeCashWithdrawalToolStripMenuItem.Enabled = false;
             makeCashMutationToolStripMenuItem.Enabled = false;
             transferMoneyToolStripMenuItem.Enabled = false;
         }
@@ -138,14 +138,14 @@ namespace Fohjin.DDD.BankApplication.Views
 
         public decimal DepositAmount
         {
-            get { return _depositeAmount.Text.Trim() == "," ? 0 : Convert.ToDecimal(_depositeAmount.Text.Trim()); }
-            set { _depositeAmount.Text = value.ToString(); }
+            get { return _depositAmount.Text.Trim() == "," ? 0 : Convert.ToDecimal(_depositAmount.Text.Trim()); }
+            set { _depositAmount.Text = value.ToString(); }
         }
 
         public decimal WithdrawalAmount
         {
-            get { return _withdrawlAmount.Text.Trim() == "," ? 0 : Convert.ToDecimal(_withdrawlAmount.Text.Trim()); }
-            set { _withdrawlAmount.Text = value.ToString(); }
+            get { return _withdrawalAmount.Text.Trim() == "," ? 0 : Convert.ToDecimal(_withdrawalAmount.Text.Trim()); }
+            set { _withdrawalAmount.Text = value.ToString(); }
         }
 
         public decimal TransferAmount

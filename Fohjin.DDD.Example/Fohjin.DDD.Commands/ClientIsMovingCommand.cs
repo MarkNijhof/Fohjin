@@ -1,7 +1,6 @@
 namespace Fohjin.DDD.Commands
 {
-    [Serializable]
-    public class ClientIsMovingCommand : Command
+    public record ClientIsMovingCommand : Command
     {
         public string Street { get; init; }
         public string StreetNumber { get; init; }

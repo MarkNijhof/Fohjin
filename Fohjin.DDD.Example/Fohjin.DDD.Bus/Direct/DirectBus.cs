@@ -3,15 +3,13 @@ namespace Fohjin.DDD.Bus.Direct
     public class DirectBus : IBus
     {
         private readonly IRouteMessages _routeMessages;
-        private readonly object _lockObject = new object();
-        private readonly Queue<object> _preCommitQueue;
-        private readonly InMemoryQueue _postCommitQueue;
+        private readonly object _lockObject = new();
+        private readonly Queue<object> _preCommitQueue = new(32);
+        private readonly InMemoryQueue _postCommitQueue = new();
 
         public DirectBus(IRouteMessages routeMessages)
         {
             _routeMessages = routeMessages;
-            _preCommitQueue = new Queue<object>(32);
-            _postCommitQueue = new InMemoryQueue();
             _postCommitQueue.Pop(DoPublish);
         }
 

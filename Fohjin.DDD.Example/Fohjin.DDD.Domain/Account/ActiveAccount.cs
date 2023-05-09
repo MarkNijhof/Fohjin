@@ -40,7 +40,7 @@ namespace Fohjin.DDD.Domain.Account
         }
 
         public static ActiveAccount CreateNew(Guid clientId, string accountName, string accountNumber) =>
-            new ActiveAccount(clientId, accountName, accountNumber);
+            new (clientId, accountName, accountNumber);
 
         public void ChangeAccountName(AccountName accountName)
         {
@@ -60,31 +60,31 @@ namespace Fohjin.DDD.Domain.Account
             return closedAccount;
         }
 
-        public void Withdrawl(Amount amount)
+        public void Withdrawal(Amount amount)
         {
             Guard();
 
             IsBalanceHighEnough(amount);
 
-            var newBalance = _balance.Withdrawl(amount);
+            var newBalance = _balance.Withdrawal(amount);
 
             Apply(new CashWithdrawnEvent(newBalance, amount));
         }
 
-        public void Deposite(Amount amount)
+        public void Deposit(Amount amount)
         {
             Guard();
 
-            var newBalance = _balance.Deposite(amount);
+            var newBalance = _balance.Deposit(amount);
 
-            Apply(new CashDepositedEvent(newBalance, amount));
+            Apply(new CashDepositdEvent(newBalance, amount));
         }
 
         public void ReceiveTransferFrom(AccountNumber sourceAccountNumber, Amount amount)
         {
             Guard();
 
-            var newBalance = _balance.Deposite(amount);
+            var newBalance = _balance.Deposit(amount);
 
             Apply(new MoneyTransferReceivedEvent(newBalance, amount, sourceAccountNumber.Number, _accountNumber.Number));
         }
@@ -95,7 +95,7 @@ namespace Fohjin.DDD.Domain.Account
 
             IsBalanceHighEnough(amount);
 
-            var newBalance = _balance.Withdrawl(amount);
+            var newBalance = _balance.Withdrawal(amount);
 
             Apply(new MoneyTransferSendEvent(newBalance, amount, _accountNumber.Number, targetAccountNumber.Number));
         }
@@ -104,7 +104,7 @@ namespace Fohjin.DDD.Domain.Account
         {
             Guard();
 
-            var newBalance = _balance.Deposite(amount);
+            var newBalance = _balance.Deposit(amount);
 
             Apply(new MoneyTransferFailedEvent(newBalance, amount, accountNumber.Number));
         }
@@ -129,14 +129,14 @@ namespace Fohjin.DDD.Domain.Account
 
         private void IsBalanceHighEnough(Amount amount)
         {
-            if (_balance.WithdrawlWillResultInNegativeBalance(amount))
+            if (_balance.WithdrawalWillResultInNegativeBalance(amount))
                 throw new AccountBalanceToLowException(string.Format("The amount {0:C} is larger than your current balance {1:C}", (decimal)amount, (decimal)_balance));
         }
 
         private void IsAccountBalanceZero()
         {
             if (_balance != 0.0M)
-                throw new AccountBalanceNotZeroException(string.Format("The current balance is {0:C} this must first be transfered to an other account", (decimal)_balance));
+                throw new AccountBalanceNotZeroException(string.Format("The current balance is {0:C} this must first be transferred to an other account", (decimal)_balance));
         }
 
         IMemento IOrginator.CreateMemento()
@@ -179,8 +179,8 @@ namespace Fohjin.DDD.Domain.Account
         {
             RegisterEvent<AccountOpenedEvent>(onAccountCreated);
             RegisterEvent<AccountClosedEvent>(onAccountClosed);
-            RegisterEvent<CashWithdrawnEvent>(onWithdrawl);
-            RegisterEvent<CashDepositedEvent>(onDeposite);
+            RegisterEvent<CashWithdrawnEvent>(onWithdrawal);
+            RegisterEvent<CashDepositdEvent>(onDeposit);
             RegisterEvent<AccountNameChangedEvent>(onAccountNameGotChanged);
             RegisterEvent<MoneyTransferReceivedEvent>(onMoneyTransferedFromAnOtherAccount);
             RegisterEvent<MoneyTransferSendEvent>(onMoneyTransferedToAnOtherAccount);
@@ -223,16 +223,16 @@ namespace Fohjin.DDD.Domain.Account
             _closed = true;
         }
 
-        private void onWithdrawl(CashWithdrawnEvent cashWithdrawnEvent)
+        private void onWithdrawal(CashWithdrawnEvent cashWithdrawnEvent)
         {
             _ledgers.Add(new DebitMutation(cashWithdrawnEvent.Amount, new AccountNumber(string.Empty)));
             _balance = cashWithdrawnEvent.Balance;
         }
 
-        private void onDeposite(CashDepositedEvent cashDepositedEvent)
+        private void onDeposit(CashDepositdEvent cashDepositdEvent)
         {
-            _ledgers.Add(new CreditMutation(cashDepositedEvent.Amount, new AccountNumber(string.Empty)));
-            _balance = cashDepositedEvent.Balance;
+            _ledgers.Add(new CreditMutation(cashDepositdEvent.Amount, new AccountNumber(string.Empty)));
+            _balance = cashDepositdEvent.Balance;
         }
     }
 }

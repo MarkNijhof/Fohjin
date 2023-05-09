@@ -1,7 +1,6 @@
 namespace Fohjin.DDD.Commands
 {
-    [Serializable]
-    public class OpenNewAccountForClientCommand : Command
+    public record OpenNewAccountForClientCommand : Command
     {
         public string AccountName { get; init; }
 

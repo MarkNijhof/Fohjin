@@ -4,20 +4,20 @@ using Fohjin.DDD.EventStore;
 
 namespace Fohjin.DDD.CommandHandlers
 {
-    public class DepositeCashCommandHandler : ICommandHandler<DepositeCashCommand>
+    public class DepositCashCommandHandler : ICommandHandler<DepositCashCommand>
     {
         private readonly IDomainRepository<IDomainEvent> _repository;
 
-        public DepositeCashCommandHandler(IDomainRepository<IDomainEvent> repository)
+        public DepositCashCommandHandler(IDomainRepository<IDomainEvent> repository)
         {
             _repository = repository;
         }
 
-        public void Execute(DepositeCashCommand compensatingCommand)
+        public void Execute(DepositCashCommand compensatingCommand)
         {
             var activeAccount = _repository.GetById<ActiveAccount>(compensatingCommand.Id);
 
-            activeAccount.Deposite(new Amount(compensatingCommand.Amount));
+            activeAccount.Deposit(new Amount(compensatingCommand.Amount));
         }
     }
 }

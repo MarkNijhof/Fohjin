@@ -1,7 +1,6 @@
 namespace Fohjin.DDD.Commands
 {
-    [Serializable]
-    public class ChangeClientNameCommand : Command
+    public record ChangeClientNameCommand : Command
     {
         public string ClientName { get; init; }
 

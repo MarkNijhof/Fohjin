@@ -37,19 +37,17 @@ namespace Fohjin.DDD.Reporting.Infrastructure
             {
                 sqliteConnection.Open();
 
-                using (var sqliteTransaction = sqliteConnection.BeginTransaction())
+                using var sqliteTransaction = sqliteConnection.BeginTransaction();
+                try
                 {
-                    try
-                    {
-                        dtos = DoGetByExample<TDto>(sqliteTransaction, dtoType, example);
-                        GetChildren(sqliteTransaction, dtos, dtoType);
-                        sqliteTransaction.Commit();
-                    }
-                    catch (Exception)
-                    {
-                        sqliteTransaction.Rollback();
-                        throw;
-                    }
+                    dtos = DoGetByExample<TDto>(sqliteTransaction, dtoType, example);
+                    GetChildren(sqliteTransaction, dtos, dtoType);
+                    sqliteTransaction.Commit();
+                }
+                catch (Exception)
+                {
+                    sqliteTransaction.Rollback();
+                    throw;
                 }
             }
             return dtos;

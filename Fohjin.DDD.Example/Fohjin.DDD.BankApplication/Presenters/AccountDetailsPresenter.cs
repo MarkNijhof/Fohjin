@@ -83,7 +83,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
             _accountDetailsView.EnableMenuButtons();
         }
 
-        public void InitiateMoneyDeposite()
+        public void InitiateMoneyDeposit()
         {
             _editStep = 1;
             _accountDetailsView.DepositAmount = 0M;
@@ -91,7 +91,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
             _accountDetailsView.EnableDepositPanel();
         }
 
-        public void InitiateMoneyWithdrawl()
+        public void InitiateMoneyWithdrawal()
         {
             _editStep = 2;
             _accountDetailsView.WithdrawalAmount = 0M;
@@ -137,11 +137,11 @@ namespace Fohjin.DDD.BankApplication.Presenters
             });
         }
 
-        public void DepositeMoney()
+        public void DepositMoney()
         {
             _popupPresenter.CatchPossibleException(() =>
             {
-                _bus.Publish(new DepositeCashCommand(
+                _bus.Publish(new DepositCashCommand(
                                  _accountDetailsReport.Id,
                                  _accountDetailsView.DepositAmount));
 
@@ -216,8 +216,8 @@ namespace Fohjin.DDD.BankApplication.Presenters
         {
             return
                 AccountNameHasChanged() ||
-                DepositeAmountHasChanged() ||
-                WithdrawlAmountHasChanged() ||
+                DepositAmountHasChanged() ||
+                WithdrawalAmountHasChanged() ||
                 TransferAmountHasChanged();
         }
 
@@ -226,12 +226,12 @@ namespace Fohjin.DDD.BankApplication.Presenters
             return _accountDetailsView.TransferAmount > decimal.Zero;
         }
 
-        private bool WithdrawlAmountHasChanged()
+        private bool WithdrawalAmountHasChanged()
         {
             return _accountDetailsView.WithdrawalAmount > decimal.Zero;
         }
 
-        private bool DepositeAmountHasChanged()
+        private bool DepositAmountHasChanged()
         {
             return _accountDetailsView.DepositAmount > decimal.Zero;
         }

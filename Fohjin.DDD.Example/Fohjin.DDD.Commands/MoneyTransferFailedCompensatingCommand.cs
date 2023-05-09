@@ -1,7 +1,6 @@
 namespace Fohjin.DDD.Commands
 {
-    [Serializable]
-    public class MoneyTransferFailedCompensatingCommand : Command
+    public record MoneyTransferFailedCompensatingCommand : Command
     {
         public decimal Amount { get; init; }
         public string AccountNumber { get; init; }

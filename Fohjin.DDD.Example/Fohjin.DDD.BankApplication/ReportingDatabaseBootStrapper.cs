@@ -8,7 +8,7 @@ namespace Fohjin.DDD.BankApplication
     public class ReportingDatabaseBootStrapper
     {
         public const string dataBaseFile = "reportingDataBase.db3";
-        private readonly List<Type> _dtos = new List<Type>
+        private readonly List<Type> _dtos = new()
         {
             typeof(ClientReport),
             typeof(ClientDetailsReport),
@@ -18,12 +18,7 @@ namespace Fohjin.DDD.BankApplication
             typeof(ClosedAccountDetailsReport),
             typeof(LedgerReport),
         };
-        private readonly SqlCreateBuilder _sqlCreateBuilder = new SqlCreateBuilder();
-
-        public static void BootStrap()
-        {
-            new ReportingDatabaseBootStrapper().CreateDatabaseSchemaIfNeeded();
-        }
+        private readonly SqlCreateBuilder _sqlCreateBuilder = new ();
 
         public void ReCreateDatabaseSchema()
         {
