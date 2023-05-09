@@ -19,8 +19,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fohjin.DDD.Configuration", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fohjin.DDD.BankApplication", "Fohjin.DDD.BankApplication\Fohjin.DDD.BankApplication.csproj", "{672A4AB0-6972-49F1-86A6-C2B7DE5AD4D4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fohjin.DDD.Reporting.Dto", "Fohjin.DDD.Reporting.Dto\Fohjin.DDD.Reporting.Dto.csproj", "{44666AF0-AC7A-486E-AD1F-49FD0573ED43}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fohjin.DDD.EventHandlers", "Fohjin.DDD.EventHandlers\Fohjin.DDD.EventHandlers.csproj", "{2A96D452-7D1D-4118-B3D4-8EF543D1FBCB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fohjin.DDD.EventStore.SQLite", "Fohjin.DDD.EventStore.SQLite\Fohjin.DDD.EventStore.SQLite.csproj", "{8DE1C044-594E-4A85-8244-FE059BF4825B}"
@@ -81,10 +79,6 @@ Global
 		{672A4AB0-6972-49F1-86A6-C2B7DE5AD4D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{672A4AB0-6972-49F1-86A6-C2B7DE5AD4D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{672A4AB0-6972-49F1-86A6-C2B7DE5AD4D4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{44666AF0-AC7A-486E-AD1F-49FD0573ED43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{44666AF0-AC7A-486E-AD1F-49FD0573ED43}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{44666AF0-AC7A-486E-AD1F-49FD0573ED43}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{44666AF0-AC7A-486E-AD1F-49FD0573ED43}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2A96D452-7D1D-4118-B3D4-8EF543D1FBCB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2A96D452-7D1D-4118-B3D4-8EF543D1FBCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2A96D452-7D1D-4118-B3D4-8EF543D1FBCB}.Release|Any CPU.ActiveCfg = Release|Any CPU

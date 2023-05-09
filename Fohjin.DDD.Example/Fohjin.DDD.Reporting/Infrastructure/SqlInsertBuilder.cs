@@ -3,10 +3,6 @@ using System.Reflection;
 
 namespace Fohjin.DDD.Reporting.Infrastructure
 {
-    public interface ISqlInsertBuilder
-    {
-        string CreateSqlInsertStatementFromDto<TDto>() where TDto : class;
-    }
 
     public class SqlInsertBuilder : ISqlInsertBuilder
     {

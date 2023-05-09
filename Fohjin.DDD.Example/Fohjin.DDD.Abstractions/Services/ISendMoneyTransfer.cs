@@ -1,4 +1,6 @@
-﻿namespace Fohjin.DDD.Services
+﻿using Fohjin.DDD.Services.Models;
+
+namespace Fohjin.DDD.Services
 {
     public interface ISendMoneyTransfer
     {

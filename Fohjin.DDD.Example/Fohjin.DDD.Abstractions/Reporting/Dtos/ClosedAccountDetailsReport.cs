@@ -1,4 +1,4 @@
-namespace Fohjin.DDD.Reporting.Dto
+namespace Fohjin.DDD.Reporting.Dtos
 {
     public class ClosedAccountDetailsReport : AccountDetailsReport
     {

@@ -1,10 +1,10 @@
-namespace Fohjin.DDD.Services
+namespace Fohjin.DDD.Services.Models
 {
     public class MoneyTransfer
     {
-        public string SourceAccount { get; private set; }
-        public string TargetAccount { get; private set; }
-        public decimal Ammount { get; private set; }
+        public string SourceAccount { get; init; }
+        public string TargetAccount { get; init; }
+        public decimal Ammount { get; init; }
 
         public MoneyTransfer(string sourceAccount, string targetAccount, decimal ammount)
         {

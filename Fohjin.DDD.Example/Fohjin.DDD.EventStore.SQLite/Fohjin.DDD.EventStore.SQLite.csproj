@@ -11,8 +11,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\Fohjin.DDD.Common\Fohjin.DDD.Common.csproj" />
-	  <ProjectReference Include="..\Fohjin.DDD.EventStore\Fohjin.DDD.EventStore.csproj" />
+		<ProjectReference Include="..\Fohjin.DDD.Abstractions\Fohjin.DDD.Abstractions.csproj" />
 	</ItemGroup>
 	
 </Project>

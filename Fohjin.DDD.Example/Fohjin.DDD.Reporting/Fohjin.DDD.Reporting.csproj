@@ -10,4 +10,8 @@
 	  <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="7.0.5" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\Fohjin.DDD.Abstractions\Fohjin.DDD.Abstractions.csproj" />
+	</ItemGroup>
+
 </Project>

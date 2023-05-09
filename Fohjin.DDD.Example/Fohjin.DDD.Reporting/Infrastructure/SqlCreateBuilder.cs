@@ -5,10 +5,6 @@ using System.Reflection;
 
 namespace Fohjin.DDD.Reporting.Infrastructure
 {
-    public interface ISqlCreateBuilder
-    {
-        string CreateSqlCreateStatementFromDto(Type dtoType);
-    }
 
     public class SqlCreateBuilder : ISqlCreateBuilder
     {

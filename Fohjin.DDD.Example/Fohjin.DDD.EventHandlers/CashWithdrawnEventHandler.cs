@@ -1,6 +1,7 @@
 using Fohjin.DDD.Events.Account;
 using Fohjin.DDD.Reporting;
 using Fohjin.DDD.Reporting.Dto;
+using Fohjin.DDD.Reporting.Dtos;
 
 namespace Fohjin.DDD.EventHandlers
 {
