@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Fohjin.DDD.Commands
+﻿namespace Fohjin.DDD.Commands
 {
     [Serializable]
     public class AssignNewBankCardCommand : Command
