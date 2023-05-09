@@ -12,7 +12,6 @@ namespace Fohjin.DDD.Domain.Account
 {
     public class ActiveAccount : BaseAggregateRoot<IDomainEvent>, IOrginator
     {
-        private readonly ISystemDateTime _systemDateTime;
         private readonly List<Ledger> _ledgers;
 
         private Guid _clientId;
@@ -21,10 +20,8 @@ namespace Fohjin.DDD.Domain.Account
         private Balance _balance;
         private bool _closed;
 
-        public ActiveAccount(ISystemDateTime systemDateTime)
+        public ActiveAccount()
         {
-            _systemDateTime = systemDateTime;
-
             Id = Guid.Empty;
             Version = 0;
             EventVersion = 0;
@@ -37,14 +34,13 @@ namespace Fohjin.DDD.Domain.Account
             registerEvents();
         }
 
-        private ActiveAccount(ISystemDateTime systemDateTime, Guid clientId, string accountName) : this(systemDateTime)
+        private ActiveAccount(Guid clientId, string accountName, string accountNumber) : this()
         {
-            var accountNumber = _systemDateTime.Now().Ticks.ToString();
             Apply(new AccountOpenedEvent(Guid.NewGuid(), clientId, accountName, accountNumber));
         }
 
-        public static ActiveAccount CreateNew(ISystemDateTime systemDateTime, Guid clientId, string accountName) =>
-            new ActiveAccount(systemDateTime, clientId, accountName);
+        public static ActiveAccount CreateNew(Guid clientId, string accountName, string accountNumber) =>
+            new ActiveAccount(clientId, accountName, accountNumber);
 
         public void ChangeAccountName(AccountName accountName)
         {

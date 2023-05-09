@@ -8,6 +8,10 @@ namespace Fohjin.DDD.Common
         public static T AddCommonServices<T>(this T service) where T : IServiceCollection
         {
             service.TryAddTransient<IExtendedFormatter, ExtendedFormatter>();
+            service.TryAddTransient<ISystemHash, SystemHash>();
+            service.TryAddTransient<ISystemDateTime, SystemDateTime>();
+            service.TryAddTransient<ISystemRandom, SystemRandom>();
+            service.TryAddTransient<ISystemTimer, SystemTimer>();
             return service;
         }
     }

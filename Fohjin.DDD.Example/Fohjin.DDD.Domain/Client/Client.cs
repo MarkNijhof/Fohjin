@@ -14,26 +14,24 @@ namespace Fohjin.DDD.Domain.Client
         private Address _address;
         private ClientName _clientName;
         private readonly List<Guid> _accounts;
-        private readonly ISystemDateTime _systemDateTime;
         private readonly EntityList<BankCard, IDomainEvent> _bankCards;
 
-        public Client(ISystemDateTime systemDateTime)
+        public Client()
         {
-            _systemDateTime = systemDateTime;
             _accounts = new List<Guid>();
             _bankCards = new EntityList<BankCard, IDomainEvent>(this);
 
             registerEvents();
         }
 
-        private Client(ISystemDateTime systemDateTime, ClientName clientName, Address address, PhoneNumber phoneNumber) : this(systemDateTime)
+        private Client(ClientName clientName, Address address, PhoneNumber phoneNumber) : this()
         {
             Apply(new ClientCreatedEvent(Guid.NewGuid(), clientName.Name, address.Street, address.StreetNumber, address.PostalCode, address.City, phoneNumber.Number));
         }
 
-        public static Client CreateNew(ISystemDateTime systemDateTime, ClientName clientName, Address address, PhoneNumber phoneNumber)
+        public static Client CreateNew(ClientName clientName, Address address, PhoneNumber phoneNumber)
         {
-            return new Client(systemDateTime, clientName, address, phoneNumber);
+            return new Client(clientName, address, phoneNumber);
         }
 
         public void UpdatePhoneNumber(PhoneNumber phoneNumber)
@@ -57,11 +55,11 @@ namespace Fohjin.DDD.Domain.Client
             Apply(new ClientMovedEvent(newAddress.Street, newAddress.StreetNumber, newAddress.PostalCode, newAddress.City));
         }
 
-        public ActiveAccount CreateNewAccount(string accountName)
+        public ActiveAccount CreateNewAccount(string accountName, string accountNumber)
         {
             IsClientCreated();
 
-            var activeAccount = ActiveAccount.CreateNew(_systemDateTime, Id, accountName);
+            var activeAccount = ActiveAccount.CreateNew(Id, accountName, accountNumber);
 
             Apply(new AccountToClientAssignedEvent(activeAccount.Id));
 
@@ -108,7 +106,7 @@ namespace Fohjin.DDD.Domain.Client
 
         void IOrginator.SetMemento(IMemento memento)
         {
-            var clientMemento = (ClientMemento) memento;
+            var clientMemento = (ClientMemento)memento;
             Id = clientMemento.Id;
             Version = clientMemento.Version;
             _clientName = new ClientName(clientMemento.ClientName);

@@ -2,6 +2,6 @@
 {
     public interface ISystemTimer
     {
-        object Trigger(Action value, int @in);
+        void Trigger(Action value, int @in);
     }
 }
