@@ -1,8 +1,5 @@
-using System;
-using System.Collections.Generic;
+using Microsoft.Data.Sqlite;
 using System.Data;
-using System.Data.SQLite;
-using System.Linq;
 using System.Reflection;
 
 namespace Fohjin.DDD.Reporting.Infrastructure
@@ -36,7 +33,7 @@ namespace Fohjin.DDD.Reporting.Infrastructure
             List<TDto> dtos;
             var dtoType = typeof(TDto);
 
-            using (var sqliteConnection = new SQLiteConnection(_sqLiteConnectionString))
+            using (var sqliteConnection = new SqliteConnection(_sqLiteConnectionString))
             {
                 sqliteConnection.Open();
 
@@ -67,7 +64,7 @@ namespace Fohjin.DDD.Reporting.Infrastructure
         {
             var commandText = _sqlInsertBuilder.CreateSqlInsertStatementFromDto<TDto>();
 
-            using (var sqliteConnection = new SQLiteConnection(_sqLiteConnectionString))
+            using (var sqliteConnection = new SqliteConnection(_sqLiteConnectionString))
             {
                 sqliteConnection.Open();
 
@@ -75,7 +72,7 @@ namespace Fohjin.DDD.Reporting.Infrastructure
                 {
                     try
                     {
-                        using (var sqliteCommand = new SQLiteCommand(commandText, sqliteTransaction.Connection, sqliteTransaction))
+                        using (var sqliteCommand = new SqliteCommand(commandText, sqliteTransaction.Connection, sqliteTransaction))
                         {
                             AddParameters(sqliteCommand, dto);
                             sqliteCommand.ExecuteNonQuery();
@@ -95,7 +92,7 @@ namespace Fohjin.DDD.Reporting.Infrastructure
         {
             var commandText = _sqlUpdateBuilder.GetUpdateString<TDto>(update, where);
 
-            using (var sqliteConnection = new SQLiteConnection(_sqLiteConnectionString))
+            using (var sqliteConnection = new SqliteConnection(_sqLiteConnectionString))
             {
                 sqliteConnection.Open();
 
@@ -103,7 +100,7 @@ namespace Fohjin.DDD.Reporting.Infrastructure
                 {
                     try
                     {
-                        using (var sqliteCommand = new SQLiteCommand(commandText, sqliteTransaction.Connection, sqliteTransaction))
+                        using (var sqliteCommand = new SqliteCommand(commandText, sqliteTransaction.Connection, sqliteTransaction))
                         {
                             AddUpdateParameters(sqliteCommand, GetPropertyInformation(update));
                             AddParameters(sqliteCommand, GetPropertyInformation(where));
@@ -129,7 +126,7 @@ namespace Fohjin.DDD.Reporting.Infrastructure
         {
             var commandText = _sqlDeleteBuilder.CreateSqlDeleteStatementFromDto<TDto>(example);
 
-            using (var sqliteConnection = new SQLiteConnection(_sqLiteConnectionString))
+            using (var sqliteConnection = new SqliteConnection(_sqLiteConnectionString))
             {
                 sqliteConnection.Open();
 
@@ -137,7 +134,7 @@ namespace Fohjin.DDD.Reporting.Infrastructure
                 {
                     try
                     {
-                        using (var sqliteCommand = new SQLiteCommand(commandText, sqliteTransaction.Connection, sqliteTransaction))
+                        using (var sqliteCommand = new SqliteCommand(commandText, sqliteTransaction.Connection, sqliteTransaction))
                         {
                             AddParameters(sqliteCommand, example);
                             sqliteCommand.ExecuteNonQuery();
@@ -153,7 +150,7 @@ namespace Fohjin.DDD.Reporting.Infrastructure
             }
         }
 
-        private void GetChildren<TDto>(SQLiteTransaction sqliteTransaction, IEnumerable<TDto> dtos, Type dtoType) where TDto : class
+        private void GetChildren<TDto>(SqliteTransaction sqliteTransaction, IEnumerable<TDto> dtos, Type dtoType) where TDto : class
         {
             foreach (var property in dtoType.GetProperties().Where(WhereGeneric))
             {
@@ -179,12 +176,12 @@ namespace Fohjin.DDD.Reporting.Infrastructure
             return new Dictionary<string, object> { {columnName, columnValue} };
         }
 
-        private List<TDto> DoGetByExample<TDto>(SQLiteTransaction sqliteTransaction, Type dtoType, IEnumerable<KeyValuePair<string, object>> example) where TDto : class
+        private List<TDto> DoGetByExample<TDto>(SqliteTransaction sqliteTransaction, Type dtoType, IEnumerable<KeyValuePair<string, object>> example) where TDto : class
         {
             var dtos = new List<TDto>();
             var commandText = _sqlSelectBuilder.CreateSqlSelectStatementFromDto<TDto>(example);
 
-            using (var sqliteCommand = new SQLiteCommand(commandText, sqliteTransaction.Connection, sqliteTransaction))
+            using (var sqliteCommand = new SqliteCommand(commandText, sqliteTransaction.Connection, sqliteTransaction))
             {
                 AddParameters(sqliteCommand, example);
 
@@ -218,20 +215,20 @@ namespace Fohjin.DDD.Reporting.Infrastructure
             return exampleData;
         }
 
-        private static void AddParameters(SQLiteCommand sqliteCommand, IEnumerable<KeyValuePair<string, object>> example)
+        private static void AddParameters(SqliteCommand sqliteCommand, IEnumerable<KeyValuePair<string, object>> example)
         {
             if (example == null)
                 return;
 
-            example.ToList().ForEach(x => sqliteCommand.Parameters.Add(new SQLiteParameter(string.Format("@{0}", x.Key.ToLower()), x.Value)));
+            example.ToList().ForEach(x => sqliteCommand.Parameters.Add(new SqliteParameter(string.Format("@{0}", x.Key.ToLower()), x.Value)));
         }
 
-        private static void AddUpdateParameters(SQLiteCommand sqliteCommand, IEnumerable<KeyValuePair<string, object>> example)
+        private static void AddUpdateParameters(SqliteCommand sqliteCommand, IEnumerable<KeyValuePair<string, object>> example)
         {
             if (example == null)
                 return;
 
-            example.ToList().ForEach(x => sqliteCommand.Parameters.Add(new SQLiteParameter(string.Format("@update_{0}", x.Key.ToLower()), x.Value)));
+            example.ToList().ForEach(x => sqliteCommand.Parameters.Add(new SqliteParameter(string.Format("@update_{0}", x.Key.ToLower()), x.Value)));
         }
 
         private static bool Where(PropertyInfo propertyInfo)
