@@ -1,5 +1,3 @@
-using System;
-
 namespace Fohjin.DDD.EventStore
 {
     public interface IDomainEvent

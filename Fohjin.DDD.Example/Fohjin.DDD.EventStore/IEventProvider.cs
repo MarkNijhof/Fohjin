@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Fohjin.DDD.EventStore
+﻿namespace Fohjin.DDD.EventStore
 {
     public interface IEventProvider<TDomainEvent> where TDomainEvent : IDomainEvent
     {

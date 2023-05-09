@@ -1,4 +1,3 @@
-using System;
 using Fohjin.DDD.EventStore.Storage;
 using Fohjin.DDD.EventStore.Storage.Memento;
 

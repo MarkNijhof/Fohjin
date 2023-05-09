@@ -1,5 +1,3 @@
-using System;
-
 namespace Fohjin.DDD.EventStore.Storage
 {
     public interface ISnapShotStorage<TDomainEvent> where TDomainEvent : IDomainEvent
