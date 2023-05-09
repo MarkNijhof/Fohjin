@@ -1,14 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Fohjin.DDD.CommandHandlers;
+﻿using Fohjin.DDD.CommandHandlers;
 using Fohjin.DDD.Commands;
 
 namespace Fohjin.DDD.Configuration
 {
-    public class CommandHandlerHelper
+    public class CommandHandlerHelper : ICommandHandlerHelper
     {
-        public static IDictionary<Type, IList<Type>> GetCommandHandlers()
+        private readonly IEnumerable<ICommand> _commands;
+
+        public CommandHandlerHelper(IEnumerable<ICommand> commands)
+        {
+            _commands = commands;
+        }
+
+        public IDictionary<Type, IList<Type>> GetCommandHandlers()
         {
             IDictionary<Type, IList<Type>> commands = new Dictionary<Type, IList<Type>>();
             typeof(ICommandHandler<>)
@@ -20,16 +24,9 @@ namespace Fohjin.DDD.Configuration
             return commands;
         }
 
-        public static IEnumerable<Type> GetCommands()
-        {
-            return typeof(Command)
-                .Assembly
-                .GetExportedTypes()
-                .Where(x => x.BaseType == typeof(Command))
-                .ToList();
-        }
+        public IEnumerable<Type> GetCommands() => _commands.Select(c => c.GetType());
 
-        private static void AddItem(IDictionary<Type, IList<Type>> dictionary, Type type)
+        private void AddItem(IDictionary<Type, IList<Type>> dictionary, Type type)
         {
             var command = type.GetInterfaces()
                 .Where(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(ICommandHandler<>))

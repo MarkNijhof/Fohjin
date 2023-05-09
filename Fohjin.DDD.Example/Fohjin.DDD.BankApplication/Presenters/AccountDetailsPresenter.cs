@@ -152,11 +152,11 @@ namespace Fohjin.DDD.BankApplication.Presenters
             });
         }
 
-        public void WithdrawlMoney()
+        public void WithdrawalMoney()
         {
             _popupPresenter.CatchPossibleException(() =>
             {
-                _bus.Publish(new WithdrawCashCommand(
+                _bus.Publish(new WithdrawalCashCommand(
                                  _accountDetailsReport.Id,
                                  _accountDetailsView.WithdrawlAmount));
 

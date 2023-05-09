@@ -1,4 +1,5 @@
 using Fohjin.DDD.Bus.Direct;
+using Fohjin.DDD.CommandHandlers;
 using Fohjin.DDD.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -9,6 +10,7 @@ namespace Fohjin.DDD.Configuration
     {
         public static T AddConfigurationServices<T>(this T service) where T : IServiceCollection
         {
+            service.TryAddTransient<ICommandHandlerHelper, CommandHandlerHelper>();
 
             //private const string sqLiteConnectionString = "Data Source=domainDataBase.db3";
 

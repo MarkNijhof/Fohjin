@@ -10,16 +10,20 @@ namespace Fohjin.DDD.Configuration
         private static MethodInfo _createPublishActionWrappedInTransactionMethod;
         private static MethodInfo _registerMethod;
 
-        private IServiceProvider _serviceProvider;
-        private IRouteMessages _routeMessages;
+        private readonly IServiceProvider _serviceProvider;
+        private readonly IRouteMessages _routeMessages;
+        private readonly ICommandHandlerHelper _commandHandlerHelper;
 
         public RegisterCommandHandlersInMessageRouter(
             IServiceProvider serviceProvider,
-            IRouteMessages routeMessages
+            IRouteMessages routeMessages,
+            ICommandHandlerHelper commandHandlerHelper
             )
         {
             _serviceProvider = serviceProvider;
             _routeMessages = routeMessages;
+            _commandHandlerHelper = commandHandlerHelper;
+
             RegisterRoutes();
         }
 
@@ -28,8 +32,8 @@ namespace Fohjin.DDD.Configuration
             _createPublishActionWrappedInTransactionMethod = GetType().GetMethod("CreatePublishActionWrappedInTransaction");
             _registerMethod = _routeMessages.GetType().GetMethod("Register");
 
-            var commands = CommandHandlerHelper.GetCommands();
-            var commandHandlers = CommandHandlerHelper.GetCommandHandlers();
+            var commands = _commandHandlerHelper.GetCommands();
+            var commandHandlers = _commandHandlerHelper.GetCommandHandlers();
 
             foreach (var command in commands)
             {
