@@ -1,5 +1,6 @@
 using Fohjin.DDD.Events.Account;
 using Fohjin.DDD.Services;
+using Fohjin.DDD.Services.Models;
 
 namespace Fohjin.DDD.EventHandlers
 {

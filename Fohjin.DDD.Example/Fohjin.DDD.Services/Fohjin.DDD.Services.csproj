@@ -12,6 +12,7 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\Fohjin.DDD.Abstractions\Fohjin.DDD.Abstractions.csproj" />
+	  <ProjectReference Include="..\Fohjin.DDD.Commands\Fohjin.DDD.Commands.csproj" />
 	</ItemGroup>
 
 </Project>

@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace Fohjin.DDD.Reporting.Infrastructure
 {
-    public class SQLiteReportingRepository : IReportingRepository
+    public class SqliteReportingRepository : IReportingRepository
     {
         private readonly string _sqLiteConnectionString;
         private readonly ISqlSelectBuilder _sqlSelectBuilder;
@@ -12,7 +12,7 @@ namespace Fohjin.DDD.Reporting.Infrastructure
         private readonly ISqlUpdateBuilder _sqlUpdateBuilder;
         private readonly ISqlDeleteBuilder _sqlDeleteBuilder;
 
-        public SQLiteReportingRepository(string sqLiteConnectionString, ISqlSelectBuilder sqlSelectBuilder, ISqlInsertBuilder sqlInsertBuilder, ISqlUpdateBuilder sqlUpdateBuilder, ISqlDeleteBuilder sqlDeleteBuilder)
+        public SqliteReportingRepository(string sqLiteConnectionString, ISqlSelectBuilder sqlSelectBuilder, ISqlInsertBuilder sqlInsertBuilder, ISqlUpdateBuilder sqlUpdateBuilder, ISqlDeleteBuilder sqlDeleteBuilder)
         {
             _sqLiteConnectionString = sqLiteConnectionString;
             _sqlSelectBuilder = sqlSelectBuilder;
