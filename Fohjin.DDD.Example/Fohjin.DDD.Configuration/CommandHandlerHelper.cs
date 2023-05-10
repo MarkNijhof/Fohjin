@@ -39,7 +39,7 @@ namespace Fohjin.DDD.Configuration
 
             foreach(var handler in selectedHandlers)
             {
-                _log.LogInformation($"RouteAsync> {{type}}: {{{nameof(message)}}} -> {{{nameof(handler)}}}", message.GetType(), message, handler);
+                _log.LogInformation($"RouteAsync -> {{{nameof(handler)}}} {{type}}: {{{nameof(message)}}}", handler, message.GetType(), message);
                 await handler.ExecuteAsync(message);
             }
         }

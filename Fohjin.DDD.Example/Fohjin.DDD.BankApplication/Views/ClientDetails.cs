@@ -10,7 +10,7 @@ namespace Fohjin.DDD.BankApplication.Views
             tabControl1.Appearance = TabAppearance.FlatButtons;
             tabControl1.ItemSize = new Size(0, 1);
             tabControl1.SizeMode = TabSizeMode.Fixed;
-            RegisterCLientEvents();
+            RegisterClientEvents();
         }
 
         public event EventAction OnOpenSelectedAccount;
@@ -25,7 +25,7 @@ namespace Fohjin.DDD.BankApplication.Views
         public event EventAction OnInitiateOpenNewAccount;
         public event EventAction OnCreateNewAccount;
 
-        private void RegisterCLientEvents()
+        private void RegisterClientEvents()
         {
             nameChangedToolStripMenuItem.Click += (s, e) => OnInitiateClientNameChange();
             hasMovedToolStripMenuItem.Click += (s, e) => OnInitiateClientHasMoved();
