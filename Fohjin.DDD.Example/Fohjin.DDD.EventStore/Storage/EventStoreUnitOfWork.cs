@@ -6,6 +6,9 @@ namespace Fohjin.DDD.EventStore.Storage
 {
     public class EventStoreUnitOfWork<TDomainEvent> : IEventStoreUnitOfWork<TDomainEvent> where TDomainEvent : IDomainEvent
     {
+        private static int _seed;
+        private readonly int _id = _seed++;
+
         private readonly IDomainEventStorage<TDomainEvent> _domainEventStorage;
         private readonly IIdentityMap<TDomainEvent> _identityMap;
         private readonly IBus _bus;

@@ -11,7 +11,7 @@ namespace Fohjin.DDD.Common
             service.TryAddTransient<ISystemHash, SystemHash>();
             service.TryAddTransient<ISystemDateTime, SystemDateTime>();
             service.TryAddTransient<ISystemRandom, SystemRandom>();
-            service.TryAddTransient<ISystemTimer, SystemTimer>();
+            service.TryAddSingleton<ISystemTimer, SystemTimer>();
             return service;
         }
     }

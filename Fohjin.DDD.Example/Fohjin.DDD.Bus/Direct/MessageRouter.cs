@@ -7,6 +7,9 @@ namespace Fohjin.DDD.Bus.Direct
 {
     public class MessageRouter : IRouteMessages
     {
+        private static int _seed;
+        private readonly int _id = _seed++;
+
         private ICommandHandlerHelper _commandHandlerHelper;
         private IEventHandlerHelper _eventHandlerHelper;
         private readonly IServiceProvider _serviceProvider;
@@ -23,7 +26,7 @@ namespace Fohjin.DDD.Bus.Direct
 
         public async Task RouteAsync(object message)
         {
-            _log.LogInformation($"RouteAsync> {{type}}: {{{nameof(message)}}}", message.GetType(), message);
+            _log.LogInformation($"RouteAsync({_id})> {{type}}: {{{nameof(message)}}}", message.GetType(), message);
             _commandHandlerHelper ??= _serviceProvider.GetRequiredService<ICommandHandlerHelper>();
             _eventHandlerHelper ??= _serviceProvider.GetRequiredService<IEventHandlerHelper>();
             await _commandHandlerHelper.RouteAsync(message);

@@ -17,7 +17,6 @@ namespace Fohjin.DDD.Bus.Direct
             IServiceProvider serviceProvider,
             IQueue postCommitQueue,
             ILogger<DirectBus> log
-
             )
         {
             _serviceProvider = serviceProvider;

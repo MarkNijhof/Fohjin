@@ -8,11 +8,11 @@ namespace Fohjin.DDD.EventStore
     {
         public static T AddEventStoreServices<T>(this T service) where T : IServiceCollection
         {
-            service.TryAddTransient(typeof(IDomainRepository<>), typeof(DomainRepository<>));
-            service.TryAddTransient(typeof(IEventStoreUnitOfWork<>), typeof(EventStoreUnitOfWork<>));
-            service.TryAddTransient(typeof(IIdentityMap<>), typeof(EventStoreIdentityMap<>));
+            service.TryAddSingleton(typeof(IDomainRepository<>), typeof(DomainRepository<>));
+            service.TryAddSingleton(typeof(IEventStoreUnitOfWork<>), typeof(EventStoreUnitOfWork<>));
+            service.TryAddSingleton(typeof(IIdentityMap<>), typeof(EventStoreIdentityMap<>));
 
-            service.TryAddTransient<IUnitOfWork, EventStoreUnitOfWork<IDomainEvent>>();
+            service.TryAddSingleton<IUnitOfWork>(sp => sp.GetRequiredService<IEventStoreUnitOfWork<IDomainEvent>>());
             return service;
         }
     }

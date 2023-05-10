@@ -45,6 +45,7 @@ namespace Fohjin.DDD.BankApplication
                 .AddCommandHandlersServices()
                 .AddCommonServices()
                 .AddConfigurationServices()
+                .AddEventHandlersServices()
                 .AddEventStoreServices()
                 .AddEventStoreSqliteServices()
                 .AddReportingServices()
