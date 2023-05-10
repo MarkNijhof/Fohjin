@@ -10,6 +10,7 @@ namespace Fohjin.DDD.Bus
         {
             service.TryAddSingleton<IRouteMessages, MessageRouter>();
             service.TryAddSingleton<IBus>(sp=> ActivatorUtilities.CreateInstance<DirectBus>(sp));
+            service.TryAddSingleton<IQueue, InMemoryQueue>();
             return service;
         }
     }

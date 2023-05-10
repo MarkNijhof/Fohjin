@@ -7,10 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fohjin.DDD.Reporting", "Foh
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test.Fohjin.DDD", "Test.Fohjin.DDD\Test.Fohjin.DDD.csproj", "{CEBF24CE-3326-464B-B6C5-463E7F4BF4BC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fohjin.DDD.Commands", "Fohjin.DDD.Commands\Fohjin.DDD.Commands.csproj", "{58D61FA0-D67F-4D72-81EA-2D709356AF95}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fohjin.DDD.Domain", "Fohjin.DDD.Domain\Fohjin.DDD.Domain.csproj", "{0FB24C8F-FA8C-409E-A71C-8580F7D78474}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fohjin.DDD.CommandHandlers", "Fohjin.DDD.CommandHandlers\Fohjin.DDD.CommandHandlers.csproj", "{7757DA0F-CD51-4753-95C8-8632177AA60E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fohjin.DDD.Configuration", "Fohjin.DDD.Configuration\Fohjin.DDD.Configuration.csproj", "{CF50373D-3EB9-492D-A88F-70D7D6756DFF}"
@@ -37,6 +33,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fohjin.DDD.Common", "Fohjin
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fohjin.DDD.Abstractions", "Fohjin.DDD.Abstractions\Fohjin.DDD.Abstractions.csproj", "{0F98118F-7546-4F24-B808-0973D16D0D62}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fohjin.DDD.Domain", "Fohjin.DDD.Domain\Fohjin.DDD.Domain.csproj", "{BD1449AE-CDFC-496A-968A-4B178B0B813C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,14 +49,6 @@ Global
 		{CEBF24CE-3326-464B-B6C5-463E7F4BF4BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CEBF24CE-3326-464B-B6C5-463E7F4BF4BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CEBF24CE-3326-464B-B6C5-463E7F4BF4BC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{58D61FA0-D67F-4D72-81EA-2D709356AF95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{58D61FA0-D67F-4D72-81EA-2D709356AF95}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{58D61FA0-D67F-4D72-81EA-2D709356AF95}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{58D61FA0-D67F-4D72-81EA-2D709356AF95}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0FB24C8F-FA8C-409E-A71C-8580F7D78474}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0FB24C8F-FA8C-409E-A71C-8580F7D78474}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0FB24C8F-FA8C-409E-A71C-8580F7D78474}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0FB24C8F-FA8C-409E-A71C-8580F7D78474}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7757DA0F-CD51-4753-95C8-8632177AA60E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7757DA0F-CD51-4753-95C8-8632177AA60E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7757DA0F-CD51-4753-95C8-8632177AA60E}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -99,6 +89,10 @@ Global
 		{0F98118F-7546-4F24-B808-0973D16D0D62}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0F98118F-7546-4F24-B808-0973D16D0D62}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0F98118F-7546-4F24-B808-0973D16D0D62}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD1449AE-CDFC-496A-968A-4B178B0B813C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD1449AE-CDFC-496A-968A-4B178B0B813C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD1449AE-CDFC-496A-968A-4B178B0B813C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD1449AE-CDFC-496A-968A-4B178B0B813C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

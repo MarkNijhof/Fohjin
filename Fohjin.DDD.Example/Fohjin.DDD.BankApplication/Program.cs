@@ -43,7 +43,6 @@ namespace Fohjin.DDD.BankApplication
                 .AddTransient<IConfiguration>(_ => configBuilder.Build())
                 .AddBusServices()
                 .AddCommandHandlersServices()
-                .AddCommandsServices()
                 .AddCommonServices()
                 .AddConfigurationServices()
                 .AddEventStoreServices()

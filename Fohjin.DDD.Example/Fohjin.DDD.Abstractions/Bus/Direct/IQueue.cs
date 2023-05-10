@@ -2,7 +2,7 @@
 {
     public interface IQueue
     {
-        void Put(object item);
+        Task PutAsync(object item);
         Task PopAsync(Func<object, Task> popAction);
     }
 }

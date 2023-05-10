@@ -9,6 +9,7 @@ namespace Fohjin.DDD.Configuration
         public static T AddConfigurationServices<T>(this T service) where T : IServiceCollection
         {
             service.TryAddSingleton<ICommandHandlerHelper, CommandHandlerHelper>();
+            service.TryAddSingleton<IEventHandlerHelper, EventHandlerHelper>();
             return service;
         }
     }

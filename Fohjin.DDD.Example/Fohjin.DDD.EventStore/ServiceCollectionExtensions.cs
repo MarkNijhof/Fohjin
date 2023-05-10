@@ -1,5 +1,6 @@
 using Fohjin.DDD.EventStore.Storage;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Fohjin.DDD.EventStore
 {
@@ -7,9 +8,11 @@ namespace Fohjin.DDD.EventStore
     {
         public static T AddEventStoreServices<T>(this T service) where T : IServiceCollection
         {
-            service.AddTransient(typeof(IDomainRepository<>), typeof(DomainRepository<>));
-            service.AddTransient(typeof(IEventStoreUnitOfWork<>), typeof(EventStoreUnitOfWork<>));
-            service.AddTransient(typeof(IIdentityMap<>), typeof(EventStoreIdentityMap<>));
+            service.TryAddTransient(typeof(IDomainRepository<>), typeof(DomainRepository<>));
+            service.TryAddTransient(typeof(IEventStoreUnitOfWork<>), typeof(EventStoreUnitOfWork<>));
+            service.TryAddTransient(typeof(IIdentityMap<>), typeof(EventStoreIdentityMap<>));
+
+            service.TryAddTransient<IUnitOfWork, EventStoreUnitOfWork<IDomainEvent>>();
             return service;
         }
     }

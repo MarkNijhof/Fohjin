@@ -1,6 +1,10 @@
 ﻿namespace Fohjin.DDD.CommandHandlers
 {
-    public interface ITransactionHandler<TCommand, TCommandHandler>
+    public interface ITransactionHandler
+    {
+        Task ExecuteAsync(object command, object commandHandler);
+    }
+    public interface ITransactionHandler<TCommand, TCommandHandler> : ITransactionHandler
         where TCommand : class
         where TCommandHandler : ICommandHandler<TCommand>
     {

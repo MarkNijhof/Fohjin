@@ -1,5 +1,7 @@
 ﻿using Fohjin.DDD.CommandHandlers;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System;
 
 namespace Fohjin.DDD.Configuration
 {
@@ -9,14 +11,17 @@ namespace Fohjin.DDD.Configuration
         private IEnumerable<Type> _commandCache;
 
         private readonly IEnumerable<ICommandHandler> _handlers;
+        private readonly IServiceProvider _serviceProvider;
         private readonly ILogger _log;
 
         public CommandHandlerHelper(
             IEnumerable<ICommandHandler> handlers,
+            IServiceProvider serviceProvider,
             ILogger<CommandHandlerHelper> log
             )
         {
             _handlers = handlers;
+            _serviceProvider = serviceProvider;
             _log = log;
         }
 
@@ -37,10 +42,14 @@ namespace Fohjin.DDD.Configuration
             var targetHandler = typeof(ICommandHandler<>).MakeGenericType(message.GetType());
             var selectedHandlers = _handlers.Where(i => i.GetType().IsAssignableTo(targetHandler));
 
-            foreach(var handler in selectedHandlers)
+            foreach (var handler in selectedHandlers)
             {
                 _log.LogInformation($"RouteAsync -> {{{nameof(handler)}}} {{type}}: {{{nameof(message)}}}", handler, message.GetType(), message);
-                await handler.ExecuteAsync(message);
+
+                var transactionHandlerType = typeof(ITransactionHandler<,>).MakeGenericType(message.GetType(), handler.GetType());
+                var transactionHandler =(ITransactionHandler) _serviceProvider.GetRequiredService(transactionHandlerType);
+
+                await transactionHandler.ExecuteAsync(message, handler);
             }
         }
     }
