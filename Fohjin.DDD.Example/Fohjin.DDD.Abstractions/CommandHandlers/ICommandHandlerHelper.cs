@@ -1,7 +1,9 @@
-﻿namespace Fohjin.DDD.CommandHandlers
+﻿using Fohjin.DDD.Commands;
+
+namespace Fohjin.DDD.CommandHandlers
 {
     public interface ICommandHandlerHelper
     {
-        Task RouteAsync(object message);
+        Task<bool> RouteAsync(ICommand message);
     }
 }

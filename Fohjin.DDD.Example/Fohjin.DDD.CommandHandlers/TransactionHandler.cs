@@ -1,3 +1,4 @@
+using Fohjin.DDD.Commands;
 using Fohjin.DDD.EventStore;
 using Microsoft.Extensions.Logging;
 
@@ -6,7 +7,7 @@ namespace Fohjin.DDD.CommandHandlers
     public class TransactionHandler<TCommand, TCommandHandler> :
         ITransactionHandler<TCommand, TCommandHandler>
         where TCommandHandler : CommandHandlerBase<TCommand>
-        where TCommand : class
+        where TCommand : class, ICommand
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger _log;
@@ -16,7 +17,6 @@ namespace Fohjin.DDD.CommandHandlers
             ILogger<TransactionHandler<TCommand, TCommandHandler>> log
             )
         {
-            // EventStoreUnitOfWork<TDomainEvent> : IEventStoreUnitOfWork<TDomainEvent>
             _unitOfWork = unitOfWork;
             _log = log;
         }

@@ -1,5 +1,7 @@
 ﻿using Fohjin.DDD.CommandHandlers;
+using Fohjin.DDD.Commands;
 using Fohjin.DDD.Configuration;
+using Fohjin.DDD.EventStore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -24,13 +26,25 @@ namespace Fohjin.DDD.Bus.Direct
             _log = log;
         }
 
-        public async Task RouteAsync(object message)
+        public async Task<bool> RouteAsync(object message)
         {
             _log.LogInformation($"RouteAsync({_id})> {{type}}: {{{nameof(message)}}}", message.GetType(), message);
-            _commandHandlerHelper ??= _serviceProvider.GetRequiredService<ICommandHandlerHelper>();
-            _eventHandlerHelper ??= _serviceProvider.GetRequiredService<IEventHandlerHelper>();
-            await _commandHandlerHelper.RouteAsync(message);
-            await _eventHandlerHelper.RouteAsync(message);
+            var handled = false;
+            if (message is ICommand command)
+            {
+                _commandHandlerHelper ??= _serviceProvider.GetRequiredService<ICommandHandlerHelper>();
+                handled |= await _commandHandlerHelper.RouteAsync(command);
+            }
+            if (message is IDomainEvent @event)
+            {
+                _eventHandlerHelper ??= _serviceProvider.GetRequiredService<IEventHandlerHelper>();
+                handled |=  await _eventHandlerHelper.RouteAsync(@event);
+            }
+
+            if (!handled)
+                _log.LogWarning($"RouteAsync({_id})-NotHandled> {{type}}: {{{nameof(message)}}}", message.GetType(), message);
+
+            return handled;
         }
     }
 }

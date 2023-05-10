@@ -1,7 +1,9 @@
-﻿namespace Fohjin.DDD.Configuration
+﻿using Fohjin.DDD.EventStore;
+
+namespace Fohjin.DDD.Configuration
 {
     public interface IEventHandlerHelper
     {
-        Task RouteAsync(object message);
+        Task<bool> RouteAsync(IDomainEvent message);
     }
 }

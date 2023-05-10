@@ -1,4 +1,5 @@
 ﻿using Fohjin.DDD.EventHandlers;
+using Fohjin.DDD.EventStore;
 using Microsoft.Extensions.Logging;
 
 namespace Fohjin.DDD.Configuration
@@ -31,17 +32,21 @@ namespace Fohjin.DDD.Configuration
         protected IEnumerable<Type> GetCommands() =>
             _commandCache ??= GetCommandHandlers().SelectMany(i => i.Value).Distinct().ToList();
 
-        public async Task RouteAsync(object message)
+        public async Task<bool> RouteAsync(IDomainEvent message)
         {
             _log.LogInformation($"RouteAsync> {{type}}: {{{nameof(message)}}}", message.GetType(), message);
             var targetHandler = typeof(IEventHandler<>).MakeGenericType(message.GetType());
             var selectedHandlers = _handlers.Where(i => i.GetType().IsAssignableTo(targetHandler));
+
+            if (!selectedHandlers.Any()) return false;
 
             foreach (var handler in selectedHandlers)
             {
                 _log.LogInformation($"RouteAsync -> {{{nameof(handler)}}} {{type}}: {{{nameof(message)}}}", handler, message.GetType(), message);
                 await handler.ExecuteAsync(message);
             }
+
+            return true;
         }
     }
 }
