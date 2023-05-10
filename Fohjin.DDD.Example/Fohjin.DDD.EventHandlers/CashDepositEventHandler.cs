@@ -4,7 +4,7 @@ using Fohjin.DDD.Reporting.Dtos;
 
 namespace Fohjin.DDD.EventHandlers
 {
-    public class CashDepositEventHandler : IEventHandler<CashDepositedEvent>
+    public class CashDepositEventHandler : EventHandlerBase<CashDepositedEvent>
     {
         private readonly IReportingRepository _reportingRepository;
 
@@ -13,10 +13,11 @@ namespace Fohjin.DDD.EventHandlers
             _reportingRepository = reportingRepository;
         }
 
-        public void Execute(CashDepositedEvent theEvent)
+        public override Task ExecuteAsync(CashDepositedEvent theEvent)
         {
             _reportingRepository.Update<AccountDetailsReport>(new { theEvent.Balance }, new { Id = theEvent.AggregateId });
             _reportingRepository.Save(new LedgerReport(theEvent.Id, theEvent.AggregateId, "Deposit", theEvent.Amount));
+            return Task.CompletedTask;
         }
     }
 }

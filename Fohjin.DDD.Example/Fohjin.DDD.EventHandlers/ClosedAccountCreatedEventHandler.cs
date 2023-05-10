@@ -4,7 +4,7 @@ using Fohjin.DDD.Reporting.Dtos;
 
 namespace Fohjin.DDD.EventHandlers
 {
-    public class ClosedAccountCreatedEventHandler : IEventHandler<ClosedAccountCreatedEvent>
+    public class ClosedAccountCreatedEventHandler : EventHandlerBase<ClosedAccountCreatedEvent>
     {
         private readonly IReportingRepository _reportingRepository;
 
@@ -13,7 +13,7 @@ namespace Fohjin.DDD.EventHandlers
             _reportingRepository = reportingRepository;
         }
 
-        public void Execute(ClosedAccountCreatedEvent theEvent)
+        public override Task ExecuteAsync(ClosedAccountCreatedEvent theEvent)
         {
             var closedAccount = new ClosedAccountReport(theEvent.AccountId, theEvent.ClientId, theEvent.AccountName, theEvent.AccountNumber);
             var closedAccountDetails = new ClosedAccountDetailsReport(theEvent.AccountId, theEvent.ClientId, theEvent.AccountName, 0, theEvent.AccountNumber);
@@ -28,6 +28,8 @@ namespace Fohjin.DDD.EventHandlers
                 var account = split[1];
                 _reportingRepository.Save(new LedgerReport(Guid.NewGuid(), theEvent.AccountId, GetDescription(ledger.Key, account), amount));
             }
+
+            return Task.CompletedTask;
         }
 
         private static string GetDescription(string transferType, string accountNumber)

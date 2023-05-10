@@ -2,9 +2,9 @@ namespace Fohjin.DDD.EventStore.Aggregate
 {
     public class BaseAggregateRoot<TDomainEvent> : IEventProvider<TDomainEvent>, IRegisterChildEntities<TDomainEvent> where TDomainEvent : IDomainEvent
     {
-        private readonly Dictionary<Type, Action<TDomainEvent>> _registeredEvents;
-        private readonly List<TDomainEvent> _appliedEvents;
-        private readonly List<IEntityEventProvider<TDomainEvent>> _childEventProviders;
+        private readonly Dictionary<Type, Action<TDomainEvent>> _registeredEvents = new ();
+        private readonly List<TDomainEvent> _appliedEvents = new();
+        private readonly List<IEntityEventProvider<TDomainEvent>> _childEventProviders = new();
 
         public Guid Id { get; protected set; }
         public int Version { get; protected set; }
@@ -12,9 +12,6 @@ namespace Fohjin.DDD.EventStore.Aggregate
 
         public BaseAggregateRoot()
         {
-            _registeredEvents = new Dictionary<Type, Action<TDomainEvent>>();
-            _appliedEvents = new List<TDomainEvent>();
-            _childEventProviders = new List<IEntityEventProvider<TDomainEvent>>();
         }
 
         protected void RegisterEvent<TEvent>(Action<TEvent> eventHandler) where TEvent : class, TDomainEvent

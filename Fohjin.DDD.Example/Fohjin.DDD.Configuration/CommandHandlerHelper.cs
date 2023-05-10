@@ -9,7 +9,7 @@ namespace Fohjin.DDD.Configuration
         private IEnumerable<Type> _commandCache;
 
         private readonly IEnumerable<ICommandHandler> _handlers;
-        private readonly ILogger<CommandHandlerHelper> _log;
+        private readonly ILogger _log;
 
         public CommandHandlerHelper(
             IEnumerable<ICommandHandler> handlers,
@@ -20,7 +20,7 @@ namespace Fohjin.DDD.Configuration
             _log = log;
         }
 
-        public IDictionary<Type, IEnumerable<Type>> GetCommandHandlers() =>
+        protected IDictionary<Type, IEnumerable<Type>> GetCommandHandlers() =>
             _handlersCache ??= _handlers.ToDictionary(
                 t => t.GetType(),
                 t => (from i in t.GetType().GetInterfaces()
@@ -28,7 +28,7 @@ namespace Fohjin.DDD.Configuration
                       where i.GetGenericTypeDefinition() == typeof(ICommandHandler<>)
                       select i.GetGenericArguments().First()).ToList().AsEnumerable());
 
-        public IEnumerable<Type> GetCommands() =>
+        protected IEnumerable<Type> GetCommands() =>
             _commandCache ??= GetCommandHandlers().SelectMany(i => i.Value).Distinct().ToList();
 
         public async Task RouteAsync(object message)

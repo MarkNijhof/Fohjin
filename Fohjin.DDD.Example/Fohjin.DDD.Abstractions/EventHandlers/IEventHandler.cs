@@ -1,7 +1,11 @@
 namespace Fohjin.DDD.EventHandlers
 {
+    public interface IEventHandler
+    {
+        Task ExecuteAsync(object @event);
+    }
     public interface IEventHandler<TEvent> where TEvent : class
     {
-        void Execute(TEvent theEvent);
+        Task ExecuteAsync(TEvent @event);
     }
 }

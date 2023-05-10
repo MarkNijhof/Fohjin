@@ -4,6 +4,7 @@ using Fohjin.DDD.CommandHandlers;
 using Fohjin.DDD.Commands;
 using Fohjin.DDD.Common;
 using Fohjin.DDD.Configuration;
+using Fohjin.DDD.EventHandlers;
 using Fohjin.DDD.EventStore;
 using Fohjin.DDD.EventStore.SQLite;
 using Fohjin.DDD.Reporting;

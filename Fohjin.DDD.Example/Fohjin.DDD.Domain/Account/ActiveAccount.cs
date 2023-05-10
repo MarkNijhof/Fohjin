@@ -3,6 +3,7 @@ using Fohjin.DDD.Events.Account;
 using Fohjin.DDD.EventStore;
 using Fohjin.DDD.EventStore.Aggregate;
 using Fohjin.DDD.EventStore.Storage.Memento;
+using System.Diagnostics;
 
 namespace Fohjin.DDD.Domain.Account
 {
@@ -173,6 +174,7 @@ namespace Fohjin.DDD.Domain.Account
 
         private void RegisterEvents()
         {
+            Debug.WriteLine($"{nameof(ActiveAccount)}::{nameof(RegisterEvents)}");
             RegisterEvent<AccountOpenedEvent>(OnAccountCreated);
             RegisterEvent<AccountClosedEvent>(OnAccountClosed);
             RegisterEvent<CashWithdrawnEvent>(OnWithdrawal);

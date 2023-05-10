@@ -1,43 +1,47 @@
 ﻿using Fohjin.DDD.EventHandlers;
-using Fohjin.DDD.Events;
+using Microsoft.Extensions.Logging;
 
 namespace Fohjin.DDD.Configuration
 {
-    public class EventHandlerHelper
+    public class EventHandlerHelper : IEventHandlerHelper
     {
-        public static IDictionary<Type, IList<Type>> GetEventHandlers()
+        private IDictionary<Type, IEnumerable<Type>> _handlersCache;
+        private IEnumerable<Type> _commandCache;
+
+        private readonly IEnumerable<IEventHandler> _handlers;
+        private readonly ILogger _log;
+
+        public EventHandlerHelper(
+            IEnumerable<IEventHandler> handlers,
+            ILogger<EventHandlerHelper> log
+            )
         {
-            var commands = new Dictionary<Type, IList<Type>>();
-            typeof(ClientCreatedEventHandler)
-                .Assembly
-                .GetExportedTypes()
-                .Where(x => x.GetInterfaces().Any(y => y.IsGenericType && y.GetGenericTypeDefinition() == typeof(IEventHandler<>)))
-                .ToList()
-                .ForEach(x => AddItem(commands, x));
-            return commands;
+            _handlers = handlers;
+            _log = log;
         }
 
-        public static IEnumerable<Type> GetEvents()
+        protected IDictionary<Type, IEnumerable<Type>> GetCommandHandlers() =>
+            _handlersCache ??= _handlers.ToDictionary(
+                t => t.GetType(),
+                t => (from i in t.GetType().GetInterfaces()
+                      where i.IsGenericType
+                      where i.GetGenericTypeDefinition() == typeof(IEventHandler<>)
+                      select i.GetGenericArguments().First()).ToList().AsEnumerable());
+
+        protected IEnumerable<Type> GetCommands() =>
+            _commandCache ??= GetCommandHandlers().SelectMany(i => i.Value).Distinct().ToList();
+
+        public async Task RouteAsync(object message)
         {
-            return typeof(DomainEvent)
-                .Assembly
-                .GetExportedTypes()
-                .Where(x => x.BaseType == typeof(DomainEvent))
-                .ToList();
-        }
+            _log.LogInformation($"RouteAsync> {{type}}: {{{nameof(message)}}}", message.GetType(), message);
+            var targetHandler = typeof(IEventHandler<>).MakeGenericType(message.GetType());
+            var selectedHandlers = _handlers.Where(i => i.GetType().IsAssignableTo(targetHandler));
 
-        private static void AddItem(IDictionary<Type, IList<Type>> dictionary, Type type)
-        {
-            var theEvent = type.GetInterfaces()
-                .Where(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(IEventHandler<>))
-                .First()
-                .GetGenericArguments()
-                .First();
-
-            if (!dictionary.ContainsKey(theEvent))
-                dictionary.Add(theEvent, new List<Type>());
-
-            dictionary[theEvent].Add(type);
+            foreach (var handler in selectedHandlers)
+            {
+                _log.LogInformation($"RouteAsync -> {{{nameof(handler)}}} {{type}}: {{{nameof(message)}}}", handler, message.GetType(), message);
+                await handler.ExecuteAsync(message);
+            }
         }
     }
 }

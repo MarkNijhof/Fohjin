@@ -4,7 +4,7 @@ using Fohjin.DDD.Reporting.Dtos;
 
 namespace Fohjin.DDD.EventHandlers
 {
-    public class AccountNameChangedEventHandler : IEventHandler<AccountNameChangedEvent>
+    public class AccountNameChangedEventHandler : EventHandlerBase<AccountNameChangedEvent>
     {
         private readonly IReportingRepository _reportingRepository;
 
@@ -13,10 +13,11 @@ namespace Fohjin.DDD.EventHandlers
             _reportingRepository = reportingRepository;
         }
 
-        public void Execute(AccountNameChangedEvent theEvent)
+        public override Task ExecuteAsync(AccountNameChangedEvent theEvent)
         {
             _reportingRepository.Update<AccountReport>(new { theEvent.AccountName }, new { Id = theEvent.AggregateId });
             _reportingRepository.Update<AccountDetailsReport>(new { theEvent.AccountName }, new { Id = theEvent.AggregateId });
+            return Task.CompletedTask;
         }
     }
 }
