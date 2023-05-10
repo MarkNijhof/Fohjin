@@ -1,5 +1,7 @@
 using Microsoft.Data.Sqlite;
+using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Reflection;
 
 namespace Fohjin.DDD.Reporting.Infrastructure
@@ -176,11 +178,29 @@ namespace Fohjin.DDD.Reporting.Infrastructure
 
         private static TDto BuildDto<TDto>(Type dtoType, ConstructorInfo dtoConstructor, IDataRecord sqLiteDataReader) where TDto : class
         {
-            var constructorArguments = new List<object>();
+            var parameters = dtoConstructor.GetParameters();
+            var parameterNames = dtoConstructor.GetParameters().Select(p => p.Name?.ToUpper()).ToArray();
+            var constructorArguments = new object?[parameters.Length];
 
-            dtoType.GetProperties().Where(Where).ToList().ForEach(x => constructorArguments.Add(sqLiteDataReader[x.Name]));
+            foreach (var property in dtoType.GetProperties().Where(Where))
+            {
+                var index = Array.IndexOf(parameterNames, property.Name.ToUpper());
+                if (index == -1) continue;
 
-            return (TDto)dtoConstructor.Invoke(constructorArguments.ToArray());
+                var value = sqLiteDataReader[property.Name];
+
+                var converter = TypeDescriptor.GetConverter(parameters[index].ParameterType);
+                if (converter.CanConvertFrom(value.GetType()))
+                {
+                    constructorArguments[index] = converter.ConvertFrom(value);
+                }
+                else
+                {
+                    Debug.WriteLine($"Type conversion not supported");
+                }
+            }
+
+            return (TDto)dtoConstructor.Invoke(constructorArguments);
         }
 
         private static Dictionary<string, object> GetPropertyInformation(object example)
@@ -195,26 +215,19 @@ namespace Fohjin.DDD.Reporting.Infrastructure
         {
             if (example == null)
                 return;
-
-            example.ToList().ForEach(x => sqliteCommand.Parameters.Add(new SqliteParameter(string.Format("@{0}", x.Key.ToLower()), x.Value)));
+            foreach (var item in example)
+                sqliteCommand.Parameters.Add(new SqliteParameter($"{@item.Key.ToLower()}", item.Value));
         }
 
         private static void AddUpdateParameters(SqliteCommand sqliteCommand, IEnumerable<KeyValuePair<string, object>> example)
         {
             if (example == null)
                 return;
-
-            example.ToList().ForEach(x => sqliteCommand.Parameters.Add(new SqliteParameter(string.Format("@update_{0}", x.Key.ToLower()), x.Value)));
+            foreach (var item in example)
+                sqliteCommand.Parameters.Add(new SqliteParameter($"@update_{item.Key.ToLower()}", item.Value));
         }
 
-        private static bool Where(PropertyInfo propertyInfo)
-        {
-            return !propertyInfo.PropertyType.IsGenericType;
-        }
-
-        private static bool WhereGeneric(PropertyInfo propertyInfo)
-        {
-            return propertyInfo.PropertyType.IsGenericType;
-        }
+        private static bool Where(PropertyInfo propertyInfo) => !propertyInfo.PropertyType.IsGenericType;
+        private static bool WhereGeneric(PropertyInfo propertyInfo) => propertyInfo.PropertyType.IsGenericType;
     }
 }
