@@ -1,15 +1,13 @@
-using System;
-using System.Linq;
-using System.Text;
 using Fohjin.DDD.Configuration;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Text;
 
 namespace Test.Fohjin.DDD.Commands
 {
-    [TestFixture]
+    [TestClass]
     public class All_commands_must_have_a_handler
     {
-        [Test]
+        [TestMethod]
         public void Verify_that_each_command_has_atleast_one_command_handler()
         {
             var commands = CommandHandlerHelper.GetCommands();

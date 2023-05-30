@@ -32,8 +32,8 @@ namespace Test.Fohjin.DDD.Scenarios.Transfering_money
             Presenter.SetAccount(new AccountReport(Guid.NewGuid(), Guid.NewGuid(), "Account name", "1234567890"));
             Presenter.Display();
             On<IAccountDetailsView>().ValueFor(x => x.AccountName).IsSetTo("Account name");
-            On<IAccountDetailsView>().ValueFor(x => x.WithdrawlAmount).IsSetTo(0M);
-            On<IAccountDetailsView>().ValueFor(x => x.DepositeAmount).IsSetTo(0M);
+            On<IAccountDetailsView>().ValueFor(x => x.WithdrawalAmount).IsSetTo(0M);
+            On<IAccountDetailsView>().ValueFor(x => x.DepositAmount).IsSetTo(0M);
             On<IAccountDetailsView>().ValueFor(x => x.TransferAmount).IsSetTo(0M);
             On<IAccountDetailsView>().FireEvent(x => x.OnInitiateMoneyTransfer += null);
             On<IAccountDetailsView>().ValueFor(x => x.TransferAmount).IsSetTo(12.3M);
@@ -46,7 +46,7 @@ namespace Test.Fohjin.DDD.Scenarios.Transfering_money
             On<IAccountDetailsView>().FireEvent(x => x.OnFormElementGotChanged += null);
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_save_button_will_be_enabled()
         {
             On<IAccountDetailsView>().VerifyThat.Method(x => x.DisableSaveButton()).WasCalled();

@@ -28,19 +28,19 @@ namespace Test.Fohjin.DDD.Scenarios.Displaying_client_details
             On<IClientSearchFormView>().FireEvent(x => x.OnOpenSelectedClient += delegate { });
         }
 
-        [Then]
+        [TestMethod]
         public void Then_get_selected_client_will_be_called_on_the_view()
         {
             On<IClientSearchFormView>().VerifyThat.Method(x => x.GetSelectedClient()).WasCalled();
         }
 
-        [Then]
+        [TestMethod]
         public void Then_client_report_data_from_the_reporting_repository_is_being_loaded_into_the_view()
         {
             On<IClientDetailsPresenter>().VerifyThat.Method(x => x.SetClient(_clientReport)).WasCalled();
         }
 
-        [Then]
+        [TestMethod]
         public void Then_display_will_be_called_on_the_view()
         {
             On<IClientDetailsPresenter>().VerifyThat.Method(x => x.Display()).WasCalled();

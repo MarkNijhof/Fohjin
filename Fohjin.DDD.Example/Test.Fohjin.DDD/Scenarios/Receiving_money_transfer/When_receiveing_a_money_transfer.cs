@@ -14,7 +14,7 @@ namespace Test.Fohjin.DDD.Scenarios.Receiving_money_transfer
         protected override IEnumerable<IDomainEvent> Given()
         {
             yield return PrepareDomainEvent.Set(new AccountOpenedEvent(Guid.NewGuid(), Guid.NewGuid(), "AccountName", "1234567890")).ToVersion(1);
-            yield return PrepareDomainEvent.Set(new CashDepositedEvent(20, 20)).ToVersion(1);
+            yield return PrepareDomainEvent.Set(new CashDepositdEvent(20, 20)).ToVersion(1);
         }
 
         protected override ReceiveMoneyTransferCommand When()
@@ -22,14 +22,14 @@ namespace Test.Fohjin.DDD.Scenarios.Receiving_money_transfer
             return new ReceiveMoneyTransferCommand(Guid.NewGuid(), 5.0M, "0987654321");
         }
 
-        [Then]
+        [TestMethod]
         public void Then_a_money_transfer_received_event_will_be_published()
         {
             PublishedEvents.Last().WillBeOfType<MoneyTransferReceivedEvent>();
         }
 
-        [Then]
-        public void Then_it_will_generate_an_deposite_event_with_the_expected_ammount()
+        [TestMethod]
+        public void Then_it_will_generate_an_Deposit_event_with_the_expected_ammount()
         {
             PublishedEvents.Last<MoneyTransferReceivedEvent>().Amount.WillBe(5.0M);
             PublishedEvents.Last<MoneyTransferReceivedEvent>().Balance.WillBe(25.0M);

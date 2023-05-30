@@ -4,6 +4,7 @@ using Fohjin.DDD.BankApplication.Presenters;
 using Fohjin.DDD.BankApplication.Views;
 using Fohjin.DDD.Reporting;
 using Fohjin.DDD.Reporting.Dto;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Test.Fohjin.DDD.Scenarios.Changing_the_name_of_an_account
@@ -40,7 +41,7 @@ namespace Test.Fohjin.DDD.Scenarios.Changing_the_name_of_an_account
             On<IAccountDetailsView>().FireEvent(x => x.OnFormElementGotChanged += null);
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_save_button_will_be_enabled()
         {
             On<IAccountDetailsView>().VerifyThat.Method(x => x.EnableSaveButton()).WasCalled();

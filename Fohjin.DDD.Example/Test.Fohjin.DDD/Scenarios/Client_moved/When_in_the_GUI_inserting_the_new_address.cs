@@ -4,6 +4,7 @@ using Fohjin.DDD.BankApplication.Presenters;
 using Fohjin.DDD.BankApplication.Views;
 using Fohjin.DDD.Reporting;
 using Fohjin.DDD.Reporting.Dto;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Test.Fohjin.DDD.Scenarios.Client_moved
@@ -46,13 +47,13 @@ namespace Test.Fohjin.DDD.Scenarios.Client_moved
             On<IClientDetailsView>().FireEvent(x => x.OnFormElementGotChanged += null);
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_save_button_will_be_disabled()
         {
             On<IClientDetailsView>().VerifyThat.Method(x => x.DisableSaveButton()).WasCalled();
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_menu_buttons_will_be_enabled()
         {
             On<IClientDetailsView>().VerifyThat.Method(x => x.EnableAddNewAccountMenu()).WasCalled();
@@ -61,7 +62,7 @@ namespace Test.Fohjin.DDD.Scenarios.Client_moved
             On<IClientDetailsView>().VerifyThat.Method(x => x.EnablePhoneNumberChangedMenu()).WasCalled();
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_save_button_will_be_enabled()
         {
             On<IClientDetailsView>().VerifyThat.Method(x => x.EnableSaveButton()).WasCalled();

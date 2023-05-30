@@ -30,26 +30,26 @@ namespace Test.Fohjin.DDD.Scenarios.Adding_a_new_client
             return new ClientCreatedEvent(_clientId, "New Client Name", "Street", "123", "5000", "Bergen", "1234567890");
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_reporting_repository_will_be_used_to_save_the_client_report()
         {
             OnDependency<IReportingRepository>().Verify(x => x.Save(It.IsAny<ClientReport>()));
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_client_report_will_be_updated_with_the_expected_details()
         {
             SaveClientObject.Id.WillBe(_clientId);
             SaveClientObject.Name.WillBe("New Client Name");
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_reporting_repository_will_be_used_to_save_the_client_details_report()
         {
             OnDependency<IReportingRepository>().Verify(x => x.Save(It.IsAny<ClientDetailsReport>()));
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_client_details_report_will_be_updated_with_the_expected_details()
         {
             SaveClientDetailsObject.Id.WillBe(_clientId);

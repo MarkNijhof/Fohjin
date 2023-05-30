@@ -3,6 +3,7 @@ using Fohjin.DDD.EventHandlers;
 using Fohjin.DDD.Events.Client;
 using Fohjin.DDD.Reporting;
 using Fohjin.DDD.Reporting.Dto;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Test.Fohjin.DDD.Scenarios.Client_got_his_name_changed
@@ -33,26 +34,26 @@ namespace Test.Fohjin.DDD.Scenarios.Client_got_his_name_changed
             return clientNameWasChangedEvent;
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_reporting_repository_will_be_used_to_update_the_client_report()
         {
             OnDependency<IReportingRepository>().Verify(x => x.Update<ClientReport>(It.IsAny<object>(), It.IsAny<object>()));
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_client_report_will_be_updated_with_the_expected_details()
         {
             UpdateClientObject.WillBeSimuliar(new { Name = "New Client Name" }.ToString());
             WhereClientObject.WillBeSimuliar(new { Id = _clientId });
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_reporting_repository_will_be_used_to_update_the_client_details_report()
         {
             OnDependency<IReportingRepository>().Verify(x => x.Update<ClientDetailsReport>(It.IsAny<object>(), It.IsAny<object>()));
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_client_details_report_will_be_updated_with_the_expected_details()
         {
             UpdateClientDetailsObject.WillBeSimuliar(new { ClientName = "New Client Name" }.ToString());

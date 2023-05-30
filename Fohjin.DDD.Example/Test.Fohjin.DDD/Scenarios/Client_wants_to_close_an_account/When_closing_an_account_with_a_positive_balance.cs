@@ -13,7 +13,7 @@ namespace Test.Fohjin.DDD.Scenarios.Client_wants_to_close_an_account
         protected override IEnumerable<IDomainEvent> Given()
         {
             yield return PrepareDomainEvent.Set(new AccountOpenedEvent(Guid.NewGuid(), Guid.NewGuid(), "AccountName", "1234567890")).ToVersion(1);
-            yield return PrepareDomainEvent.Set(new CashDepositedEvent(20, 20)).ToVersion(1);
+            yield return PrepareDomainEvent.Set(new CashDepositdEvent(20, 20)).ToVersion(1);
         }
 
         protected override CloseAccountCommand When()
@@ -21,7 +21,7 @@ namespace Test.Fohjin.DDD.Scenarios.Client_wants_to_close_an_account
             return new CloseAccountCommand(Guid.NewGuid());
         }
 
-        [Then]
+        [TestMethod]
         public void Then_an_account_balance_not_zero_exception_will_be_thrown()
         {
             CaughtException.WillBeOfType<AccountBalanceNotZeroException>();

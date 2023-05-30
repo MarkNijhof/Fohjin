@@ -11,13 +11,13 @@ namespace Test.Fohjin.DDD.Domain
             AggregateRoot.DoSomethingIlligal();
         }
 
-        [Then]
+        [TestMethod]
         public void Then_it_will_throw_an_unregistered_domain_event_exception()
         {
             CaughtException.WillBeOfType<UnregisteredDomainEventException>();
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_exception_will_have_the_following_message()
         {
             CaughtException.Message.WillBe(string.Format("The requested domain event '{0}' is not registered in '{1}'", typeof(SomeUnregisteredEvent).FullName, typeof(TestAggregateRoot).FullName));
@@ -34,49 +34,49 @@ namespace Test.Fohjin.DDD.Domain
             AggregateRoot.Child.SomethingAbsolutelyElseWasDone();
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_first_event_was_something_was_done()
         {
             PublishedEvents.LastMinus(3).WillBeOfType<SomethingWasDone>();
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_first_event_will_have_version_number_1()
         {
             PublishedEvents.LastMinus<IDomainEvent>(3).Version.WillBe(1);
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_second_event_was_something_was_done()
         {
             PublishedEvents.LastMinus(2).WillBeOfType<SomethingElseWasDone>();
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_second_event_will_have_version_number_2()
         {
             PublishedEvents.LastMinus<IDomainEvent>(2).Version.WillBe(2);
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_third_event_was_something_was_done()
         {
             PublishedEvents.LastMinus(1).WillBeOfType<SomethingWasDone>();
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_third_event_will_have_version_number_3()
         {
             PublishedEvents.LastMinus<IDomainEvent>(1).Version.WillBe(3);
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_fourth_event_was_something_was_done()
         {
             PublishedEvents.LastMinus(0).WillBeOfType<SomethingAbsolutelyElseWasDone>();
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_fourth_event_will_have_version_number_4()
         {
             PublishedEvents.LastMinus<IDomainEvent>(0).Version.WillBe(4);

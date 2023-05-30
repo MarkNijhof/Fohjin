@@ -4,6 +4,7 @@ using System.Linq;
 using Fohjin.DDD.Bus.Direct;
 using Fohjin.DDD.EventHandlers;
 using Fohjin.DDD.Events;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Test.Fohjin.DDD.Bus
 {
@@ -31,7 +32,7 @@ namespace Test.Fohjin.DDD.Bus
             SubjectUnderTest.Commit();
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_execute_method_on_the_returned_event_handler_is_invoked_with_the_provided_event()
         {
             _handler.Ids.First().WillBe(_event.Id);
@@ -65,13 +66,13 @@ namespace Test.Fohjin.DDD.Bus
             SubjectUnderTest.Commit();
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_execute_method_on_the_first_returned_event_handler_is_invoked_with_the_first_provided_event()
         {
             _handler.Ids.First().WillBe(_event.Id);
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_execute_method_on_the_second_returned_event_handler_is_invoked_with_the_first_provided_event()
         {
             _secondHandler.Ids.First().WillBe(_event.Id);
@@ -107,25 +108,25 @@ namespace Test.Fohjin.DDD.Bus
             SubjectUnderTest.Commit();
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_execute_method_on_the_first_returned_event_handler_is_invoked_with_the_first_provided_event()
         {
             _handler.Ids[0].WillBe(_event.Id);
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_execute_method_on_the_first_returned_event_handler_is_invoked_with_the_second_provided_event()
         {
             _handler.Ids[1].WillBe(_otherEvent.Id);
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_execute_method_on_the_second_returned_event_handler_is_invoked_with_the_first_provided_event()
         {
             _secondHandler.Ids[0].WillBe(_event.Id);
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_execute_method_on_the_second_returned_event_handler_is_invoked_with_the_second_provided_event()
         {
             _secondHandler.Ids[1].WillBe(_otherEvent.Id);

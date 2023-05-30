@@ -1,13 +1,13 @@
 using System;
 using System.Linq;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Test.Fohjin.DDD.Events
 {
-    [TestFixture]
+    [TestClass]
     public class All_domain_events_must_be_Serializable
     {
-        [Test]
+        [TestMethod]
         public void All_domain_events_will_have_the_Serializable_attribute_assigned()
         {
             var domainEventTypes = typeof(global::Fohjin.DDD.Events.DomainEvent).Assembly.GetExportedTypes().Where(x => x.BaseType == typeof(global::Fohjin.DDD.Events.DomainEvent)).ToList();

@@ -6,7 +6,7 @@ using Moq;
 
 namespace Test.Fohjin.DDD
 {
-    [Specification]
+    [TestClass]
     public abstract class PresenterTestFixture<TPresenter>
     {
         private IDictionary<Type, object> mocks;

@@ -11,7 +11,7 @@ namespace Test.Fohjin.DDD.Scenarios.Client_wants_to_open_a_new_account
             return new AccountToClientAssignedEvent(Guid.NewGuid()) { AggregateId = Guid.NewGuid() };
         }
 
-        [Then]
+        [TestMethod]
         public void Then_it_will_not_throw_an_exception()
         {
             CaughtException.WillBeOfType<ThereWasNoExceptionButOneWasExpectedException>();

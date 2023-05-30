@@ -3,7 +3,7 @@ using Moq;
 
 namespace Test.Fohjin.DDD
 {
-    [Specification]
+    [TestClass]
     public abstract class BaseTestFixture
     {
         protected Exception CaughtException;
@@ -32,7 +32,7 @@ namespace Test.Fohjin.DDD
         }
     }
 
-    [Specification]
+    [TestClass]
     public abstract class BaseTestFixture<TSubjectUnderTest>
     {
         private Dictionary<Type, object> mocks;
@@ -113,7 +113,5 @@ namespace Test.Fohjin.DDD
 
     //public class GivenAttribute : SetUpAttribute { }
 
-    public class ThenAttribute : TestMethodAttribute { }
-
-    public class SpecificationAttribute : TestClassAttribute { }
+    //public class ThenAttribute : TestMethodAttribute { }
 }

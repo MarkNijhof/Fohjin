@@ -27,13 +27,13 @@ namespace Test.Fohjin.DDD.Scenarios.Assign_new_bank_card
             return new ReportStolenBankCardCommand(_clientId, _bankCardId);
         }
 
-        [Then]
+        [TestMethod]
         public void Then_a_non_existing_bank_card_is_disabled_will_be_thrown()
         {
             CaughtException.WillBeOfType<BankCardIsDisabledException>();
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_exception_message_will_be()
         {
             CaughtException.Message.WillBe("The bank card is disabled and no opperations can be executed on it");

@@ -11,12 +11,12 @@ using Fohjin.DDD.EventStore.SQLite;
 using Fohjin.DDD.EventStore.Storage;
 using Fohjin.DDD.EventStore.Storage.Memento;
 using Moq;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NUnit.Framework.SyntaxHelpers;
 
 namespace Test.Fohjin.DDD.Domain.Repositories
 {
-    [TestFixture]
+    [TestClass]
     public class ClosedAccountRepositoryTest
     {
         private const string dataBaseFile = "domainDataBase.db3";
@@ -40,7 +40,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
             _repository = new DomainRepository<IDomainEvent>(_eventStoreUnitOfWork, _eventStoreIdentityMap);
         }
 
-        [Test]
+        [TestMethod]
         public void When_calling_Save_it_will_add_the_domain_events_to_the_domain_event_storage()
         {
             _ledgers = new List<Ledger>
@@ -57,11 +57,11 @@ namespace Test.Fohjin.DDD.Domain.Repositories
             _repository.Add(closedAccount);
             _eventStoreUnitOfWork.Commit();
 
-            Assert.That(_domainEventStorage.GetEventsSinceLastSnapShot(closedAccount.Id).Count(), Is.EqualTo(1));
-            Assert.That(_domainEventStorage.GetAllEvents(closedAccount.Id).Count(), Is.EqualTo(1));
+            Assert.AreEqual(_domainEventStorage.GetEventsSinceLastSnapShot(closedAccount.Id).Count(), Is.EqualTo(1));
+            Assert.AreEqual(_domainEventStorage.GetAllEvents(closedAccount.Id).Count(), Is.EqualTo(1));
         }
 
-        [Test]
+        [TestMethod]
         public void When_calling_Save_it_will_reset_the_domain_events()
         {
             _ledgers = new List<Ledger>
@@ -80,10 +80,10 @@ namespace Test.Fohjin.DDD.Domain.Repositories
 
             var closedAccountForRepository = (IEventProvider<IDomainEvent>)closedAccount;
 
-            Assert.That(closedAccountForRepository.GetChanges().Count(), Is.EqualTo(0));
+            Assert.AreEqual(closedAccountForRepository.GetChanges().Count(), Is.EqualTo(0));
         }
 
-        [Test]
+        [TestMethod]
         public void When_calling_CreateMemento_it_will_return_a_closed_account_memento()
         {
             _ledgers = new List<Ledger>
@@ -117,11 +117,11 @@ namespace Test.Fohjin.DDD.Domain.Repositories
                     var ledgers = (List<Ledger>)field.GetValue(recreated);
                     foreach (var ledger in (List<Ledger>)field.GetValue(original))
                     {
-                        Assert.That(ledger.ToString(), Is.EqualTo(ledgers[counter++].ToString()));
+                        Assert.AreEqual(ledger.ToString(), Is.EqualTo(ledgers[counter++].ToString()));
                     }
                     continue;
                 }
-                Assert.That(field.GetValue(original).ToString(), Is.EqualTo(field.GetValue(recreated).ToString()));
+                Assert.AreEqual(field.GetValue(original).ToString(), Is.EqualTo(field.GetValue(recreated).ToString()));
             }
         }
 

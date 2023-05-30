@@ -21,7 +21,7 @@ namespace Test.Fohjin.DDD.Scenarios.Client_wants_to_close_an_account
             return new CloseAccountCommand(Guid.NewGuid());
         }
 
-        [Then]
+        [TestMethod]
         public void Then_a_closed_account_exception_will_be_thrown()
         {
             CaughtException.WillBeOfType<ClosedAccountException>();

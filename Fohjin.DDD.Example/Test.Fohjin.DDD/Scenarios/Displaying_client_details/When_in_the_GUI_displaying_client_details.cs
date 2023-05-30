@@ -29,13 +29,13 @@ namespace Test.Fohjin.DDD.Scenarios.Displaying_client_details
             Presenter.Display();
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_save_button_will_be_disabled()
         {
             On<IClientDetailsView>().VerifyThat.Method(x => x.DisableSaveButton()).WasCalled();
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_menu_buttons_will_be_disabled()
         {
             On<IClientDetailsView>().VerifyThat.Method(x => x.DisableAddNewAccountMenu()).WasCalled();
@@ -44,13 +44,13 @@ namespace Test.Fohjin.DDD.Scenarios.Displaying_client_details
             On<IClientDetailsView>().VerifyThat.Method(x => x.DisablePhoneNumberChangedMenu()).WasCalled();
         }
 
-        [Then]
+        [TestMethod]
         public void Then_overview_panel_will_be_shown()
         {
             On<IClientDetailsView>().VerifyThat.Method(x => x.EnableOverviewPanel()).WasCalled();
         }
 
-        [Then]
+        [TestMethod]
         public void Then_client_details_report_data_from_the_reporting_repository_is_being_loaded_into_the_view()
         {
             On<IClientDetailsView>().VerifyThat.ValueIsSetFor(x => x.ClientName = _clientDetailsReport.ClientName);
@@ -68,7 +68,7 @@ namespace Test.Fohjin.DDD.Scenarios.Displaying_client_details
             On<IClientDetailsView>().VerifyThat.ValueIsSetFor(x => x.AddressLine2Label = string.Format("{0} {1}", _clientDetailsReport.PostalCode, _clientDetailsReport.City));
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_menu_buttons_will_be_enabled()
         {
             On<IClientDetailsView>().VerifyThat.Method(x => x.EnableAddNewAccountMenu()).WasCalled();
@@ -77,7 +77,7 @@ namespace Test.Fohjin.DDD.Scenarios.Displaying_client_details
             On<IClientDetailsView>().VerifyThat.Method(x => x.EnablePhoneNumberChangedMenu()).WasCalled();
         }
 
-        [Then]
+        [TestMethod]
         public void Then_show_dialog_will_be_called_on_the_view()
         {
             On<IClientDetailsView>().VerifyThat.Method(x => x.ShowDialog()).WasCalled();

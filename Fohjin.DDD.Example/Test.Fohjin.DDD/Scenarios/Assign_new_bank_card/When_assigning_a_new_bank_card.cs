@@ -25,13 +25,13 @@ namespace Test.Fohjin.DDD.Scenarios.Assign_new_bank_card
             return new AssignNewBankCardCommand(_clientId, _accountId);
         }
 
-        [Then]
+        [TestMethod]
         public void Then_a_client_created_event_will_be_published()
         {
             PublishedEvents.Last().WillBeOfType<NewBankCardForAccountAsignedEvent>();
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_published_event_will_contain_the_name_of_the_client()
         {
             PublishedEvents.Last<NewBankCardForAccountAsignedEvent>().AccountId.WillBe(_accountId);

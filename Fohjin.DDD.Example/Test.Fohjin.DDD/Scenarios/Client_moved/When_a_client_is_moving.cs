@@ -6,6 +6,7 @@ using Fohjin.DDD.Commands;
 using Fohjin.DDD.Domain.Client;
 using Fohjin.DDD.Events.Client;
 using Fohjin.DDD.EventStore;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Test.Fohjin.DDD.Scenarios.Client_moved
 {
@@ -21,13 +22,13 @@ namespace Test.Fohjin.DDD.Scenarios.Client_moved
             return new ClientIsMovingCommand(Guid.NewGuid(), "Welhavens gate", "49b", "5006", "Bergen");
         }
 
-        [Then]
+        [TestMethod]
         public void Then_a_client_Moved_changed_event_will_be_published()
         {
             PublishedEvents.Last().WillBeOfType<ClientMovedEvent>();
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_published_event_will_contain_the_new_address_of_the_client()
         {
             PublishedEvents.Last<ClientMovedEvent>().Street.WillBe("Welhavens gate");

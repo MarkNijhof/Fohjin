@@ -21,13 +21,13 @@ namespace Test.Fohjin.DDD.Scenarios.Changing_the_name_of_an_account
             return new ChangeAccountNameCommand(Guid.NewGuid(), "New Account Name");
         }
 
-        [Then]
+        [TestMethod]
         public void Then_a_closed_account_exception_will_be_thrown()
         {
             CaughtException.WillBeOfType<ClosedAccountException>();
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_exception_message_will_be()
         {
             CaughtException.Message.WillBe("The ActiveAcount is closed and no opperations can be executed on it");

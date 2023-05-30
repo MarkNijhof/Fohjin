@@ -27,13 +27,13 @@ namespace Test.Fohjin.DDD.Scenarios.Client_wants_to_close_an_account
             AggregateRoot = ClosedAccount.CreateNew(_accountId, _clientId, ledgers, new AccountName("Closed Account"), new AccountNumber("1234567890"));
         }
 
-        [Then]
+        [TestMethod]
         public void Then_a_closed_account_created_event_will_be_published()
         {
             PublishedEvents.Last().WillBeOfType<ClosedAccountCreatedEvent>();
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_published_event_will_contain_the_expected_details_of_the_closed_account()
         {
             PublishedEvents.Last<ClosedAccountCreatedEvent>().OriginalAccountId.WillBe(_accountId);
@@ -42,7 +42,7 @@ namespace Test.Fohjin.DDD.Scenarios.Client_wants_to_close_an_account
             PublishedEvents.Last<ClosedAccountCreatedEvent>().AccountNumber.WillBe("1234567890");
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_published_event_will_contain_the_expected_ledgers_of_the_closed_account()
         {
             PublishedEvents.Last<ClosedAccountCreatedEvent>().Ledgers.Count().WillBe(4);

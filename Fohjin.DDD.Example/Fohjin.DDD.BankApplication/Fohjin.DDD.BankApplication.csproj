@@ -9,28 +9,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="7.0.0" />
-	  <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="7.0.0" />
-	  <PackageReference Include="Microsoft.Extensions.Configuration.Ini" Version="7.0.0" />
-	  <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
-	  <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="7.0.0" />
-	  <PackageReference Include="Microsoft.Extensions.Configuration.Xml" Version="7.0.0" />
-	  <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
-	  <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="7.0.0" />
-	  <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <ProjectReference Include="..\Fohjin.DDD.Abstractions\Fohjin.DDD.Abstractions.csproj" />
-	  <ProjectReference Include="..\Fohjin.DDD.Bus\Fohjin.DDD.Bus.csproj" />
-	  <ProjectReference Include="..\Fohjin.DDD.CommandHandlers\Fohjin.DDD.CommandHandlers.csproj" />
-	  <ProjectReference Include="..\Fohjin.DDD.Common\Fohjin.DDD.Common.csproj" />
-	  <ProjectReference Include="..\Fohjin.DDD.Configuration\Fohjin.DDD.Configuration.csproj" />
-	  <ProjectReference Include="..\Fohjin.DDD.EventHandlers\Fohjin.DDD.EventHandlers.csproj" />
-	  <ProjectReference Include="..\Fohjin.DDD.EventStore.SQLite\Fohjin.DDD.EventStore.SQLite.csproj" />
-	  <ProjectReference Include="..\Fohjin.DDD.EventStore\Fohjin.DDD.EventStore.csproj" />
-	  <ProjectReference Include="..\Fohjin.DDD.Reporting\Fohjin.DDD.Reporting.csproj" />
-	  <ProjectReference Include="..\Fohjin.DDD.Services\Fohjin.DDD.Services.csproj" />
+	  <ProjectReference Include="..\Fohjin.DDD.BankApplication.Core\Fohjin.DDD.BankApplication.Core.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

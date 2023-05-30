@@ -2,6 +2,7 @@
 using Fohjin.DDD.EventHandlers;
 using Fohjin.DDD.Events.Account;
 using Fohjin.DDD.Services;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Test.Fohjin.DDD.Scenarios.Transfering_money
@@ -24,16 +25,16 @@ namespace Test.Fohjin.DDD.Scenarios.Transfering_money
             return new MoneyTransferSendEvent(50.5M, 10.5M, "0987654321", "1234567890") { AggregateId = _accountId };
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_money_transfer_will_be_send_through_the_money_transfer_service()
         {
             OnDependency<ISendMoneyTransfer>().Verify(x => x.Send(It.IsAny<MoneyTransfer>()));
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_money_transfer_will_have_the_expected_details()
         {
-            MoneyTransfer.Ammount.WillBe(10.5M);
+            MoneyTransfer.Amount.WillBe(10.5M);
             MoneyTransfer.SourceAccount.WillBe("0987654321");
             MoneyTransfer.TargetAccount.WillBe("1234567890");
         }

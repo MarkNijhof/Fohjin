@@ -23,7 +23,7 @@ namespace Test.Fohjin.DDD.Scenarios.Receiving_money_transfer
             SubjectUnderTest.Receive(new MoneyTransfer("source account number", "target account number", 123.45M));
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_newly_created_account_will_be_saved()
         {
             OnDependency<IBus>().Verify(x => x.Publish(It.IsAny<ReceiveMoneyTransferCommand>()));

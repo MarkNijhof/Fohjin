@@ -9,7 +9,7 @@ using Moq;
 
 namespace Test.Fohjin.DDD
 {
-    [Specification]
+    [TestClass]
     public abstract class CommandTestFixture<TCommand, TCommandHandler, TAggregateRoot> 
         where TCommand : class, ICommand
         where TCommandHandler : class, ICommandHandler<TCommand>

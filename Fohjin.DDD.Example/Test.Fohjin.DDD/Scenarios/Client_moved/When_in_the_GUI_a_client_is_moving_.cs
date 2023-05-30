@@ -34,7 +34,7 @@ namespace Test.Fohjin.DDD.Scenarios.Client_moved
             On<IClientDetailsView>().FireEvent(x => x.OnInitiateClientHasMoved += null);
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_menu_buttons_will_be_disabled()
         {
             On<IClientDetailsView>().VerifyThat.Method(x => x.DisableAddNewAccountMenu()).WasCalled();
@@ -43,7 +43,7 @@ namespace Test.Fohjin.DDD.Scenarios.Client_moved
             On<IClientDetailsView>().VerifyThat.Method(x => x.DisablePhoneNumberChangedMenu()).WasCalled();
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_name_change_panel_will_be_enabled()
         {
             On<IClientDetailsView>().VerifyThat.Method(x => x.EnableAddressPanel()).WasCalled();

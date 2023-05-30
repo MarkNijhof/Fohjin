@@ -21,13 +21,13 @@ namespace Test.Fohjin.DDD.Scenarios.Transfering_money
             return new MoneyTransferFailedCompensatingCommand(Guid.NewGuid(), 5.0M, "0987654321");
         }
 
-        [Then]
+        [TestMethod]
         public void Then_a_closed_account_exception_will_be_thrown()
         {
             CaughtException.WillBeOfType<ClosedAccountException>();
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_exception_message_will_be()
         {
             CaughtException.Message.WillBe("The ActiveAcount is closed and no opperations can be executed on it");

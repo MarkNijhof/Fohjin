@@ -1,5 +1,6 @@
 ﻿using Fohjin.DDD.BankApplication.Presenters;
 using Fohjin.DDD.BankApplication.Views;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Test.Fohjin.DDD.Scenarios.Adding_a_new_client
 {
@@ -10,13 +11,13 @@ namespace Test.Fohjin.DDD.Scenarios.Adding_a_new_client
             On<IClientSearchFormView>().FireEvent(x => x.OnCreateNewClient += delegate { });
         }
 
-        [Then]
+        [TestMethod]
         public void Then_client_report_data_from_the_reporting_repository_is_being_loaded_into_the_view()
         {
             On<IClientDetailsPresenter>().VerifyThat.Method(x => x.SetClient(null)).WasCalled();
         }
 
-        [Then]
+        [TestMethod]
         public void Then_display_will_be_called_on_the_view()
         {
             On<IClientDetailsPresenter>().VerifyThat.Method(x => x.Display()).WasCalled();

@@ -4,6 +4,7 @@ using Fohjin.DDD.EventHandlers;
 using Fohjin.DDD.Events.Account;
 using Fohjin.DDD.Reporting;
 using Fohjin.DDD.Reporting.Dto;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Test.Fohjin.DDD.Scenarios.Client_wants_to_close_an_account
@@ -46,13 +47,13 @@ namespace Test.Fohjin.DDD.Scenarios.Client_wants_to_close_an_account
             return new ClosedAccountCreatedEvent(_accountId, _orginalAccountId, _clientId, ledgers, "Closed Account", "1234567890");
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_reporting_repository_will_be_used_to_save_the_closed_account_report()
         {
             OnDependency<IReportingRepository>().Verify(x => x.Save(It.IsAny<ClosedAccountReport>()));
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_reporting_repository_will_be_used_to_update_the_closed_account_report()
         {
             SaveClosedAccountReportObject.Id.WillBe(_accountId);
@@ -60,13 +61,13 @@ namespace Test.Fohjin.DDD.Scenarios.Client_wants_to_close_an_account
             SaveClosedAccountReportObject.AccountName.WillBe("Closed Account");
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_reporting_repository_will_be_used_to_save_the_closed_account_details_report()
         {
             OnDependency<IReportingRepository>().Verify(x => x.Save(It.IsAny<ClosedAccountDetailsReport>()));
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_reporting_repository_will_be_used_to_update_the_closed_account_details_report()
         {
             SaveClosedAccountDetailsReportObject.Id.WillBe(_accountId);
@@ -76,7 +77,7 @@ namespace Test.Fohjin.DDD.Scenarios.Client_wants_to_close_an_account
             SaveClosedAccountDetailsReportObject.AccountNumber.WillBe("1234567890");
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_reporting_repository_will_be_used_to_save_the_four_ledger_reports()
         {
             OnDependency<IReportingRepository>().Verify(x => x.Save(It.IsAny<LedgerReport>()), Times.Exactly(5));

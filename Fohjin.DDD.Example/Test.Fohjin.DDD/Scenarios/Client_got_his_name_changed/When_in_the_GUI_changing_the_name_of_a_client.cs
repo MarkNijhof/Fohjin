@@ -4,6 +4,7 @@ using Fohjin.DDD.BankApplication.Presenters;
 using Fohjin.DDD.BankApplication.Views;
 using Fohjin.DDD.Reporting;
 using Fohjin.DDD.Reporting.Dto;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Test.Fohjin.DDD.Scenarios.Client_got_his_name_changed
@@ -34,7 +35,7 @@ namespace Test.Fohjin.DDD.Scenarios.Client_got_his_name_changed
             On<IClientDetailsView>().FireEvent(x => x.OnInitiateClientNameChange += null);
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_menu_buttons_will_be_disabled()
         {
             On<IClientDetailsView>().VerifyThat.Method(x => x.DisableAddNewAccountMenu()).WasCalled();
@@ -43,7 +44,7 @@ namespace Test.Fohjin.DDD.Scenarios.Client_got_his_name_changed
             On<IClientDetailsView>().VerifyThat.Method(x => x.DisablePhoneNumberChangedMenu()).WasCalled();
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_name_change_panel_will_be_enabled()
         {
             On<IClientDetailsView>().VerifyThat.Method(x => x.EnableClientNamePanel()).WasCalled();

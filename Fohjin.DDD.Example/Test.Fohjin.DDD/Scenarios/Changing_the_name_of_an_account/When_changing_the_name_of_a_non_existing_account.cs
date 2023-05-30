@@ -2,6 +2,7 @@
 using Fohjin.DDD.CommandHandlers;
 using Fohjin.DDD.Commands;
 using Fohjin.DDD.Domain.Account;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Test.Fohjin.DDD.Scenarios.Changing_the_name_of_an_account
 {
@@ -12,16 +13,16 @@ namespace Test.Fohjin.DDD.Scenarios.Changing_the_name_of_an_account
             return new ChangeAccountNameCommand(Guid.NewGuid(), "New Account Name");
         }
 
-        [Then]
+        [TestMethod]
         public void Then_a_non_existing_account_exception_will_be_thrown()
         {
             CaughtException.WillBeOfType<NonExitsingAccountException>();
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_exception_message_will_be()
         {
-            CaughtException.Message.WillBe("The ActiveAcount is not created and no opperations can be executed on it");
+            CaughtException.Message.WillBe("The ActiveAcount is not created and no operations can be executed on it");
         }
     }
 }

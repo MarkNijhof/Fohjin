@@ -1,14 +1,14 @@
 using Fohjin.DDD.Configuration;
 using Fohjin.DDD.Services;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StructureMap;
 
 namespace Test.Fohjin.DDD.Configuration
 {
-    [TestFixture]
+    [TestClass]
     public class StructureMapTest
     {
-        [Test]
+        [TestMethod]
         public void Will_be_able_to_re_create_the_database_schema_in_sqlite()
         {
             ObjectFactory.Initialize(x =>

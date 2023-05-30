@@ -2,14 +2,14 @@ using System;
 using System.Linq;
 using System.Text;
 using Fohjin.DDD.Configuration;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Test.Fohjin.DDD.Events
 {
-    [TestFixture]
+    [TestClass]
     public class All_domain_events_must_have_a_handler
     {
-        [Test]
+        [TestMethod]
         public void Verify_that_each_event_has_atleast_one_event_handler()
         {
             var events = EventHandlerHelper.GetEvents();

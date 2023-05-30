@@ -20,13 +20,13 @@ namespace Test.Fohjin.DDD.Scenarios.Receiving_money_transfer
             SubjectUnderTest.Receive(new MoneyTransfer("source account number", "target account number", 123.45M));
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_newly_created_account_will_be_saved()
         {
             CaughtException.WillBeOfType<UnknownAccountException>();
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_exception_message_will_be()
         {
             CaughtException.Message.WillBe(string.Format("The requested account '{0}' is not managed by this bank", "target account number"));

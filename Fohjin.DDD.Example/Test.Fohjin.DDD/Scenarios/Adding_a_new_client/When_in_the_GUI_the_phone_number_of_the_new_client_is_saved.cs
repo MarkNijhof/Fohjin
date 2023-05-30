@@ -46,13 +46,13 @@ namespace Test.Fohjin.DDD.Scenarios.Adding_a_new_client
             On<IClientDetailsView>().FireEvent(x => x.OnSaveNewPhoneNumber += null);
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_save_button_will_be_disabled()
         {
             On<IClientDetailsView>().VerifyThat.Method(x => x.DisableSaveButton()).WasCalled();
         }
 
-        [Then]
+        [TestMethod]
         public void Then_a_create_client_command_with_all_collected_information_will_be_published()
         {
             On<IBus>().VerifyThat.Method(x => x.Publish(It.IsAny<CreateClientCommand>())).WasCalled();
@@ -65,7 +65,7 @@ namespace Test.Fohjin.DDD.Scenarios.Adding_a_new_client
             CreateClientCommand.As<CreateClientCommand>().PhoneNumber.WillBe("1234567890");
         }
 
-        [Then]
+        [TestMethod]
         public void Then_overview_panel_will_be_shown()
         {
             On<IClientDetailsView>().VerifyThat.Method(x => x.Close()).WasCalled();

@@ -8,12 +8,12 @@ using Fohjin.DDD.EventStore;
 using Fohjin.DDD.EventStore.SQLite;
 using Fohjin.DDD.EventStore.Storage;
 using Moq;
-using NUnit.Framework;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NUnit.Framework.SyntaxHelpers;
 
 namespace Test.Fohjin.DDD.Domain.Repositories
 {
-    [TestFixture]
+    [TestClass]
     public class clientRepositoryTest
     {
         private const string dataBaseFile = "domainDataBase.db3";
@@ -36,7 +36,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
             _repository = new DomainRepository<IDomainEvent>(_eventStoreUnitOfWork, _eventStoreIdentityMap);
         }
 
-        [Test]
+        [TestMethod]
         public void When_calling_Save_it_will_add_the_domain_events_to_the_domain_event_storage()
         {
             var client = Client.CreateNew(new ClientName("New Client"), new Address("Street", "123", "5000", "Bergen"), new PhoneNumber("1234567890"));
@@ -46,11 +46,11 @@ namespace Test.Fohjin.DDD.Domain.Repositories
             _repository.Add(client);
             _eventStoreUnitOfWork.Commit();
 
-            Assert.That(_domainEventStorage.GetEventsSinceLastSnapShot(client.Id).Count(), Is.EqualTo(3));
-            Assert.That(_domainEventStorage.GetAllEvents(client.Id).Count(), Is.EqualTo(3));
+            Assert.AreEqual(_domainEventStorage.GetEventsSinceLastSnapShot(client.Id).Count(), Is.EqualTo(3));
+            Assert.AreEqual(_domainEventStorage.GetAllEvents(client.Id).Count(), Is.EqualTo(3));
         }
 
-        [Test]
+        [TestMethod]
         public void When_calling_Save_it_will_reset_the_domain_events()
         {
             var client = Client.CreateNew(new ClientName("New Client"), new Address("Street", "123", "5000", "Bergen"), new PhoneNumber("1234567890"));
@@ -62,10 +62,10 @@ namespace Test.Fohjin.DDD.Domain.Repositories
 
             var clientForRepository = (IEventProvider<IDomainEvent>)client;
 
-            Assert.That(clientForRepository.GetChanges().Count(), Is.EqualTo(0));
+            Assert.AreEqual(clientForRepository.GetChanges().Count(), Is.EqualTo(0));
         }
 
-        [Test]
+        [TestMethod]
         public void When_calling_Save_after_more_than_9_events_a_new_snap_shot_will_be_created_9_events_will_not()
         {
             var client = Client.CreateNew(new ClientName("New Client"), new Address("Street", "123", "5000", "Bergen"), new PhoneNumber("1234567890"));
@@ -81,10 +81,10 @@ namespace Test.Fohjin.DDD.Domain.Repositories
             _repository.Add(client);
             _eventStoreUnitOfWork.Commit();
 
-            Assert.That(_domainEventStorage.GetSnapShot(client.Id), Is.Null);
+            Assert.AreEqual(_domainEventStorage.GetSnapShot(client.Id), Is.Null);
         }
 
-        [Test]
+        [TestMethod]
         public void When_calling_Save_after_more_than_9_events_a_new_snap_shot_will_be_created_10_events()
         {
             var client = Client.CreateNew(new ClientName("New Client"), new Address("Street", "123", "5000", "Bergen"), new PhoneNumber("1234567890"));
@@ -104,11 +104,11 @@ namespace Test.Fohjin.DDD.Domain.Repositories
 
             var snapShot = _domainEventStorage.GetSnapShot(client.Id);
 
-            Assert.That(snapShot, Is.Not.Null);
-            Assert.That(snapShot.Memento, Is.InstanceOfType(typeof(ClientMemento)));
+            Assert.AreEqual(snapShot, Is.Not.Null);
+            Assert.AreEqual(snapShot.Memento, Is.InstanceOfType(typeof(ClientMemento)));
         }
 
-        [Test]
+        [TestMethod]
         public void When_calling_Save_after_more_than_9_events_a_new_snap_shot_will_be_created_11_events()
         {
             var client = Client.CreateNew(new ClientName("New Client"), new Address("Street", "123", "5000", "Bergen"), new PhoneNumber("1234567890"));
@@ -129,11 +129,11 @@ namespace Test.Fohjin.DDD.Domain.Repositories
 
             var snapShot = _domainEventStorage.GetSnapShot(client.Id);
 
-            Assert.That(snapShot, Is.Not.Null);
-            Assert.That(snapShot.Memento, Is.InstanceOfType(typeof(ClientMemento)));
+            Assert.AreEqual(snapShot, Is.Not.Null);
+            Assert.AreEqual(snapShot.Memento, Is.InstanceOfType(typeof(ClientMemento)));
         }
 
-        [Test]
+        [TestMethod]
         public void When_calling_Save_after_more_than_9_events_after_the_last_snap_shot_a_new_snapshot_will_be_created_10_events_after_last_snapshot()
         {
             var client = Client.CreateNew(new ClientName("New Client"), new Address("Street", "123", "5000", "Bergen"), new PhoneNumber("1234567890"));
@@ -169,11 +169,11 @@ namespace Test.Fohjin.DDD.Domain.Repositories
 
             var snapShot = _domainEventStorage.GetSnapShot(client.Id);
 
-            Assert.That(snapShot, Is.Not.Null);
-            Assert.That(snapShot.Memento, Is.InstanceOfType(typeof(ClientMemento)));
+            Assert.AreEqual(snapShot, Is.Not.Null);
+            Assert.AreEqual(snapShot.Memento, Is.InstanceOfType(typeof(ClientMemento)));
         }
 
-        [Test]
+        [TestMethod]
         public void When_calling_Save_after_more_than_9_events_after_the_last_snap_shot_a_new_snapshot_will_be_created_10_events_after_last_snapshot_9_events_after_last_snapshot()
         {
             var client = Client.CreateNew(new ClientName("New Client"), new Address("Street", "123", "5000", "Bergen"), new PhoneNumber("1234567890"));
@@ -206,11 +206,11 @@ namespace Test.Fohjin.DDD.Domain.Repositories
 
             var snapShot = _domainEventStorage.GetSnapShot(client.Id);
 
-            Assert.That(snapShot, Is.Not.Null);
-            Assert.That(snapShot.Memento, Is.InstanceOfType(typeof(ClientMemento)));
+            Assert.AreEqual(snapShot, Is.Not.Null);
+            Assert.AreEqual(snapShot.Memento, Is.InstanceOfType(typeof(ClientMemento)));
         }
 
-        [Test]
+        [TestMethod]
         public void When_calling_Save_after_more_than_9_events_after_the_last_snap_shot_a_new_snapshot_will_be_created_10_events_after_last_snapshot_9_events_after_last_snapshot_verify_all_event_counts()
         {
             var client = Client.CreateNew(new ClientName("New Client"), new Address("Street", "123", "5000", "Bergen"), new PhoneNumber("1234567890"));
@@ -241,11 +241,11 @@ namespace Test.Fohjin.DDD.Domain.Repositories
             _repository.Add(client);
             _eventStoreUnitOfWork.Commit();
 
-            Assert.That(_domainEventStorage.GetEventsSinceLastSnapShot(client.Id).Count(), Is.EqualTo(9));
-            Assert.That(_domainEventStorage.GetAllEvents(client.Id).Count(), Is.EqualTo(19));
+            Assert.AreEqual(_domainEventStorage.GetEventsSinceLastSnapShot(client.Id).Count(), Is.EqualTo(9));
+            Assert.AreEqual(_domainEventStorage.GetAllEvents(client.Id).Count(), Is.EqualTo(19));
         }
 
-        [Test]
+        [TestMethod]
         public void When_calling_GetById_after_9_events_a_new_Client_will_be_populated()
         {
             var client = Client.CreateNew(new ClientName("New Client"), new Address("Street", "123", "5000", "Bergen"), new PhoneNumber("1234567890"));
@@ -263,7 +263,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
             _repository.GetById<Client>(client.Id);
         }
 
-        [Test]
+        [TestMethod]
         public void When_calling_GetById_after_every_10_events_a_new_snap_shot_will_be_created()
         {
             var client = Client.CreateNew(new ClientName("New Client"), new Address("Street", "123", "5000", "Bergen"), new PhoneNumber("1234567890"));
@@ -283,7 +283,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
             _repository.GetById<Client>(client.Id);
         }
 
-        [Test]
+        [TestMethod]
         public void When_calling_GetById_after_every_10_events_a_new_snap_shot_will_be_created_11_events()
         {
             var client = Client.CreateNew(new ClientName("New Client"), new Address("Street", "123", "5000", "Bergen"), new PhoneNumber("1234567890"));

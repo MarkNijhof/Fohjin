@@ -35,7 +35,7 @@ namespace Test.Fohjin.DDD.Scenarios.Client_wants_to_open_a_new_account
             On<IClientDetailsView>().FireEvent(x => x.OnCancel += null);
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_menu_buttons_will_be_enabled()
         {
             On<IClientDetailsView>().VerifyThat.Method(x => x.EnableAddNewAccountMenu()).WasCalled();
@@ -44,13 +44,13 @@ namespace Test.Fohjin.DDD.Scenarios.Client_wants_to_open_a_new_account
             On<IClientDetailsView>().VerifyThat.Method(x => x.EnablePhoneNumberChangedMenu()).WasCalled();
         }
 
-        [Then]
+        [TestMethod]
         public void Then_disable_the_save_button()
         {
             On<IClientDetailsView>().VerifyThat.Method(x => x.DisableSaveButton()).WasCalled();
         }
 
-        [Then]
+        [TestMethod]
         public void Then_overview_panel_will_be_shown()
         {
             On<IClientDetailsView>().VerifyThat.Method(x => x.EnableOverviewPanel()).WasCalled();

@@ -35,6 +35,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fohjin.DDD.Abstractions", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fohjin.DDD.Domain", "Fohjin.DDD.Domain\Fohjin.DDD.Domain.csproj", "{BD1449AE-CDFC-496A-968A-4B178B0B813C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fohjin.DDD.BankApplication.Core", "Fohjin.DDD.BankApplication.Core\Fohjin.DDD.BankApplication.Core.csproj", "{49344CD2-6EFB-4A12-8619-8DDD00EC31EC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -93,6 +95,10 @@ Global
 		{BD1449AE-CDFC-496A-968A-4B178B0B813C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BD1449AE-CDFC-496A-968A-4B178B0B813C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BD1449AE-CDFC-496A-968A-4B178B0B813C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49344CD2-6EFB-4A12-8619-8DDD00EC31EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49344CD2-6EFB-4A12-8619-8DDD00EC31EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49344CD2-6EFB-4A12-8619-8DDD00EC31EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49344CD2-6EFB-4A12-8619-8DDD00EC31EC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

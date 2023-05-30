@@ -40,13 +40,13 @@ namespace Test.Fohjin.DDD.Scenarios.Client_wants_to_close_an_account
             On<IAccountDetailsView>().FireEvent(x => x.OnCloseTheAccount += null);
         }
 
-        [Then]
+        [TestMethod]
         public void Then_a_close_account_command_gets_send_to_the_bus()
         {
             On<IBus>().VerifyThat.Method(x => x.Publish(It.IsAny<CloseAccountCommand>())).WasCalled();
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_view_will_be_closed()
         {
             On<IAccountDetailsView>().VerifyThat.Method(x => x.Close()).WasCalled();

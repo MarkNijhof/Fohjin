@@ -25,20 +25,20 @@ namespace Test.Fohjin.DDD.Scenarios.Client_wants_to_open_a_new_account
             AggregateRoot = ActiveAccount.CreateNew(Guid.NewGuid(), "New Account");
         }
 
-        [Then]
+        [TestMethod]
         public void Then_an_account_created_event_will_be_published()
         {
             PublishedEvents.Last().WillBeOfType<AccountOpenedEvent>();
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_published_event_will_contain_the_new_name_and_number_of_the_account()
         {
             PublishedEvents.Last<AccountOpenedEvent>().AccountName.WillBe("New Account");
             PublishedEvents.Last<AccountOpenedEvent>().AccountNumber.WillBe(_ticks);
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_published_event_will_have_the_same_aggregate_id()
         {
             PublishedEvents.Last<AccountOpenedEvent>().AccountId.WillBe(AggregateRoot.Id);

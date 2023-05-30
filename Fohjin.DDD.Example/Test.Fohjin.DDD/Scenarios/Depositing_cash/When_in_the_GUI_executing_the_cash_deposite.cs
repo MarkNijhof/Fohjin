@@ -6,11 +6,12 @@ using Fohjin.DDD.Bus;
 using Fohjin.DDD.Commands;
 using Fohjin.DDD.Reporting;
 using Fohjin.DDD.Reporting.Dto;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Test.Fohjin.DDD.Scenarios.Depositing_cash
 {
-    public class When_in_the_GUI_executing_the_cash_deposite : PresenterTestFixture<AccountDetailsPresenter>
+    public class When_in_the_GUI_executing_the_cash_Deposit : PresenterTestFixture<AccountDetailsPresenter>
     {
         protected override void SetupDependencies()
         {
@@ -29,32 +30,32 @@ namespace Test.Fohjin.DDD.Scenarios.Depositing_cash
             Presenter.SetAccount(new AccountReport(Guid.NewGuid(), Guid.NewGuid(), "Account name", "1234567890"));
             Presenter.Display();
             On<IAccountDetailsView>().ValueFor(x => x.AccountName).IsSetTo("Account name");
-            On<IAccountDetailsView>().ValueFor(x => x.WithdrawlAmount).IsSetTo(0M);
-            On<IAccountDetailsView>().ValueFor(x => x.DepositeAmount).IsSetTo(0M);
+            On<IAccountDetailsView>().ValueFor(x => x.WithdrawalAmount).IsSetTo(0M);
+            On<IAccountDetailsView>().ValueFor(x => x.DepositAmount).IsSetTo(0M);
             On<IAccountDetailsView>().ValueFor(x => x.TransferAmount).IsSetTo(0M);
-            On<IAccountDetailsView>().FireEvent(x => x.OnInitiateMoneyDeposite += null);
-            On<IAccountDetailsView>().ValueFor(x => x.DepositeAmount).IsSetTo(12.3M);
+            On<IAccountDetailsView>().FireEvent(x => x.OnInitiateMoneyDeposit += null);
+            On<IAccountDetailsView>().ValueFor(x => x.DepositAmount).IsSetTo(12.3M);
             On<IAccountDetailsView>().FireEvent(x => x.OnFormElementGotChanged += null);
         }
 
         protected override void When()
         {
-            On<IAccountDetailsView>().FireEvent(x => x.OnDepositeMoney += null);
+            On<IAccountDetailsView>().FireEvent(x => x.OnDepositMoney += null);
         }
 
-        [Then]
+        [TestMethod]
         public void Then_a_change_account_name_command_will_be_published()
         {
-            On<IBus>().VerifyThat.Method(x => x.Publish(It.IsAny<DepositeCashCommand>())).WasCalled();
+            On<IBus>().VerifyThat.Method(x => x.Publish(It.IsAny<DepositCashCommand>())).WasCalled();
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_save_button_will_be_enabled()
         {
             On<IAccountDetailsView>().VerifyThat.Method(x => x.EnableMenuButtons()).WasCalled();
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_details_panel_will_be_enabled()
         {
             On<IAccountDetailsView>().VerifyThat.Method(x => x.EnableDetailsPanel()).WasCalled();

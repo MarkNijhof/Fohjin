@@ -2,8 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Fohjin.DDD.Bus.Direct;
-using Fohjin.DDD.CommandHandlers;
-using Fohjin.DDD.Commands;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Test.Fohjin.DDD.Bus
 {
@@ -17,7 +16,7 @@ namespace Test.Fohjin.DDD.Bus
             _handler = new FirstTestCommandHandler();
             var messageRouter = new MessageRouter();
             messageRouter.Register<TestCommand>(x => _handler.Execute(x));
-            DoNotMock.Add(typeof (IRouteMessages), messageRouter);
+            DoNotMock.Add(typeof(IRouteMessages), messageRouter);
         }
 
         protected override void Given()
@@ -31,7 +30,7 @@ namespace Test.Fohjin.DDD.Bus
             SubjectUnderTest.Commit();
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_execute_method_on_the_returned_command_handler_is_invoked_with_the_provided_command()
         {
             _handler.Ids.First().WillBe(_command.Id);
@@ -65,13 +64,13 @@ namespace Test.Fohjin.DDD.Bus
             SubjectUnderTest.Commit();
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_execute_method_on_the_first_returned_command_handler_is_invoked_with_the_first_provided_command()
         {
             _handler.Ids.First().WillBe(_command.Id);
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_execute_method_on_the_second_returned_command_handler_is_invoked_with_the_first_provided_command()
         {
             _secondHandler.Ids.First().WillBe(_command.Id);
@@ -103,69 +102,32 @@ namespace Test.Fohjin.DDD.Bus
 
         protected override void When()
         {
-            SubjectUnderTest.Publish(new List<object>{ _command, _otherCommand });
+            SubjectUnderTest.Publish(new List<object> { _command, _otherCommand });
             SubjectUnderTest.Commit();
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_execute_method_on_the_first_returned_command_handler_is_invoked_with_the_first_provided_command()
         {
             _handler.Ids[0].WillBe(_command.Id);
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_execute_method_on_the_first_returned_command_handler_is_invoked_with_the_second_provided_command()
         {
             _handler.Ids[1].WillBe(_otherCommand.Id);
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_execute_method_on_the_second_returned_command_handler_is_invoked_with_the_first_provided_command()
         {
             _secondHandler.Ids[0].WillBe(_command.Id);
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_execute_method_on_the_second_returned_command_handler_is_invoked_with_the_second_provided_command()
         {
             _secondHandler.Ids[1].WillBe(_otherCommand.Id);
-        }
-    }
-
-    public class TestCommand : Command
-    {
-        public TestCommand(Guid id) : base(id)
-        {
-        }
-    }
-
-    public class FirstTestCommandHandler : ICommandHandler<TestCommand>
-    {
-        public List<Guid> Ids;
-
-        public FirstTestCommandHandler()
-        {
-            Ids = new List<Guid>();
-        }
-
-        public void Execute(TestCommand compensatingCommand)
-        {
-            Ids.Add(compensatingCommand.Id);
-        }
-    }
-
-    public class SecondTestCommandHandler : ICommandHandler<TestCommand>
-    {
-        public List<Guid> Ids;
-
-        public SecondTestCommandHandler()
-        {
-            Ids = new List<Guid>();
-        }
-
-        public void Execute(TestCommand compensatingCommand)
-        {
-            Ids.Add(compensatingCommand.Id);
         }
     }
 }
