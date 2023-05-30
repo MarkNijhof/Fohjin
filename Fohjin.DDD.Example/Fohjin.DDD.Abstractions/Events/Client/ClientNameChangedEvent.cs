@@ -1,12 +1,12 @@
 namespace Fohjin.DDD.Events.Client
 {
-    public record ClientNameChangedEvent : DomainEvent
+    public class ClientNameChangedEvent : DomainEvent
     {
-        public string ClientName { get; init; }
+        public string ClientName { get; set; }
 
-        public ClientNameChangedEvent(string cLientName)
+        public ClientNameChangedEvent(string clientName)
         {
-            ClientName = cLientName;
+            ClientName = clientName;
         }
     }
 }

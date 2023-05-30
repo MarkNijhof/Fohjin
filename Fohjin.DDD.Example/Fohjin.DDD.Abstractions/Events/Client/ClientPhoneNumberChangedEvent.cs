@@ -1,8 +1,8 @@
 namespace Fohjin.DDD.Events.Client
 {
-    public record ClientPhoneNumberChangedEvent : DomainEvent
+    public class ClientPhoneNumberChangedEvent : DomainEvent
     {
-        public string PhoneNumber { get; init; }
+        public string PhoneNumber { get; set; }
 
         public ClientPhoneNumberChangedEvent(string phoneNumber)
         {

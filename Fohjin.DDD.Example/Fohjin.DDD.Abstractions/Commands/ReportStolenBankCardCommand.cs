@@ -1,8 +1,8 @@
 ﻿namespace Fohjin.DDD.Commands
 {
-    public record ReportStolenBankCardCommand : Command
+    public class ReportStolenBankCardCommand : Command
     {
-        public Guid BankCardId { get; init; }
+        public Guid BankCardId { get; set; }
 
         public ReportStolenBankCardCommand(Guid id, Guid bankCardId) : base(id)
         {

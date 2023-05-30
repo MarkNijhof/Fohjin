@@ -1,11 +1,11 @@
 namespace Fohjin.DDD.Commands
 {
-    public record ClientIsMovingCommand : Command
+    public class ClientIsMovingCommand : Command
     {
-        public string Street { get; init; }
-        public string StreetNumber { get; init; }
-        public string PostalCode { get; init; }
-        public string City { get; init; }
+        public string Street { get; set; }
+        public string StreetNumber { get; set; }
+        public string PostalCode { get; set; }
+        public string City { get; set; }
 
         public ClientIsMovingCommand(Guid id, string street, string streetNumber, string postalCode, string city) : base(id)
         {

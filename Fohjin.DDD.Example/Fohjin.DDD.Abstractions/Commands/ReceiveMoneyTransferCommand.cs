@@ -1,9 +1,9 @@
 namespace Fohjin.DDD.Commands
 {
-    public record ReceiveMoneyTransferCommand : Command
+    public class ReceiveMoneyTransferCommand : Command
     {
-        public decimal Amount { get; init; }
-        public string AccountNumber { get; init; }
+        public decimal Amount { get; set; }
+        public string AccountNumber { get; set; }
 
         public ReceiveMoneyTransferCommand(Guid id, decimal amount, string accountNumber) : base(id)
         {

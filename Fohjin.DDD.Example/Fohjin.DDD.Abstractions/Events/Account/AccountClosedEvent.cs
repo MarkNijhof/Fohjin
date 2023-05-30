@@ -1,6 +1,6 @@
 namespace Fohjin.DDD.Events.Account
 {
-    public record AccountClosedEvent : DomainEvent
+    public class AccountClosedEvent : DomainEvent
     {
     }
 }

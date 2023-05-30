@@ -1,11 +1,11 @@
 namespace Fohjin.DDD.Events.Account
 {
-    public record MoneyTransferSendEvent : DomainEvent
+    public class MoneyTransferSendEvent : DomainEvent
     {
-        public decimal Balance { get; init; }
-        public decimal Amount { get; init; }
-        public string SourceAccount { get; init; }
-        public string TargetAccount { get; init; }
+        public decimal Balance { get; set; }
+        public decimal Amount { get; set; }
+        public string SourceAccount { get; set; }
+        public string TargetAccount { get; set; }
 
         public MoneyTransferSendEvent(decimal balance, decimal amount, string sourceAccount, string targetAccount)
         {

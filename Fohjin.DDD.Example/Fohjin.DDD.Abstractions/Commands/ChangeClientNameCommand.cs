@@ -1,8 +1,8 @@
 namespace Fohjin.DDD.Commands
 {
-    public record ChangeClientNameCommand : Command
+    public class ChangeClientNameCommand : Command
     {
-        public string ClientName { get; init; }
+        public string ClientName { get; set; }
 
         public ChangeClientNameCommand(Guid id, string clientName) : base(id)
         {

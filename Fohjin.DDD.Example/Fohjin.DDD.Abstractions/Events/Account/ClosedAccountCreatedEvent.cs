@@ -1,13 +1,13 @@
 namespace Fohjin.DDD.Events.Account
 {
-    public record ClosedAccountCreatedEvent : DomainEvent
+    public class ClosedAccountCreatedEvent : DomainEvent
     {
-        public Guid AccountId { get; init; }
-        public Guid OriginalAccountId { get; init; }
-        public Guid ClientId { get; init; }
-        public IList<KeyValuePair<string, string>> Ledgers { get; init; }
-        public string AccountName { get; init; }
-        public string AccountNumber { get; init; }
+        public Guid AccountId { get; set; }
+        public Guid OriginalAccountId { get; set; }
+        public Guid ClientId { get; set; }
+        public IList<KeyValuePair<string, string>> Ledgers { get; set; }
+        public string AccountName { get; set; }
+        public string AccountNumber { get; set; }
 
         public ClosedAccountCreatedEvent(Guid accountId, Guid originalAccountId, Guid clientId, IList<KeyValuePair<string, string>> ledgers, string accountName, string accountNumber)
         {

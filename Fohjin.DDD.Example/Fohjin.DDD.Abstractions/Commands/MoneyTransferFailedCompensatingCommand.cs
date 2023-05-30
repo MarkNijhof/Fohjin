@@ -1,9 +1,9 @@
 namespace Fohjin.DDD.Commands
 {
-    public record MoneyTransferFailedCompensatingCommand : Command
+    public class MoneyTransferFailedCompensatingCommand : Command
     {
-        public decimal Amount { get; init; }
-        public string AccountNumber { get; init; }
+        public decimal Amount { get; set; }
+        public string AccountNumber { get; set; }
 
         public MoneyTransferFailedCompensatingCommand(Guid id, decimal amount, string targetAccountNumber) : base(id)
         {

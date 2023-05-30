@@ -1,10 +1,10 @@
 namespace Fohjin.DDD.Events.Account
 {
-    public record MoneyTransferFailedEvent : DomainEvent
+    public class MoneyTransferFailedEvent : DomainEvent
     {
-        public decimal Balance { get; init; }
-        public decimal Amount { get; init; }
-        public string TargetAccount { get; init; }
+        public decimal Balance { get; set; }
+        public decimal Amount { get; set; }
+        public string TargetAccount { get; set; }
 
         public MoneyTransferFailedEvent(decimal balance, decimal amount, string targetAccount)
         {

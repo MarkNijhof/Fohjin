@@ -2,7 +2,7 @@ using Fohjin.DDD.EventStore.Storage.Memento;
 
 namespace Fohjin.DDD.EventStore.Storage
 {
-    public record SnapShot : ISnapShot
+    public class SnapShot : ISnapShot
     {
         public SnapShot(Guid eventProviderId, int version, IMemento memento)
         {
@@ -11,8 +11,8 @@ namespace Fohjin.DDD.EventStore.Storage
             Memento = memento;
         }
 
-        public Guid EventProviderId { get; init; }
-        public int Version { get; init; }
-        public IMemento Memento { get; init; }
+        public Guid EventProviderId { get; set; }
+        public int Version { get; set; }
+        public IMemento Memento { get; set; }
     }
 }

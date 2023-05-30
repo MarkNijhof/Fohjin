@@ -1,6 +1,6 @@
 ﻿namespace Fohjin.DDD.Commands
 {
-    public record AssignNewBankCardCommand : Command
+    public class AssignNewBankCardCommand : Command
     {
         public Guid AccountId { get; set; }
 

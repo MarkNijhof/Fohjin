@@ -1,8 +1,8 @@
 namespace Fohjin.DDD.Commands
 {
-    public record OpenNewAccountForClientCommand : Command
+    public class OpenNewAccountForClientCommand : Command
     {
-        public string AccountName { get; init; }
+        public string AccountName { get; set; }
 
         public OpenNewAccountForClientCommand(Guid id, string accountName) : base(id)
         {

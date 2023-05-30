@@ -1,8 +1,8 @@
 namespace Fohjin.DDD.Events.Client
 {
-    public record AccountToClientAssignedEvent : DomainEvent
+    public class AccountToClientAssignedEvent : DomainEvent
     {
-        public Guid AccountId { get; init; }
+        public Guid AccountId { get; set; }
 
         public AccountToClientAssignedEvent(Guid accountId)
         {
