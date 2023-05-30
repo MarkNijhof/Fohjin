@@ -20,6 +20,8 @@ namespace Test.Fohjin.DDD.Domain.Repositories
     [TestClass]
     public class ClosedAccountRepositoryTest
     {
+        public TestContext TestContext { get; set; }
+
         private readonly IServiceCollection _services = new ServiceCollection()
             .AddLogging(opt => opt.AddConsole().SetMinimumLevel(LogLevel.Information))
             ;
@@ -41,7 +43,13 @@ namespace Test.Fohjin.DDD.Domain.Repositories
         [TestInitialize]
         public void SetUp()
         {
-            new DomainDatabaseBootStrapper().ReCreateDatabaseSchema();
+            TestContext.SetupWorkingDirectory();
+            var dataBaseFile = Path.Combine(
+                (string)TestContext.Properties[TestContextExtensions.TestWorkingDirectory],
+                DomainDatabaseBootStrapper.DataBaseFile
+                );
+
+            new DomainDatabaseBootStrapper().ReCreateDatabaseSchema(dataBaseFile);
 
             var sqliteConnectionString = string.Format("Data Source={0}", dataBaseFile);
 

@@ -28,8 +28,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
 
         public ILogger<T> Logger<T>() => Provider.GetRequiredService<ILogger<T>>();
 
-
-        private const string dataBaseFile = "domainDataBase.db3";
+        public TestContext TestContext { get; set; }
 
         private IDomainRepository<IDomainEvent> _repository;
         private DomainEventStorage<IDomainEvent> _domainEventStorage;
@@ -39,7 +38,13 @@ namespace Test.Fohjin.DDD.Domain.Repositories
         [TestInitialize]
         public void SetUp()
         {
-            new DomainDatabaseBootStrapper().ReCreateDatabaseSchema();
+            TestContext.SetupWorkingDirectory();
+            var dataBaseFile = Path.Combine(
+                (string)TestContext.Properties[TestContextExtensions.TestWorkingDirectory],
+                DomainDatabaseBootStrapper.DataBaseFile
+                );
+
+            new DomainDatabaseBootStrapper().ReCreateDatabaseSchema(dataBaseFile);
 
             var sqliteConnectionString = string.Format("Data Source={0}", dataBaseFile);
 

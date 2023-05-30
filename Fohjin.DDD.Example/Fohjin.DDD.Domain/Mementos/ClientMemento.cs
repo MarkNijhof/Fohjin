@@ -1,21 +1,25 @@
 using Fohjin.DDD.EventStore.Storage.Memento;
+using System.Text.Json.Serialization;
 
 namespace Fohjin.DDD.Domain.Mementos
 {
-    [Serializable]
     public class ClientMemento : IMemento
     {
-        internal Guid Id { get; init; }
-        internal int Version { get; init; }
-        internal string ClientName { get; init; }
-        internal string Street { get; init; }
-        internal string StreetNumber { get; init; }
-        internal string PostalCode { get; init; }
-        internal string City { get; init; }
-        internal string PhoneNumber { get; init; }
-        internal List<Guid> Accounts { get; init; }
-        internal List<IMemento> BankCardMementos { get; init; }
+        public Guid Id { get; set; }
+        public int Version { get; set; }
+        public string ClientName { get; set; }
+        public string Street { get; set; }
+        public string StreetNumber { get; set; }
+        public string PostalCode { get; set; }
+        public string City { get; set; }
+        public string PhoneNumber { get; set; }
+        public List<Guid> Accounts { get; set; }
+        public List<IMemento> BankCardMementos { get; set; }
 
+        [JsonConstructor]
+        public ClientMemento()
+        {
+        }
         public ClientMemento(Guid id, int version, string clientName, string street, string streetNumber, string postalCode, string city, string phoneNumber, List<Guid> accounts, List<IMemento> bankCardMementos)
         {
             Id = id;

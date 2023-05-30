@@ -1,10 +1,6 @@
-using System;
-using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
 using Fohjin.DDD.BankApplication;
 using Fohjin.DDD.Bus;
 using Fohjin.DDD.Common;
-using Fohjin.DDD.Configuration;
 using Fohjin.DDD.Domain.Account;
 using Fohjin.DDD.Domain.Mementos;
 using Fohjin.DDD.EventStore;
@@ -22,6 +18,8 @@ namespace Test.Fohjin.DDD.Domain.Repositories
     [TestClass]
     public class ActiveAccountRepositoryTest
     {
+        public TestContext TestContext { get; set; }
+
         private readonly IServiceCollection _services = new ServiceCollection()
             .AddLogging(opt => opt.AddConsole().SetMinimumLevel(LogLevel.Information))
             ;
@@ -32,9 +30,6 @@ namespace Test.Fohjin.DDD.Domain.Repositories
 
         public ILogger<T> Logger<T>() => Provider.GetRequiredService<ILogger<T>>();
 
-
-        private const string dataBaseFile = "domainDataBase.db3";
-
         private IDomainRepository<IDomainEvent> _repository;
         private DomainEventStorage<IDomainEvent> _domainEventStorage;
         private EventStoreIdentityMap<IDomainEvent> _eventStoreIdentityMap;
@@ -43,7 +38,13 @@ namespace Test.Fohjin.DDD.Domain.Repositories
         [TestInitialize]
         public void SetUp()
         {
-            new DomainDatabaseBootStrapper().ReCreateDatabaseSchema();
+            TestContext.SetupWorkingDirectory();
+            var dataBaseFile = Path.Combine(
+                (string)TestContext.Properties[TestContextExtensions.TestWorkingDirectory],
+                DomainDatabaseBootStrapper.DataBaseFile
+                );
+
+            new DomainDatabaseBootStrapper().ReCreateDatabaseSchema(dataBaseFile);
 
             var sqliteConnectionString = string.Format("Data Source={0}", dataBaseFile);
 
@@ -58,13 +59,13 @@ namespace Test.Fohjin.DDD.Domain.Repositories
 
             _eventStoreIdentityMap = new EventStoreIdentityMap<IDomainEvent>();
             _eventStoreUnitOfWork = new EventStoreUnitOfWork<IDomainEvent>(
-                _domainEventStorage, 
+                _domainEventStorage,
                 _eventStoreIdentityMap,
-                new Mock<IBus>().Object, 
+                new Mock<IBus>().Object,
                 Logger<EventStoreUnitOfWork<IDomainEvent>>()
                 );
             _repository = new DomainRepository<IDomainEvent>(
-                _eventStoreUnitOfWork, 
+                _eventStoreUnitOfWork,
                 _eventStoreIdentityMap,
                 Logger<DomainRepository<IDomainEvent>>()
                 );

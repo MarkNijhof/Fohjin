@@ -1,11 +1,16 @@
+using System.Text.Json.Serialization;
+
 namespace Fohjin.DDD.Reporting.Dtos
 {
     public class LedgerReport
     {
-        public Guid Id { get; init; }
-        public Guid AccountDetailsReportId { get; init; }
-        public string Action { get; init; }
-        public decimal Amount { get; init; }
+        public Guid Id { get; set; }
+        public Guid AccountDetailsReportId { get; set; }
+        public string Action { get; set; }
+        public decimal Amount { get; set; }
+
+        [JsonConstructor]
+        public LedgerReport() { }
 
         public LedgerReport(Guid id, Guid accountDetailsId, string action, decimal amount)
         {

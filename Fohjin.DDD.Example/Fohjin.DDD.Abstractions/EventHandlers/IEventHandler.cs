@@ -1,4 +1,5 @@
 using Fohjin.DDD.EventStore;
+using System.Text.Json;
 
 namespace Fohjin.DDD.EventHandlers
 {

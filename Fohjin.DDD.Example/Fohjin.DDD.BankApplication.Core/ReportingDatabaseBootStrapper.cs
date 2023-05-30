@@ -7,7 +7,7 @@ namespace Fohjin.DDD.BankApplication
 {
     public class ReportingDatabaseBootStrapper
     {
-        public const string dataBaseFile = "reportingDataBase.db3";
+        public const string ReportingDataBaseFile = "reportingDataBase.db3";
         private readonly List<Type> _dtos = new()
         {
             typeof(ClientReport),
@@ -20,23 +20,23 @@ namespace Fohjin.DDD.BankApplication
         };
         private readonly SqlCreateBuilder _sqlCreateBuilder = new();
 
-        public void ReCreateDatabaseSchema()
+        public void ReCreateDatabaseSchema(string dataBaseFile)
         {
             if (File.Exists(dataBaseFile))
                 File.Delete(dataBaseFile);
 
-            DoCreateDatabaseSchema();
+            DoCreateDatabaseSchema(dataBaseFile);
         }
 
-        public void CreateDatabaseSchemaIfNeeded()
+        public void CreateDatabaseSchemaIfNeeded(string dataBaseFile)
         {
             if (File.Exists(dataBaseFile))
                 return;
 
-            DoCreateDatabaseSchema();
+            DoCreateDatabaseSchema(dataBaseFile);
         }
 
-        private void DoCreateDatabaseSchema()
+        private void DoCreateDatabaseSchema(string dataBaseFile)
         {
             //SQLiteConnection.CreateFile(dataBaseFile);
 

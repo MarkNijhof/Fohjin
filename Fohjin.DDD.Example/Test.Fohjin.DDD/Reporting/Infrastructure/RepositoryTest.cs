@@ -2,19 +2,27 @@ using Fohjin.DDD.BankApplication;
 using Fohjin.DDD.Reporting.Dtos;
 using Fohjin.DDD.Reporting.Infrastructure;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Test.Fohjin.DDD.TestUtilities;
 
 namespace Test.Fohjin.DDD.Reporting.Infrastructure
 {
     [TestClass]
     public class RepositoryTest
     {
+        public TestContext TestContext { get; set; }
+
         private SqliteReportingRepository _repository;
-        private const string dataBaseFile = "reportingDataBase.db3";
 
         [TestInitialize]
         public void SetUp()
         {
-            new ReportingDatabaseBootStrapper().ReCreateDatabaseSchema();
+            TestContext.SetupWorkingDirectory();
+            var dataBaseFile = Path.Combine(
+                (string)TestContext.Properties[TestContextExtensions.TestWorkingDirectory],
+                DomainDatabaseBootStrapper.DataBaseFile
+                );
+
+            new ReportingDatabaseBootStrapper().ReCreateDatabaseSchema(dataBaseFile);
 
             var sqliteConnectionString = string.Format("Data Source={0}", dataBaseFile);
 

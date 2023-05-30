@@ -7,8 +7,13 @@ namespace Fohjin.DDD.BankApplication
     {
         public static T BootStrapApplication<T>(this T serviceProvider) where T : IServiceProvider
         {
-            ActivatorUtilities.CreateInstance<DomainDatabaseBootStrapper>(serviceProvider).CreateDatabaseSchemaIfNeeded();
-            ActivatorUtilities.CreateInstance<ReportingDatabaseBootStrapper>(serviceProvider).CreateDatabaseSchemaIfNeeded();
+            var dataBaseFile = Path.GetFullPath(DomainDatabaseBootStrapper.DataBaseFile);
+            var reportingFile = Path.GetFullPath(ReportingDatabaseBootStrapper.ReportingDataBaseFile);
+
+            ActivatorUtilities.CreateInstance<DomainDatabaseBootStrapper>(serviceProvider)
+                .CreateDatabaseSchemaIfNeeded(dataBaseFile);
+            ActivatorUtilities.CreateInstance<ReportingDatabaseBootStrapper>(serviceProvider)
+                .CreateDatabaseSchemaIfNeeded(reportingFile);
 
             return serviceProvider;
         }

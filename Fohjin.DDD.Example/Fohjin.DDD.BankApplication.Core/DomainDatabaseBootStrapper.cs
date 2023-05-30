@@ -5,25 +5,25 @@ namespace Fohjin.DDD.BankApplication
 {
     public class DomainDatabaseBootStrapper
     {
-        public const string dataBaseFile = "domainDataBase.db3";
+        public const string DataBaseFile = "domainDataBase.db3";
 
-        public void ReCreateDatabaseSchema()
+        public void ReCreateDatabaseSchema(string dataBaseFile)
         {
             if (File.Exists(dataBaseFile))
                 File.Delete(dataBaseFile);
 
-            DoCreateDatabaseSchema();
+            DoCreateDatabaseSchema(dataBaseFile);
         }
 
-        public void CreateDatabaseSchemaIfNeeded()
+        public void CreateDatabaseSchemaIfNeeded(string dataBaseFile)
         {
             if (File.Exists(dataBaseFile))
                 return;
 
-            DoCreateDatabaseSchema();
+            DoCreateDatabaseSchema(dataBaseFile);
         }
 
-        private static void DoCreateDatabaseSchema()
+        private static void DoCreateDatabaseSchema(string dataBaseFile)
         {
             //SqliteConnection.CreateFile(dataBaseFile);
 
