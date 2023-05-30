@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using Fohjin.DDD.BankApplication.Presenters;
+﻿using Fohjin.DDD.BankApplication.Presenters;
 using Fohjin.DDD.BankApplication.Views;
 using Fohjin.DDD.Bus;
 using Fohjin.DDD.Commands;
 using Fohjin.DDD.Reporting;
 using Fohjin.DDD.Reporting.Dtos;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Test.Fohjin.DDD.Scenarios.Client_moved

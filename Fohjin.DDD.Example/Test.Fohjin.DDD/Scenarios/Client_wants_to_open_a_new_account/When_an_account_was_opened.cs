@@ -1,8 +1,8 @@
-using System;
 using Fohjin.DDD.EventHandlers;
 using Fohjin.DDD.Events.Account;
 using Fohjin.DDD.Reporting;
 using Fohjin.DDD.Reporting.Dtos;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Test.Fohjin.DDD.Scenarios.Client_wants_to_open_a_new_account

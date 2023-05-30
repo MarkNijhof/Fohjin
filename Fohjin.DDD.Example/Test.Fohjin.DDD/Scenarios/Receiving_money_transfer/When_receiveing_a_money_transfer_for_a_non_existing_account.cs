@@ -2,6 +2,7 @@
 using Fohjin.DDD.CommandHandlers;
 using Fohjin.DDD.Commands;
 using Fohjin.DDD.Domain.Account;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Test.Fohjin.DDD.Scenarios.Receiving_money_transfer
 {

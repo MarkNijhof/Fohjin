@@ -1,9 +1,8 @@
-﻿using System;
-using System.Linq;
-using Fohjin.DDD.CommandHandlers;
+﻿using Fohjin.DDD.CommandHandlers;
 using Fohjin.DDD.Commands;
 using Fohjin.DDD.Domain.Client;
 using Fohjin.DDD.Events.Client;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Test.Fohjin.DDD.Scenarios.Adding_a_new_client
 {

@@ -1,6 +1,6 @@
-﻿using System;
-using Fohjin.DDD.EventHandlers;
+﻿using Fohjin.DDD.EventHandlers;
 using Fohjin.DDD.Events.Client;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Test.Fohjin.DDD.Scenarios.Client_wants_to_open_a_new_account
 {

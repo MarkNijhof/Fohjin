@@ -7,6 +7,8 @@ using Fohjin.DDD.Domain;
 using Fohjin.DDD.Reporting;
 using Fohjin.DDD.Reporting.Dtos;
 using Fohjin.DDD.Services;
+using Fohjin.DDD.Services.Models;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Test.Fohjin.DDD.Scenarios.Transfering_money

@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Fohjin.DDD.Domain.Account;
+﻿using Fohjin.DDD.Domain.Account;
 using Fohjin.DDD.Events.Account;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Test.Fohjin.DDD.Scenarios.Client_wants_to_close_an_account
 {

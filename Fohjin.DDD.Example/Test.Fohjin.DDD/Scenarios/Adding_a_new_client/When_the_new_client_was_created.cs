@@ -1,8 +1,8 @@
-using System;
 using Fohjin.DDD.EventHandlers;
 using Fohjin.DDD.Events.Client;
 using Fohjin.DDD.Reporting;
 using Fohjin.DDD.Reporting.Dtos;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Test.Fohjin.DDD.Scenarios.Adding_a_new_client
