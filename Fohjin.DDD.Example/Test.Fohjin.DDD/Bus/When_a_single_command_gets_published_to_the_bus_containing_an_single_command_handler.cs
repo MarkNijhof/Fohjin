@@ -1,13 +1,12 @@
 using Fohjin.DDD.Bus.Direct;
-using Microsoft.Extensions.Logging;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Fohjin.DDD.CommandHandlers;
 using Fohjin.DDD.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Fohjin.DDD.CommandHandlers;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Test.Fohjin.DDD.Bus
 {
-    public class When_a_single_command_gets_published_to_the_bus_containing_an_sinlge_command_handler : BaseTestFixture<DirectBus>
+    public class When_a_single_command_gets_published_to_the_bus_containing_an_single_command_handler : BaseTestFixture<DirectBus>
     {
         private FirstTestCommandHandler _handler;
         private TestCommand _command;

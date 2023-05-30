@@ -1,9 +1,12 @@
-﻿using Fohjin.DDD.Reporting;
+﻿using Fohjin.DDD.Common;
+using Fohjin.DDD.Reporting;
 using Fohjin.DDD.Reporting.Dtos;
 using Fohjin.DDD.Services;
 using Fohjin.DDD.Services.Models;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Test.Fohjin.DDD.TestUtilities;
 
 namespace Test.Fohjin.DDD.Scenarios.Transfering_money
 {
@@ -20,8 +23,11 @@ namespace Test.Fohjin.DDD.Scenarios.Transfering_money
         {
             // !!! This is DEMO code !!!
             // Setup the SystemRandom class to return the value where the account is not found
-            SystemRandom.Next = (min, max) => 2;
-            SystemTimer.ByPassTimer();
+
+            Services
+                .AddTransient<ISystemRandom>(_ => new TestSystemRandom((min, max) => 2))
+                .AddTransient<ISystemTimer>(_ => new TestSystemTimer())
+                ;
         }
 
         protected override void When()
@@ -37,8 +43,6 @@ namespace Test.Fohjin.DDD.Scenarios.Transfering_money
 
         protected override void Finally()
         {
-            SystemTimer.Reset();
-            SystemRandom.Reset();
         }
     }
 }

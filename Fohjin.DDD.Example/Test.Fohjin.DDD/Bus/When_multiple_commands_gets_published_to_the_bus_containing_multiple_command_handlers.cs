@@ -1,4 +1,7 @@
 ﻿using Fohjin.DDD.Bus.Direct;
+using Fohjin.DDD.CommandHandlers;
+using Fohjin.DDD.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Test.Fohjin.DDD.Bus
@@ -14,9 +17,12 @@ namespace Test.Fohjin.DDD.Bus
         {
             _handler = new FirstTestCommandHandler();
             _secondHandler = new SecondTestCommandHandler();
+            Services.AddConfigurationServices()
+                .AddTransient<ICommandHandler>(_ => _handler)
+                .AddTransient<ICommandHandler>(_ => _secondHandler)
+                ;
+
             var messageRouter = new MessageRouter(this.Provider, this.Logger<MessageRouter>());
-            messageRouter.Register<TestCommand>(x => _handler.Execute(x));
-            messageRouter.Register<TestCommand>(x => _secondHandler.Execute(x));
             DoNotMock.Add(typeof(IRouteMessages), messageRouter);
         }
 

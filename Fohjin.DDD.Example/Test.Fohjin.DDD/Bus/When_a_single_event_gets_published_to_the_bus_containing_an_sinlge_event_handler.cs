@@ -1,10 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Castle.Core.Logging;
 using Fohjin.DDD.Bus.Direct;
-using Fohjin.DDD.CommandHandlers;
+using Fohjin.DDD.Configuration;
 using Fohjin.DDD.EventHandlers;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Test.Fohjin.DDD.Bus

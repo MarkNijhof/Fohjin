@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Transactions;
 using Fohjin;
 using Fohjin.DDD.Domain;
 using Fohjin.DDD.Domain.Account;
@@ -16,13 +17,12 @@ namespace Test.Fohjin.DDD.Scenarios.Client_wants_to_open_a_new_account
 
         protected override IEnumerable<IDomainEvent> Given()
         {
-            SystemDateTime.Now = () => new DateTime(2009, 1, 1, 1, 1, 1, 1);
             return new List<IDomainEvent>();
         }
 
         protected override void When()
         {
-            _ticks = SystemDateTime.Now().Ticks.ToString();
+            _ticks = new DateTime(2009, 1, 1, 1, 1, 1, 1).Ticks.ToString();
             AggregateRoot = ActiveAccount.CreateNew(Guid.NewGuid(), "New Account", "Account Number");
         }
 
@@ -47,7 +47,6 @@ namespace Test.Fohjin.DDD.Scenarios.Client_wants_to_open_a_new_account
 
         protected override void Finally()
         {
-            SystemDateTime.Reset();
         }
     }
 }
