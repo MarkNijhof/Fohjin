@@ -28,7 +28,7 @@ namespace Fohjin.DDD.Services
             try
             {
                 var account = _reportingRepository.GetByExample<AccountReport>(new { moneyTransfer.TargetAccount }).First();
-                _bus.Publish(new ReceiveMoneyTransferCommand(account.Id, moneyTransfer.Ammount, moneyTransfer.SourceAccount));
+                _bus.Publish(new ReceiveMoneyTransferCommand(account.Id, moneyTransfer.Amount, moneyTransfer.SourceAccount));
             }
             catch (Exception)
             {

@@ -1,27 +1,24 @@
-using System;
-using System.Linq;
-using Fohjin.DDD.Configuration;
+using Fohjin.DDD.BankApplication;
 using Fohjin.DDD.Reporting.Dtos;
 using Fohjin.DDD.Reporting.Infrastructure;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NUnit.Framework.SyntaxHelpers;
 
 namespace Test.Fohjin.DDD.Reporting.Infrastructure
 {
     [TestClass]
     public class RepositoryTest
     {
-        private SQLiteReportingRepository _repository;
+        private SqliteReportingRepository _repository;
         private const string dataBaseFile = "reportingDataBase.db3";
 
-        [SetUp]
+        [TestInitialize]
         public void SetUp()
         {
             new ReportingDatabaseBootStrapper().ReCreateDatabaseSchema();
 
             var sqliteConnectionString = string.Format("Data Source={0}", dataBaseFile);
 
-            _repository = new SQLiteReportingRepository(sqliteConnectionString, new SqlSelectBuilder(), new SqlInsertBuilder(), new SqlUpdateBuilder(), new SqlDeleteBuilder());
+            _repository = new SqliteReportingRepository(sqliteConnectionString, new SqlSelectBuilder(), new SqlInsertBuilder(), new SqlUpdateBuilder(), new SqlDeleteBuilder());
         }
 
         [TestMethod]
@@ -31,8 +28,8 @@ namespace Test.Fohjin.DDD.Reporting.Infrastructure
             _repository.Save(clientDto);
             var sut = _repository.GetByExample<ClientReport>(new { Name = "Mark Nijhof" }).FirstOrDefault();
 
-            Assert.AreEqual(sut.Id, Is.EqualTo(clientDto.Id));
-            Assert.AreEqual(sut.Name, Is.EqualTo(clientDto.Name));
+            Assert.AreEqual(clientDto.Id, sut.Id);
+            Assert.AreEqual(clientDto.Name, sut.Name);
         }
 
         [TestMethod]
@@ -42,13 +39,13 @@ namespace Test.Fohjin.DDD.Reporting.Infrastructure
             _repository.Save(clientDetailsDto);
             var sut = _repository.GetByExample<ClientDetailsReport>(new { ClientName = "Mark Nijhof" }).FirstOrDefault();
 
-            Assert.AreEqual(sut.Id, Is.EqualTo(clientDetailsDto.Id));
-            Assert.AreEqual(sut.ClientName, Is.EqualTo(clientDetailsDto.ClientName));
-            Assert.AreEqual(sut.Street, Is.EqualTo(clientDetailsDto.Street));
-            Assert.AreEqual(sut.StreetNumber, Is.EqualTo(clientDetailsDto.StreetNumber));
-            Assert.AreEqual(sut.PostalCode, Is.EqualTo(clientDetailsDto.PostalCode));
-            Assert.AreEqual(sut.City, Is.EqualTo(clientDetailsDto.City));
-            Assert.AreEqual(sut.PhoneNumber, Is.EqualTo(clientDetailsDto.PhoneNumber));
+            Assert.AreEqual(clientDetailsDto.Id, sut.Id);
+            Assert.AreEqual(clientDetailsDto.ClientName, sut.ClientName);
+            Assert.AreEqual(clientDetailsDto.Street, sut.Street);
+            Assert.AreEqual(clientDetailsDto.StreetNumber, sut.StreetNumber);
+            Assert.AreEqual(clientDetailsDto.PostalCode, sut.PostalCode);
+            Assert.AreEqual(clientDetailsDto.City, sut.City);
+            Assert.AreEqual(clientDetailsDto.PhoneNumber, sut.PhoneNumber);
         }
 
         [TestMethod]
@@ -85,10 +82,10 @@ namespace Test.Fohjin.DDD.Reporting.Infrastructure
             _repository.Save(ledgerDto);
             var sut = _repository.GetByExample<LedgerReport>(new { Action = "Action", Amount = 12.3M }).FirstOrDefault();
 
-            Assert.AreEqual(sut.Id, Is.EqualTo(ledgerDto.Id));
-            Assert.AreEqual(sut.AccountDetailsReportId, Is.EqualTo(ledgerDto.AccountDetailsReportId));
-            Assert.AreEqual(sut.Amount, Is.EqualTo(ledgerDto.Amount));
-            Assert.AreEqual(sut.Action, Is.EqualTo(ledgerDto.Action));
+            Assert.AreEqual(ledgerDto.Id, sut.Id);
+            Assert.AreEqual(ledgerDto.AccountDetailsReportId, sut.AccountDetailsReportId);
+            Assert.AreEqual(ledgerDto.Amount, sut.Amount);
+            Assert.AreEqual(ledgerDto.Action, sut.Action);
         }
 
         [TestMethod]

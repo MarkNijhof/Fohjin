@@ -1,19 +1,34 @@
 using Fohjin.DDD.BankApplication;
 using Fohjin.DDD.Bus;
+using Fohjin.DDD.Common;
 using Fohjin.DDD.Domain.Client;
 using Fohjin.DDD.Domain.Mementos;
 using Fohjin.DDD.EventStore;
 using Fohjin.DDD.EventStore.SQLite;
 using Fohjin.DDD.EventStore.Storage;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System.Runtime.Serialization.Formatters.Binary;
+using Test.Fohjin.DDD.TestUtilities;
 
 namespace Test.Fohjin.DDD.Domain.Repositories
 {
     [TestClass]
     public class clientRepositoryTest
     {
+        private readonly IServiceCollection _services = new ServiceCollection()
+            .AddLogging(opt => opt.AddConsole().SetMinimumLevel(LogLevel.Information))
+            ;
+        public IServiceCollection Services => _services;
+
+        private IServiceProvider? _provider;
+        public IServiceProvider Provider => _provider ??= _services.BuildServiceProvider();
+
+        public ILogger<T> Logger<T>() => Provider.GetRequiredService<ILogger<T>>();
+
+
         private const string dataBaseFile = "domainDataBase.db3";
 
         private IDomainRepository<IDomainEvent> _repository;
@@ -28,10 +43,27 @@ namespace Test.Fohjin.DDD.Domain.Repositories
 
             var sqliteConnectionString = string.Format("Data Source={0}", dataBaseFile);
 
-            _domainEventStorage = new DomainEventStorage<IDomainEvent>(sqliteConnectionString, new BinaryFormatter());
+            var config = new ConfigurationBuilder()
+                .AddTupleConfiguration((DomainEventStorage.ConnectionStringConfigKey, sqliteConnectionString))
+                .Build();
+
+            _domainEventStorage = new DomainEventStorage<IDomainEvent>(
+                config,
+                new ExtendedFormatter()
+                );
+
             _eventStoreIdentityMap = new EventStoreIdentityMap<IDomainEvent>();
-            _eventStoreUnitOfWork = new EventStoreUnitOfWork<IDomainEvent>(_domainEventStorage, _eventStoreIdentityMap, new Mock<IBus>().Object);
-            _repository = new DomainRepository<IDomainEvent>(_eventStoreUnitOfWork, _eventStoreIdentityMap);
+            _eventStoreUnitOfWork = new EventStoreUnitOfWork<IDomainEvent>(
+                _domainEventStorage,
+                _eventStoreIdentityMap,
+                new Mock<IBus>().Object,
+                Logger<EventStoreUnitOfWork<IDomainEvent>>()
+                );
+            _repository = new DomainRepository<IDomainEvent>(
+                _eventStoreUnitOfWork, 
+                _eventStoreIdentityMap,
+                Logger<DomainRepository<IDomainEvent>>()
+                );
         }
 
         [TestMethod]
@@ -239,7 +271,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
             _repository.Add(client);
             _eventStoreUnitOfWork.Commit();
 
-            Assert.AreEqual(9, _domainEventStorage.GetEventsSinceLastSnapShot(client.Id).Count()));
+            Assert.AreEqual(9, _domainEventStorage.GetEventsSinceLastSnapShot(client.Id).Count());
             Assert.AreEqual(19, _domainEventStorage.GetAllEvents(client.Id).Count());
         }
 

@@ -2,6 +2,7 @@
 using Fohjin.DDD.EventHandlers;
 using Fohjin.DDD.Events.Account;
 using Fohjin.DDD.Services;
+using Fohjin.DDD.Services.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 

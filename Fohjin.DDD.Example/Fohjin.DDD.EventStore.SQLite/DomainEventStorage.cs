@@ -6,7 +6,11 @@ using Microsoft.Extensions.Configuration;
 
 namespace Fohjin.DDD.EventStore.SQLite
 {
-    public class DomainEventStorage<TDomainEvent> : IDomainEventStorage<TDomainEvent> where TDomainEvent : IDomainEvent
+    public abstract class DomainEventStorage
+    {
+        public const string ConnectionStringConfigKey = "DomainEventStorage:SqliteConnectionString";
+    }
+    public class DomainEventStorage<TDomainEvent> : DomainEventStorage, IDomainEventStorage<TDomainEvent> where TDomainEvent : IDomainEvent
     {
         private bool _isRunningWithinTransaction;
         private readonly string _sqLiteConnectionString;
@@ -16,7 +20,7 @@ namespace Fohjin.DDD.EventStore.SQLite
 
         public DomainEventStorage(IConfiguration configuration, IExtendedFormatter formatter)
         {
-            _sqLiteConnectionString = configuration["DomainEventStorage:SqliteConnectionString"];
+            _sqLiteConnectionString = configuration[ConnectionStringConfigKey];
             _formatter = formatter;
         }
 

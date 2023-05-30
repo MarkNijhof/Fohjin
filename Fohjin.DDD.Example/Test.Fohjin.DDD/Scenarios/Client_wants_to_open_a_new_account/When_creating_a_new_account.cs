@@ -23,7 +23,7 @@ namespace Test.Fohjin.DDD.Scenarios.Client_wants_to_open_a_new_account
         protected override void When()
         {
             _ticks = SystemDateTime.Now().Ticks.ToString();
-            AggregateRoot = ActiveAccount.CreateNew(Guid.NewGuid(), "New Account");
+            AggregateRoot = ActiveAccount.CreateNew(Guid.NewGuid(), "New Account", "Account Number");
         }
 
         [TestMethod]

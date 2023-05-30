@@ -4,13 +4,13 @@ namespace Fohjin.DDD.Services.Models
     {
         public string SourceAccount { get; init; }
         public string TargetAccount { get; init; }
-        public decimal Ammount { get; init; }
+        public decimal Amount { get; init; }
 
         public MoneyTransfer(string sourceAccount, string targetAccount, decimal ammount)
         {
             SourceAccount = sourceAccount;
             TargetAccount = targetAccount;
-            Ammount = ammount;
+            Amount = ammount;
         }
     }
 }

@@ -29,7 +29,7 @@ namespace Test.Fohjin.DDD
 
             try
             {
-                EventHandler.Execute(When());
+                EventHandler.ExecuteAsync(When()).GetAwaiter().GetResult();
             }
             catch (Exception exception)
             {
