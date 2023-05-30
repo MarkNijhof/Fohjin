@@ -12,8 +12,8 @@ namespace Fohjin.DDD.Bus.Direct
         private static int _seed;
         private readonly int _id = _seed++;
 
-        private ICommandHandlerHelper _commandHandlerHelper;
-        private IEventHandlerHelper _eventHandlerHelper;
+        private ICommandHandlerHelper? _commandHandlerHelper;
+        private IEventHandlerHelper? _eventHandlerHelper;
         private readonly IServiceProvider _serviceProvider;
         private readonly ILogger _log;
 
@@ -28,7 +28,7 @@ namespace Fohjin.DDD.Bus.Direct
 
         public async Task<bool> RouteAsync(object message)
         {
-            _log.LogInformation($"RouteAsync({_id})> {{type}}: {{{nameof(message)}}}", message.GetType(), message);
+            _log.LogInformation($"RouteAsync({{id}})> {{type}}: {{{nameof(message)}}}", _id, message.GetType(), message);
             var handled = false;
             if (message is ICommand command)
             {
@@ -38,11 +38,11 @@ namespace Fohjin.DDD.Bus.Direct
             if (message is IDomainEvent @event)
             {
                 _eventHandlerHelper ??= _serviceProvider.GetRequiredService<IEventHandlerHelper>();
-                handled |=  await _eventHandlerHelper.RouteAsync(@event);
+                handled |= await _eventHandlerHelper.RouteAsync(@event);
             }
 
             if (!handled)
-                _log.LogWarning($"RouteAsync({_id})-NotHandled> {{type}}: {{{nameof(message)}}}", message.GetType(), message);
+                _log.LogWarning($"RouteAsync({{id}})-NotHandled> {{type}}: {{{nameof(message)}}}", _id, message.GetType(), message);
 
             return handled;
         }

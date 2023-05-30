@@ -1,17 +1,11 @@
 ﻿namespace Fohjin.DDD.EventStore.Aggregate
 {
-    public class BaseEntity<TDomainEvent> : IEntityEventProvider<TDomainEvent> where TDomainEvent : IDomainEvent
+    public abstract class BaseEntity<TDomainEvent> : IEntityEventProvider<TDomainEvent> where TDomainEvent : IDomainEvent
     {
-        public Guid Id { get; protected set; }
-        private readonly Dictionary<Type, Action<TDomainEvent>> _events;
-        private readonly List<TDomainEvent> _appliedEvents;
-        private Func<int> _versionProvider;
-
-        public BaseEntity()
-        {
-            _events = new Dictionary<Type, Action<TDomainEvent>>();
-            _appliedEvents = new List<TDomainEvent>();
-        }
+        public Guid Id { get; set; }
+        private readonly Dictionary<Type, Action<TDomainEvent>> _events = new();
+        private readonly List<TDomainEvent> _appliedEvents = new();
+        private Func<int>? _versionProvider;
 
         protected void RegisterEvent<TEvent>(Action<TEvent> eventHandler) where TEvent : class, TDomainEvent
         {
@@ -21,7 +15,7 @@
         protected void Apply<TEvent>(TEvent domainEvent) where TEvent : class, TDomainEvent
         {
             domainEvent.AggregateId = Id;
-            domainEvent.Version = _versionProvider();
+            domainEvent.Version = _versionProvider?.Invoke() ?? -1;
             Apply(domainEvent.GetType(), domainEvent);
             _appliedEvents.Add(domainEvent);
         }

@@ -4,7 +4,7 @@ namespace Fohjin.DDD.Events.Client
 {
     public class ClientPhoneNumberChangedEvent : DomainEvent
     {
-        public string PhoneNumber { get; set; }
+        public string PhoneNumber { get; set; } = null!;
 
         [JsonConstructor]
         public ClientPhoneNumberChangedEvent() { }

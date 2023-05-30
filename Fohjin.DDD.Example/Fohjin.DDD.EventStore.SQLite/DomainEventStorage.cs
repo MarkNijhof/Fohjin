@@ -140,7 +140,7 @@ namespace Fohjin.DDD.EventStore.SQLite
 
         public ISnapShot GetSnapShot(Guid eventProviderId)
         {
-            ISnapShot snapshot = null;
+            ISnapShot? snapshot = null;
             const string commandText = @"SELECT SnapShot FROM SnapShots WHERE EventProviderId = @eventProviderId AND Version != -1;";
 
             using var sqliteConnection = new SqliteConnection(_sqLiteConnectionString);

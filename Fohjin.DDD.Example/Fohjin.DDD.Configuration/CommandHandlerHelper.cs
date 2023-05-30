@@ -8,8 +8,8 @@ namespace Fohjin.DDD.Configuration
 {
     public class CommandHandlerHelper : ICommandHandlerHelper
     {
-        private IDictionary<Type, IEnumerable<Type>> _handlersCache;
-        private IEnumerable<Type> _commandCache;
+        private IDictionary<Type, IEnumerable<Type>>? _handlersCache;
+        private IEnumerable<Type>? _commandCache;
 
         private readonly IEnumerable<ICommandHandler> _handlers;
         private readonly IServiceProvider _serviceProvider;
@@ -43,7 +43,8 @@ namespace Fohjin.DDD.Configuration
             var targetHandler = typeof(ICommandHandler<>).MakeGenericType(message.GetType());
             var selectedHandlers = _handlers.Where(i => i.GetType().IsAssignableTo(targetHandler));
 
-            if (!selectedHandlers.Any()) return false;
+            if (!selectedHandlers.Any())
+                return false;
 
             foreach (var handler in selectedHandlers)
             {

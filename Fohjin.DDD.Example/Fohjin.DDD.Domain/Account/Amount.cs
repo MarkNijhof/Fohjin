@@ -21,19 +21,8 @@ namespace Fohjin.DDD.Domain.Account
             return new Amount(newDecimalAmount);
         }
 
-        public bool IsNegative()
-        {
-            return _decimalAmount < 0;
-        }
-
-        public static implicit operator decimal(Amount amount)
-        {
-            return amount._decimalAmount;
-        }
-
-        public static implicit operator Amount(decimal decimalAmount)
-        {
-            return new Amount(decimalAmount);
-        }
+        public bool IsNegative() => _decimalAmount < 0;
+        public static implicit operator decimal(Amount amount) => amount._decimalAmount;
+        public static implicit operator Amount(decimal decimalAmount) => new Amount(decimalAmount);
     }
 }

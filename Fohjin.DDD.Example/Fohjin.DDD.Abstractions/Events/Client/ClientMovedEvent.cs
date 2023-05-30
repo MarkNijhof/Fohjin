@@ -4,10 +4,10 @@ namespace Fohjin.DDD.Events.Client
 {
     public class ClientMovedEvent : DomainEvent
     {
-        public string Street { get; set; }
-        public string StreetNumber { get; set; }
-        public string PostalCode { get; set; }
-        public string City { get; set; }
+        public string Street { get; set; } = null!;
+        public string StreetNumber { get; set; } = null!;
+        public string PostalCode { get; set; } = null!;
+        public string City { get; set; } = null!;
 
         [JsonConstructor]
         public ClientMovedEvent() { }

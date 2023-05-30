@@ -9,7 +9,7 @@ namespace Fohjin.DDD.Domain.Account
 {
     public class ActiveAccount : BaseAggregateRoot<IDomainEvent>, IOriginator
     {
-        private readonly List<Ledger> _ledgers;
+        private readonly List<Ledger> _ledgers = new();
 
         private Guid _clientId;
         private AccountName _accountName;
@@ -25,7 +25,6 @@ namespace Fohjin.DDD.Domain.Account
             _accountName = new AccountName(string.Empty);
             _accountNumber = new AccountNumber(string.Empty);
             _balance = new Balance();
-            _ledgers = new List<Ledger>();
             _closed = false;
 
             RegisterEvents();

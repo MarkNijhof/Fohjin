@@ -5,7 +5,7 @@ namespace Fohjin.DDD.Bus.Direct
 {
     public class DirectBus : IBus
     {
-        private IRouteMessages _routeMessages;
+        private IRouteMessages? _routeMessages;
         private readonly IServiceProvider _serviceProvider;
         private readonly ILogger _log;
 

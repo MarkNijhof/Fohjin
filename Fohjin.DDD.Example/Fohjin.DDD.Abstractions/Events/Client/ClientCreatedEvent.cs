@@ -5,12 +5,12 @@ namespace Fohjin.DDD.Events.Client
     public class ClientCreatedEvent : DomainEvent
     {
         public Guid ClientId { get; set; }
-        public string ClientName { get; set; }
-        public string Street { get; set; }
-        public string StreetNumber { get; set; }
-        public string PostalCode { get; set; }
-        public string City { get; set; }
-        public string PhoneNumber { get; set; }
+        public string ClientName { get; set; } = null!;
+        public string Street { get; set; } = null!;
+        public string StreetNumber { get; set; } = null!;
+        public string PostalCode { get; set; } = null!;
+        public string City { get; set; } = null!;
+        public string PhoneNumber { get; set; } = null!;
 
         [JsonConstructor]
         public ClientCreatedEvent() { }

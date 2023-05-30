@@ -7,9 +7,9 @@ namespace Fohjin.DDD.Events.Account
         public Guid AccountId { get; set; }
         public Guid OriginalAccountId { get; set; }
         public Guid ClientId { get; set; }
-        public List<KeyValuePair<string, string>> Ledgers { get; set; }
-        public string AccountName { get; set; }
-        public string AccountNumber { get; set; }
+        public List<KeyValuePair<string, string>> Ledgers { get; set; } = new();
+        public string AccountName { get; set; } = null!;
+        public string AccountNumber { get; set; } = null!;
 
 
         [JsonConstructor]

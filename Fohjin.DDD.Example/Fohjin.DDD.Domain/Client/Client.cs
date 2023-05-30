@@ -12,13 +12,12 @@ namespace Fohjin.DDD.Domain.Client
         private PhoneNumber _phoneNumber;
         private Address _address;
         private ClientName _clientName;
-        private readonly List<Guid> _accounts;
+        private readonly List<Guid> _accounts = new();
         private readonly EntityList<BankCard, IDomainEvent> _bankCards;
 
         public Client()
         {
-            _accounts = new List<Guid>();
-            _bankCards = new EntityList<BankCard, IDomainEvent>(this);
+            _bankCards = new(this);
 
             RegisterEvents();
         }

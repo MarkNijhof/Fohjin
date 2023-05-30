@@ -6,8 +6,8 @@ namespace Fohjin.DDD.Events.Account
     {
         public decimal Balance { get; set; }
         public decimal Amount { get; set; }
-        public string SourceAccount { get; set; }
-        public string TargetAccount { get; set; }
+        public string SourceAccount { get; set; } = null!;
+        public string TargetAccount { get; set; } = null!;
 
         [JsonConstructor]
         public MoneyTransferReceivedEvent() { }

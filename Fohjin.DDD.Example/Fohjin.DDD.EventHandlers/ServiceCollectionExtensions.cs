@@ -25,7 +25,6 @@ namespace Fohjin.DDD.EventHandlers
             service.AddTransient<IEventHandler, NewBankCardForAccountAssignedEventHandler>();
             service.AddTransient<IEventHandler, SendMoneyTransferFurtherEventHandler>();
 
-
             return service;
         }
     }

@@ -6,8 +6,8 @@ namespace Fohjin.DDD.Configuration
 {
     public class EventHandlerHelper : IEventHandlerHelper
     {
-        private IDictionary<Type, IEnumerable<Type>> _handlersCache;
-        private IEnumerable<Type> _commandCache;
+        private IDictionary<Type, IEnumerable<Type>>? _handlersCache;
+        private IEnumerable<Type>? _commandCache;
 
         private readonly IEnumerable<IEventHandler> _handlers;
         private readonly ILogger _log;

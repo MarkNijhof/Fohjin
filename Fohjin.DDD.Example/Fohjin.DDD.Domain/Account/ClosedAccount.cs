@@ -12,16 +12,15 @@ namespace Fohjin.DDD.Domain.Account
         private Guid _clientId;
         private AccountName _accountName;
         private AccountNumber _accountNumber;
-        private readonly List<Ledger> _ledgers;
+        private readonly List<Ledger> _ledgers = new();
 
         public ClosedAccount()
         {
             Id = Guid.Empty;
-            _accountName = new AccountName(string.Empty);
-            _accountNumber = new AccountNumber(string.Empty);
+            _accountName = new (string.Empty);
+            _accountNumber = new (string.Empty);
             Version = 0;
             EventVersion = 0;
-            _ledgers = new List<Ledger>();
 
             RegisterEvents();
         }
@@ -34,15 +33,11 @@ namespace Fohjin.DDD.Domain.Account
             Apply(new ClosedAccountCreatedEvent(Guid.NewGuid(), accountId, clientId, Ledgers, accountName, accountNumber));
         }
 
-        public static ClosedAccount CreateNew(Guid accountId, Guid clientId, List<Ledger> ledgers, AccountName accountName, AccountNumber accountNumber)
-        {
-            return new ClosedAccount(accountId, clientId, ledgers, accountName.Name, accountNumber.Number);
-        }
+        public static ClosedAccount CreateNew(Guid accountId, Guid clientId, List<Ledger> ledgers, AccountName accountName, AccountNumber accountNumber)=>
+            new ClosedAccount(accountId, clientId, ledgers, accountName.Name, accountNumber.Number);
 
-        IMemento IOriginator.CreateMemento()
-        {
-            return new ClosedAccountMemento(Id, Version, _originalAccountId, _clientId, _accountName.Name, _accountNumber.Number, _ledgers);
-        }
+        IMemento IOriginator.CreateMemento()=>
+            new ClosedAccountMemento(Id, Version, _originalAccountId, _clientId, _accountName.Name, _accountNumber.Number, _ledgers);
 
         void IOriginator.SetMemento(IMemento memento)
         {

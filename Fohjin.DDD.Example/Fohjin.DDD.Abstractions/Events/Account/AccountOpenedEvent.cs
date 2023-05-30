@@ -6,8 +6,8 @@ namespace Fohjin.DDD.Events.Account
     {
         public Guid AccountId { get; set; }
         public Guid ClientId { get; set; }
-        public string AccountName { get; set; }
-        public string AccountNumber { get; set; }
+        public string AccountName { get; set; } = null!;
+        public string AccountNumber { get; set; } = null!;
 
         [JsonConstructor]
         public AccountOpenedEvent() { }

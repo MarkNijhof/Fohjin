@@ -73,7 +73,7 @@ namespace Test.Fohjin.DDD.TestUtilities
                     type.GetGenericArguments().Select(t => t.GetNonDefaultValue()).ToArray()
                     ;
                 var ctor = type.GetConstructors()[0];
-                return ctor.Invoke( args);
+                return ctor.Invoke(args);
 
             }
             else if (type.IsInterface)
@@ -99,10 +99,33 @@ namespace Test.Fohjin.DDD.TestUtilities
             var properties = type.GetGetterProperties();
             foreach (var property in properties)
             {
-                var defValue = GetDefaultValue(property.PropertyType);
-                var value = property.GetValue(instance, Array.Empty<object?>());
-                if (value == null || object.Equals(value, defValue))
-                    throw new NotSupportedException();
+                if (property.PropertyType.IsGenericType && property.PropertyType.GetGenericTypeDefinition() == typeof(List<>))
+                {
+                    var list = property.GetValue(instance, Array.Empty<object?>());
+                    var value = list.GetType().GetProperty("Item").GetValue(list, new object[] { 0 });
+                    value.GetType().EnsureNotDefault(value);
+                }
+                else
+                {
+                    var value = property.GetValue(instance, Array.Empty<object?>());
+
+
+                    var defValue = GetDefaultValue(property.PropertyType);
+                    if (value == null || object.Equals(value, defValue))
+                        throw new NotSupportedException();
+                    if (!value.GetType().IsValueType && value.GetType() != typeof(string))
+                    {
+                        try
+                        {
+                            value.GetType().EnsureNotDefault(value);
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"{value.GetType()}.{property.Name}:> {ex.Message}");
+                            throw;
+                        }
+                    }
+                }
             }
 
             return type;

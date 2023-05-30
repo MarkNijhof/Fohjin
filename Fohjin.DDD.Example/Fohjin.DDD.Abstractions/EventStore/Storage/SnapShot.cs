@@ -16,6 +16,6 @@ namespace Fohjin.DDD.EventStore.Storage
 
         public Guid EventProviderId { get; set; }
         public int Version { get; set; }
-        public IMemento Memento { get; set; }
+        public IMemento Memento { get; set; } = null!;
     }
 }
