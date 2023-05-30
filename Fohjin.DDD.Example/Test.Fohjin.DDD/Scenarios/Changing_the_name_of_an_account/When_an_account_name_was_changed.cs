@@ -2,7 +2,8 @@ using System;
 using Fohjin.DDD.EventHandlers;
 using Fohjin.DDD.Events.Account;
 using Fohjin.DDD.Reporting;
-using Fohjin.DDD.Reporting.Dto;
+using Fohjin.DDD.Reporting.Dtos;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Test.Fohjin.DDD.Scenarios.Changing_the_name_of_an_account

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Fohjin.DDD.CommandHandlers;
+﻿using Fohjin.DDD.CommandHandlers;
 using Fohjin.DDD.Commands;
 using Fohjin.DDD.Domain.Account;
 using Fohjin.DDD.Events.Account;
@@ -14,7 +11,7 @@ namespace Test.Fohjin.DDD.Scenarios.Receiving_money_transfer
         protected override IEnumerable<IDomainEvent> Given()
         {
             yield return PrepareDomainEvent.Set(new AccountOpenedEvent(Guid.NewGuid(), Guid.NewGuid(), "AccountName", "1234567890")).ToVersion(1);
-            yield return PrepareDomainEvent.Set(new CashDepositdEvent(20, 20)).ToVersion(1);
+            yield return PrepareDomainEvent.Set(new CashDepositedEvent(20, 20)).ToVersion(1);
         }
 
         protected override ReceiveMoneyTransferCommand When()

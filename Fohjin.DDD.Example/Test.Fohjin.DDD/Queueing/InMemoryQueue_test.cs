@@ -18,14 +18,14 @@ namespace Test.Fohjin.DDD.Queueing
             inMemoryQueue.Put("first item");
             inMemoryQueue.Put("second item");
 
-            Assert.AreEqual(firstItem, Is.EqualTo("not set"));
-            Assert.AreEqual(secondItem, Is.EqualTo("not set"));
+            Assert.AreEqual("not set", firstItem);
+            Assert.AreEqual("not set", secondItem);
 
             inMemoryQueue.Pop(x => firstItem = x.ToString());
             inMemoryQueue.Pop(x => secondItem = x.ToString());
 
-            Assert.AreEqual(firstItem, Is.EqualTo("first item"));
-            Assert.AreEqual(secondItem, Is.EqualTo("second item"));
+            Assert.AreEqual("first item", firstItem);
+            Assert.AreEqual("second item", secondItem);
         }
 
         [TestMethod]
@@ -39,14 +39,14 @@ namespace Test.Fohjin.DDD.Queueing
             inMemoryQueue.Pop(x => firstItem = x.ToString());
             inMemoryQueue.Pop(x => secondItem = x.ToString());
 
-            Assert.AreEqual(firstItem, Is.EqualTo("not set"));
-            Assert.AreEqual(secondItem, Is.EqualTo("not set"));
+            Assert.AreEqual("not set", firstItem);
+            Assert.AreEqual("not set", secondItem);
 
             inMemoryQueue.Put("first item");
             inMemoryQueue.Put("second item");
 
-            Assert.AreEqual(firstItem, Is.EqualTo("first item"));
-            Assert.AreEqual(secondItem, Is.EqualTo("second item"));
+            Assert.AreEqual("first item", firstItem);
+            Assert.AreEqual("second item", secondItem);
         }
     }
 }

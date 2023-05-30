@@ -2,7 +2,7 @@
 
 namespace Fohjin.DDD.BankApplication.Views
 {
-    public partial class ClientDetails : Form, IClientDetailsView
+    public partial class ClientDetails : ViewFormBase, IClientDetailsView
     {
         public ClientDetails()
         {

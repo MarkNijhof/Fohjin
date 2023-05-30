@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Fohjin;
 using Fohjin.DDD.Domain;
 using Fohjin.DDD.Reporting;
-using Fohjin.DDD.Reporting.Dto;
+using Fohjin.DDD.Reporting.Dtos;
 using Fohjin.DDD.Services;
 using Moq;
 

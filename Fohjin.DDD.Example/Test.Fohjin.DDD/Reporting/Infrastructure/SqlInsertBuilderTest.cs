@@ -1,6 +1,5 @@
 using Fohjin.DDD.Reporting.Infrastructure;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NUnit.Framework.SyntaxHelpers;
 
 namespace Test.Fohjin.DDD.Reporting.Infrastructure
 {
@@ -9,7 +8,7 @@ namespace Test.Fohjin.DDD.Reporting.Infrastructure
     {
         private SqlInsertBuilder _sqlInsertBuilder;
 
-        [SetUp]
+        [TestInitialize]
         public void SetUp()
         {
             _sqlInsertBuilder = new SqlInsertBuilder();

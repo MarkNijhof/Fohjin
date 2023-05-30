@@ -1,9 +1,4 @@
-using System;
-using System.Windows.Forms;
-using Fohjin.DDD.BankApplication.Presenters;
-using Fohjin.DDD.BankApplication.Views;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NUnit.Framework.SyntaxHelpers;
 
 namespace Test.Fohjin.DDD.Presenter
 {
@@ -18,7 +13,7 @@ namespace Test.Fohjin.DDD.Presenter
 
             testView.Test();
 
-            Assert.AreEqual(testPresenter.TestValue, Is.True);
+            Assert.IsTrue(testPresenter.TestValue);
         }
     }
 }

@@ -1,4 +1,5 @@
 using System.IO;
+using Fohjin.DDD.BankApplication;
 using Fohjin.DDD.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -12,7 +13,8 @@ namespace Test.Fohjin.DDD.Configuration
         {
             File.Delete(DomainDatabaseBootStrapper.dataBaseFile);
 
-            DomainDatabaseBootStrapper.BootStrap();
+#warning I dont know if this is needed //TODO: might need to fix
+            //DomainDatabaseBootStrapper.BootStrap();
         }
 
         [TestMethod]

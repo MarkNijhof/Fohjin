@@ -1,15 +1,13 @@
-using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
+using Fohjin.DDD.BankApplication;
 using Fohjin.DDD.Bus;
-using Fohjin.DDD.Configuration;
 using Fohjin.DDD.Domain.Client;
 using Fohjin.DDD.Domain.Mementos;
 using Fohjin.DDD.EventStore;
 using Fohjin.DDD.EventStore.SQLite;
 using Fohjin.DDD.EventStore.Storage;
-using Moq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NUnit.Framework.SyntaxHelpers;
+using Moq;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Test.Fohjin.DDD.Domain.Repositories
 {
@@ -23,7 +21,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
         private EventStoreIdentityMap<IDomainEvent> _eventStoreIdentityMap;
         private EventStoreUnitOfWork<IDomainEvent> _eventStoreUnitOfWork;
 
-        [SetUp]
+        [TestInitialize]
         public void SetUp()
         {
             new DomainDatabaseBootStrapper().ReCreateDatabaseSchema();
@@ -46,8 +44,8 @@ namespace Test.Fohjin.DDD.Domain.Repositories
             _repository.Add(client);
             _eventStoreUnitOfWork.Commit();
 
-            Assert.AreEqual(_domainEventStorage.GetEventsSinceLastSnapShot(client.Id).Count(), Is.EqualTo(3));
-            Assert.AreEqual(_domainEventStorage.GetAllEvents(client.Id).Count(), Is.EqualTo(3));
+            Assert.AreEqual(3, _domainEventStorage.GetEventsSinceLastSnapShot(client.Id).Count());
+            Assert.AreEqual(3, _domainEventStorage.GetAllEvents(client.Id).Count());
         }
 
         [TestMethod]
@@ -62,7 +60,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
 
             var clientForRepository = (IEventProvider<IDomainEvent>)client;
 
-            Assert.AreEqual(clientForRepository.GetChanges().Count(), Is.EqualTo(0));
+            Assert.AreEqual(0, clientForRepository.GetChanges().Count());
         }
 
         [TestMethod]
@@ -81,7 +79,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
             _repository.Add(client);
             _eventStoreUnitOfWork.Commit();
 
-            Assert.AreEqual(_domainEventStorage.GetSnapShot(client.Id), Is.Null);
+            Assert.IsNull(_domainEventStorage.GetSnapShot(client.Id));
         }
 
         [TestMethod]
@@ -104,8 +102,8 @@ namespace Test.Fohjin.DDD.Domain.Repositories
 
             var snapShot = _domainEventStorage.GetSnapShot(client.Id);
 
-            Assert.AreEqual(snapShot, Is.Not.Null);
-            Assert.AreEqual(snapShot.Memento, Is.InstanceOfType(typeof(ClientMemento)));
+            Assert.IsNotNull(snapShot);
+            Assert.IsInstanceOfType<ClientMemento>(snapShot.Memento);
         }
 
         [TestMethod]
@@ -129,8 +127,8 @@ namespace Test.Fohjin.DDD.Domain.Repositories
 
             var snapShot = _domainEventStorage.GetSnapShot(client.Id);
 
-            Assert.AreEqual(snapShot, Is.Not.Null);
-            Assert.AreEqual(snapShot.Memento, Is.InstanceOfType(typeof(ClientMemento)));
+            Assert.IsNotNull(snapShot);
+            Assert.IsInstanceOfType<ClientMemento>(snapShot.Memento);
         }
 
         [TestMethod]
@@ -169,8 +167,8 @@ namespace Test.Fohjin.DDD.Domain.Repositories
 
             var snapShot = _domainEventStorage.GetSnapShot(client.Id);
 
-            Assert.AreEqual(snapShot, Is.Not.Null);
-            Assert.AreEqual(snapShot.Memento, Is.InstanceOfType(typeof(ClientMemento)));
+            Assert.IsNotNull(snapShot);
+            Assert.IsInstanceOfType<ClientMemento>(snapShot.Memento);
         }
 
         [TestMethod]
@@ -206,8 +204,8 @@ namespace Test.Fohjin.DDD.Domain.Repositories
 
             var snapShot = _domainEventStorage.GetSnapShot(client.Id);
 
-            Assert.AreEqual(snapShot, Is.Not.Null);
-            Assert.AreEqual(snapShot.Memento, Is.InstanceOfType(typeof(ClientMemento)));
+            Assert.IsNotNull(snapShot);
+            Assert.IsInstanceOfType<ClientMemento>(snapShot.Memento);
         }
 
         [TestMethod]
@@ -241,8 +239,8 @@ namespace Test.Fohjin.DDD.Domain.Repositories
             _repository.Add(client);
             _eventStoreUnitOfWork.Commit();
 
-            Assert.AreEqual(_domainEventStorage.GetEventsSinceLastSnapShot(client.Id).Count(), Is.EqualTo(9));
-            Assert.AreEqual(_domainEventStorage.GetAllEvents(client.Id).Count(), Is.EqualTo(19));
+            Assert.AreEqual(9, _domainEventStorage.GetEventsSinceLastSnapShot(client.Id).Count()));
+            Assert.AreEqual(19, _domainEventStorage.GetAllEvents(client.Id).Count());
         }
 
         [TestMethod]

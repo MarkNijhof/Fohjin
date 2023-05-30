@@ -2,7 +2,7 @@ using System;
 using Fohjin.DDD.EventHandlers;
 using Fohjin.DDD.Events.Client;
 using Fohjin.DDD.Reporting;
-using Fohjin.DDD.Reporting.Dto;
+using Fohjin.DDD.Reporting.Dtos;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 

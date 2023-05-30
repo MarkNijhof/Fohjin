@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Fohjin.DDD.Bus.Direct;
-using Fohjin.DDD.EventHandlers;
-using Fohjin.DDD.Events;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Test.Fohjin.DDD.Bus
@@ -130,40 +128,6 @@ namespace Test.Fohjin.DDD.Bus
         public void Then_the_execute_method_on_the_second_returned_event_handler_is_invoked_with_the_second_provided_event()
         {
             _secondHandler.Ids[1].WillBe(_otherEvent.Id);
-        }
-    }
-
-    public class TestEvent : DomainEvent
-    {
-    }
-
-    public class FirstTestEventHandler : IEventHandler<TestEvent>
-    {
-        public List<Guid> Ids;
-
-        public FirstTestEventHandler()
-        {
-            Ids = new List<Guid>();
-        }
-
-        public void Execute(TestEvent command)
-        {
-            Ids.Add(command.Id);
-        }
-    }
-
-    public class SecondTestEventHandler : IEventHandler<TestEvent>
-    {
-        public List<Guid> Ids;
-
-        public SecondTestEventHandler()
-        {
-            Ids = new List<Guid>();
-        }
-
-        public void Execute(TestEvent command)
-        {
-            Ids.Add(command.Id);
         }
     }
 }

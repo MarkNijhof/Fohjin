@@ -2,7 +2,7 @@
 
 namespace Fohjin.DDD.BankApplication.Views
 {
-    public partial class ClientSearchForm : Form, IClientSearchFormView
+    public partial class ClientSearchForm : ViewFormBase, IClientSearchFormView
     {
         public ClientSearchForm()
         {

@@ -2,7 +2,7 @@
 
 namespace Fohjin.DDD.BankApplication.Views
 {
-    public partial class AccountDetails : Form, IAccountDetailsView
+    public partial class AccountDetails : ViewFormBase, IAccountDetailsView
     {
         public AccountDetails()
         {

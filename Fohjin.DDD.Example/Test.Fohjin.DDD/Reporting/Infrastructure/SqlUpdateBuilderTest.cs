@@ -1,3 +1,6 @@
+using Fohjin.DDD.Reporting.Infrastructure;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 namespace Test.Fohjin.DDD.Reporting.Infrastructure
 {
     [TestClass]
@@ -5,7 +8,7 @@ namespace Test.Fohjin.DDD.Reporting.Infrastructure
     {
         private SqlUpdateBuilder _sqlUpdateBuilder;
 
-        [SetUp]
+        [TestInitialize]
         public void SetUp()
         {
             _sqlUpdateBuilder = new SqlUpdateBuilder();
@@ -14,8 +17,10 @@ namespace Test.Fohjin.DDD.Reporting.Infrastructure
         [TestMethod]
         public void When_calling_CreateSqlSelectStatementFromDto_with_a_test_dto_it_will_generate_the_expected_sql_select_with_where_clause_statement_case_1()
         {
-            Assert.AreEqual(_sqlUpdateBuilder.GetUpdateString<TestDtoCase1>(new { Column1 = "Test", Column2 = "Test" }, new { Column2 = "123" }),
-                        Is.EqualTo("UPDATE TestDtoCase1 SET Column1=@update_column1,Column2=@update_column2 WHERE Column2=@column2;"));
+            Assert.AreEqual(
+                "UPDATE TestDtoCase1 SET Column1=@update_column1,Column2=@update_column2 WHERE Column2=@column2;",
+                _sqlUpdateBuilder.GetUpdateString<TestDtoCase1>(new { Column1 = "Test", Column2 = "Test" }, new { Column2 = "123" })
+                );
         }
 
         [TestMethod]

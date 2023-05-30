@@ -1,5 +1,4 @@
-﻿using System;
-using Fohjin.DDD.CommandHandlers;
+﻿using Fohjin.DDD.CommandHandlers;
 using Fohjin.DDD.Commands;
 using Fohjin.DDD.Domain.Account;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

@@ -1,18 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.Serialization.Formatters.Binary;
+using Fohjin.DDD.BankApplication;
 using Fohjin.DDD.Bus;
-using Fohjin.DDD.Configuration;
 using Fohjin.DDD.Domain.Account;
 using Fohjin.DDD.EventStore;
 using Fohjin.DDD.EventStore.SQLite;
 using Fohjin.DDD.EventStore.Storage;
 using Fohjin.DDD.EventStore.Storage.Memento;
-using Moq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NUnit.Framework.SyntaxHelpers;
+using Moq;
+using System.Reflection;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Test.Fohjin.DDD.Domain.Repositories
 {
@@ -27,7 +23,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
         private EventStoreUnitOfWork<IDomainEvent> _eventStoreUnitOfWork;
         private List<Ledger> _ledgers;
 
-        [SetUp]
+        [TestInitialize]
         public void SetUp()
         {
             new DomainDatabaseBootStrapper().ReCreateDatabaseSchema();
@@ -57,8 +53,8 @@ namespace Test.Fohjin.DDD.Domain.Repositories
             _repository.Add(closedAccount);
             _eventStoreUnitOfWork.Commit();
 
-            Assert.AreEqual(_domainEventStorage.GetEventsSinceLastSnapShot(closedAccount.Id).Count(), Is.EqualTo(1));
-            Assert.AreEqual(_domainEventStorage.GetAllEvents(closedAccount.Id).Count(), Is.EqualTo(1));
+            Assert.AreEqual(1, _domainEventStorage.GetEventsSinceLastSnapShot(closedAccount.Id).Count());
+            Assert.AreEqual(1, _domainEventStorage.GetAllEvents(closedAccount.Id).Count());
         }
 
         [TestMethod]
@@ -80,7 +76,7 @@ namespace Test.Fohjin.DDD.Domain.Repositories
 
             var closedAccountForRepository = (IEventProvider<IDomainEvent>)closedAccount;
 
-            Assert.AreEqual(closedAccountForRepository.GetChanges().Count(), Is.EqualTo(0));
+            Assert.AreEqual(0, closedAccountForRepository.GetChanges().Count());
         }
 
         [TestMethod]
@@ -117,11 +113,11 @@ namespace Test.Fohjin.DDD.Domain.Repositories
                     var ledgers = (List<Ledger>)field.GetValue(recreated);
                     foreach (var ledger in (List<Ledger>)field.GetValue(original))
                     {
-                        Assert.AreEqual(ledger.ToString(), Is.EqualTo(ledgers[counter++].ToString()));
+                        Assert.AreEqual(ledgers[counter++].ToString(), ledger.ToString());
                     }
                     continue;
                 }
-                Assert.AreEqual(field.GetValue(original).ToString(), Is.EqualTo(field.GetValue(recreated).ToString()));
+                Assert.AreEqual(field.GetValue(recreated).ToString(), field.GetValue(original).ToString());
             }
         }
 

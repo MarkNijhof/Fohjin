@@ -2,7 +2,7 @@ namespace Fohjin.DDD.BankApplication.Views
 {
     public interface IView : IDisposable
     {
-        DialogResult ShowDialog();
+        DialogResults ShowDialog();
         void Close();
     }
 }

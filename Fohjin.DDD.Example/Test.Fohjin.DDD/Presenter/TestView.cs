@@ -1,4 +1,6 @@
-﻿namespace Test.Fohjin.DDD.Presenter
+﻿using Fohjin.DDD.BankApplication.Views;
+
+namespace Test.Fohjin.DDD.Presenter
 {
     public class TestView : ITestView
     {
@@ -14,7 +16,7 @@
         {
         }
 
-        public DialogResult ShowDialog()
+        public DialogResults ShowDialog()
         {
             throw new NotImplementedException();
         }

@@ -1,4 +1,6 @@
-﻿namespace Test.Fohjin.DDD.Presenter
+﻿using Fohjin.DDD.BankApplication.Presenters;
+
+namespace Test.Fohjin.DDD.Presenter
 {
     public class TestPresenter : Presenter<ITestView>
     {
