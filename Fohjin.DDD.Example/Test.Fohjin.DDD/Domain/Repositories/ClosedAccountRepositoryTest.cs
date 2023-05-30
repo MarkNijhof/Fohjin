@@ -133,11 +133,11 @@ namespace Test.Fohjin.DDD.Domain.Repositories
 
             var closedAccount = ClosedAccount.CreateNew(Guid.NewGuid(), Guid.NewGuid(), _ledgers, new AccountName("AccountName"), new AccountNumber("1234567890"));
 
-            var memento = ((IOrginator)closedAccount).CreateMemento();
+            var memento = ((IOriginator)closedAccount).CreateMemento();
 
             var newClosedAccount = new ClosedAccount();
 
-            ((IOrginator)newClosedAccount).SetMemento(memento);
+            ((IOriginator)newClosedAccount).SetMemento(memento);
 
             ClosedAccountComparer(closedAccount, newClosedAccount);
         }

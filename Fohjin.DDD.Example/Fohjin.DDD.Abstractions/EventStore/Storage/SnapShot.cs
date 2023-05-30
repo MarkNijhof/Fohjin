@@ -1,9 +1,12 @@
 using Fohjin.DDD.EventStore.Storage.Memento;
+using System.Text.Json.Serialization;
 
 namespace Fohjin.DDD.EventStore.Storage
 {
     public class SnapShot : ISnapShot
     {
+        [JsonConstructor]
+        public SnapShot() { }
         public SnapShot(Guid eventProviderId, int version, IMemento memento)
         {
             EventProviderId = eventProviderId;

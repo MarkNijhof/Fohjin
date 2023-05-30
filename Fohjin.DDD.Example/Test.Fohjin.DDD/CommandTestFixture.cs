@@ -14,7 +14,7 @@ namespace Test.Fohjin.DDD
     public abstract class CommandTestFixture<TCommand, TCommandHandler, TAggregateRoot> 
         where TCommand : class, ICommand
         where TCommandHandler : class, ICommandHandler<TCommand>
-        where TAggregateRoot : class, IOrginator, IEventProvider<IDomainEvent>, new()
+        where TAggregateRoot : class, IOriginator, IEventProvider<IDomainEvent>, new()
     {
         private IDictionary<Type, object> mocks;
 

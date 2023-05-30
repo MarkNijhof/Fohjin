@@ -1,14 +1,17 @@
 ﻿using Fohjin.DDD.EventStore.Storage.Memento;
+using System.Text.Json.Serialization;
 
 namespace Fohjin.DDD.Domain.Mementos
 {
     [Serializable]
     public class BankCardMemento : IMemento
     {
-        internal Guid Id { get; init; }
-        internal Guid AccountId { get; init; }
-        internal bool Disabled { get; init; }
+        public Guid Id { get; set; }
+        public Guid AccountId { get; set; }
+        public bool Disabled { get; set; }
 
+        [JsonConstructor]
+        public BankCardMemento() { }
         public BankCardMemento(Guid id, Guid accountId, bool disabled)
         {
             Id = id;

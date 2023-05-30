@@ -6,7 +6,7 @@ using Fohjin.DDD.EventStore.Storage.Memento;
 
 namespace Fohjin.DDD.Domain.Account
 {
-    public class ClosedAccount : BaseAggregateRoot<IDomainEvent>, IOrginator
+    public class ClosedAccount : BaseAggregateRoot<IDomainEvent>, IOriginator
     {
         private Guid _originalAccountId;
         private Guid _clientId;
@@ -39,12 +39,12 @@ namespace Fohjin.DDD.Domain.Account
             return new ClosedAccount(accountId, clientId, ledgers, accountName.Name, accountNumber.Number);
         }
 
-        IMemento IOrginator.CreateMemento()
+        IMemento IOriginator.CreateMemento()
         {
             return new ClosedAccountMemento(Id, Version, _originalAccountId, _clientId, _accountName.Name, _accountNumber.Number, _ledgers);
         }
 
-        void IOrginator.SetMemento(IMemento memento)
+        void IOriginator.SetMemento(IMemento memento)
         {
             var closedAccountMemento = (ClosedAccountMemento)memento;
             Id = closedAccountMemento.Id;

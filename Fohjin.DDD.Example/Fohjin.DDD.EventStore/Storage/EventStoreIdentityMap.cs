@@ -7,7 +7,7 @@ namespace Fohjin.DDD.EventStore.Storage
         private readonly Dictionary<Type, Dictionary<Guid, object>> _identityMap = new ();
 
 
-        public TAggregate GetById<TAggregate>(Guid id) where TAggregate : class, IOrginator, IEventProvider<TDomainEvent>, new()
+        public TAggregate GetById<TAggregate>(Guid id) where TAggregate : class, IOriginator, IEventProvider<TDomainEvent>, new()
         {
             if (!_identityMap.TryGetValue(typeof(TAggregate), out Dictionary<Guid, object> aggregates))
                 return null;
@@ -18,7 +18,7 @@ namespace Fohjin.DDD.EventStore.Storage
             return (TAggregate)aggregate;
         }
 
-        public void Add<TAggregate>(TAggregate aggregateRoot) where TAggregate : class, IOrginator, IEventProvider<TDomainEvent>, new()
+        public void Add<TAggregate>(TAggregate aggregateRoot) where TAggregate : class, IOriginator, IEventProvider<TDomainEvent>, new()
         {
             if (!_identityMap.TryGetValue(typeof(TAggregate), out Dictionary<Guid, object> aggregates))
             {

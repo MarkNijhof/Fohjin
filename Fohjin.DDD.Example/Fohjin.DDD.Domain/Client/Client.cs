@@ -7,7 +7,7 @@ using Fohjin.DDD.EventStore.Storage.Memento;
 
 namespace Fohjin.DDD.Domain.Client
 {
-    public class Client : BaseAggregateRoot<IDomainEvent>, IOrginator
+    public class Client : BaseAggregateRoot<IDomainEvent>, IOriginator
     {
         private PhoneNumber _phoneNumber;
         private Address _address;
@@ -90,15 +90,15 @@ namespace Fohjin.DDD.Domain.Client
                 throw new NonExistingClientException("The Client is not created and no opperations can be executed on it");
         }
 
-        IMemento IOrginator.CreateMemento()
+        IMemento IOriginator.CreateMemento()
         {
             var bankCardMementos = new List<IMemento>();
-            _bankCards.ForEach(x => bankCardMementos.Add(((IOrginator)x).CreateMemento()));
+            _bankCards.ForEach(x => bankCardMementos.Add(((IOriginator)x).CreateMemento()));
 
             return new ClientMemento(Id, Version, _clientName.Name, _address.Street, _address.StreetNumber, _address.PostalCode, _address.City, _phoneNumber.Number, _accounts, bankCardMementos);
         }
 
-        void IOrginator.SetMemento(IMemento memento)
+        void IOriginator.SetMemento(IMemento memento)
         {
             var clientMemento = (ClientMemento)memento;
             Id = clientMemento.Id;
@@ -111,7 +111,7 @@ namespace Fohjin.DDD.Domain.Client
             clientMemento.BankCardMementos.ForEach(x =>
             {
                 var bankCard = new BankCard();
-                ((IOrginator)bankCard).SetMemento(x);
+                ((IOriginator)bankCard).SetMemento(x);
                 _bankCards.Add(bankCard);
             });
         }

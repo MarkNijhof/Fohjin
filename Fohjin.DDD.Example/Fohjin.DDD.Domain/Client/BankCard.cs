@@ -6,7 +6,7 @@ using Fohjin.DDD.EventStore.Storage.Memento;
 
 namespace Fohjin.DDD.Domain.Client
 {
-    public class BankCard : BaseEntity<IDomainEvent>, IOrginator, IBankCard
+    public class BankCard : BaseEntity<IDomainEvent>, IOriginator, IBankCard
     {
         private Guid _accountId;
         private bool _disabled;
@@ -42,12 +42,12 @@ namespace Fohjin.DDD.Domain.Client
                 throw new BankCardIsDisabledException("The bank card is disabled and no operations can be executed on it");
         }
 
-        IMemento IOrginator.CreateMemento()
+        IMemento IOriginator.CreateMemento()
         {
             return new BankCardMemento(Id, _accountId, _disabled);
         }
 
-        void IOrginator.SetMemento(IMemento memento)
+        void IOriginator.SetMemento(IMemento memento)
         {
             var bankCardMemento = (BankCardMemento)memento;
             Id = bankCardMemento.Id;

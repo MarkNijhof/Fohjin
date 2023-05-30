@@ -9,12 +9,12 @@ namespace Test.Fohjin.DDD.TestUtilities
         {
             var defaultConstructor = type.GetDefaultConstructorInfo();
             if (defaultConstructor == null)
-                throw new NotSupportedException();
+                throw new NotSupportedException($"{type}");
 
             var obj = defaultConstructor.Invoke(Array.Empty<object?>());
 
             var properties = type.GetSetterProperties();
-            FillObject(obj, properties);
+            obj.FillObject(properties);
             return obj;
         }
 
@@ -27,10 +27,23 @@ namespace Test.Fohjin.DDD.TestUtilities
         public static PropertyInfo[] GetGetterProperties(this Type type) =>
             type.GetProperties(BindingFlags.GetProperty | BindingFlags.Public | BindingFlags.Instance);
 
-        public static void FillObject(object obj, PropertyInfo[] properties)
+        public static object FillObject(this object obj) =>
+            obj.FillObject(obj.GetType().GetSetterProperties());
+        public static object FillObject(this object obj, PropertyInfo[] properties)
         {
             foreach (var property in properties)
-                property.SetValue(obj, property.PropertyType.GetNonDefaultValue());
+            {
+                try
+                {
+                    property.SetValue(obj, property.PropertyType.GetNonDefaultValue());
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"{obj.GetType()}.{property.Name}:> {ex.Message}");
+                    throw;
+                }
+            }
+            return obj;
         }
 
         public static object? GetNonDefaultValue(this Type type)
@@ -45,15 +58,33 @@ namespace Test.Fohjin.DDD.TestUtilities
                 return "1";
             else if (type == typeof(Guid))
                 return Guid.NewGuid();
+            else if (type == typeof(bool))
+                return true;
             else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>))
-                return type.GetDefaultConstructorInfo().Invoke(Array.Empty<object?>());
+            {
+                var list = type.GetDefaultConstructorInfo().Invoke(Array.Empty<object?>());
+                var item = type.GetGenericArguments()[0].GetNonDefaultValue();
+                type.GetMethod("Add")?.Invoke(list, new object?[] { item });
+                return list;
+            }
             else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(KeyValuePair<,>))
-                return type.GetConstructors()[0].Invoke(
-                    Array.Empty<object?>(),
-                    type.GetGenericArguments().Select(t=>t.GetNonDefaultValue()).ToArray()
-                    );
+            {
+                var args =
+                    type.GetGenericArguments().Select(t => t.GetNonDefaultValue()).ToArray()
+                    ;
+                var ctor = type.GetConstructors()[0];
+                return ctor.Invoke( args);
+
+            }
+            else if (type.IsInterface)
+            {
+                return type.GetInstanceTypes().FirstOrDefault().GetNonDefaultValue();
+            }
             else
-                throw new NotSupportedException($"{type}");
+            {
+                return type.GetDefaultConstructorInfo().Invoke(Array.Empty<object?>())
+                    .FillObject();
+            }
         }
 
         public static object GetDefaultValue(this Type type) =>
@@ -77,10 +108,12 @@ namespace Test.Fohjin.DDD.TestUtilities
             return type;
         }
 
+        //TODO: need to be able to load external assemblies
         public static IEnumerable<Type> GetInstanceTypes(this Type type) =>
-            type.Assembly.GetTypes()
-                .Where(t => t.IsAssignableTo(type))
-                .Where(t => !t.IsAbstract)
-            ;
+            from asm in AppDomain.CurrentDomain.GetAssemblies()
+            from t in asm.GetTypes()
+            where t.IsAssignableTo(type)
+            where !t.IsAbstract
+            select t;
     }
 }

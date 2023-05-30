@@ -7,7 +7,7 @@ using System.Diagnostics;
 
 namespace Fohjin.DDD.Domain.Account
 {
-    public class ActiveAccount : BaseAggregateRoot<IDomainEvent>, IOrginator
+    public class ActiveAccount : BaseAggregateRoot<IDomainEvent>, IOriginator
     {
         private readonly List<Ledger> _ledgers;
 
@@ -136,12 +136,12 @@ namespace Fohjin.DDD.Domain.Account
                 throw new AccountBalanceNotZeroException(string.Format("The current balance is {0:C} this must first be transferred to an other account", (decimal)_balance));
         }
 
-        IMemento IOrginator.CreateMemento()
+        IMemento IOriginator.CreateMemento()
         {
             return new ActiveAccountMemento(Id, Version, _clientId, _accountName.Name, _accountNumber.Number, _balance, _ledgers, _closed);
         }
 
-        void IOrginator.SetMemento(IMemento memento)
+        void IOriginator.SetMemento(IMemento memento)
         {
             var activeAccountMemento = (ActiveAccountMemento)memento;
             Id = activeAccountMemento.Id;

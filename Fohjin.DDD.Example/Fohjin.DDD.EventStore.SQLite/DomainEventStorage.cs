@@ -166,7 +166,7 @@ namespace Fohjin.DDD.EventStore.SQLite
 
         public void SaveShapShot(IEventProvider<TDomainEvent> entity)
         {
-            StoreSnapShot(new SnapShot(entity.Id, entity.Version, ((IOrginator)entity).CreateMemento()));
+            StoreSnapShot(new SnapShot(entity.Id, entity.Version, ((IOriginator)entity).CreateMemento()));
         }
 
         public void BeginTransaction()

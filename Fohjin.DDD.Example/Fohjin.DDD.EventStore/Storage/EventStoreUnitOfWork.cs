@@ -28,7 +28,7 @@ namespace Fohjin.DDD.EventStore.Storage
             _log = log;
         }
 
-        public TAggregate GetById<TAggregate>(Guid id) where TAggregate : class, IOrginator, IEventProvider<TDomainEvent>, new()
+        public TAggregate GetById<TAggregate>(Guid id) where TAggregate : class, IOriginator, IEventProvider<TDomainEvent>, new()
         {
             _log.LogInformation($"{nameof(GetById)}({{{nameof(id)}}})", id);
             var aggregateRoot = new TAggregate();
@@ -40,13 +40,13 @@ namespace Fohjin.DDD.EventStore.Storage
             return aggregateRoot;
         }
 
-        public void Add<TAggregate>(TAggregate aggregateRoot) where TAggregate : class, IOrginator, IEventProvider<TDomainEvent>, new()
+        public void Add<TAggregate>(TAggregate aggregateRoot) where TAggregate : class, IOriginator, IEventProvider<TDomainEvent>, new()
         {
             _log.LogInformation($"{nameof(Add)}({{{nameof(aggregateRoot)}}})", aggregateRoot);
             RegisterForTracking(aggregateRoot);
         }
 
-        public void RegisterForTracking<TAggregate>(TAggregate aggregateRoot) where TAggregate : class, IOrginator, IEventProvider<TDomainEvent>, new()
+        public void RegisterForTracking<TAggregate>(TAggregate aggregateRoot) where TAggregate : class, IOriginator, IEventProvider<TDomainEvent>, new()
         {
             _log.LogInformation($"{nameof(RegisterForTracking)}({{{nameof(aggregateRoot)}}})", aggregateRoot);
             _eventProviders.Add(aggregateRoot);
@@ -82,7 +82,7 @@ namespace Fohjin.DDD.EventStore.Storage
             _eventProviders.Clear();
         }
 
-        private void LoadSnapShotIfExists(Guid id, IOrginator aggregateRoot)
+        private void LoadSnapShotIfExists(Guid id, IOriginator aggregateRoot)
         {
             _log.LogInformation($"{nameof(LoadSnapShotIfExists)}({{{nameof(id)}}}, {{{nameof(aggregateRoot)}}})", id, aggregateRoot);
             var snapShot = _domainEventStorage.GetSnapShot(id);

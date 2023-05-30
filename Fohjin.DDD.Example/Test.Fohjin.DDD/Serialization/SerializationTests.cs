@@ -1,5 +1,7 @@
 ﻿using Fohjin.DDD.Events.Account;
 using Fohjin.DDD.EventStore;
+using Fohjin.DDD.EventStore.Storage;
+using Fohjin.DDD.EventStore.Storage.Memento;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -38,8 +40,14 @@ namespace Test.Fohjin.DDD.Serialization
         {
             var commands = typeof(ICommand).GetInstanceTypes();
             var domainEvents = typeof(IDomainEvent).GetInstanceTypes();
+            var mementos = typeof(IMemento).GetInstanceTypes();
+            var snapShots = typeof(ISnapShot).GetInstanceTypes();
 
-            var items = commands.Concat(domainEvents);
+            var items = commands
+                .Concat(domainEvents)
+                .Concat(mementos)
+                .Concat(snapShots)
+                ;
             var mapped = items.Select(i => new object[] { i });
             return mapped;
         }
