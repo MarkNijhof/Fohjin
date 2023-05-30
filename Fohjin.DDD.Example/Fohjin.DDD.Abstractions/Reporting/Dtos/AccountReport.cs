@@ -1,16 +1,22 @@
+using System.Text.Json.Serialization;
+
 namespace Fohjin.DDD.Reporting.Dtos
 {
     public class AccountReport
     {
-        public Guid Id { get; init; }
-        public Guid ClientDetailsReportId { get; init; }
-        public string AccountName { get; init; }
-        public string AccountNumber { get; init; }
+        public Guid Id { get; set; }
+        public Guid ClientDetailsReportId { get; set; }
+        public string AccountName { get; set; }
+        public string AccountNumber { get; set; }
 
-        public AccountReport(Guid id, Guid clientDetailsId, string accountName, string accountNumber)
+        [JsonConstructor]
+        public AccountReport() { }
+
+        [SqliteConstructor]
+        public AccountReport(Guid id, Guid clientDetailsReportId, string accountName, string accountNumber)
         {
             Id = id;
-            ClientDetailsReportId = clientDetailsId;
+            ClientDetailsReportId = clientDetailsReportId;
             AccountName = accountName;
             AccountNumber = accountNumber;
         }

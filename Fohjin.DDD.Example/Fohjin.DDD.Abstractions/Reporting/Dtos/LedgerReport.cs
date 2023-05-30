@@ -12,10 +12,11 @@ namespace Fohjin.DDD.Reporting.Dtos
         [JsonConstructor]
         public LedgerReport() { }
 
-        public LedgerReport(Guid id, Guid accountDetailsId, string action, decimal amount)
+        [SqliteConstructor]
+        public LedgerReport(Guid id, Guid accountDetailsReportId, string action, decimal amount)
         {
             Id = id;
-            AccountDetailsReportId = accountDetailsId;
+            AccountDetailsReportId = accountDetailsReportId;
             Action = action;
             Amount = amount;
         }

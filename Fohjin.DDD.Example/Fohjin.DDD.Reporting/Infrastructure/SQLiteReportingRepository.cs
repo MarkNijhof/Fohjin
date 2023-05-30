@@ -167,7 +167,13 @@ namespace Fohjin.DDD.Reporting.Infrastructure
             AddParameters(sqliteCommand, example);
 
             using var sqLiteDataReader = sqliteCommand.ExecuteReader();
-            var dtoConstructor = dtoType.GetConstructors().OrderBy(x => x.GetParameters().Length).FirstOrDefault();
+
+            var dtoConstructor = dtoType.GetConstructors()
+                    .Where(c => c.GetCustomAttribute<SqliteConstructorAttribute>() != null)
+                    .FirstOrDefault();
+
+            if (dtoConstructor == null)
+                throw new ApplicationException($"must label ctor for sqlite");
 
             while (sqLiteDataReader.Read())
             {
@@ -185,7 +191,8 @@ namespace Fohjin.DDD.Reporting.Infrastructure
             foreach (var property in dtoType.GetProperties().Where(Where))
             {
                 var index = Array.IndexOf(parameterNames, property.Name.ToUpper());
-                if (index == -1) continue;
+                if (index == -1)
+                    continue;
 
                 var value = sqLiteDataReader[property.Name];
 
@@ -196,7 +203,22 @@ namespace Fohjin.DDD.Reporting.Infrastructure
                 }
                 else
                 {
-                    Debug.WriteLine($"Type conversion not supported");
+                    converter = TypeDescriptor.GetConverter(value.GetType());
+                    if (converter.CanConvertTo(parameters[index].ParameterType))
+                    {
+                        constructorArguments[index] = converter.ConvertTo(value, parameters[index].ParameterType);
+                    }
+                    else
+                    {
+                        if (parameters[index].ParameterType == typeof(decimal))
+                        {
+                            constructorArguments[index] = Convert.ToDecimal(value);
+                        }
+                        else
+                        {
+                            Debug.WriteLine($"Type conversion not supported {value.GetType()} -> {parameters[index].ParameterType}");
+                        }
+                    }
                 }
             }
 

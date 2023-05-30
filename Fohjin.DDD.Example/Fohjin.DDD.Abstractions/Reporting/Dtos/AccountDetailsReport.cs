@@ -16,10 +16,11 @@ namespace Fohjin.DDD.Reporting.Dtos
         {
         }
 
-        public AccountDetailsReport(Guid id, Guid clientId, string accountName, decimal balance, string accountNumber)
+        [SqliteConstructor]
+        public AccountDetailsReport(Guid id, Guid clientReportId, string accountName, decimal balance, string accountNumber)
         {
             Id = id;
-            ClientReportId = clientId;
+            ClientReportId = clientReportId;
             Ledgers = new List<LedgerReport>();
             AccountName = accountName;
             Balance = balance;
