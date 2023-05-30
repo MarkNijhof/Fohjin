@@ -1,6 +1,6 @@
 ﻿namespace Fohjin.DDD.Events.Client
 {
-    public class BankCardWasCanceledByCLientEvent : DomainEvent
+    public class BankCardWasCanceledByClientEvent : DomainEvent
     {
     }
 }

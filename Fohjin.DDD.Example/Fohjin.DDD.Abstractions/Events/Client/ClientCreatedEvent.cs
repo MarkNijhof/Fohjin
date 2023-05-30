@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace Fohjin.DDD.Events.Client
 {
     public class ClientCreatedEvent : DomainEvent
@@ -9,6 +11,9 @@ namespace Fohjin.DDD.Events.Client
         public string PostalCode { get; set; }
         public string City { get; set; }
         public string PhoneNumber { get; set; }
+
+        [JsonConstructor]
+        public ClientCreatedEvent() { }
 
         public ClientCreatedEvent(Guid clientId, string clientName, string street, string streetNumber, string postalCode, string city, string phoneNumber)
         {

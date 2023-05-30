@@ -126,7 +126,7 @@ namespace Fohjin.DDD.Domain.Client
             RegisterEvent<NewBankCardForAccountAsignedEvent>(OnNewBankCardForAccountAssigned);
 
             RegisterEvent<BankCardWasReportedStolenEvent>(OnAnyEventForABankCard);
-            RegisterEvent<BankCardWasCanceledByCLientEvent>(OnAnyEventForABankCard);
+            RegisterEvent<BankCardWasCanceledByClientEvent>(OnAnyEventForABankCard);
         }
 
         private void OnAnyEventForABankCard(IDomainEvent domainEvent)

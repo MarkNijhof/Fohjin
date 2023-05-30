@@ -20,7 +20,7 @@ namespace Test.Fohjin.DDD.Scenarios.Assign_new_bank_card
             yield return PrepareDomainEvent.Set(new ClientCreatedEvent(_clientId, "Mark Nijhof", "Welhavens gate", "49b", "5006", "Bergen", "95009937")).ToVersion(1);
             yield return PrepareDomainEvent.Set(new AccountToClientAssignedEvent(_accountId)).ToVersion(2);
             yield return PrepareDomainEvent.Set(new NewBankCardForAccountAsignedEvent(_bankCardId, _accountId)).ToVersion(3);
-            yield return PrepareDomainEvent.Set(new BankCardWasCanceledByCLientEvent { AggregateId = _bankCardId }).ToVersion(4);
+            yield return PrepareDomainEvent.Set(new BankCardWasCanceledByClientEvent { AggregateId = _bankCardId }).ToVersion(4);
         }
 
         protected override CancelBankCardCommand When()

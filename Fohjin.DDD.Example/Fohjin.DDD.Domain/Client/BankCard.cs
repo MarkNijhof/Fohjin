@@ -33,7 +33,7 @@ namespace Fohjin.DDD.Domain.Client
         {
             IsDisabled();
 
-            Apply(new BankCardWasCanceledByCLientEvent());
+            Apply(new BankCardWasCanceledByClientEvent());
         }
 
         private void IsDisabled()
@@ -58,7 +58,7 @@ namespace Fohjin.DDD.Domain.Client
         private void RegisterEvents()
         {
             RegisterEvent<BankCardWasReportedStolenEvent>(OnBankCardWasReportedStolenEvent);
-            RegisterEvent<BankCardWasCanceledByCLientEvent>(OnBankCardWasCanceledByCLientEvent);
+            RegisterEvent<BankCardWasCanceledByClientEvent>(OnBankCardWasCanceledByCLientEvent);
         }
 
         private void OnBankCardWasReportedStolenEvent(BankCardWasReportedStolenEvent obj)
@@ -66,7 +66,7 @@ namespace Fohjin.DDD.Domain.Client
             _disabled = true;
         }
 
-        private void OnBankCardWasCanceledByCLientEvent(BankCardWasCanceledByCLientEvent obj)
+        private void OnBankCardWasCanceledByCLientEvent(BankCardWasCanceledByClientEvent obj)
         {
             _disabled = true;
         }

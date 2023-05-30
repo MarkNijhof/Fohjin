@@ -2,7 +2,7 @@
 
 namespace Test.Fohjin.DDD.Bus
 {
-    public record TestEvent : DomainEvent
+    public class TestEvent : DomainEvent
     {
     }
 }

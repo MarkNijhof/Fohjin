@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace Fohjin.DDD.Events.Account
 {
     public class AccountOpenedEvent : DomainEvent
@@ -7,6 +9,8 @@ namespace Fohjin.DDD.Events.Account
         public string AccountName { get; set; }
         public string AccountNumber { get; set; }
 
+        [JsonConstructor]
+        public AccountOpenedEvent() { }
         public AccountOpenedEvent(Guid accountId, Guid clientId, string accountName, string accountNumber)
         {
             AccountId = accountId;

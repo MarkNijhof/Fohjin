@@ -2,7 +2,7 @@
 
 namespace Test.Fohjin.DDD.Bus
 {
-    public record TestCommand : Command
+    public class TestCommand : Command
     {
         public TestCommand(Guid id) : base(id)
         {

@@ -3,7 +3,7 @@ using Fohjin.DDD.Reporting;
 
 namespace Fohjin.DDD.EventHandlers
 {
-    public class BankCardWasCanceledByClientEventHandler : EventHandlerBase<BankCardWasCanceledByCLientEvent>
+    public class BankCardWasCanceledByClientEventHandler : EventHandlerBase<BankCardWasCanceledByClientEvent>
     {
         private readonly IReportingRepository _reportingRepository;
 
@@ -12,7 +12,7 @@ namespace Fohjin.DDD.EventHandlers
             _reportingRepository = reportingRepository;
         }
 
-        public override Task ExecuteAsync(BankCardWasCanceledByCLientEvent theEvent)
+        public override Task ExecuteAsync(BankCardWasCanceledByClientEvent theEvent)
         {
             throw new NotImplementedException();
             return Task.CompletedTask;

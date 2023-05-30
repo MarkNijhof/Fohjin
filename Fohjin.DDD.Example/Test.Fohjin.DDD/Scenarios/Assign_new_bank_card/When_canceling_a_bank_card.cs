@@ -31,7 +31,7 @@ namespace Test.Fohjin.DDD.Scenarios.Assign_new_bank_card
         [TestMethod]
         public void Then_a_client_created_event_will_be_published()
         {
-            PublishedEvents.Last().WillBeOfType<BankCardWasCanceledByCLientEvent>();
+            PublishedEvents.Last().WillBeOfType<BankCardWasCanceledByClientEvent>();
         }
     }
 }

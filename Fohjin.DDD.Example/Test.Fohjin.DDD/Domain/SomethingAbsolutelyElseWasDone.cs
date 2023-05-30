@@ -2,7 +2,7 @@
 
 namespace Test.Fohjin.DDD.Domain
 {
-    public record SomethingAbsolutelyElseWasDone : DomainEvent
+    public class SomethingAbsolutelyElseWasDone : DomainEvent
     {
     }
 }
