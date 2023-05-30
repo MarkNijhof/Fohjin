@@ -5,7 +5,7 @@
         void Clear();
         void LoadFromHistory(IEnumerable<TDomainEvent> domainEvents);
         void UpdateVersion(int version);
-        Guid Id { get; }
+        Guid Id { get; set; }
         int Version { get; }
         IEnumerable<TDomainEvent> GetChanges();
     }

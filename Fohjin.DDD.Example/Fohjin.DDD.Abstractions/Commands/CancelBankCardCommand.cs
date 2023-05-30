@@ -1,8 +1,13 @@
-﻿namespace Fohjin.DDD.Commands
+﻿using System.Text.Json.Serialization;
+
+namespace Fohjin.DDD.Commands
 {
-    public class CancelBankCardCommand : Command
+    public class CancelBankCardCommand : CommandBase
     {
         public Guid BankCardId { get; set; }
+
+        [JsonConstructor]
+        public CancelBankCardCommand(): base() { }
 
         public CancelBankCardCommand(Guid id, Guid bankCardId) : base(id)
         {

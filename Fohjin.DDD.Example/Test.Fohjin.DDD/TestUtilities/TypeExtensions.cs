@@ -1,11 +1,14 @@
 ﻿using Fohjin.DDD.EventStore;
+using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Reflection;
 
 namespace Test.Fohjin.DDD.TestUtilities
 {
     public static class TypeExtensions
     {
-        public static object BuildObject(this Type type)
+        public static object BuildObject(this Type type, IServiceProvider? serviceProvider = null)
         {
             var defaultConstructor = type.GetDefaultConstructorInfo();
             if (defaultConstructor == null)
@@ -14,7 +17,7 @@ namespace Test.Fohjin.DDD.TestUtilities
             var obj = defaultConstructor.Invoke(Array.Empty<object?>());
 
             var properties = type.GetSetterProperties();
-            obj.FillObject(properties);
+            obj.FillObject(properties ,serviceProvider);
             return obj;
         }
 
@@ -27,15 +30,20 @@ namespace Test.Fohjin.DDD.TestUtilities
         public static PropertyInfo[] GetGetterProperties(this Type type) =>
             type.GetProperties(BindingFlags.GetProperty | BindingFlags.Public | BindingFlags.Instance);
 
-        public static object FillObject(this object obj) =>
-            obj.FillObject(obj.GetType().GetSetterProperties());
-        public static object FillObject(this object obj, PropertyInfo[] properties)
+        public static object FillObject(this object obj, IServiceProvider? serviceProvider) =>
+            obj switch
+            {
+                Type type => type.BuildObject(serviceProvider),
+                _ => obj.FillObject(obj.GetType().GetSetterProperties(), serviceProvider)
+            };
+
+        public static object FillObject(this object obj, PropertyInfo[] properties, IServiceProvider? serviceProvider)
         {
             foreach (var property in properties)
             {
                 try
                 {
-                    property.SetValue(obj, property.PropertyType.GetNonDefaultValue());
+                    property.SetValue(obj, property.PropertyType.GetNonDefaultValue(serviceProvider));
                 }
                 catch (Exception ex)
                 {
@@ -46,7 +54,7 @@ namespace Test.Fohjin.DDD.TestUtilities
             return obj;
         }
 
-        public static object? GetNonDefaultValue(this Type type)
+        public static object? GetNonDefaultValue(this Type type, IServiceProvider? serviceProvider)
         {
             if (type == typeof(int))
                 return 1;
@@ -63,14 +71,14 @@ namespace Test.Fohjin.DDD.TestUtilities
             else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>))
             {
                 var list = type.GetDefaultConstructorInfo().Invoke(Array.Empty<object?>());
-                var item = type.GetGenericArguments()[0].GetNonDefaultValue();
+                var item = type.GetGenericArguments()[0].GetNonDefaultValue(serviceProvider);
                 type.GetMethod("Add")?.Invoke(list, new object?[] { item });
                 return list;
             }
             else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(KeyValuePair<,>))
             {
                 var args =
-                    type.GetGenericArguments().Select(t => t.GetNonDefaultValue()).ToArray()
+                    type.GetGenericArguments().Select(t => t.GetNonDefaultValue(serviceProvider)).ToArray()
                     ;
                 var ctor = type.GetConstructors()[0];
                 return ctor.Invoke(args);
@@ -78,12 +86,26 @@ namespace Test.Fohjin.DDD.TestUtilities
             }
             else if (type.IsInterface)
             {
-                return type.GetInstanceTypes().FirstOrDefault().GetNonDefaultValue();
+                return type.GetInstanceTypes().FirstOrDefault().GetNonDefaultValue(serviceProvider);
             }
             else
             {
+                var ctor = type.GetDefaultConstructorInfo();
+                if (ctor == null && serviceProvider != null)
+                {
+                    try
+                    {
+                        return ActivatorUtilities.CreateInstance(serviceProvider, type);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"{type}:> {ex.Message}");
+                        throw;
+                    }
+                }
+
                 return type.GetDefaultConstructorInfo().Invoke(Array.Empty<object?>())
-                    .FillObject();
+                    .FillObject(serviceProvider);
             }
         }
 

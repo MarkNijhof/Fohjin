@@ -26,9 +26,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{06C083C9-EA81-4321-908A-C8CFCF273E73}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
-		.runsettings = .runsettings
+		Directory.Build.props = Directory.Build.props
+		Directory.Build.targets = Directory.Build.targets
+		LocalUnitTestRun.bat = LocalUnitTestRun.bat
 		readme.md = readme.md
-		..\ReadMe.txt = ..\ReadMe.txt
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fohjin.DDD.Common", "Fohjin.DDD.Common\Fohjin.DDD.Common.csproj", "{EDC737EE-F959-4F18-99D0-C212B9AEA153}"

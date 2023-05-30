@@ -5,7 +5,7 @@ namespace Fohjin.DDD.EventStore
     [JsonInterfaceConverter(typeof(InterfaceConverter<IDomainEvent>))]
     public interface IDomainEvent
     {
-        Guid Id { get; }
+        Guid Id { get; set; }
         Guid AggregateId { get; set; }
         int Version { get; set; }
     }

@@ -6,6 +6,6 @@ namespace Fohjin.DDD.Commands
     [JsonInterfaceConverter(typeof(InterfaceConverter<ICommand>))]
     public interface ICommand
     {
-        Guid Id { get; }
+        Guid Id { get; set; }
     }
 }

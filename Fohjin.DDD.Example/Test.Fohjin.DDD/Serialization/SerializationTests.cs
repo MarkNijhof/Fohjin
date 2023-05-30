@@ -1,4 +1,5 @@
-﻿using Fohjin.DDD.Events.Account;
+﻿using Fohjin.DDD.Commands;
+using Fohjin.DDD.Events.Account;
 using Fohjin.DDD.EventStore;
 using Fohjin.DDD.EventStore.Storage;
 using Fohjin.DDD.EventStore.Storage.Memento;
@@ -9,7 +10,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Input;
 using Test.Fohjin.DDD.TestUtilities;
 
 namespace Test.Fohjin.DDD.Serialization
@@ -22,7 +22,7 @@ namespace Test.Fohjin.DDD.Serialization
 
         [DataTestMethod]
         [DynamicData(nameof(TestData), DynamicDataSourceType.Method, DynamicDataDisplayName = nameof(TestDataDisplayName))]
-        public void ModelPersistenceTest(Type type)
+        public void ModelPersistenceTest(Type type, Type interfaceType)
         {
             var obj = type.BuildObject();
             TestContext
@@ -34,21 +34,21 @@ namespace Test.Fohjin.DDD.Serialization
             Assert.IsNotNull(result);
         }
         public static string TestDataDisplayName(MethodInfo methodInfo, object[] data) =>
-            $"{methodInfo.Name} for {((Type)data[0]).Name}";
+            $"{methodInfo.Name} :: {((Type)data[1]).Name} for {((Type)data[0]).Name}";
 
         public static IEnumerable<object[]> TestData()
         {
-            var commands = typeof(ICommand).GetInstanceTypes();
-            var domainEvents = typeof(IDomainEvent).GetInstanceTypes();
-            var mementos = typeof(IMemento).GetInstanceTypes();
-            var snapShots = typeof(ISnapShot).GetInstanceTypes();
+            var commands = typeof(ICommand).GetInstanceTypes().Select(t => new { inf = typeof(ICommand), type = t });
+            var domainEvents = typeof(IDomainEvent).GetInstanceTypes().Select(t => new { inf = typeof(IDomainEvent), type = t });
+            var mementos = typeof(IMemento).GetInstanceTypes().Select(t => new { inf = typeof(IMemento), type = t });
+            var snapShots = typeof(ISnapShot).GetInstanceTypes().Select(t => new { inf = typeof(ISnapShot), type = t });
 
             var items = commands
                 .Concat(domainEvents)
                 .Concat(mementos)
                 .Concat(snapShots)
                 ;
-            var mapped = items.Select(i => new object[] { i });
+            var mapped = items.Select(i => new object[] { i.type, i.inf });
             return mapped;
         }
     }
