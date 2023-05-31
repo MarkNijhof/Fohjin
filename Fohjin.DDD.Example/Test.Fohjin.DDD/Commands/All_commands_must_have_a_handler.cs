@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Reflection;
 using Test.Fohjin.DDD.TestUtilities;
+using Test.Fohjin.DDD.TestUtilities.Tools;
 
 namespace Test.Fohjin.DDD.Commands
 {

@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Reflection;
 using Test.Fohjin.DDD.TestUtilities;
+using Test.Fohjin.DDD.TestUtilities.Tools;
 
 namespace Test.Fohjin.DDD.Events
 {
@@ -14,12 +15,12 @@ namespace Test.Fohjin.DDD.Events
     {
         public TestContext TestContext { get; set; }
 
-        [TestMethod]
-        public void TestItems()
-        {
-            var ents = typeof(IDomainEvent).GetInstanceTypes().ToArray();
-            var res = TestData().ToArray();
-        }
+        //[TestMethod]
+        //public void TestItems()
+        //{
+        //    var ents = typeof(IDomainEvent).GetInstanceTypes().ToArray();
+        //    var res = TestData().ToArray();
+        //}
 
         [DataTestMethod]
         [DynamicData(nameof(TestData), DynamicDataSourceType.Method, DynamicDataDisplayName = nameof(TestDataDisplayName))]
