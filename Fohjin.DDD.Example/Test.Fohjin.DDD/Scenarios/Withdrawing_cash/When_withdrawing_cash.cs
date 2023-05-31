@@ -6,10 +6,11 @@ using Fohjin.DDD.Commands;
 using Fohjin.DDD.Domain.Account;
 using Fohjin.DDD.Events.Account;
 using Fohjin.DDD.EventStore;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Test.Fohjin.DDD.Scenarios.Withdrawing_cash
 {
-    public class When_withdrawing_cash : CommandTestFixture<WithdrawlCashCommand, WithdrawlCashCommandHandler, ActiveAccount>
+    public class When_withdrawing_cash : CommandTestFixture<WithdrawalCashCommand, WithdrawalCashCommandHandler, ActiveAccount>
     {
         protected override IEnumerable<IDomainEvent> Given()
         {
@@ -17,18 +18,18 @@ namespace Test.Fohjin.DDD.Scenarios.Withdrawing_cash
             yield return PrepareDomainEvent.Set(new CashDepositedEvent(20, 20)).ToVersion(1);
         }
 
-        protected override WithdrawlCashCommand When()
+        protected override WithdrawalCashCommand When()
         {
-            return new WithdrawlCashCommand(Guid.NewGuid(), 5);
+            return new WithdrawalCashCommand(Guid.NewGuid(), 5);
         }
 
-        [Then]
+        [TestMethod]
         public void Then_a_cash_withdrawn_event_will_be_published()
         {
             PublishedEvents.Last().WillBeOfType<CashWithdrawnEvent>();
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_published_event_will_contain_the_amount_and_new_account_balance()
         {
             PublishedEvents.Last<CashWithdrawnEvent>().Balance.WillBe(15);

@@ -1,12 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System.Linq.Expressions;
 
 namespace Test.Fohjin.DDD
 {
-    [Specification]
+    [TestClass]
     public abstract class PresenterTestFixture<TPresenter>
     {
         private IDictionary<Type, object> mocks;
@@ -18,7 +16,7 @@ namespace Test.Fohjin.DDD
         protected abstract void When();
         protected virtual void Finally() { }
 
-        [Given]
+        [TestInitialize]
         public void Setup()
         {
             mocks = new Dictionary<Type, object>();

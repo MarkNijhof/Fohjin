@@ -6,6 +6,7 @@ using Fohjin.DDD.Commands;
 using Fohjin.DDD.Domain.Client;
 using Fohjin.DDD.Events.Client;
 using Fohjin.DDD.EventStore;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Test.Fohjin.DDD.Scenarios.Assign_new_bank_card
 {
@@ -27,10 +28,10 @@ namespace Test.Fohjin.DDD.Scenarios.Assign_new_bank_card
             return new CancelBankCardCommand(_clientId, _bankCardId);
         }
 
-        [Then]
+        [TestMethod]
         public void Then_a_client_created_event_will_be_published()
         {
-            PublishedEvents.Last().WillBeOfType<BankCardWasCanceledByCLientEvent>();
+            PublishedEvents.Last().WillBeOfType<BankCardWasCanceledByClientEvent>();
         }
     }
 }

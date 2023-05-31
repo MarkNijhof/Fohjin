@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Windows.Forms;
-using Fohjin.DDD.Reporting.Dto;
+﻿using Fohjin.DDD.Reporting.Dtos;
 
 namespace Fohjin.DDD.BankApplication.Views
 {
-    public partial class ClientDetails : Form, IClientDetailsView
+    public partial class ClientDetails : ViewFormBase, IClientDetailsView
     {
         public ClientDetails()
         {
@@ -14,7 +10,7 @@ namespace Fohjin.DDD.BankApplication.Views
             tabControl1.Appearance = TabAppearance.FlatButtons;
             tabControl1.ItemSize = new Size(0, 1);
             tabControl1.SizeMode = TabSizeMode.Fixed;
-            RegisterCLientEvents();
+            RegisterClientEvents();
         }
 
         public event EventAction OnOpenSelectedAccount;
@@ -29,7 +25,7 @@ namespace Fohjin.DDD.BankApplication.Views
         public event EventAction OnInitiateOpenNewAccount;
         public event EventAction OnCreateNewAccount;
 
-        private void RegisterCLientEvents()
+        private void RegisterClientEvents()
         {
             nameChangedToolStripMenuItem.Click += (s, e) => OnInitiateClientNameChange();
             hasMovedToolStripMenuItem.Click += (s, e) => OnInitiateClientHasMoved();
@@ -215,10 +211,7 @@ namespace Fohjin.DDD.BankApplication.Views
             _newAccountName.Focus();
         }
 
-        private void _client_Changed(object sender, EventArgs e)
-        {
-            if (OnFormElementGotChanged != null)
-                OnFormElementGotChanged();
-        }
+        private void _client_Changed(object sender, EventArgs e) =>
+            OnFormElementGotChanged?.Invoke();
     }
 }

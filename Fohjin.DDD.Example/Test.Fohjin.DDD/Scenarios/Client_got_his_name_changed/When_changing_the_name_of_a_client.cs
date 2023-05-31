@@ -6,6 +6,7 @@ using Fohjin.DDD.Commands;
 using Fohjin.DDD.Domain.Client;
 using Fohjin.DDD.Events.Client;
 using Fohjin.DDD.EventStore;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Test.Fohjin.DDD.Scenarios.Client_got_his_name_changed
 {
@@ -21,13 +22,13 @@ namespace Test.Fohjin.DDD.Scenarios.Client_got_his_name_changed
             return new ChangeClientNameCommand(Guid.NewGuid(), "Mark Nijhof");
         }
 
-        [Then]
+        [TestMethod]
         public void Then_a_client_name_changed_event_will_be_published()
         {
             PublishedEvents.Last().WillBeOfType<ClientNameChangedEvent>();
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_published_event_will_contain_the_new_name_of_the_client()
         {
             PublishedEvents.Last<ClientNameChangedEvent>().ClientName.WillBe("Mark Nijhof");

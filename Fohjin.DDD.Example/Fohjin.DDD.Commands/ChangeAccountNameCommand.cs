@@ -1,11 +1,8 @@
-using System;
-
 namespace Fohjin.DDD.Commands
 {
-    [Serializable]
-    public class ChangeAccountNameCommand : Command
+    public record ChangeAccountNameCommand : Command
     {
-        public string AccountName { get; private set; }
+        public string AccountName { get; init; }
 
         public ChangeAccountNameCommand(Guid id, string accountName) : base(id)
         {

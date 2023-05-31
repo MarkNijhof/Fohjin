@@ -1,24 +1,37 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.Serialization.Formatters.Binary;
+using Fohjin.DDD.BankApplication;
 using Fohjin.DDD.Bus;
-using Fohjin.DDD.Configuration;
+using Fohjin.DDD.Common;
 using Fohjin.DDD.Domain.Account;
 using Fohjin.DDD.EventStore;
 using Fohjin.DDD.EventStore.SQLite;
 using Fohjin.DDD.EventStore.Storage;
 using Fohjin.DDD.EventStore.Storage.Memento;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
+using System.Reflection;
+using System.Runtime.Serialization.Formatters.Binary;
+using Test.Fohjin.DDD.TestUtilities;
 
 namespace Test.Fohjin.DDD.Domain.Repositories
 {
-    [TestFixture]
+    [TestClass]
     public class ClosedAccountRepositoryTest
     {
+        public TestContext TestContext { get; set; }
+
+        private readonly IServiceCollection _services = new ServiceCollection()
+            .AddLogging(opt => opt.AddConsole().SetMinimumLevel(LogLevel.Information))
+            ;
+        public IServiceCollection Services => _services;
+
+        private IServiceProvider? _provider;
+        public IServiceProvider Provider => _provider ??= _services.BuildServiceProvider();
+
+        public ILogger<T> Logger<T>() => Provider.GetRequiredService<ILogger<T>>();
+
         private const string dataBaseFile = "domainDataBase.db3";
 
         private IDomainRepository<IDomainEvent> _repository;
@@ -27,20 +40,43 @@ namespace Test.Fohjin.DDD.Domain.Repositories
         private EventStoreUnitOfWork<IDomainEvent> _eventStoreUnitOfWork;
         private List<Ledger> _ledgers;
 
-        [SetUp]
+        [TestInitialize]
         public void SetUp()
         {
-            new DomainDatabaseBootStrapper().ReCreateDatabaseSchema();
+            TestContext.SetupWorkingDirectory();
+            var dataBaseFile = Path.Combine(
+                (string)TestContext.Properties[TestContextExtensions.TestWorkingDirectory],
+                DomainDatabaseBootStrapper.DataBaseFile
+                );
+
+            new DomainDatabaseBootStrapper().ReCreateDatabaseSchema(dataBaseFile);
 
             var sqliteConnectionString = string.Format("Data Source={0}", dataBaseFile);
 
-            _domainEventStorage = new DomainEventStorage<IDomainEvent>(sqliteConnectionString, new BinaryFormatter());
+            var config = new ConfigurationBuilder()
+                .AddTupleConfiguration((DomainEventStorage.ConnectionStringConfigKey, sqliteConnectionString))
+                .Build();
+
+            _domainEventStorage = new DomainEventStorage<IDomainEvent>(
+                config,
+                new ExtendedFormatter()
+                );
+
             _eventStoreIdentityMap = new EventStoreIdentityMap<IDomainEvent>();
-            _eventStoreUnitOfWork = new EventStoreUnitOfWork<IDomainEvent>(_domainEventStorage, _eventStoreIdentityMap, new Mock<IBus>().Object);
-            _repository = new DomainRepository<IDomainEvent>(_eventStoreUnitOfWork, _eventStoreIdentityMap);
+            _eventStoreUnitOfWork = new EventStoreUnitOfWork<IDomainEvent>(
+                _domainEventStorage,
+                _eventStoreIdentityMap,
+                new Mock<IBus>().Object,
+                Logger<EventStoreUnitOfWork<IDomainEvent>>()
+                );
+            _repository = new DomainRepository<IDomainEvent>(
+                _eventStoreUnitOfWork,
+                _eventStoreIdentityMap,
+                Logger<DomainRepository<IDomainEvent>>()
+                );
         }
 
-        [Test]
+        [TestMethod]
         public void When_calling_Save_it_will_add_the_domain_events_to_the_domain_event_storage()
         {
             _ledgers = new List<Ledger>
@@ -57,11 +93,11 @@ namespace Test.Fohjin.DDD.Domain.Repositories
             _repository.Add(closedAccount);
             _eventStoreUnitOfWork.Commit();
 
-            Assert.That(_domainEventStorage.GetEventsSinceLastSnapShot(closedAccount.Id).Count(), Is.EqualTo(1));
-            Assert.That(_domainEventStorage.GetAllEvents(closedAccount.Id).Count(), Is.EqualTo(1));
+            Assert.AreEqual(1, _domainEventStorage.GetEventsSinceLastSnapShot(closedAccount.Id).Count());
+            Assert.AreEqual(1, _domainEventStorage.GetAllEvents(closedAccount.Id).Count());
         }
 
-        [Test]
+        [TestMethod]
         public void When_calling_Save_it_will_reset_the_domain_events()
         {
             _ledgers = new List<Ledger>
@@ -80,10 +116,10 @@ namespace Test.Fohjin.DDD.Domain.Repositories
 
             var closedAccountForRepository = (IEventProvider<IDomainEvent>)closedAccount;
 
-            Assert.That(closedAccountForRepository.GetChanges().Count(), Is.EqualTo(0));
+            Assert.AreEqual(0, closedAccountForRepository.GetChanges().Count());
         }
 
-        [Test]
+        [TestMethod]
         public void When_calling_CreateMemento_it_will_return_a_closed_account_memento()
         {
             _ledgers = new List<Ledger>
@@ -97,11 +133,11 @@ namespace Test.Fohjin.DDD.Domain.Repositories
 
             var closedAccount = ClosedAccount.CreateNew(Guid.NewGuid(), Guid.NewGuid(), _ledgers, new AccountName("AccountName"), new AccountNumber("1234567890"));
 
-            var memento = ((IOrginator)closedAccount).CreateMemento();
+            var memento = ((IOriginator)closedAccount).CreateMemento();
 
             var newClosedAccount = new ClosedAccount();
 
-            ((IOrginator)newClosedAccount).SetMemento(memento);
+            ((IOriginator)newClosedAccount).SetMemento(memento);
 
             ClosedAccountComparer(closedAccount, newClosedAccount);
         }
@@ -117,11 +153,11 @@ namespace Test.Fohjin.DDD.Domain.Repositories
                     var ledgers = (List<Ledger>)field.GetValue(recreated);
                     foreach (var ledger in (List<Ledger>)field.GetValue(original))
                     {
-                        Assert.That(ledger.ToString(), Is.EqualTo(ledgers[counter++].ToString()));
+                        Assert.AreEqual(ledgers[counter++].ToString(), ledger.ToString());
                     }
                     continue;
                 }
-                Assert.That(field.GetValue(original).ToString(), Is.EqualTo(field.GetValue(recreated).ToString()));
+                Assert.AreEqual(field.GetValue(recreated).ToString(), field.GetValue(original).ToString());
             }
         }
 

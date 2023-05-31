@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using Fohjin.DDD.BankApplication.Presenters;
 using Fohjin.DDD.BankApplication.Views;
 using Fohjin.DDD.Reporting;
-using Fohjin.DDD.Reporting.Dto;
+using Fohjin.DDD.Reporting.Dtos;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Test.Fohjin.DDD.Scenarios.Withdrawing_cash
 {
-    public class When_in_the_GUI_making_a_cash_withdrawl : PresenterTestFixture<AccountDetailsPresenter>
+    public class When_in_the_GUI_making_a_cash_Withdrawal : PresenterTestFixture<AccountDetailsPresenter>
     {
         protected override void SetupDependencies()
         {
@@ -30,25 +31,25 @@ namespace Test.Fohjin.DDD.Scenarios.Withdrawing_cash
 
         protected override void When()
         {
-            On<IAccountDetailsView>().FireEvent(x => x.OnInitiateMoneyWithdrawl += null);
+            On<IAccountDetailsView>().FireEvent(x => x.OnInitiateMoneyWithdrawal += null);
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_current_amount_is_set_to_zero()
         {
-            On<IAccountDetailsView>().VerifyThat.ValueIsSetFor(x => x.WithdrawlAmount = 0M);
+            On<IAccountDetailsView>().VerifyThat.ValueIsSetFor(x => x.WithdrawalAmount = 0M);
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_save_button_will_be_disabled()
         {
             On<IAccountDetailsView>().VerifyThat.Method(x => x.DisableMenuButtons()).WasCalled();
         }
 
-        [Then]
-        public void Then_the_withdrawl_panel_will_be_enabled()
+        [TestMethod]
+        public void Then_the_Withdrawal_panel_will_be_enabled()
         {
-            On<IAccountDetailsView>().VerifyThat.Method(x => x.EnableWithdrawlPanel()).WasCalled();
+            On<IAccountDetailsView>().VerifyThat.Method(x => x.EnableWithdrawalPanel()).WasCalled();
         }
     }
 }

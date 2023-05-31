@@ -1,11 +1,8 @@
-using System;
-
 namespace Fohjin.DDD.Commands
 {
-    [Serializable]
-    public class Command : ICommand
+    public abstract record Command : ICommand
     {
-        public Guid Id { get; private set; }
+        public Guid Id { get; init; }
 
         public Command(Guid id)
         {

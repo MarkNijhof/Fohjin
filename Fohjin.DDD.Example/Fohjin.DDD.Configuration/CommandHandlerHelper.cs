@@ -1,46 +1,61 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Fohjin.DDD.CommandHandlers;
+﻿using Fohjin.DDD.CommandHandlers;
 using Fohjin.DDD.Commands;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using System;
 
 namespace Fohjin.DDD.Configuration
 {
-    public class CommandHandlerHelper
+    public class CommandHandlerHelper : ICommandHandlerHelper
     {
-        public static IDictionary<Type, IList<Type>> GetCommandHandlers()
+        private IDictionary<Type, IEnumerable<Type>>? _handlersCache;
+        private IEnumerable<Type>? _commandCache;
+
+        private readonly IEnumerable<ICommandHandler> _handlers;
+        private readonly IServiceProvider _serviceProvider;
+        private readonly ILogger _log;
+
+        public CommandHandlerHelper(
+            IEnumerable<ICommandHandler> handlers,
+            IServiceProvider serviceProvider,
+            ILogger<CommandHandlerHelper> log
+            )
         {
-            IDictionary<Type, IList<Type>> commands = new Dictionary<Type, IList<Type>>();
-            typeof(ICommandHandler<>)
-                .Assembly
-                .GetExportedTypes()
-                .Where(x => x.GetInterfaces().Any(y => y.IsGenericType && y.GetGenericTypeDefinition() == typeof(ICommandHandler<>)))
-                .ToList()
-                .ForEach(x => AddItem(commands, x));
-            return commands;
+            _handlers = handlers;
+            _serviceProvider = serviceProvider;
+            _log = log;
         }
 
-        public static IEnumerable<Type> GetCommands()
+        protected IDictionary<Type, IEnumerable<Type>> GetCommandHandlers() =>
+            _handlersCache ??= _handlers.ToDictionary(
+                t => t.GetType(),
+                t => (from i in t.GetType().GetInterfaces()
+                      where i.IsGenericType
+                      where i.GetGenericTypeDefinition() == typeof(ICommandHandler<>)
+                      select i.GetGenericArguments().First()).ToList().AsEnumerable());
+
+        protected IEnumerable<Type> GetCommands() =>
+            _commandCache ??= GetCommandHandlers().SelectMany(i => i.Value).Distinct().ToList();
+
+        public async Task<bool> RouteAsync(ICommand message)
         {
-            return typeof(Command)
-                .Assembly
-                .GetExportedTypes()
-                .Where(x => x.BaseType == typeof(Command))
-                .ToList();
-        }
+            _log.LogInformation($"RouteAsync> {{type}}: {{{nameof(message)}}}", message.GetType(), message);
+            var targetHandler = typeof(ICommandHandler<>).MakeGenericType(message.GetType());
+            var selectedHandlers = _handlers.Where(i => i.GetType().IsAssignableTo(targetHandler));
 
-        private static void AddItem(IDictionary<Type, IList<Type>> dictionary, Type type)
-        {
-            var command = type.GetInterfaces()
-                .Where(x => x.IsGenericType && x.GetGenericTypeDefinition() == typeof(ICommandHandler<>))
-                .First()
-                .GetGenericArguments()
-                .First();
+            if (!selectedHandlers.Any())
+                return false;
 
-            if (!dictionary.ContainsKey(command))
-                dictionary.Add(command, new List<Type>());
+            foreach (var handler in selectedHandlers)
+            {
+                _log.LogInformation($"RouteAsync -> {{{nameof(handler)}}} {{type}}: {{{nameof(message)}}}", handler, message.GetType(), message);
 
-            dictionary[command].Add(type);
+                var transactionHandlerType = typeof(ITransactionHandler<,>).MakeGenericType(message.GetType(), handler.GetType());
+                var transactionHandler = (ITransactionHandler)_serviceProvider.GetRequiredService(transactionHandlerType);
+
+                await transactionHandler.ExecuteAsync(message, handler);
+            }
+            return true;
         }
     }
 }

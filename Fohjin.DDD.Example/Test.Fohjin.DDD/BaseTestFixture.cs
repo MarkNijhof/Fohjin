@@ -1,12 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using NUnit.Framework;
 
 namespace Test.Fohjin.DDD
 {
-    [Specification]
+    [TestClass]
     public abstract class BaseTestFixture
     {
         protected Exception CaughtException;
@@ -14,10 +13,10 @@ namespace Test.Fohjin.DDD
         protected abstract void When();
         protected virtual void Finally() { }
 
-        [Given]
+        //[Given]
         public void Setup()
         {
-            CaughtException = new ThereWasNoExceptionButOneWasExpectedException();            
+            CaughtException = new ThereWasNoExceptionButOneWasExpectedException();
             Given();
 
             try
@@ -35,9 +34,21 @@ namespace Test.Fohjin.DDD
         }
     }
 
-    [Specification]
+    [TestClass]
     public abstract class BaseTestFixture<TSubjectUnderTest>
     {
+        public TestContext TestContext { get; set; }
+
+        private readonly IServiceCollection _services = new ServiceCollection()
+            .AddLogging(opt => opt.AddConsole().SetMinimumLevel(LogLevel.Information))
+            ;
+        public IServiceCollection Services => _services;
+
+        private IServiceProvider? _provider;
+        public IServiceProvider Provider => _provider ??= _services.BuildServiceProvider();
+
+        public ILogger<T> Logger<T>() => Provider.GetRequiredService<ILogger<T>>();
+
         private Dictionary<Type, object> mocks;
 
         protected Dictionary<Type, object> DoNotMock;
@@ -48,7 +59,7 @@ namespace Test.Fohjin.DDD
         protected abstract void When();
         protected virtual void Finally() { }
 
-        [Given]
+        [TestInitialize]
         public void Setup()
         {
             mocks = new Dictionary<Type, object>();
@@ -58,7 +69,7 @@ namespace Test.Fohjin.DDD
             BuildMocks();
             SetupDependencies();
             SubjectUnderTest = BuildSubjectUnderTest();
-            
+
             Given();
 
             try
@@ -89,7 +100,7 @@ namespace Test.Fohjin.DDD
             {
                 object theObject;
                 if (!DoNotMock.TryGetValue(mock.Key, out theObject))
-                    theObject = ((Mock) mock.Value).Object;
+                    theObject = ((Mock)mock.Value).Object;
 
                 parameters.Add(theObject);
             }
@@ -114,9 +125,7 @@ namespace Test.Fohjin.DDD
         }
     }
 
-    public class GivenAttribute : SetUpAttribute { }
+    //public class GivenAttribute : SetUpAttribute { }
 
-    public class ThenAttribute : TestAttribute { }
-
-    public class SpecificationAttribute : TestFixtureAttribute { }
+    //public class ThenAttribute : TestMethodAttribute { }
 }

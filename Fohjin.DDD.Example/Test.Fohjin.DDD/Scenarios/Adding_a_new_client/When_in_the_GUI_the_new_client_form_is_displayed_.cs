@@ -1,5 +1,6 @@
 ﻿using Fohjin.DDD.BankApplication.Presenters;
 using Fohjin.DDD.BankApplication.Views;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Test.Fohjin.DDD.Scenarios.Adding_a_new_client
 {
@@ -11,13 +12,13 @@ namespace Test.Fohjin.DDD.Scenarios.Adding_a_new_client
             Presenter.Display();
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_save_button_will_be_disabled()
         {
             On<IClientDetailsView>().VerifyThat.Method(x => x.DisableSaveButton()).WasCalled();
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_menu_buttons_will_be_disabled()
         {
             On<IClientDetailsView>().VerifyThat.Method(x => x.DisableAddNewAccountMenu()).WasCalled();
@@ -26,13 +27,13 @@ namespace Test.Fohjin.DDD.Scenarios.Adding_a_new_client
             On<IClientDetailsView>().VerifyThat.Method(x => x.DisablePhoneNumberChangedMenu()).WasCalled();
         }
 
-        [Then]
+        [TestMethod]
         public void Then_overview_panel_will_be_shown()
         {
             On<IClientDetailsView>().VerifyThat.Method(x => x.EnableOverviewPanel()).WasCalled();
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_view_input_fields_will_be_reset()
         {
             On<IClientDetailsView>().VerifyThat.ValueIsSetFor(x => x.ClientName = string.Empty);
@@ -47,13 +48,13 @@ namespace Test.Fohjin.DDD.Scenarios.Adding_a_new_client
             On<IClientDetailsView>().VerifyThat.ValueIsSetFor(x => x.ClosedAccounts = null);
         }
 
-        [Then]
+        [TestMethod]
         public void Then_client_name_entry_panel_will_be_shown()
         {
             On<IClientDetailsView>().VerifyThat.Method(x => x.EnableClientNamePanel()).WasCalled();
         }
 
-        [Then]
+        [TestMethod]
         public void Then_show_dialog_will_be_called_on_the_view()
         {
             On<IClientDetailsView>().VerifyThat.Method(x => x.ShowDialog()).WasCalled();

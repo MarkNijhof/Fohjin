@@ -1,13 +1,12 @@
-using System;
-using System.Collections.Generic;
+using Microsoft.Data.Sqlite;
+using System.ComponentModel;
 using System.Data;
-using System.Data.SQLite;
-using System.Linq;
+using System.Diagnostics;
 using System.Reflection;
 
 namespace Fohjin.DDD.Reporting.Infrastructure
 {
-    public class SQLiteReportingRepository : IReportingRepository
+    public class SqliteReportingRepository : IReportingRepository
     {
         private readonly string _sqLiteConnectionString;
         private readonly ISqlSelectBuilder _sqlSelectBuilder;
@@ -15,7 +14,7 @@ namespace Fohjin.DDD.Reporting.Infrastructure
         private readonly ISqlUpdateBuilder _sqlUpdateBuilder;
         private readonly ISqlDeleteBuilder _sqlDeleteBuilder;
 
-        public SQLiteReportingRepository(string sqLiteConnectionString, ISqlSelectBuilder sqlSelectBuilder, ISqlInsertBuilder sqlInsertBuilder, ISqlUpdateBuilder sqlUpdateBuilder, ISqlDeleteBuilder sqlDeleteBuilder)
+        public SqliteReportingRepository(string sqLiteConnectionString, ISqlSelectBuilder sqlSelectBuilder, ISqlInsertBuilder sqlInsertBuilder, ISqlUpdateBuilder sqlUpdateBuilder, ISqlDeleteBuilder sqlDeleteBuilder)
         {
             _sqLiteConnectionString = sqLiteConnectionString;
             _sqlSelectBuilder = sqlSelectBuilder;
@@ -26,8 +25,8 @@ namespace Fohjin.DDD.Reporting.Infrastructure
 
         public IEnumerable<TDto> GetByExample<TDto>(object example) where TDto : class
         {
-            return example == null 
-                ? GetByExample<TDto>(new Dictionary<string, object>()) 
+            return example == null
+                ? GetByExample<TDto>(new Dictionary<string, object>())
                 : GetByExample<TDto>(GetPropertyInformation(example));
         }
 
@@ -36,23 +35,21 @@ namespace Fohjin.DDD.Reporting.Infrastructure
             List<TDto> dtos;
             var dtoType = typeof(TDto);
 
-            using (var sqliteConnection = new SQLiteConnection(_sqLiteConnectionString))
+            using (var sqliteConnection = new SqliteConnection(_sqLiteConnectionString))
             {
                 sqliteConnection.Open();
 
-                using (var sqliteTransaction = sqliteConnection.BeginTransaction())
+                using var sqliteTransaction = sqliteConnection.BeginTransaction();
+                try
                 {
-                    try
-                    {
-                        dtos = DoGetByExample<TDto>(sqliteTransaction, dtoType, example);
-                        GetChildren(sqliteTransaction, dtos, dtoType);
-                        sqliteTransaction.Commit();
-                    }
-                    catch (Exception)
-                    {
-                        sqliteTransaction.Rollback();
-                        throw;
-                    }
+                    dtos = DoGetByExample<TDto>(sqliteTransaction, dtoType, example);
+                    GetChildren(sqliteTransaction, dtos, dtoType);
+                    sqliteTransaction.Commit();
+                }
+                catch (Exception)
+                {
+                    sqliteTransaction.Rollback();
+                    throw;
                 }
             }
             return dtos;
@@ -67,27 +64,21 @@ namespace Fohjin.DDD.Reporting.Infrastructure
         {
             var commandText = _sqlInsertBuilder.CreateSqlInsertStatementFromDto<TDto>();
 
-            using (var sqliteConnection = new SQLiteConnection(_sqLiteConnectionString))
-            {
-                sqliteConnection.Open();
+            using var sqliteConnection = new SqliteConnection(_sqLiteConnectionString);
+            sqliteConnection.Open();
 
-                using (var sqliteTransaction = sqliteConnection.BeginTransaction())
-                {
-                    try
-                    {
-                        using (var sqliteCommand = new SQLiteCommand(commandText, sqliteTransaction.Connection, sqliteTransaction))
-                        {
-                            AddParameters(sqliteCommand, dto);
-                            sqliteCommand.ExecuteNonQuery();
-                        }
-                        sqliteTransaction.Commit();
-                    }
-                    catch (Exception)
-                    {
-                        sqliteTransaction.Rollback();
-                        throw;
-                    }
-                }
+            using var sqliteTransaction = sqliteConnection.BeginTransaction();
+            try
+            {
+                using var sqliteCommand = new SqliteCommand(commandText, sqliteTransaction.Connection, sqliteTransaction);
+                AddParameters(sqliteCommand, dto);
+                sqliteCommand.ExecuteNonQuery();
+                sqliteTransaction.Commit();
+            }
+            catch (Exception)
+            {
+                sqliteTransaction.Rollback();
+                throw;
             }
         }
 
@@ -95,28 +86,22 @@ namespace Fohjin.DDD.Reporting.Infrastructure
         {
             var commandText = _sqlUpdateBuilder.GetUpdateString<TDto>(update, where);
 
-            using (var sqliteConnection = new SQLiteConnection(_sqLiteConnectionString))
-            {
-                sqliteConnection.Open();
+            using var sqliteConnection = new SqliteConnection(_sqLiteConnectionString);
+            sqliteConnection.Open();
 
-                using (var sqliteTransaction = sqliteConnection.BeginTransaction())
-                {
-                    try
-                    {
-                        using (var sqliteCommand = new SQLiteCommand(commandText, sqliteTransaction.Connection, sqliteTransaction))
-                        {
-                            AddUpdateParameters(sqliteCommand, GetPropertyInformation(update));
-                            AddParameters(sqliteCommand, GetPropertyInformation(where));
-                            sqliteCommand.ExecuteNonQuery();
-                        }
-                        sqliteTransaction.Commit();
-                    }
-                    catch (Exception)
-                    {
-                        sqliteTransaction.Rollback();
-                        throw;
-                    }
-                }
+            using var sqliteTransaction = sqliteConnection.BeginTransaction();
+            try
+            {
+                using var sqliteCommand = new SqliteCommand(commandText, sqliteTransaction.Connection, sqliteTransaction);
+                AddUpdateParameters(sqliteCommand, GetPropertyInformation(update));
+                AddParameters(sqliteCommand, GetPropertyInformation(where));
+                sqliteCommand.ExecuteNonQuery();
+                sqliteTransaction.Commit();
+            }
+            catch (Exception)
+            {
+                sqliteTransaction.Rollback();
+                throw;
             }
         }
 
@@ -129,31 +114,25 @@ namespace Fohjin.DDD.Reporting.Infrastructure
         {
             var commandText = _sqlDeleteBuilder.CreateSqlDeleteStatementFromDto<TDto>(example);
 
-            using (var sqliteConnection = new SQLiteConnection(_sqLiteConnectionString))
-            {
-                sqliteConnection.Open();
+            using var sqliteConnection = new SqliteConnection(_sqLiteConnectionString);
+            sqliteConnection.Open();
 
-                using (var sqliteTransaction = sqliteConnection.BeginTransaction())
-                {
-                    try
-                    {
-                        using (var sqliteCommand = new SQLiteCommand(commandText, sqliteTransaction.Connection, sqliteTransaction))
-                        {
-                            AddParameters(sqliteCommand, example);
-                            sqliteCommand.ExecuteNonQuery();
-                        }
-                        sqliteTransaction.Commit();
-                    }
-                    catch (Exception)
-                    {
-                        sqliteTransaction.Rollback();
-                        throw;
-                    }
-                }
+            using var sqliteTransaction = sqliteConnection.BeginTransaction();
+            try
+            {
+                using var sqliteCommand = new SqliteCommand(commandText, sqliteTransaction.Connection, sqliteTransaction);
+                AddParameters(sqliteCommand, example);
+                sqliteCommand.ExecuteNonQuery();
+                sqliteTransaction.Commit();
+            }
+            catch (Exception)
+            {
+                sqliteTransaction.Rollback();
+                throw;
             }
         }
 
-        private void GetChildren<TDto>(SQLiteTransaction sqliteTransaction, IEnumerable<TDto> dtos, Type dtoType) where TDto : class
+        private void GetChildren<TDto>(SqliteTransaction sqliteTransaction, IEnumerable<TDto> dtos, Type dtoType) where TDto : class
         {
             foreach (var property in dtoType.GetProperties().Where(WhereGeneric))
             {
@@ -163,10 +142,10 @@ namespace Fohjin.DDD.Reporting.Infrastructure
 
                     var childDtos = GetType()
                         .GetMethod("DoGetByExample", BindingFlags.NonPublic | BindingFlags.Instance)
-                        .MakeGenericMethod(childDtoType)
+                        ?.MakeGenericMethod(childDtoType)
                         .Invoke(this, new[] { sqliteTransaction, childDtoType, CreateSelectObject(dto) as object });
-                    
-                    property.SetValue(dto, childDtos, new object[] { });
+
+                    property.SetValue(dto, childDtos, Array.Empty<object>());
                 }
             }
         }
@@ -174,74 +153,103 @@ namespace Fohjin.DDD.Reporting.Infrastructure
         private static IEnumerable<KeyValuePair<string, object>> CreateSelectObject<TDto>(TDto parentDto)
         {
             var columnName = string.Format("{0}Id", parentDto.GetType().Name);
-            var columnValue = parentDto.GetType().GetProperty("Id").GetValue(parentDto, new object[] {});
-         
-            return new Dictionary<string, object> { {columnName, columnValue} };
+            var columnValue = parentDto.GetType().GetProperty("Id")?.GetValue(parentDto, Array.Empty<object>());
+
+            return new Dictionary<string, object> { { columnName, columnValue } };
         }
 
-        private List<TDto> DoGetByExample<TDto>(SQLiteTransaction sqliteTransaction, Type dtoType, IEnumerable<KeyValuePair<string, object>> example) where TDto : class
+        private List<TDto> DoGetByExample<TDto>(SqliteTransaction sqliteTransaction, Type dtoType, IEnumerable<KeyValuePair<string, object>> example) where TDto : class
         {
             var dtos = new List<TDto>();
             var commandText = _sqlSelectBuilder.CreateSqlSelectStatementFromDto<TDto>(example);
 
-            using (var sqliteCommand = new SQLiteCommand(commandText, sqliteTransaction.Connection, sqliteTransaction))
+            using var sqliteCommand = new SqliteCommand(commandText, sqliteTransaction.Connection, sqliteTransaction);
+            AddParameters(sqliteCommand, example);
+
+            using var sqLiteDataReader = sqliteCommand.ExecuteReader();
+
+            var dtoConstructor = dtoType.GetConstructors()
+                    .Where(c => c.GetCustomAttribute<SqliteConstructorAttribute>() != null)
+                    .FirstOrDefault();
+
+            if (dtoConstructor == null)
+                throw new ApplicationException($"must label ctor for sqlite");
+
+            while (sqLiteDataReader.Read())
             {
-                AddParameters(sqliteCommand, example);
-
-                using (var sqLiteDataReader = sqliteCommand.ExecuteReader())
-                {
-                    var dtoConstructor = dtoType.GetConstructors().OrderBy(x => x.GetParameters().Count()).FirstOrDefault();
-
-                    while (sqLiteDataReader.Read())
-                    {
-                        dtos.Add(BuildDto<TDto>(dtoType, dtoConstructor, sqLiteDataReader));
-                    }
-                }
+                dtos.Add(BuildDto<TDto>(dtoType, dtoConstructor, sqLiteDataReader));
             }
             return dtos;
         }
 
         private static TDto BuildDto<TDto>(Type dtoType, ConstructorInfo dtoConstructor, IDataRecord sqLiteDataReader) where TDto : class
         {
-            var constructorArguments = new List<object>();
+            var parameters = dtoConstructor.GetParameters();
+            var parameterNames = dtoConstructor.GetParameters().Select(p => p.Name?.ToUpper()).ToArray();
+            var constructorArguments = new object?[parameters.Length];
 
-            dtoType.GetProperties().Where(Where).ToList().ForEach(x => constructorArguments.Add(sqLiteDataReader[x.Name]));
+            foreach (var property in dtoType.GetProperties().Where(Where))
+            {
+                var index = Array.IndexOf(parameterNames, property.Name.ToUpper());
+                if (index == -1)
+                    continue;
 
-            return (TDto)dtoConstructor.Invoke(constructorArguments.ToArray());
+                var value = sqLiteDataReader[property.Name];
+
+                var converter = TypeDescriptor.GetConverter(parameters[index].ParameterType);
+                if (converter.CanConvertFrom(value.GetType()))
+                {
+                    constructorArguments[index] = converter.ConvertFrom(value);
+                }
+                else
+                {
+                    converter = TypeDescriptor.GetConverter(value.GetType());
+                    if (converter.CanConvertTo(parameters[index].ParameterType))
+                    {
+                        constructorArguments[index] = converter.ConvertTo(value, parameters[index].ParameterType);
+                    }
+                    else
+                    {
+                        if (parameters[index].ParameterType == typeof(decimal))
+                        {
+                            constructorArguments[index] = Convert.ToDecimal(value);
+                        }
+                        else
+                        {
+                            Debug.WriteLine($"Type conversion not supported {value.GetType()} -> {parameters[index].ParameterType}");
+                        }
+                    }
+                }
+            }
+
+            return (TDto)dtoConstructor.Invoke(constructorArguments);
         }
 
         private static Dictionary<string, object> GetPropertyInformation(object example)
         {
             var exampleData = new Dictionary<string, object>();
 
-            example.GetType().GetProperties().Where(Where).ToList().ForEach(x => exampleData.Add(x.Name, x.GetValue(example, new object[] { })));
+            example.GetType().GetProperties().Where(Where).ToList().ForEach(x => exampleData.Add(x.Name, x.GetValue(example, Array.Empty<object>())));
             return exampleData;
         }
 
-        private static void AddParameters(SQLiteCommand sqliteCommand, IEnumerable<KeyValuePair<string, object>> example)
+        private static void AddParameters(SqliteCommand sqliteCommand, IEnumerable<KeyValuePair<string, object>> example)
         {
             if (example == null)
                 return;
-
-            example.ToList().ForEach(x => sqliteCommand.Parameters.Add(new SQLiteParameter(string.Format("@{0}", x.Key.ToLower()), x.Value)));
+            foreach (var item in example)
+                sqliteCommand.Parameters.Add(new SqliteParameter($"{@item.Key.ToLower()}", item.Value));
         }
 
-        private static void AddUpdateParameters(SQLiteCommand sqliteCommand, IEnumerable<KeyValuePair<string, object>> example)
+        private static void AddUpdateParameters(SqliteCommand sqliteCommand, IEnumerable<KeyValuePair<string, object>> example)
         {
             if (example == null)
                 return;
-
-            example.ToList().ForEach(x => sqliteCommand.Parameters.Add(new SQLiteParameter(string.Format("@update_{0}", x.Key.ToLower()), x.Value)));
+            foreach (var item in example)
+                sqliteCommand.Parameters.Add(new SqliteParameter($"@update_{item.Key.ToLower()}", item.Value));
         }
 
-        private static bool Where(PropertyInfo propertyInfo)
-        {
-            return !propertyInfo.PropertyType.IsGenericType;
-        }
-
-        private static bool WhereGeneric(PropertyInfo propertyInfo)
-        {
-            return propertyInfo.PropertyType.IsGenericType;
-        }
+        private static bool Where(PropertyInfo propertyInfo) => !propertyInfo.PropertyType.IsGenericType;
+        private static bool WhereGeneric(PropertyInfo propertyInfo) => propertyInfo.PropertyType.IsGenericType;
     }
 }

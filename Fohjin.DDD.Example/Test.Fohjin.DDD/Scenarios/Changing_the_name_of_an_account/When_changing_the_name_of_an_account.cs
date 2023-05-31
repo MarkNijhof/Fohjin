@@ -6,6 +6,7 @@ using Fohjin.DDD.Commands;
 using Fohjin.DDD.Domain.Account;
 using Fohjin.DDD.Events.Account;
 using Fohjin.DDD.EventStore;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Test.Fohjin.DDD.Scenarios.Changing_the_name_of_an_account
 {
@@ -21,13 +22,13 @@ namespace Test.Fohjin.DDD.Scenarios.Changing_the_name_of_an_account
             return new ChangeAccountNameCommand(Guid.NewGuid(), "New Account Name");
         }
 
-        [Then]
+        [TestMethod]
         public void Then_an_account_name_changed_event_will_be_published()
         {
             PublishedEvents.Last().WillBeOfType<AccountNameChangedEvent>();
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_published_event_will_contain_the_new_name_of_the_account()
         {
             PublishedEvents.Last<AccountNameChangedEvent>().AccountName.WillBe("New Account Name");

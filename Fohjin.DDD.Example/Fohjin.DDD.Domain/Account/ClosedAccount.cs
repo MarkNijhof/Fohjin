@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Fohjin.DDD.Domain.Mementos;
 using Fohjin.DDD.Events.Account;
 using Fohjin.DDD.EventStore;
@@ -9,24 +6,23 @@ using Fohjin.DDD.EventStore.Storage.Memento;
 
 namespace Fohjin.DDD.Domain.Account
 {
-    public class ClosedAccount : BaseAggregateRoot<IDomainEvent>, IOrginator
+    public class ClosedAccount : BaseAggregateRoot<IDomainEvent>, IOriginator
     {
         private Guid _originalAccountId;
         private Guid _clientId;
         private AccountName _accountName;
         private AccountNumber _accountNumber;
-        private readonly List<Ledger> _ledgers;
+        private readonly List<Ledger> _ledgers = new();
 
         public ClosedAccount()
         {
             Id = Guid.Empty;
-            _accountName = new AccountName(string.Empty);
-            _accountNumber = new AccountNumber(string.Empty);
+            _accountName = new (string.Empty);
+            _accountNumber = new (string.Empty);
             Version = 0;
             EventVersion = 0;
-            _ledgers = new List<Ledger>();
 
-            registerEvents();
+            RegisterEvents();
         }
 
         private ClosedAccount(Guid accountId, Guid clientId, List<Ledger> ledgers, string accountName, string accountNumber) : this()
@@ -37,19 +33,15 @@ namespace Fohjin.DDD.Domain.Account
             Apply(new ClosedAccountCreatedEvent(Guid.NewGuid(), accountId, clientId, Ledgers, accountName, accountNumber));
         }
 
-        public static ClosedAccount CreateNew(Guid accountId, Guid clientId, List<Ledger> ledgers, AccountName accountName, AccountNumber accountNumber)
-        {
-            return new ClosedAccount(accountId, clientId, ledgers, accountName.Name, accountNumber.Number);
-        }
+        public static ClosedAccount CreateNew(Guid accountId, Guid clientId, List<Ledger> ledgers, AccountName accountName, AccountNumber accountNumber)=>
+            new ClosedAccount(accountId, clientId, ledgers, accountName.Name, accountNumber.Number);
 
-        IMemento IOrginator.CreateMemento()
-        {
-            return new ClosedAccountMemento(Id, Version, _originalAccountId, _clientId, _accountName.Name, _accountNumber.Number, _ledgers);
-        }
+        IMemento IOriginator.CreateMemento()=>
+            new ClosedAccountMemento(Id, Version, _originalAccountId, _clientId, _accountName.Name, _accountNumber.Number, _ledgers);
 
-        void IOrginator.SetMemento(IMemento memento)
+        void IOriginator.SetMemento(IMemento memento)
         {
-            var closedAccountMemento = (ClosedAccountMemento) memento;
+            var closedAccountMemento = (ClosedAccountMemento)memento;
             Id = closedAccountMemento.Id;
             Version = closedAccountMemento.Version;
             _originalAccountId = closedAccountMemento.OriginalAccountId;
@@ -59,7 +51,7 @@ namespace Fohjin.DDD.Domain.Account
 
             foreach (var ledger in closedAccountMemento.Ledgers)
             {
-                var split = ledger.Value.Split(new[] {'|'});
+                var split = ledger.Value.Split(new[] { '|' });
                 var amount = new Amount(Convert.ToDecimal(split[0]));
                 var account = new AccountNumber(split[1]);
                 _ledgers.Add(InstantiateClassFromStringValue<Ledger>(ledger.Key, amount, account));
@@ -77,12 +69,12 @@ namespace Fohjin.DDD.Domain.Account
             return (TRequestedType)Activator.CreateInstance(classType, constructorArguments);
         }
 
-        private void registerEvents()
+        private void RegisterEvents()
         {
-            RegisterEvent<ClosedAccountCreatedEvent>(onClosedAccountCreated);
+            RegisterEvent<ClosedAccountCreatedEvent>(OnClosedAccountCreated);
         }
 
-        private void onClosedAccountCreated(ClosedAccountCreatedEvent closedAccountCreatedEvent)
+        private void OnClosedAccountCreated(ClosedAccountCreatedEvent closedAccountCreatedEvent)
         {
             Id = closedAccountCreatedEvent.AccountId;
             _originalAccountId = closedAccountCreatedEvent.OriginalAccountId;

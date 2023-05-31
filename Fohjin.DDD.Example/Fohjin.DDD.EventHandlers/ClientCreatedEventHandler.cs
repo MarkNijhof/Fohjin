@@ -1,10 +1,10 @@
 using Fohjin.DDD.Events.Client;
 using Fohjin.DDD.Reporting;
-using Fohjin.DDD.Reporting.Dto;
+using Fohjin.DDD.Reporting.Dtos;
 
 namespace Fohjin.DDD.EventHandlers
 {
-    public class ClientCreatedEventHandler : IEventHandler<ClientCreatedEvent>
+    public class ClientCreatedEventHandler : EventHandlerBase<ClientCreatedEvent>
     {
         private readonly IReportingRepository _reportingRepository;
 
@@ -13,12 +13,13 @@ namespace Fohjin.DDD.EventHandlers
             _reportingRepository = reportingRepository;
         }
 
-        public void Execute(ClientCreatedEvent theEvent)
+        public override Task ExecuteAsync(ClientCreatedEvent theEvent)
         {
             var client = new ClientReport(theEvent.ClientId, theEvent.ClientName);
             var clientDetails = new ClientDetailsReport(theEvent.ClientId, theEvent.ClientName, theEvent.Street, theEvent.StreetNumber, theEvent.PostalCode, theEvent.City, theEvent.PhoneNumber);
             _reportingRepository.Save(client);
             _reportingRepository.Save(clientDetails);
+            return Task.CompletedTask;
         }
     }
 }

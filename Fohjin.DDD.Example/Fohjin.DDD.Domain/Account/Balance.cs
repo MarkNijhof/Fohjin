@@ -2,41 +2,18 @@ namespace Fohjin.DDD.Domain.Account
 {
     public class Balance
     {
-        private readonly Amount _amount;
+        private readonly Amount _amount = new(0);
 
-        public Balance()
-        {
-            _amount = new Amount(0);
-        }
+        public Balance() { }
+        private Balance(decimal decimalAmount) => _amount = new(decimalAmount);
 
-        private Balance(decimal decimalAmount)
-        {
-            _amount = new Amount(decimalAmount);
-        }
+        public Balance Withdrawal(Amount amount) => new(_amount.Substract(amount));
+        public Balance Deposit(Amount amount) => new(_amount.Add(amount));
 
-        public Balance Withdrawl(Amount amount)
-        {
-            return new Balance(_amount.Substract(amount));
-        }
+        public bool WithdrawalWillResultInNegativeBalance(Amount amount) =>
+            new Amount(_amount).Substract(amount).IsNegative();
 
-        public Balance Deposite(Amount amount)
-        {
-            return new Balance(_amount.Add(amount));
-        }
-        
-        public bool WithdrawlWillResultInNegativeBalance(Amount amount)
-        {
-            return new Amount(_amount).Substract(amount).IsNegative();
-        }
-
-        public static implicit operator decimal(Balance balance)
-        {
-            return balance._amount;
-        }
-
-        public static implicit operator Balance(decimal decimalAmount)
-        {
-            return new Balance(decimalAmount);
-        }
+        public static implicit operator decimal(Balance balance) => balance._amount;
+        public static implicit operator Balance(decimal decimalAmount) => new Balance(decimalAmount);
     }
 }

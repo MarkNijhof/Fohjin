@@ -1,24 +1,33 @@
-using System.Collections.Generic;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace Fohjin.DDD.Bus.Direct
 {
     public class DirectBus : IBus
     {
-        private readonly IRouteMessages _routeMessages;
-        private readonly object _lockObject = new object();
-        private readonly Queue<object> _preCommitQueue;
-        private readonly InMemoryQueue _postCommitQueue;
+        private IRouteMessages? _routeMessages;
+        private readonly IServiceProvider _serviceProvider;
+        private readonly ILogger _log;
 
-        public DirectBus(IRouteMessages routeMessages)
+        private readonly object _lockObject = new();
+        private readonly Queue<object> _preCommitQueue = new(32);
+        private readonly IQueue _postCommitQueue;
+
+        public DirectBus(
+            IServiceProvider serviceProvider,
+            IQueue postCommitQueue,
+            ILogger<DirectBus> log
+            )
         {
-            _routeMessages = routeMessages;
-            _preCommitQueue = new Queue<object>(32);
-            _postCommitQueue = new InMemoryQueue();
-            _postCommitQueue.Pop(DoPublish);
+            _serviceProvider = serviceProvider;
+            _log = log;
+            _postCommitQueue = postCommitQueue;
+            _postCommitQueue.PopAsync(DoPublishAsync).GetAwaiter().GetResult();
         }
 
         public void Publish(object message)
         {
+            _log.LogInformation($"{nameof(Publish)}: {{{nameof(message)}}}", message);
             lock (_lockObject)
             {
                 _preCommitQueue.Enqueue(message);
@@ -27,6 +36,7 @@ namespace Fohjin.DDD.Bus.Direct
 
         public void Publish(IEnumerable<object> messages)
         {
+            _log.LogInformation($"{nameof(Publish)}: {{{nameof(messages)}}}", messages);
             lock (_lockObject)
             {
                 foreach (var message in messages)
@@ -38,32 +48,36 @@ namespace Fohjin.DDD.Bus.Direct
 
         public void Commit()
         {
+            _log.LogInformation($"{nameof(Commit)}");
             lock (_lockObject)
             {
-                while (_preCommitQueue.Count > 0)
+                while (_preCommitQueue.Any())
                 {
-                    _postCommitQueue.Put(_preCommitQueue.Dequeue());
+                    _postCommitQueue.PutAsync(_preCommitQueue.Dequeue()).GetAwaiter().GetResult();
                 }
             }
         }
 
         public void Rollback()
         {
+            _log.LogInformation($"{nameof(Rollback)}");
             lock (_lockObject)
             {
                 _preCommitQueue.Clear();
             }
         }
 
-        private void DoPublish(object message)
+        private async Task DoPublishAsync(object message)
         {
+            _log.LogInformation($"{nameof(DoPublishAsync)}: {{{nameof(message)}}}", message);
+            _routeMessages ??= _serviceProvider.GetRequiredService<IRouteMessages>();
             try
             {
-                _routeMessages.Route(message);
+                await _routeMessages.RouteAsync(message);
             }
             finally
             {
-                _postCommitQueue.Pop(DoPublish);
+                await _postCommitQueue.PopAsync(DoPublishAsync);
             }
         }
     }

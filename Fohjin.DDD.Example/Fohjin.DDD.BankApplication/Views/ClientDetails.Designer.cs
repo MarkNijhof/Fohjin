@@ -132,7 +132,7 @@
             this.changedHisPhoneNumberToolStripMenuItem.Name = "changedHisPhoneNumberToolStripMenuItem";
             this.changedHisPhoneNumberToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.P)));
             this.changedHisPhoneNumberToolStripMenuItem.Size = new System.Drawing.Size(256, 22);
-            this.changedHisPhoneNumberToolStripMenuItem.Text = "Changed his phonenumber";
+            this.changedHisPhoneNumberToolStripMenuItem.Text = "Changed his phoneNumber";
             // 
             // accountsToolStripMenuItem
             // 
@@ -394,7 +394,7 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(60, 13);
             this.label3.TabIndex = 10;
-            this.label3.Text = "Postalcode";
+            this.label3.Text = "PostalCode";
             // 
             // _street
             // 

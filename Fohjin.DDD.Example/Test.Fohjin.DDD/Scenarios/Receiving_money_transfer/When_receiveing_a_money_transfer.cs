@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Fohjin.DDD.CommandHandlers;
+﻿using Fohjin.DDD.CommandHandlers;
 using Fohjin.DDD.Commands;
 using Fohjin.DDD.Domain.Account;
 using Fohjin.DDD.Events.Account;
 using Fohjin.DDD.EventStore;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Test.Fohjin.DDD.Scenarios.Receiving_money_transfer
 {
@@ -22,14 +20,14 @@ namespace Test.Fohjin.DDD.Scenarios.Receiving_money_transfer
             return new ReceiveMoneyTransferCommand(Guid.NewGuid(), 5.0M, "0987654321");
         }
 
-        [Then]
+        [TestMethod]
         public void Then_a_money_transfer_received_event_will_be_published()
         {
             PublishedEvents.Last().WillBeOfType<MoneyTransferReceivedEvent>();
         }
 
-        [Then]
-        public void Then_it_will_generate_an_deposite_event_with_the_expected_ammount()
+        [TestMethod]
+        public void Then_it_will_generate_an_Deposit_event_with_the_expected_ammount()
         {
             PublishedEvents.Last<MoneyTransferReceivedEvent>().Amount.WillBe(5.0M);
             PublishedEvents.Last<MoneyTransferReceivedEvent>().Balance.WillBe(25.0M);

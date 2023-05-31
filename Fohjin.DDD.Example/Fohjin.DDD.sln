@@ -1,35 +1,44 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fohjin.DDD.Reporting", "Fohjin.DDD.Reporting\Fohjin.DDD.Reporting.csproj", "{0E86D5C6-929D-4304-A00D-ADC9FB2AFE77}"
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33627.172
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fohjin.DDD.Reporting", "Fohjin.DDD.Reporting\Fohjin.DDD.Reporting.csproj", "{0E86D5C6-929D-4304-A00D-ADC9FB2AFE77}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.Fohjin.DDD", "Test.Fohjin.DDD\Test.Fohjin.DDD.csproj", "{CEBF24CE-3326-464B-B6C5-463E7F4BF4BC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test.Fohjin.DDD", "Test.Fohjin.DDD\Test.Fohjin.DDD.csproj", "{CEBF24CE-3326-464B-B6C5-463E7F4BF4BC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fohjin.DDD.Events", "Fohjin.DDD.Events\Fohjin.DDD.Events.csproj", "{CFB4C037-822D-470E-8A01-832957D193C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fohjin.DDD.CommandHandlers", "Fohjin.DDD.CommandHandlers\Fohjin.DDD.CommandHandlers.csproj", "{7757DA0F-CD51-4753-95C8-8632177AA60E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fohjin.DDD.Commands", "Fohjin.DDD.Commands\Fohjin.DDD.Commands.csproj", "{58D61FA0-D67F-4D72-81EA-2D709356AF95}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fohjin.DDD.Configuration", "Fohjin.DDD.Configuration\Fohjin.DDD.Configuration.csproj", "{CF50373D-3EB9-492D-A88F-70D7D6756DFF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fohjin.DDD.Domain", "Fohjin.DDD.Domain\Fohjin.DDD.Domain.csproj", "{0FB24C8F-FA8C-409E-A71C-8580F7D78474}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fohjin.DDD.BankApplication", "Fohjin.DDD.BankApplication\Fohjin.DDD.BankApplication.csproj", "{672A4AB0-6972-49F1-86A6-C2B7DE5AD4D4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fohjin.DDD.CommandHandlers", "Fohjin.DDD.CommandHandlers\Fohjin.DDD.CommandHandlers.csproj", "{7757DA0F-CD51-4753-95C8-8632177AA60E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fohjin.DDD.EventHandlers", "Fohjin.DDD.EventHandlers\Fohjin.DDD.EventHandlers.csproj", "{2A96D452-7D1D-4118-B3D4-8EF543D1FBCB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fohjin.DDD.Configuration", "Fohjin.DDD.Configuration\Fohjin.DDD.Configuration.csproj", "{CF50373D-3EB9-492D-A88F-70D7D6756DFF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fohjin.DDD.EventStore.SQLite", "Fohjin.DDD.EventStore.SQLite\Fohjin.DDD.EventStore.SQLite.csproj", "{8DE1C044-594E-4A85-8244-FE059BF4825B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fohjin.DDD.BankApplication", "Fohjin.DDD.BankApplication\Fohjin.DDD.BankApplication.csproj", "{672A4AB0-6972-49F1-86A6-C2B7DE5AD4D4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fohjin.DDD.Services", "Fohjin.DDD.Services\Fohjin.DDD.Services.csproj", "{B2428304-1BF2-4BCB-B250-7D09E536560A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fohjin.DDD.Reporting.Dto", "Fohjin.DDD.Reporting.Dto\Fohjin.DDD.Reporting.Dto.csproj", "{44666AF0-AC7A-486E-AD1F-49FD0573ED43}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fohjin.DDD.EventStore", "Fohjin.DDD.EventStore\Fohjin.DDD.EventStore.csproj", "{318F1FE0-DA43-4A02-9956-361C9FE96915}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fohjin.DDD.EventHandlers", "Fohjin.DDD.EventHandlers\Fohjin.DDD.EventHandlers.csproj", "{2A96D452-7D1D-4118-B3D4-8EF543D1FBCB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fohjin.DDD.Bus", "Fohjin.DDD.Bus\Fohjin.DDD.Bus.csproj", "{809E2C9E-8ACD-40D5-86C8-43256C3D8AA8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fohjin.DDD.EventStore.SQLite", "Fohjin.DDD.EventStore.SQLite\Fohjin.DDD.EventStore.SQLite.csproj", "{8DE1C044-594E-4A85-8244-FE059BF4825B}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{06C083C9-EA81-4321-908A-C8CFCF273E73}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		Directory.Build.props = Directory.Build.props
+		Directory.Build.targets = Directory.Build.targets
+		LocalUnitTestRun.bat = LocalUnitTestRun.bat
+		readme.md = readme.md
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fohjin.DDD.Services", "Fohjin.DDD.Services\Fohjin.DDD.Services.csproj", "{B2428304-1BF2-4BCB-B250-7D09E536560A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fohjin.DDD.Common", "Fohjin.DDD.Common\Fohjin.DDD.Common.csproj", "{EDC737EE-F959-4F18-99D0-C212B9AEA153}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fohjin.DDD.EventStore", "Fohjin.DDD.EventStore\Fohjin.DDD.EventStore.csproj", "{318F1FE0-DA43-4A02-9956-361C9FE96915}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fohjin.DDD.Abstractions", "Fohjin.DDD.Abstractions\Fohjin.DDD.Abstractions.csproj", "{0F98118F-7546-4F24-B808-0973D16D0D62}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fohjin.DDD.Bus", "Fohjin.DDD.Bus\Fohjin.DDD.Bus.csproj", "{809E2C9E-8ACD-40D5-86C8-43256C3D8AA8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fohjin.DDD.Domain", "Fohjin.DDD.Domain\Fohjin.DDD.Domain.csproj", "{BD1449AE-CDFC-496A-968A-4B178B0B813C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fohjin", "Fohjin\Fohjin.csproj", "{202FEBE5-F8A1-4A68-8306-75FDE33E0D45}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fohjin.DDD.BankApplication.Core", "Fohjin.DDD.BankApplication.Core\Fohjin.DDD.BankApplication.Core.csproj", "{49344CD2-6EFB-4A12-8619-8DDD00EC31EC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,18 +54,6 @@ Global
 		{CEBF24CE-3326-464B-B6C5-463E7F4BF4BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CEBF24CE-3326-464B-B6C5-463E7F4BF4BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CEBF24CE-3326-464B-B6C5-463E7F4BF4BC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CFB4C037-822D-470E-8A01-832957D193C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CFB4C037-822D-470E-8A01-832957D193C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CFB4C037-822D-470E-8A01-832957D193C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CFB4C037-822D-470E-8A01-832957D193C9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{58D61FA0-D67F-4D72-81EA-2D709356AF95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{58D61FA0-D67F-4D72-81EA-2D709356AF95}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{58D61FA0-D67F-4D72-81EA-2D709356AF95}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{58D61FA0-D67F-4D72-81EA-2D709356AF95}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0FB24C8F-FA8C-409E-A71C-8580F7D78474}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0FB24C8F-FA8C-409E-A71C-8580F7D78474}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0FB24C8F-FA8C-409E-A71C-8580F7D78474}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0FB24C8F-FA8C-409E-A71C-8580F7D78474}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7757DA0F-CD51-4753-95C8-8632177AA60E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7757DA0F-CD51-4753-95C8-8632177AA60E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7757DA0F-CD51-4753-95C8-8632177AA60E}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -69,10 +66,6 @@ Global
 		{672A4AB0-6972-49F1-86A6-C2B7DE5AD4D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{672A4AB0-6972-49F1-86A6-C2B7DE5AD4D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{672A4AB0-6972-49F1-86A6-C2B7DE5AD4D4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{44666AF0-AC7A-486E-AD1F-49FD0573ED43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{44666AF0-AC7A-486E-AD1F-49FD0573ED43}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{44666AF0-AC7A-486E-AD1F-49FD0573ED43}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{44666AF0-AC7A-486E-AD1F-49FD0573ED43}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2A96D452-7D1D-4118-B3D4-8EF543D1FBCB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2A96D452-7D1D-4118-B3D4-8EF543D1FBCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2A96D452-7D1D-4118-B3D4-8EF543D1FBCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -93,12 +86,27 @@ Global
 		{809E2C9E-8ACD-40D5-86C8-43256C3D8AA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{809E2C9E-8ACD-40D5-86C8-43256C3D8AA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{809E2C9E-8ACD-40D5-86C8-43256C3D8AA8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{202FEBE5-F8A1-4A68-8306-75FDE33E0D45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{202FEBE5-F8A1-4A68-8306-75FDE33E0D45}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{202FEBE5-F8A1-4A68-8306-75FDE33E0D45}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{202FEBE5-F8A1-4A68-8306-75FDE33E0D45}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDC737EE-F959-4F18-99D0-C212B9AEA153}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDC737EE-F959-4F18-99D0-C212B9AEA153}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDC737EE-F959-4F18-99D0-C212B9AEA153}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDC737EE-F959-4F18-99D0-C212B9AEA153}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F98118F-7546-4F24-B808-0973D16D0D62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F98118F-7546-4F24-B808-0973D16D0D62}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F98118F-7546-4F24-B808-0973D16D0D62}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F98118F-7546-4F24-B808-0973D16D0D62}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD1449AE-CDFC-496A-968A-4B178B0B813C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD1449AE-CDFC-496A-968A-4B178B0B813C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD1449AE-CDFC-496A-968A-4B178B0B813C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD1449AE-CDFC-496A-968A-4B178B0B813C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49344CD2-6EFB-4A12-8619-8DDD00EC31EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49344CD2-6EFB-4A12-8619-8DDD00EC31EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49344CD2-6EFB-4A12-8619-8DDD00EC31EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49344CD2-6EFB-4A12-8619-8DDD00EC31EC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7A04D515-6EA3-4D21-B36A-5501D6A11ADF}
 	EndGlobalSection
 EndGlobal

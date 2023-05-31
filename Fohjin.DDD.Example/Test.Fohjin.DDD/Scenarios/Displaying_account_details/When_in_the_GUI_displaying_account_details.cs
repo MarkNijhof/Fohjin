@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using Fohjin.DDD.BankApplication.Presenters;
+﻿using Fohjin.DDD.BankApplication.Presenters;
 using Fohjin.DDD.BankApplication.Views;
 using Fohjin.DDD.Reporting;
-using Fohjin.DDD.Reporting.Dto;
+using Fohjin.DDD.Reporting.Dtos;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Test.Fohjin.DDD.Scenarios.Displaying_account_details
@@ -37,25 +36,25 @@ namespace Test.Fohjin.DDD.Scenarios.Displaying_account_details
             Presenter.Display();
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_save_button_will_be_disabled()
         {
             On<IAccountDetailsView>().VerifyThat.Method(x => x.DisableSaveButton()).WasCalled();
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_menu_button_will_be_enabled()
         {
             On<IAccountDetailsView>().VerifyThat.Method(x => x.EnableMenuButtons()).WasCalled();
         }
 
-        [Then]
+        [TestMethod]
         public void Then_overview_panel_will_be_shown()
         {
             On<IAccountDetailsView>().VerifyThat.Method(x => x.EnableDetailsPanel()).WasCalled();
         }
 
-        [Then]
+        [TestMethod]
         public void Then_client_details_report_data_from_the_reporting_repository_is_being_loaded_into_the_view()
         {
             On<IAccountDetailsView>().VerifyThat.ValueIsSetFor(x => x.AccountName = _accountDetailsReport.AccountName);
@@ -66,7 +65,7 @@ namespace Test.Fohjin.DDD.Scenarios.Displaying_account_details
             On<IAccountDetailsView>().VerifyThat.ValueIsSetFor(x => x.TransferAccounts = _accountReports);
         }
 
-        [Then]
+        [TestMethod]
         public void Then_show_dialog_will_be_called_on_the_view()
         {
             On<IAccountDetailsView>().VerifyThat.Method(x => x.ShowDialog()).WasCalled();

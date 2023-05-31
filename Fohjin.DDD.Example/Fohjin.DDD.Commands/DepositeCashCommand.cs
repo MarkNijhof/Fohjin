@@ -1,13 +1,10 @@
-using System;
-
 namespace Fohjin.DDD.Commands
 {
-    [Serializable]
-    public class DepositeCashCommand : Command
+    public record DepositCashCommand : Command
     {
-        public decimal Amount { get; private set; }
+        public decimal Amount { get; init; }
 
-        public DepositeCashCommand(Guid id, decimal amount) : base(id)
+        public DepositCashCommand(Guid id, decimal amount) : base(id)
         {
             Amount = amount;
         }

@@ -1,107 +1,112 @@
-using System;
-using System.Linq;
-using Fohjin.DDD.Configuration;
-using Fohjin.DDD.Reporting.Dto;
+using Fohjin.DDD.BankApplication;
+using Fohjin.DDD.Reporting.Dtos;
 using Fohjin.DDD.Reporting.Infrastructure;
-using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Test.Fohjin.DDD.TestUtilities;
 
 namespace Test.Fohjin.DDD.Reporting.Infrastructure
 {
-    [TestFixture]
+    [TestClass]
     public class RepositoryTest
     {
-        private SQLiteReportingRepository _repository;
-        private const string dataBaseFile = "reportingDataBase.db3";
+        public TestContext TestContext { get; set; }
 
-        [SetUp]
+        private SqliteReportingRepository _repository;
+
+        [TestInitialize]
         public void SetUp()
         {
-            new ReportingDatabaseBootStrapper().ReCreateDatabaseSchema();
-            
+            TestContext.SetupWorkingDirectory();
+            var dataBaseFile = Path.Combine(
+                (string)TestContext.Properties[TestContextExtensions.TestWorkingDirectory],
+                DomainDatabaseBootStrapper.DataBaseFile
+                );
+
+            new ReportingDatabaseBootStrapper().ReCreateDatabaseSchema(dataBaseFile);
+
             var sqliteConnectionString = string.Format("Data Source={0}", dataBaseFile);
 
-            _repository = new SQLiteReportingRepository(sqliteConnectionString, new SqlSelectBuilder(), new SqlInsertBuilder(), new SqlUpdateBuilder(), new SqlDeleteBuilder());
+            _repository = new SqliteReportingRepository(sqliteConnectionString, new SqlSelectBuilder(), new SqlInsertBuilder(), new SqlUpdateBuilder(), new SqlDeleteBuilder());
         }
 
-        [Test]
+        [TestMethod]
         public void Will_be_able_to_save_and_retrieve_a_client_dto()
         {
             var clientDto = new ClientReport(Guid.NewGuid(), "Mark Nijhof");
             _repository.Save(clientDto);
-            var sut = _repository.GetByExample<ClientReport>(new {Name = "Mark Nijhof"}).FirstOrDefault();
+            var sut = _repository.GetByExample<ClientReport>(new { Name = "Mark Nijhof" }).FirstOrDefault();
 
-            Assert.That(sut.Id, Is.EqualTo(clientDto.Id));
-            Assert.That(sut.Name, Is.EqualTo(clientDto.Name));
+            Assert.AreEqual(clientDto.Id, sut.Id);
+            Assert.AreEqual(clientDto.Name, sut.Name);
         }
 
-        [Test]
+        [TestMethod]
         public void Will_be_able_to_save_and_retrieve_a_client_details_dto()
         {
             var clientDetailsDto = new ClientDetailsReport(Guid.NewGuid(), "Mark Nijhof", "Street", "123", "5006", "Bergen", "123456789");
             _repository.Save(clientDetailsDto);
-            var sut = _repository.GetByExample<ClientDetailsReport>(new {ClientName = "Mark Nijhof"}).FirstOrDefault();
+            var sut = _repository.GetByExample<ClientDetailsReport>(new { ClientName = "Mark Nijhof" }).FirstOrDefault();
 
-            Assert.That(sut.Id, Is.EqualTo(clientDetailsDto.Id));
-            Assert.That(sut.ClientName, Is.EqualTo(clientDetailsDto.ClientName));
-            Assert.That(sut.Street, Is.EqualTo(clientDetailsDto.Street));
-            Assert.That(sut.StreetNumber, Is.EqualTo(clientDetailsDto.StreetNumber));
-            Assert.That(sut.PostalCode, Is.EqualTo(clientDetailsDto.PostalCode));
-            Assert.That(sut.City, Is.EqualTo(clientDetailsDto.City));
-            Assert.That(sut.PhoneNumber, Is.EqualTo(clientDetailsDto.PhoneNumber));
+            Assert.AreEqual(clientDetailsDto.Id, sut.Id);
+            Assert.AreEqual(clientDetailsDto.ClientName, sut.ClientName);
+            Assert.AreEqual(clientDetailsDto.Street, sut.Street);
+            Assert.AreEqual(clientDetailsDto.StreetNumber, sut.StreetNumber);
+            Assert.AreEqual(clientDetailsDto.PostalCode, sut.PostalCode);
+            Assert.AreEqual(clientDetailsDto.City, sut.City);
+            Assert.AreEqual(clientDetailsDto.PhoneNumber, sut.PhoneNumber);
         }
 
-        [Test]
+        [TestMethod]
         public void Will_be_able_to_save_and_retrieve_an_account_dto()
         {
             var accountDto = new AccountReport(Guid.NewGuid(), Guid.NewGuid(), "Account Name", "1234567890");
             _repository.Save(accountDto);
             var sut = _repository.GetByExample<AccountReport>(new { AccountName = "Account Name" }).FirstOrDefault();
 
-            Assert.That(sut.Id, Is.EqualTo(accountDto.Id));
-            Assert.That(sut.ClientDetailsReportId, Is.EqualTo(accountDto.ClientDetailsReportId));
-            Assert.That(sut.AccountName, Is.EqualTo(accountDto.AccountName));
-            Assert.That(sut.AccountNumber, Is.EqualTo(accountDto.AccountNumber));
+            Assert.AreEqual(accountDto.Id, sut.Id);
+            Assert.AreEqual(accountDto.ClientDetailsReportId, sut.ClientDetailsReportId);
+            Assert.AreEqual(accountDto.AccountName, sut.AccountName);
+            Assert.AreEqual(accountDto.AccountNumber, sut.AccountNumber);
         }
 
-        [Test]
+        [TestMethod]
         public void Will_be_able_to_save_and_retrieve_an_account_details_dto()
         {
             var accountDetailsDto = new AccountDetailsReport(Guid.NewGuid(), Guid.NewGuid(), "Account Name", 10.5M, "1234567890");
             _repository.Save(accountDetailsDto);
             var sut = _repository.GetByExample<AccountDetailsReport>(new { AccountName = "Account Name" }).FirstOrDefault();
 
-            Assert.That(sut.Id, Is.EqualTo(accountDetailsDto.Id));
-            Assert.That(sut.ClientReportId, Is.EqualTo(accountDetailsDto.ClientReportId));
-            Assert.That(sut.AccountName, Is.EqualTo(accountDetailsDto.AccountName));
-            Assert.That(sut.Balance, Is.EqualTo(accountDetailsDto.Balance));
-            Assert.That(sut.AccountNumber, Is.EqualTo(accountDetailsDto.AccountNumber));
+            Assert.AreEqual(accountDetailsDto.Id, sut.Id);
+            Assert.AreEqual(accountDetailsDto.ClientReportId, sut.ClientReportId);
+            Assert.AreEqual(accountDetailsDto.AccountName, sut.AccountName);
+            Assert.AreEqual(accountDetailsDto.Balance, sut.Balance);
+            Assert.AreEqual(accountDetailsDto.AccountNumber, sut.AccountNumber);
         }
 
-        [Test]
+        [TestMethod]
         public void Will_be_able_to_save_and_retrieve_a_ledger_dto()
         {
             var ledgerDto = new LedgerReport(Guid.NewGuid(), Guid.NewGuid(), "Action", 12.3M);
             _repository.Save(ledgerDto);
             var sut = _repository.GetByExample<LedgerReport>(new { Action = "Action", Amount = 12.3M }).FirstOrDefault();
 
-            Assert.That(sut.Id, Is.EqualTo(ledgerDto.Id));
-            Assert.That(sut.AccountDetailsReportId, Is.EqualTo(ledgerDto.AccountDetailsReportId));
-            Assert.That(sut.Amount, Is.EqualTo(ledgerDto.Amount));
-            Assert.That(sut.Action, Is.EqualTo(ledgerDto.Action));
+            Assert.AreEqual(ledgerDto.Id, sut.Id);
+            Assert.AreEqual(ledgerDto.AccountDetailsReportId, sut.AccountDetailsReportId);
+            Assert.AreEqual(ledgerDto.Amount, sut.Amount);
+            Assert.AreEqual(ledgerDto.Action, sut.Action);
         }
 
-        [Test]
+        [TestMethod]
         public void When_calling_GetByExample_it_will_return_a_list_with_dtos_matching_the_example()
         {
             _repository.Save(new ClientReport(Guid.NewGuid(), "Mark Nijhof"));
             _repository.Save(new ClientReport(Guid.NewGuid(), "Mark Nijhof"));
             var sut = _repository.GetByExample<ClientReport>(new { Name = "Mark Nijhof" });
 
-            Assert.That(sut.Count(), Is.EqualTo(2));
+            Assert.AreEqual(2, sut.Count());
         }
 
-        [Test]
+        [TestMethod]
         public void When_calling_GetByExample_it_will_return_a_list_with_dtos_matching_the_example_inclusing_child_objects()
         {
             var AccountId = Guid.NewGuid();
@@ -113,14 +118,14 @@ namespace Test.Fohjin.DDD.Reporting.Infrastructure
 
             var sut = _repository.GetByExample<AccountDetailsReport>(new { AccountName = "Account Name" }).FirstOrDefault();
 
-            Assert.That(sut.Ledgers.Count(), Is.EqualTo(2));
-            Assert.That(sut.Ledgers.First().Action, Is.EqualTo("Action 1"));
-            Assert.That(sut.Ledgers.First().Amount, Is.EqualTo(12.3M));
-            Assert.That(sut.Ledgers.Last().Action, Is.EqualTo("Action 2"));
-            Assert.That(sut.Ledgers.Last().Amount, Is.EqualTo(24.6M));
+            Assert.AreEqual(2, sut.Ledgers.Count());
+            Assert.AreEqual("Action 1", sut.Ledgers.First().Action);
+            Assert.AreEqual(12.3M, sut.Ledgers.First().Amount);
+            Assert.AreEqual("Action 2", sut.Ledgers.Last().Action);
+            Assert.AreEqual(24.6M, sut.Ledgers.Last().Amount);
         }
 
-        [Test]
+        [TestMethod]
         public void Will_be_able_to_update_an_already_saved_dto()
         {
             Guid guid = Guid.NewGuid();
@@ -130,11 +135,11 @@ namespace Test.Fohjin.DDD.Reporting.Infrastructure
 
             var sut = _repository.GetByExample<ClientReport>(new { Id = guid });
 
-            Assert.That(sut.Count(), Is.EqualTo(1));
-            Assert.That(sut.First().Name, Is.EqualTo("Mark Albert Nijhof"));
+            Assert.AreEqual(1, sut.Count());
+            Assert.AreEqual("Mark Albert Nijhof", sut.First().Name);
         }
 
-        [Test]
+        [TestMethod]
         public void Will_be_able_to_delete_an_already_saved_dto()
         {
             Guid guid = Guid.NewGuid();
@@ -144,7 +149,7 @@ namespace Test.Fohjin.DDD.Reporting.Infrastructure
 
             var sut = _repository.GetByExample<ClientReport>(new { Id = guid });
 
-            Assert.That(sut.Count(), Is.EqualTo(0));
+            Assert.AreEqual(0, sut.Count());
         }
     }
 }

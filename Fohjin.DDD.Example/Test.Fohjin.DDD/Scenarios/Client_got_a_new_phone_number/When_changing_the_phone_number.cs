@@ -6,6 +6,7 @@ using Fohjin.DDD.Commands;
 using Fohjin.DDD.Domain.Client;
 using Fohjin.DDD.Events.Client;
 using Fohjin.DDD.EventStore;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Test.Fohjin.DDD.Scenarios.Client_got_a_new_phone_number
 {
@@ -21,13 +22,13 @@ namespace Test.Fohjin.DDD.Scenarios.Client_got_a_new_phone_number
             return new ChangeClientPhoneNumberCommand(Guid.NewGuid(), "95009937");
         }
 
-        [Then]
+        [TestMethod]
         public void Then_a_client_phone_number_changed_event_will_be_published()
         {
             PublishedEvents.Last().WillBeOfType<ClientPhoneNumberChangedEvent>();
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_published_event_will_contain_the_new_phone_number_of_the_client()
         {
             PublishedEvents.Last<ClientPhoneNumberChangedEvent>().PhoneNumber.WillBe("95009937");

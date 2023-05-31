@@ -1,103 +1,137 @@
-using System;
-using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
+using Fohjin.DDD.BankApplication;
 using Fohjin.DDD.Bus;
-using Fohjin.DDD.Configuration;
+using Fohjin.DDD.Common;
 using Fohjin.DDD.Domain.Account;
 using Fohjin.DDD.Domain.Mementos;
 using Fohjin.DDD.EventStore;
 using Fohjin.DDD.EventStore.SQLite;
 using Fohjin.DDD.EventStore.Storage;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using NUnit.Framework;
-using NUnit.Framework.SyntaxHelpers;
+using Test.Fohjin.DDD.TestUtilities;
 
 namespace Test.Fohjin.DDD.Domain.Repositories
 {
-    [TestFixture]
+    [TestClass]
     public class ActiveAccountRepositoryTest
     {
-        private const string dataBaseFile = "domainDataBase.db3";
+        public TestContext TestContext { get; set; }
+
+        private readonly IServiceCollection _services = new ServiceCollection()
+            .AddLogging(opt => opt.AddConsole().SetMinimumLevel(LogLevel.Information))
+            ;
+        public IServiceCollection Services => _services;
+
+        private IServiceProvider? _provider;
+        public IServiceProvider Provider => _provider ??= _services.BuildServiceProvider();
+
+        public ILogger<T> Logger<T>() => Provider.GetRequiredService<ILogger<T>>();
 
         private IDomainRepository<IDomainEvent> _repository;
         private DomainEventStorage<IDomainEvent> _domainEventStorage;
         private EventStoreIdentityMap<IDomainEvent> _eventStoreIdentityMap;
         private EventStoreUnitOfWork<IDomainEvent> _eventStoreUnitOfWork;
 
-        [SetUp]
+        [TestInitialize]
         public void SetUp()
         {
-            new DomainDatabaseBootStrapper().ReCreateDatabaseSchema();
+            TestContext.SetupWorkingDirectory();
+            var dataBaseFile = Path.Combine(
+                (string)TestContext.Properties[TestContextExtensions.TestWorkingDirectory],
+                DomainDatabaseBootStrapper.DataBaseFile
+                );
+
+            new DomainDatabaseBootStrapper().ReCreateDatabaseSchema(dataBaseFile);
 
             var sqliteConnectionString = string.Format("Data Source={0}", dataBaseFile);
 
-            _domainEventStorage = new DomainEventStorage<IDomainEvent>(sqliteConnectionString, new BinaryFormatter());
+            var config = new ConfigurationBuilder()
+                .AddTupleConfiguration((DomainEventStorage.ConnectionStringConfigKey, sqliteConnectionString))
+                .Build();
+
+            _domainEventStorage = new DomainEventStorage<IDomainEvent>(
+                config,
+                new ExtendedFormatter()
+                );
+
             _eventStoreIdentityMap = new EventStoreIdentityMap<IDomainEvent>();
-            _eventStoreUnitOfWork = new EventStoreUnitOfWork<IDomainEvent>(_domainEventStorage, _eventStoreIdentityMap, new Mock<IBus>().Object);
-            _repository = new DomainRepository<IDomainEvent>(_eventStoreUnitOfWork, _eventStoreIdentityMap);
+            _eventStoreUnitOfWork = new EventStoreUnitOfWork<IDomainEvent>(
+                _domainEventStorage,
+                _eventStoreIdentityMap,
+                new Mock<IBus>().Object,
+                Logger<EventStoreUnitOfWork<IDomainEvent>>()
+                );
+            _repository = new DomainRepository<IDomainEvent>(
+                _eventStoreUnitOfWork,
+                _eventStoreIdentityMap,
+                Logger<DomainRepository<IDomainEvent>>()
+                );
         }
 
-        [Test]
+        [TestMethod]
         public void When_calling_Save_it_will_add_the_domain_events_to_the_domain_event_storage()
         {
-            var activeAccount = ActiveAccount.CreateNew(Guid.NewGuid(), "AccountName");
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
+            var activeAccount = ActiveAccount.CreateNew(Guid.NewGuid(), "AccountName", "Account Number");
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
 
             _repository.Add(activeAccount);
             _eventStoreUnitOfWork.Commit();
 
-            Assert.That(_domainEventStorage.GetEventsSinceLastSnapShot(activeAccount.Id).Count(), Is.EqualTo(3));
-            Assert.That(_domainEventStorage.GetAllEvents(activeAccount.Id).Count(), Is.EqualTo(3));
+            Assert.AreEqual(3, _domainEventStorage.GetEventsSinceLastSnapShot(activeAccount.Id).Count());
+            Assert.AreEqual(3, _domainEventStorage.GetAllEvents(activeAccount.Id).Count());
         }
 
-        [Test]
+        [TestMethod]
         public void When_calling_Save_it_will_reset_the_domain_events()
         {
-            var activeAccount = ActiveAccount.CreateNew(Guid.NewGuid(), "AccountName");
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
+            var activeAccount = ActiveAccount.CreateNew(Guid.NewGuid(), "AccountName", "Account Number");
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
 
             _repository.Add(activeAccount);
             _eventStoreUnitOfWork.Commit();
 
             var activeAccountForRepository = (IEventProvider<IDomainEvent>)activeAccount;
 
-            Assert.That(activeAccountForRepository.GetChanges().Count(), Is.EqualTo(0));
+            Assert.AreEqual(0, activeAccountForRepository.GetChanges().Count());
         }
 
-        [Test]
+        [TestMethod]
         public void When_calling_Save_after_more_than_9_events_a_new_snap_shot_will_be_created_9_events_will_not()
         {
-            var activeAccount = ActiveAccount.CreateNew(Guid.NewGuid(), "AccountName");
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
+            var activeAccount = ActiveAccount.CreateNew(Guid.NewGuid(), "AccountName", "Account Number");
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
 
             _repository.Add(activeAccount);
             _eventStoreUnitOfWork.Commit();
 
-            Assert.That(_domainEventStorage.GetSnapShot(activeAccount.Id), Is.Null);
+            Assert.IsNull(_domainEventStorage.GetSnapShot(activeAccount.Id));
         }
 
-        [Test]
+        [TestMethod]
         public void When_calling_Save_after_more_than_9_events_a_new_snap_shot_will_be_created_10_events()
         {
-            var activeAccount = ActiveAccount.CreateNew(Guid.NewGuid(), "AccountName");
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
+            var activeAccount = ActiveAccount.CreateNew(Guid.NewGuid(), "AccountName", "Account Number");
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
 
             _repository.Add(activeAccount);
             _eventStoreUnitOfWork.Commit();
@@ -105,24 +139,24 @@ namespace Test.Fohjin.DDD.Domain.Repositories
 
             var snapShot = _domainEventStorage.GetSnapShot(activeAccount.Id);
 
-            Assert.That(snapShot, Is.Not.Null);
-            Assert.That(snapShot.Memento, Is.InstanceOfType(typeof(ActiveAccountMemento)));
+            Assert.IsNotNull(snapShot);
+            Assert.IsInstanceOfType<ActiveAccountMemento>(snapShot.Memento);
         }
 
-        [Test]
+        [TestMethod]
         public void When_calling_Save_after_more_than_9_events_a_new_snap_shot_will_be_created_11_events()
         {
-            var activeAccount = ActiveAccount.CreateNew(Guid.NewGuid(), "AccountName");
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
+            var activeAccount = ActiveAccount.CreateNew(Guid.NewGuid(), "AccountName", "Account Number");
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
 
             _repository.Add(activeAccount);
             _eventStoreUnitOfWork.Commit();
@@ -130,135 +164,136 @@ namespace Test.Fohjin.DDD.Domain.Repositories
 
             var snapShot = _domainEventStorage.GetSnapShot(activeAccount.Id);
 
-            Assert.That(snapShot, Is.Not.Null);
-            Assert.That(snapShot.Memento, Is.InstanceOfType(typeof(ActiveAccountMemento)));
+            Assert.IsNotNull(snapShot);
+            Assert.IsInstanceOfType<ActiveAccountMemento>(snapShot.Memento);
         }
 
-        [Test]
+        [TestMethod]
         public void When_calling_Save_after_more_than_9_events_after_the_last_snap_shot_a_new_snapshot_will_be_created_10_events_after_last_snapshot()
         {
-            var activeAccount = ActiveAccount.CreateNew(Guid.NewGuid(), "AccountName");
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
+            var activeAccount = ActiveAccount.CreateNew(Guid.NewGuid(), "AccountName", "Account Number");
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
 
             _repository.Add(activeAccount);
             _eventStoreUnitOfWork.Commit();
             _domainEventStorage.SaveShapShot(activeAccount);
 
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
 
             _repository.Add(activeAccount);
             _eventStoreUnitOfWork.Commit();
 
             var snapShot = _domainEventStorage.GetSnapShot(activeAccount.Id);
 
-            Assert.That(snapShot, Is.Not.Null);
-            Assert.That(snapShot.Memento, Is.InstanceOfType(typeof(ActiveAccountMemento)));
+            Assert.IsNotNull(snapShot);
+            Assert.IsInstanceOfType<ActiveAccountMemento>(snapShot.Memento);
         }
 
-        [Test]
+        [TestMethod]
         public void When_calling_Save_after_more_than_9_events_after_the_last_snap_shot_a_new_snapshot_will_be_created_10_events_after_last_snapshot_9_events_after_last_snapshot()
         {
-            var activeAccount = ActiveAccount.CreateNew(Guid.NewGuid(), "AccountName");
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
+            var activeAccount = ActiveAccount.CreateNew(Guid.NewGuid(), "AccountName", "Account Number");
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
 
             _repository.Add(activeAccount);
             _eventStoreUnitOfWork.Commit();
             _domainEventStorage.SaveShapShot(activeAccount);
 
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
 
             _repository.Add(activeAccount);
             _eventStoreUnitOfWork.Commit();
 
             var snapShot = _domainEventStorage.GetSnapShot(activeAccount.Id);
 
-            Assert.That(snapShot, Is.Not.Null);
-            Assert.That(snapShot.Memento, Is.InstanceOfType(typeof(ActiveAccountMemento)));
+            Assert.IsNotNull(snapShot);
+            Assert.IsInstanceOfType<ActiveAccountMemento>(snapShot.Memento);
         }
 
-        [Test]
+        [TestMethod]
         public void When_calling_Save_after_more_than_9_events_after_the_last_snap_shot_a_new_snapshot_will_be_created_10_events_after_last_snapshot_9_events_after_last_snapshot_verify_all_event_counts()
         {
-            var activeAccount = ActiveAccount.CreateNew(Guid.NewGuid(), "AccountName");
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
+            var activeAccount = ActiveAccount.CreateNew(Guid.NewGuid(), "AccountName", "Account Number");
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
 
             _repository.Add(activeAccount);
             _eventStoreUnitOfWork.Commit();
             _domainEventStorage.SaveShapShot(activeAccount);
 
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(1));
 
             _repository.Add(activeAccount);
             _eventStoreUnitOfWork.Commit();
 
-            Assert.That(_domainEventStorage.GetEventsSinceLastSnapShot(activeAccount.Id).Count(), Is.EqualTo(9));
-            Assert.That(_domainEventStorage.GetAllEvents(activeAccount.Id).Count(), Is.EqualTo(19));
+
+            Assert.AreEqual(9, _domainEventStorage.GetEventsSinceLastSnapShot(activeAccount.Id).Count());
+            Assert.AreEqual(19, _domainEventStorage.GetAllEvents(activeAccount.Id).Count());
         }
 
-        [Test]
+        [TestMethod]
         [ExpectedException(typeof(AccountBalanceToLowException))]
         public void When_calling_GetById_after_9_events_a_new_ActiveAcount_will_be_populated()
         {
-            var activeAccount = ActiveAccount.CreateNew(Guid.NewGuid(), "AccountName");
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(2));
-            activeAccount.Deposite(new Amount(3));
-            activeAccount.Deposite(new Amount(4));
-            activeAccount.Deposite(new Amount(5));
-            activeAccount.Deposite(new Amount(6));
-            activeAccount.Deposite(new Amount(7));
-            activeAccount.Deposite(new Amount(8));
+            var activeAccount = ActiveAccount.CreateNew(Guid.NewGuid(), "AccountName", "Account Number");
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(2));
+            activeAccount.Deposit(new Amount(3));
+            activeAccount.Deposit(new Amount(4));
+            activeAccount.Deposit(new Amount(5));
+            activeAccount.Deposit(new Amount(6));
+            activeAccount.Deposit(new Amount(7));
+            activeAccount.Deposit(new Amount(8));
 
             _repository.Add(activeAccount);
             _eventStoreUnitOfWork.Commit();
@@ -267,30 +302,30 @@ namespace Test.Fohjin.DDD.Domain.Repositories
 
             try
             {
-                sut.Withdrawl(new Amount(36));
+                sut.Withdrawal(new Amount(36));
             }
             catch (Exception Ex)
             {
                 Assert.Fail(string.Format("This should not fail: {0}", Ex.Message));
             }
 
-            sut.Withdrawl(new Amount(1));
+            sut.Withdrawal(new Amount(1));
         }
 
-        [Test]
+        [TestMethod]
         [ExpectedException(typeof(AccountBalanceToLowException))]
         public void When_calling_GetById_after_every_10_events_a_new_snap_shot_will_be_created()
         {
-            var activeAccount = ActiveAccount.CreateNew(Guid.NewGuid(), "AccountName");
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(2));
-            activeAccount.Deposite(new Amount(3));
-            activeAccount.Deposite(new Amount(4));
-            activeAccount.Deposite(new Amount(5));
-            activeAccount.Deposite(new Amount(6));
-            activeAccount.Deposite(new Amount(7));
-            activeAccount.Deposite(new Amount(8));
-            activeAccount.Deposite(new Amount(9));
+            var activeAccount = ActiveAccount.CreateNew(Guid.NewGuid(), "AccountName", "Account Number");
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(2));
+            activeAccount.Deposit(new Amount(3));
+            activeAccount.Deposit(new Amount(4));
+            activeAccount.Deposit(new Amount(5));
+            activeAccount.Deposit(new Amount(6));
+            activeAccount.Deposit(new Amount(7));
+            activeAccount.Deposit(new Amount(8));
+            activeAccount.Deposit(new Amount(9));
 
             _repository.Add(activeAccount);
             _eventStoreUnitOfWork.Commit();
@@ -299,31 +334,31 @@ namespace Test.Fohjin.DDD.Domain.Repositories
 
             try
             {
-                sut.Withdrawl(new Amount(45));
+                sut.Withdrawal(new Amount(45));
             }
             catch (Exception Ex)
             {
                 Assert.Fail(string.Format("This should not fail: {0}", Ex.Message));
             }
 
-            sut.Withdrawl(new Amount(1));
+            sut.Withdrawal(new Amount(1));
         }
 
-        [Test]
+        [TestMethod]
         [ExpectedException(typeof(AccountBalanceToLowException))]
         public void When_calling_GetById_after_every_10_events_a_new_snap_shot_will_be_created_11_events()
         {
-            var activeAccount = ActiveAccount.CreateNew(Guid.NewGuid(), "AccountName");
-            activeAccount.Deposite(new Amount(1));
-            activeAccount.Deposite(new Amount(2));
-            activeAccount.Deposite(new Amount(3));
-            activeAccount.Deposite(new Amount(4));
-            activeAccount.Deposite(new Amount(5));
-            activeAccount.Deposite(new Amount(6));
-            activeAccount.Deposite(new Amount(7));
-            activeAccount.Deposite(new Amount(8));
-            activeAccount.Deposite(new Amount(9));
-            activeAccount.Deposite(new Amount(10));
+            var activeAccount = ActiveAccount.CreateNew(Guid.NewGuid(), "AccountName", "Account Number");
+            activeAccount.Deposit(new Amount(1));
+            activeAccount.Deposit(new Amount(2));
+            activeAccount.Deposit(new Amount(3));
+            activeAccount.Deposit(new Amount(4));
+            activeAccount.Deposit(new Amount(5));
+            activeAccount.Deposit(new Amount(6));
+            activeAccount.Deposit(new Amount(7));
+            activeAccount.Deposit(new Amount(8));
+            activeAccount.Deposit(new Amount(9));
+            activeAccount.Deposit(new Amount(10));
 
             _repository.Add(activeAccount);
             _eventStoreUnitOfWork.Commit();
@@ -332,14 +367,14 @@ namespace Test.Fohjin.DDD.Domain.Repositories
 
             try
             {
-                sut.Withdrawl(new Amount(55));
+                sut.Withdrawal(new Amount(55));
             }
             catch (Exception Ex)
             {
                 Assert.Fail(string.Format("This should not fail: {0}", Ex.Message));
             }
 
-            sut.Withdrawl(new Amount(1));
+            sut.Withdrawal(new Amount(1));
         }
     }
 }

@@ -1,10 +1,10 @@
 using Fohjin.DDD.Events.Client;
 using Fohjin.DDD.Reporting;
-using Fohjin.DDD.Reporting.Dto;
+using Fohjin.DDD.Reporting.Dtos;
 
 namespace Fohjin.DDD.EventHandlers
 {
-    public class ClientNameChangedEventHandler : IEventHandler<ClientNameChangedEvent>
+    public class ClientNameChangedEventHandler : EventHandlerBase<ClientNameChangedEvent>
     {
         private readonly IReportingRepository _reportingRepository;
 
@@ -13,10 +13,12 @@ namespace Fohjin.DDD.EventHandlers
             _reportingRepository = reportingRepository;
         }
 
-        public void Execute(ClientNameChangedEvent theEvent)
+        public override Task ExecuteAsync(ClientNameChangedEvent theEvent)
         {
             _reportingRepository.Update<ClientReport>(new { Name = theEvent.ClientName }, new { Id = theEvent.AggregateId });
             _reportingRepository.Update<ClientDetailsReport>(new { theEvent.ClientName }, new { Id = theEvent.AggregateId });
+
+            return Task.CompletedTask;
         }
     }
 }

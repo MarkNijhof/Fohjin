@@ -5,15 +5,16 @@ using Fohjin.DDD.CommandHandlers;
 using Fohjin.DDD.Commands;
 using Fohjin.DDD.EventStore;
 using Fohjin.DDD.EventStore.Storage.Memento;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Test.Fohjin.DDD
 {
-    [Specification]
+    [TestClass]
     public abstract class CommandTestFixture<TCommand, TCommandHandler, TAggregateRoot> 
         where TCommand : class, ICommand
         where TCommandHandler : class, ICommandHandler<TCommand>
-        where TAggregateRoot : class, IOrginator, IEventProvider<IDomainEvent>, new()
+        where TAggregateRoot : class, IOriginator, IEventProvider<IDomainEvent>, new()
     {
         private IDictionary<Type, object> mocks;
 
@@ -29,8 +30,8 @@ namespace Test.Fohjin.DDD
         protected virtual void Finally() { }
         protected abstract TCommand When();
 
-        [Given]
-        public void Setup()
+        [TestInitialize]
+        public void  Setup()
         {
             mocks = new Dictionary<Type, object>();
             CaughtException = new ThereWasNoExceptionButOneWasExpectedException();
@@ -42,7 +43,7 @@ namespace Test.Fohjin.DDD
             SetupDependencies();
             try
             {
-                CommandHandler.Execute(When());
+                 CommandHandler.ExecuteAsync(When()).GetAwaiter().GetResult();
                 PublishedEvents = AggregateRoot.GetChanges();
             }
             catch (Exception exception)

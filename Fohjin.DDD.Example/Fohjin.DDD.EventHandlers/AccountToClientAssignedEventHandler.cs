@@ -2,10 +2,11 @@ using Fohjin.DDD.Events.Client;
 
 namespace Fohjin.DDD.EventHandlers
 {
-    public class AccountToClientAssignedEventHandler : IEventHandler<AccountToClientAssignedEvent>
+    public class AccountToClientAssignedEventHandler : EventHandlerBase<AccountToClientAssignedEvent>
     {
-        public void Execute(AccountToClientAssignedEvent theEvent)
+        public override Task ExecuteAsync(AccountToClientAssignedEvent theEvent)
         {
+            return Task.CompletedTask;
         }
     }
 }

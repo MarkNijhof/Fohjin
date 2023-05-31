@@ -1,11 +1,10 @@
-using System;
 using Fohjin.DDD.Events.Account;
 using Fohjin.DDD.Reporting;
-using Fohjin.DDD.Reporting.Dto;
+using Fohjin.DDD.Reporting.Dtos;
 
 namespace Fohjin.DDD.EventHandlers
 {
-    public class ClosedAccountCreatedEventHandler : IEventHandler<ClosedAccountCreatedEvent>
+    public class ClosedAccountCreatedEventHandler : EventHandlerBase<ClosedAccountCreatedEvent>
     {
         private readonly IReportingRepository _reportingRepository;
 
@@ -14,7 +13,7 @@ namespace Fohjin.DDD.EventHandlers
             _reportingRepository = reportingRepository;
         }
 
-        public void Execute(ClosedAccountCreatedEvent theEvent)
+        public override Task ExecuteAsync(ClosedAccountCreatedEvent theEvent)
         {
             var closedAccount = new ClosedAccountReport(theEvent.AccountId, theEvent.ClientId, theEvent.AccountName, theEvent.AccountNumber);
             var closedAccountDetails = new ClosedAccountDetailsReport(theEvent.AccountId, theEvent.ClientId, theEvent.AccountName, 0, theEvent.AccountNumber);
@@ -24,20 +23,22 @@ namespace Fohjin.DDD.EventHandlers
 
             foreach (var ledger in theEvent.Ledgers)
             {
-                var split = ledger.Value.Split(new[] { '|' });
+                var split = ledger.Value.Split('|');
                 var amount = Convert.ToDecimal(split[0]);
                 var account = split[1];
                 _reportingRepository.Save(new LedgerReport(Guid.NewGuid(), theEvent.AccountId, GetDescription(ledger.Key, account), amount));
             }
+
+            return Task.CompletedTask;
         }
 
         private static string GetDescription(string transferType, string accountNumber)
         {
             if (transferType == "CreditMutation")
-                return "Deposite";
+                return "Deposit";
 
             if (transferType == "DebitMutation")
-                return "Withdrawl";
+                return "Withdrawal";
 
             if (transferType == "CreditTransfer")
                 return string.Format("Transfer to {0}", accountNumber);

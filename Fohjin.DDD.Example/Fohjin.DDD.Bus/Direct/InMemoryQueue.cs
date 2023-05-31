@@ -1,47 +1,49 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.Extensions.Logging;
 
 namespace Fohjin.DDD.Bus.Direct
 {
-    public interface IQueue
-    {
-        void Put(object item);
-        void Pop(Action<object> popAction);
-    }
-
     public class InMemoryQueue : IQueue
     {
-        private readonly Queue<object> _itemQueue;
-        private readonly Queue<Action<object>> _listenerQueue;
+        private static int _seed;
+        private readonly int _id = _seed++;
 
-        public InMemoryQueue()
+
+        private readonly Queue<object> _itemQueue = new(32);
+        private readonly Queue<Func<object, Task>> _listenerQueue = new(32);
+
+        private readonly ILogger _log;
+
+        public InMemoryQueue(
+            ILogger<InMemoryQueue> log
+            )
         {
-            _itemQueue = new Queue<object>(32);
-            _listenerQueue = new Queue<Action<object>>(32);
+            _log = log;
         }
 
-        public void Put(object item)
+        public async Task PutAsync(object item)
         {
-            if (_listenerQueue.Count == 0)
+            _log.LogInformation($"PutAsync> {{{nameof(item)}}}", item);
+            if (!_listenerQueue.Any())
             {
                 _itemQueue.Enqueue(item);
                 return;
             }
 
             var listener = _listenerQueue.Dequeue();
-            listener(item);
+            await listener(item);
         }
 
-        public void Pop(Action<object> popAction)
+        public async Task PopAsync(Func<object, Task> popAction)
         {
-            if (_itemQueue.Count == 0)
+            _log.LogInformation($"PopAsync({_id})> {{{nameof(popAction)}}}", popAction);
+            if (!_itemQueue.Any())
             {
                 _listenerQueue.Enqueue(popAction);
                 return;
             }
 
             var item = _itemQueue.Dequeue();
-            popAction(item);
+            await popAction(item);
         }
     }
 }

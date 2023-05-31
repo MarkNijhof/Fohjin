@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using Fohjin.DDD.CommandHandlers;
+﻿using Fohjin.DDD.CommandHandlers;
 using Fohjin.DDD.Commands;
 using Fohjin.DDD.Domain.Account;
 using Fohjin.DDD.Events.Account;
 using Fohjin.DDD.EventStore;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Test.Fohjin.DDD.Scenarios.Withdrawing_cash
 {
-    public class When_withdrawling_cash_from_a_closed_account : CommandTestFixture<WithdrawlCashCommand, WithdrawlCashCommandHandler, ActiveAccount>
+    public class When_Withdrawaling_cash_from_a_closed_account : CommandTestFixture<WithdrawalCashCommand, WithdrawalCashCommandHandler, ActiveAccount>
     {
         protected override IEnumerable<IDomainEvent> Given()
         {
@@ -16,18 +15,18 @@ namespace Test.Fohjin.DDD.Scenarios.Withdrawing_cash
             yield return PrepareDomainEvent.Set(new AccountClosedEvent()).ToVersion(2);
         }
 
-        protected override WithdrawlCashCommand When()
+        protected override WithdrawalCashCommand When()
         {
-            return new WithdrawlCashCommand(Guid.NewGuid(), 0);
+            return new WithdrawalCashCommand(Guid.NewGuid(), 0);
         }
 
-        [Then]
+        [TestMethod]
         public void Then_a_closed_account_exception_will_be_thrown()
         {
             CaughtException.WillBeOfType<ClosedAccountException>();
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_exception_message_will_be()
         {
             CaughtException.Message.WillBe("The ActiveAcount is closed and no opperations can be executed on it");

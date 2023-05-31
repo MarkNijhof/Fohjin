@@ -1,15 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Fohjin.DDD.EventHandlers;
+using Fohjin.DDD.EventStore;
 using Fohjin.DDD.Reporting;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Test.Fohjin.DDD
 {
-    [Specification]
+    [TestClass]
     public abstract class EventTestFixture<TEvent, TEventHandler>
-        where TEvent : class
+        where TEvent : class, IDomainEvent
         where TEventHandler : class, IEventHandler<TEvent>
     {
         private IDictionary<Type, object> mocks;
@@ -20,7 +19,7 @@ namespace Test.Fohjin.DDD
         protected abstract TEvent When();
         protected virtual void Finally() { }
 
-        [Given]
+        [TestInitialize]
         public void Setup()
         {
             mocks = new Dictionary<Type, object>();
@@ -30,7 +29,7 @@ namespace Test.Fohjin.DDD
 
             try
             {
-                EventHandler.Execute(When());
+                EventHandler.ExecuteAsync(When()).GetAwaiter().GetResult();
             }
             catch (Exception exception)
             {
@@ -50,7 +49,7 @@ namespace Test.Fohjin.DDD
             return (Mock<TType>)mocks[typeof(TType)];
         }
 
-        private IEventHandler<TEvent> BuildCommandHandler()
+        private IEventHandler<TEvent> BuildCommandHandler() 
         {
             var constructorInfo = typeof(TEventHandler).GetConstructors().First();
 

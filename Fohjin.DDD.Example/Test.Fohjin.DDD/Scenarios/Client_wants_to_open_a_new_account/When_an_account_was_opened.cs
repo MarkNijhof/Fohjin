@@ -1,8 +1,8 @@
-using System;
 using Fohjin.DDD.EventHandlers;
 using Fohjin.DDD.Events.Account;
 using Fohjin.DDD.Reporting;
-using Fohjin.DDD.Reporting.Dto;
+using Fohjin.DDD.Reporting.Dtos;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Test.Fohjin.DDD.Scenarios.Client_wants_to_open_a_new_account
@@ -32,13 +32,13 @@ namespace Test.Fohjin.DDD.Scenarios.Client_wants_to_open_a_new_account
             return new AccountOpenedEvent(_accountId, _clientId, "New Account", "1234567890");
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_reporting_repository_will_be_used_to_update_the_account_report()
         {
             OnDependency<IReportingRepository>().Verify(x => x.Save(It.IsAny<AccountReport>()));
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_account_report_will_be_updated_with_the_expected_details()
         {
             SaveAccountReportObject.Id.WillBe(_accountId);
@@ -47,13 +47,13 @@ namespace Test.Fohjin.DDD.Scenarios.Client_wants_to_open_a_new_account
             SaveAccountReportObject.AccountNumber.WillBe("1234567890");
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_reporting_repository_will_be_used_to_update_the_account_details_report()
         {
             OnDependency<IReportingRepository>().Verify(x => x.Save(It.IsAny<AccountDetailsReport>()));
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_account_details_report_will_be_updated_with_the_expected_details()
         {
             SaveAccountDetailsReportObject.Id.WillBe(_accountId);

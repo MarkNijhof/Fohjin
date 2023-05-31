@@ -1,24 +1,17 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-
 namespace Fohjin.DDD.EventStore.Aggregate
 {
     public class BaseAggregateRoot<TDomainEvent> : IEventProvider<TDomainEvent>, IRegisterChildEntities<TDomainEvent> where TDomainEvent : IDomainEvent
     {
-        private readonly Dictionary<Type, Action<TDomainEvent>> _registeredEvents;
-        private readonly List<TDomainEvent> _appliedEvents;
-        private readonly List<IEntityEventProvider<TDomainEvent>> _childEventProviders;
+        private readonly Dictionary<Type, Action<TDomainEvent>> _registeredEvents = new();
+        private readonly List<TDomainEvent> _appliedEvents = new();
+        private readonly List<IEntityEventProvider<TDomainEvent>> _childEventProviders = new();
 
-        public Guid Id { get; protected set; }
+        public Guid Id { get; set; }
         public int Version { get; protected set; }
         public int EventVersion { get; protected set; }
 
         public BaseAggregateRoot()
         {
-            _registeredEvents = new Dictionary<Type, Action<TDomainEvent>>();
-            _appliedEvents = new List<TDomainEvent>();
-            _childEventProviders = new List<IEntityEventProvider<TDomainEvent>>();
         }
 
         protected void RegisterEvent<TEvent>(Action<TEvent> eventHandler) where TEvent : class, TDomainEvent
@@ -30,29 +23,28 @@ namespace Fohjin.DDD.EventStore.Aggregate
         {
             domainEvent.AggregateId = Id;
             domainEvent.Version = GetNewEventVersion();
-            apply(domainEvent.GetType(), domainEvent);
+            Apply(domainEvent.GetType(), domainEvent);
             _appliedEvents.Add(domainEvent);
         }
 
         void IEventProvider<TDomainEvent>.LoadFromHistory(IEnumerable<TDomainEvent> domainEvents)
         {
-            if (domainEvents.Count() == 0)
+            if (!domainEvents.Any())
                 return;
 
             foreach (var domainEvent in domainEvents)
             {
-                apply(domainEvent.GetType(), domainEvent);
+                Apply(domainEvent.GetType(), domainEvent);
             }
 
             Version = domainEvents.Last().Version;
             EventVersion = Version;
         }
 
-        private void apply(Type eventType, TDomainEvent domainEvent)
+        private void Apply(Type eventType, TDomainEvent domainEvent)
         {
-            Action<TDomainEvent> handler;
 
-            if (!_registeredEvents.TryGetValue(eventType, out handler))
+            if (!_registeredEvents.TryGetValue(eventType, out Action<TDomainEvent> handler))
                 throw new UnregisteredDomainEventException(string.Format("The requested domain event '{0}' is not registered in '{1}'", eventType.FullName, GetType().FullName));
 
             handler(domainEvent);

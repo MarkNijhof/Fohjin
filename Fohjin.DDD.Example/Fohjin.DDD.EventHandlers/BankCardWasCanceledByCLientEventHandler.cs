@@ -1,21 +1,21 @@
-﻿using System;
-using Fohjin.DDD.Events.Client;
+﻿using Fohjin.DDD.Events.Client;
 using Fohjin.DDD.Reporting;
 
 namespace Fohjin.DDD.EventHandlers
 {
-    public class BankCardWasCanceledByCLientEventHandler : IEventHandler<BankCardWasCanceledByCLientEvent>
+    public class BankCardWasCanceledByClientEventHandler : EventHandlerBase<BankCardWasCanceledByClientEvent>
     {
         private readonly IReportingRepository _reportingRepository;
 
-        public BankCardWasCanceledByCLientEventHandler(IReportingRepository reportingRepository)
+        public BankCardWasCanceledByClientEventHandler(IReportingRepository reportingRepository)
         {
             _reportingRepository = reportingRepository;
         }
 
-        public void Execute(BankCardWasCanceledByCLientEvent theEvent)
+        public override Task ExecuteAsync(BankCardWasCanceledByClientEvent theEvent)
         {
             throw new NotImplementedException();
+            return Task.CompletedTask;
         }
     }
 }

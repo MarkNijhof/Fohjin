@@ -6,6 +6,7 @@ using Fohjin.DDD.Commands;
 using Fohjin.DDD.Domain.Account;
 using Fohjin.DDD.Events.Account;
 using Fohjin.DDD.EventStore;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Test.Fohjin.DDD.Scenarios.Transfering_money
 {
@@ -23,13 +24,13 @@ namespace Test.Fohjin.DDD.Scenarios.Transfering_money
             return new MoneyTransferFailedCompensatingCommand(Guid.NewGuid(), 5.0M, "0987654321");
         }
 
-        [Then]
+        [TestMethod]
         public void Then_a_money_transfer_event_will_be_published()
         {
             PublishedEvents.Last().WillBeOfType<MoneyTransferFailedEvent>();
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_published_event_will_contain_the_amount_and_new_account_balance()
         {
             PublishedEvents.Last<MoneyTransferFailedEvent>().Amount.WillBe(5.0M);

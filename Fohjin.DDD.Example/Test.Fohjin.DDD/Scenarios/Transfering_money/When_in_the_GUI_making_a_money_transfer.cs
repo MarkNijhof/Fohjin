@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using Fohjin.DDD.BankApplication.Presenters;
+﻿using Fohjin.DDD.BankApplication.Presenters;
 using Fohjin.DDD.BankApplication.Views;
 using Fohjin.DDD.Reporting;
-using Fohjin.DDD.Reporting.Dto;
+using Fohjin.DDD.Reporting.Dtos;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Test.Fohjin.DDD.Scenarios.Transfering_money
@@ -38,19 +37,19 @@ namespace Test.Fohjin.DDD.Scenarios.Transfering_money
             On<IAccountDetailsView>().FireEvent(x => x.OnInitiateMoneyTransfer += null);
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_current_amount_is_set_to_zero()
         {
             On<IAccountDetailsView>().VerifyThat.ValueIsSetFor(x => x.TransferAmount = 0M);
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_save_button_will_be_disabled()
         {
             On<IAccountDetailsView>().VerifyThat.Method(x => x.DisableMenuButtons()).WasCalled();
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_transfer_panel_will_be_enabled()
         {
             On<IAccountDetailsView>().VerifyThat.Method(x => x.EnableTransferPanel()).WasCalled();

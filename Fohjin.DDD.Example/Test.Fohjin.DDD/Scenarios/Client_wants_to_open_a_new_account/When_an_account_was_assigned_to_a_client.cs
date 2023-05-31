@@ -1,6 +1,6 @@
-﻿using System;
-using Fohjin.DDD.EventHandlers;
+﻿using Fohjin.DDD.EventHandlers;
 using Fohjin.DDD.Events.Client;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Test.Fohjin.DDD.Scenarios.Client_wants_to_open_a_new_account
 {
@@ -11,7 +11,7 @@ namespace Test.Fohjin.DDD.Scenarios.Client_wants_to_open_a_new_account
             return new AccountToClientAssignedEvent(Guid.NewGuid()) { AggregateId = Guid.NewGuid() };
         }
 
-        [Then]
+        [TestMethod]
         public void Then_it_will_not_throw_an_exception()
         {
             CaughtException.WillBeOfType<ThereWasNoExceptionButOneWasExpectedException>();

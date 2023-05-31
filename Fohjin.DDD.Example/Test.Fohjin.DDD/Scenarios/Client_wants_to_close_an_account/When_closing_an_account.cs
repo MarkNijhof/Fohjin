@@ -6,6 +6,7 @@ using Fohjin.DDD.Commands;
 using Fohjin.DDD.Domain.Account;
 using Fohjin.DDD.Events.Account;
 using Fohjin.DDD.EventStore;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Test.Fohjin.DDD.Scenarios.Client_wants_to_close_an_account
@@ -22,13 +23,13 @@ namespace Test.Fohjin.DDD.Scenarios.Client_wants_to_close_an_account
             return new CloseAccountCommand(Guid.NewGuid());
         }
 
-        [Then]
+        [TestMethod]
         public void Then_an_account_closed_event_will_be_published()
         {
             PublishedEvents.Last().WillBeOfType<AccountClosedEvent>();
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_newly_created_closed_account_will_be_saved()
         {
             OnDependency<IDomainRepository<IDomainEvent>>().Verify(x => x.Add(It.IsAny<ClosedAccount>()));

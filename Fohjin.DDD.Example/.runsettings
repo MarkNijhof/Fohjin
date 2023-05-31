@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RunSettings>
+	<RunConfiguration>
+		<MaxCpuCount>10</MaxCpuCount>
+	</RunConfiguration>
+
+	<!--Configurations for data collectors-->
+	<DataCollectionRunSettings>
+		<DataCollectors>
+
+			<DataCollector friendlyName="XPlat code coverage">
+				<Configuration>
+					<!--Obsolete,GeneratedCodeAttribute,-->
+					<ExcludeByAttribute>ExcludeFromCodeCoverageAttribute</ExcludeByAttribute>
+
+					<Exclude>[coverlet.*.tests?]*,[*]Coverlet.Core*,[*.Contracts?]*,[*.Entities?]*,[*.Abstractions?]*</Exclude>
+
+					<Format>cobertura</Format>
+					
+					<SingleHit>false</SingleHit>
+					<UseSourceLink>true</UseSourceLink>
+					<IncludeTestAssembly>false</IncludeTestAssembly>
+					<SkipAutoProps>true</SkipAutoProps>
+
+				</Configuration>
+			</DataCollector>
+		</DataCollectors>
+	</DataCollectionRunSettings>
+
+	<InProcDataCollectionRunSettings>
+		<InProcDataCollectors>
+			<InProcDataCollector assemblyQualifiedName="Coverlet.Collector.DataCollection.CoverletInProcDataCollector, coverlet.collector, Version=1.1.0.0, Culture=neutral, PublicKeyToken=null"
+						   friendlyName="XPlat Code Coverage"
+						   enabled="True"
+						   codebase="coverlet.collector.dll" />
+		</InProcDataCollectors>
+	</InProcDataCollectionRunSettings>
+	
+	<LoggerRunSettings>
+		<Loggers>
+			<Logger friendlyName="console" enabled="True">
+				<Configuration>
+					<Verbosity>normal</Verbosity>
+				</Configuration>
+			</Logger>
+			<Logger friendlyName="trx" enabled="True">
+			</Logger>
+		</Loggers>
+	</LoggerRunSettings>
+
+	<!-- MSTest adapter -->
+	<MSTest>
+		<MapInconclusiveToFailed>false</MapInconclusiveToFailed>
+		<CaptureTraceOutput>true</CaptureTraceOutput>
+		<DeleteDeploymentDirectoryAfterTestRunIsComplete>false</DeleteDeploymentDirectoryAfterTestRunIsComplete>
+		<DeploymentEnabled>true</DeploymentEnabled>
+		<DeployTestSourceDependencies>true</DeployTestSourceDependencies>
+
+	</MSTest>
+
+</RunSettings>

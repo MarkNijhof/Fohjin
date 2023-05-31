@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using Fohjin.DDD.BankApplication.Presenters;
 using Fohjin.DDD.BankApplication.Views;
 using Fohjin.DDD.Reporting;
-using Fohjin.DDD.Reporting.Dto;
+using Fohjin.DDD.Reporting.Dtos;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Test.Fohjin.DDD.Scenarios.Adding_a_new_client
@@ -36,7 +37,7 @@ namespace Test.Fohjin.DDD.Scenarios.Adding_a_new_client
             On<IClientDetailsView>().FireEvent(x => x.OnCancel += null);
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_view_will_be_closed()
         {
             On<IClientDetailsView>().VerifyThat.Method(x => x.Close()).WasCalled();

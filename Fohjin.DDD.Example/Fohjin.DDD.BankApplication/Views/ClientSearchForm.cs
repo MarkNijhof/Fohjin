@@ -1,11 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Drawing;
-using System.Windows.Forms;
-using Fohjin.DDD.Reporting.Dto;
+﻿using Fohjin.DDD.Reporting.Dtos;
 
 namespace Fohjin.DDD.BankApplication.Views
 {
-    public partial class ClientSearchForm : Form, IClientSearchFormView
+    public partial class ClientSearchForm : ViewFormBase, IClientSearchFormView
     {
         public ClientSearchForm()
         {
