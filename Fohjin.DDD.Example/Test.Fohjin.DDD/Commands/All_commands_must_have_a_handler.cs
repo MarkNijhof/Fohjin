@@ -18,7 +18,7 @@ namespace Test.Fohjin.DDD.Commands
 
         [DataTestMethod]
         [DynamicData(nameof(TestData), DynamicDataSourceType.Method, DynamicDataDisplayName = nameof(TestDataDisplayName))]
-        public async Task TestEventHandler(Type commandType, Type? handlerType)
+        public async Task TestCommandHandlers(Type commandType, Type? handlerType)
         {
             Assert.IsNotNull(handlerType, "No handlers exist");
 

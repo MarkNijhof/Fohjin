@@ -1,7 +1,7 @@
 ﻿using Fohjin.DDD.EventStore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Test.Fohjin.DDD.TestUtilities
+namespace Test.Fohjin.DDD.TestUtilities.Tools
 {
     public class TestDomainRepository<TDomainEvent> : IDomainRepository<TDomainEvent>
          where TDomainEvent : IDomainEvent

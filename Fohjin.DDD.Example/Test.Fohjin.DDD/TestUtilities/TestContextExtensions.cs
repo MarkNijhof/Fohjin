@@ -44,11 +44,16 @@ namespace Test.Fohjin.DDD.TestUtilities
                 return context;
 
             var path = context.GetTestProperty<string>(TestWorkingDirectory) ?? context.GetPathForTest();
+
+            if (context.Properties["RUN_ID"] != null)
+                path = Path.Combine(path, context.Properties["RUN_ID"].ToString());
+
             if (!Directory.Exists(path))
                 Directory.CreateDirectory(path);
 
             var target = Path.Combine(path, name + ".json");
-            using var file = File.OpenWrite(target);
+
+            using var file = File.Create(target);
             JsonSerializer.Serialize(file, results, new JsonSerializerOptions
             {
                 WriteIndented = true,
@@ -60,7 +65,7 @@ namespace Test.Fohjin.DDD.TestUtilities
             return context;
         }
 
-        public static TestContext GetResults<T>(this TestContext context, string name, out T result)=>
+        public static TestContext GetResults<T>(this TestContext context, string name, out T result) =>
             GetResults(context, name, out result);
 
         public static TestContext GetResults(this TestContext context, string name, Type type, out object result)

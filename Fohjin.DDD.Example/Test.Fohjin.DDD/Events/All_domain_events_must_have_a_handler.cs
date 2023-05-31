@@ -1,6 +1,7 @@
 using Fohjin.DDD.EventHandlers;
 using Fohjin.DDD.EventStore;
 using Fohjin.DDD.Reporting;
+using Fohjin.DDD.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -26,6 +27,15 @@ namespace Test.Fohjin.DDD.Events
         [DynamicData(nameof(TestData), DynamicDataSourceType.Method, DynamicDataDisplayName = nameof(TestDataDisplayName))]
         public async Task TestEventHandler(Type eventType, Type? handlerType = null)
         {
+            this.TestContext.WriteLine($"RUN_ID:{TestContext.Properties[$"RUN_ID"] = Guid.NewGuid()}");
+            this.TestContext.Properties[$"Parameter::{nameof(eventType)}"] = eventType;
+            this.TestContext.Properties[$"Parameter::{nameof(handlerType)}"] = handlerType;
+
+            if (handlerType == null && eventType.Namespace.Contains("Test"))
+            {
+                Assert.Inconclusive("No handlers exist but it's a test event anyway");
+            }
+
             Assert.IsNotNull(handlerType, "No handlers exist");
 
             var services = new ServiceCollection()
@@ -33,6 +43,7 @@ namespace Test.Fohjin.DDD.Events
                 .AddSingleton(_ => TestContext)
                 .AddSingleton(typeof(IDomainRepository<>), typeof(TestDomainRepository<>))
                 .AddSingleton<IReportingRepository, TestReportingRepository>()
+                .AddSingleton<ISendMoneyTransfer, TestSendMoneyTransfer>()
                 ;
             var serviceProvider = services.BuildServiceProvider();
 

@@ -23,7 +23,7 @@ namespace Fohjin.DDD.EventHandlers
 
             foreach (var ledger in theEvent.Ledgers)
             {
-                var split = ledger.Value.Split(new[] { '|' });
+                var split = ledger.Value.Split('|');
                 var amount = Convert.ToDecimal(split[0]);
                 var account = split[1];
                 _reportingRepository.Save(new LedgerReport(Guid.NewGuid(), theEvent.AccountId, GetDescription(ledger.Key, account), amount));

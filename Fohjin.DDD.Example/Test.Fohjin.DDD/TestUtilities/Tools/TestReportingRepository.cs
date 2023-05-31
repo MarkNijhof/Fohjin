@@ -1,7 +1,7 @@
 ﻿using Fohjin.DDD.Reporting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Test.Fohjin.DDD.TestUtilities
+namespace Test.Fohjin.DDD.TestUtilities.Tools
 {
     public class TestReportingRepository : IReportingRepository
     {
@@ -20,12 +20,13 @@ namespace Test.Fohjin.DDD.TestUtilities
 
         public void Delete<TDto>(object example) where TDto : class
         {
-            throw new NotImplementedException();
+            _testContext.AddResults(typeof(TDto).Name + "-delete", example);
         }
 
         public IEnumerable<TDto> GetByExample<TDto>(object example) where TDto : class
         {
-            throw new NotImplementedException();
+            _testContext.AddResults(typeof(TDto).Name + "-getby", example);
+            yield return (TDto)typeof(TDto).BuildObject(_serviceProvider);
         }
 
         public void Save<TDto>(TDto dto) where TDto : class
