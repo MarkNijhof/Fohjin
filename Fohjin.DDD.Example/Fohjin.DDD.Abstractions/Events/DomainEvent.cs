@@ -2,7 +2,7 @@ using Fohjin.DDD.EventStore;
 
 namespace Fohjin.DDD.Events
 {
-    public class DomainEvent : IDomainEvent
+    public abstract class DomainEvent : IDomainEvent
     {
         public Guid Id { get; set; }
         public Guid AggregateId { get; set; }
