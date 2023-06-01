@@ -11,12 +11,9 @@ using Test.Fohjin.DDD.TestUtilities.Tools;
 namespace Test.Fohjin.DDD.Commands
 {
     [TestClass]
-    public class All_commands_must_have_a_handler
+    public class All_commands_must_have_a_handler : ContextualTestClassBase
     {
-        public TestContext TestContext { get; set; }
-
-
-        [DataTestMethod]
+        [ContextualTestMethod]
         [DynamicData(nameof(TestData), DynamicDataSourceType.Method, DynamicDataDisplayName = nameof(TestDataDisplayName))]
         public async Task TestCommandHandlers(Type commandType, Type? handlerType)
         {
@@ -33,7 +30,6 @@ namespace Test.Fohjin.DDD.Commands
 
             var instance = (ICommandHandler)ActivatorUtilities.CreateInstance(serviceProvider, handlerType);
             await instance.ExecuteAsync(command);
-
         }
         public static string TestDataDisplayName(MethodInfo methodInfo, object[] data) =>
             $"{methodInfo.Name} for {((Type)data[0]).Name} => {((Type)data[1]).Name}";
