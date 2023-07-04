@@ -18,7 +18,10 @@ namespace Test.Fohjin.DDD.Bus
             return Task.CompletedTask;
         }
 
-        public Task ExecuteAsync(ICommand command) =>
-            ExecuteAsync(command as TestCommand);
+        public async Task ExecuteAsync(ICommand command)
+        {
+            if (command is TestCommand cmd)
+                await ExecuteAsync(cmd);
+        }
     }
 }

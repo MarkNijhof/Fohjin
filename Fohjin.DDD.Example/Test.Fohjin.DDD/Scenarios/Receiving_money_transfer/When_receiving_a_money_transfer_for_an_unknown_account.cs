@@ -16,9 +16,10 @@ namespace Test.Fohjin.DDD.Scenarios.Receiving_money_transfer
                 .Throws(new Exception("account not found"));
         }
 
-        protected override void When()
+        protected override  Task WhenAsync()
         {
             SubjectUnderTest.Receive(new MoneyTransfer("source account number", "target account number", 123.45M));
+            return Task.CompletedTask;
         }
 
         [TestMethod]

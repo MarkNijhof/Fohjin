@@ -2,17 +2,23 @@ using System.Text.Json.Serialization;
 
 namespace Fohjin.DDD.Commands
 {
-    public class ClientIsMovingCommand : CommandBase
+    public record ClientIsMovingCommand : CommandBase
     {
-        public string Street { get; set; }
-        public string StreetNumber { get; set; }
-        public string PostalCode { get; set; }
-        public string City { get; set; }
+        public string? Street { get; init; }
+        public string? StreetNumber { get; init; }
+        public string? PostalCode { get; init; }
+        public string? City { get; init; }
 
 
         [JsonConstructor]
         public ClientIsMovingCommand() : base() { }
-        public ClientIsMovingCommand(Guid id, string street, string streetNumber, string postalCode, string city) : base(id)
+        public ClientIsMovingCommand(
+            Guid id,
+            string? street,
+            string? streetNumber,
+            string? postalCode,
+            string? city
+            ) : base(id)
         {
             Street = street;
             StreetNumber = streetNumber;

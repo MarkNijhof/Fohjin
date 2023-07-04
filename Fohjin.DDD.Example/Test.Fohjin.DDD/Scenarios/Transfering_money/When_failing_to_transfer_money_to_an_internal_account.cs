@@ -35,13 +35,14 @@ namespace Test.Fohjin.DDD.Scenarios.Transfering_money
             // Setup the SystemRandom class to return the value where the account is not found
             Services
                 .AddTransient<ISystemRandom>(_ => new TestSystemRandom((min, max) => 0))
-                .AddTransient<ISystemTimer>(_=> new TestSystemTimer())
+                .AddTransient<ISystemTimer>(_ => new TestSystemTimer())
                 ;
         }
 
-        protected override void When()
+        protected override Task WhenAsync()
         {
             SubjectUnderTest.Send(new MoneyTransfer("source account number", "target account number", 123.45M));
+            return Task.CompletedTask;
         }
 
         [TestMethod]

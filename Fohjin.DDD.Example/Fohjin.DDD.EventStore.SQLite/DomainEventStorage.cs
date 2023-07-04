@@ -15,12 +15,13 @@ namespace Fohjin.DDD.EventStore.SQLite
         private bool _isRunningWithinTransaction;
         private readonly string _sqLiteConnectionString;
         private readonly IExtendedFormatter _formatter;
-        private SqliteTransaction _sqLiteTransaction;
-        private SqliteConnection _sqliteConnection;
+        private SqliteTransaction? _sqLiteTransaction;
+        private SqliteConnection? _sqliteConnection;
 
         public DomainEventStorage(IConfiguration configuration, IExtendedFormatter formatter)
         {
-            _sqLiteConnectionString = configuration[ConnectionStringConfigKey];
+            _sqLiteConnectionString = configuration[ConnectionStringConfigKey] ??
+                throw new NotSupportedException($"configuration for {nameof(ConnectionStringConfigKey)} is missing");
             _formatter = formatter;
         }
 
@@ -121,7 +122,7 @@ namespace Fohjin.DDD.EventStore.SQLite
 
         public void Save(IEventProvider<TDomainEvent> eventProvider)
         {
-            if (!_isRunningWithinTransaction)
+            if (!_isRunningWithinTransaction || _sqLiteTransaction == null)
                 throw new Exception("Operation is not running within a transaction");
 
             var version = GetEventProviderVersion(eventProvider, _sqLiteTransaction);
@@ -138,7 +139,7 @@ namespace Fohjin.DDD.EventStore.SQLite
             UpdateEventProviderVersion(eventProvider, _sqLiteTransaction);
         }
 
-        public ISnapShot GetSnapShot(Guid eventProviderId)
+        public ISnapShot? GetSnapShot(Guid eventProviderId)
         {
             ISnapShot? snapshot = null;
             const string commandText = @"SELECT SnapShot FROM SnapShots WHERE EventProviderId = @eventProviderId AND Version != -1;";
@@ -151,7 +152,7 @@ namespace Fohjin.DDD.EventStore.SQLite
             {
                 using var sqliteCommand = new SqliteCommand(commandText, sqliteTransaction.Connection, sqliteTransaction);
                 sqliteCommand.Parameters.Add(new SqliteParameter("@eventProviderId", eventProviderId));
-                var bytes = (byte[])sqliteCommand.ExecuteScalar();
+                var bytes = sqliteCommand.ExecuteScalar() as byte[];
                 if (bytes != null)
                     snapshot = Deserialize<ISnapShot>(bytes);
                 sqliteTransaction.Commit();
@@ -180,19 +181,19 @@ namespace Fohjin.DDD.EventStore.SQLite
         public void Commit()
         {
             _isRunningWithinTransaction = false;
-            _sqLiteTransaction.Commit();
-            _sqLiteTransaction.Dispose();
-            _sqliteConnection.Close();
-            _sqliteConnection.Dispose();
+            _sqLiteTransaction?.Commit();
+            _sqLiteTransaction?.Dispose();
+            _sqliteConnection?.Close();
+            _sqliteConnection?.Dispose();
         }
 
         public void Rollback()
         {
             _isRunningWithinTransaction = false;
-            _sqLiteTransaction.Rollback();
-            _sqLiteTransaction.Dispose();
-            _sqliteConnection.Close();
-            _sqliteConnection.Dispose();
+            _sqLiteTransaction?.Rollback();
+            _sqLiteTransaction?.Dispose();
+            _sqliteConnection?.Close();
+            _sqliteConnection?.Dispose();
         }
 
         private void SaveEvent(TDomainEvent domainEvent, IEventProvider<TDomainEvent> eventProvider, SqliteTransaction transaction)

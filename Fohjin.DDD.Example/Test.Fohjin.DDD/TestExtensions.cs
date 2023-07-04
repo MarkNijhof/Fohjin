@@ -17,21 +17,21 @@ namespace Test.Fohjin.DDD
         {
             Assert.AreEqual(typeof(TType), theEvent.GetType());
         }
-        public static void WillBe(this object source, object value)
+        public static void WillBe(this object? source, object? value)
         {
             Assert.AreEqual(value, source);
         }
-        public static void WillNotBe(this object source, object value)
+        public static void WillNotBe(this object? source, object? value)
         {
             Assert.AreNotEqual(value, source);
         }
-        public static void WillBeSimuliar(this object source, object value)
+        public static void WillBeSimuliar(this object? source, object? value)
         {
-            Assert.AreEqual(value.ToString(), source.ToString());
+            Assert.AreEqual(value?.ToString(), source?.ToString());
         }
-        public static void WillNotBeSimuliar(this object source, object value)
+        public static void WillNotBeSimuliar(this object? source, object? value)
         {
-            Assert.AreNotEqual(value.ToString(), source.ToString());
+            Assert.AreNotEqual(value?.ToString(), source?.ToString());
         }
         public static void WithMessage(this Exception theException, string message)
         {

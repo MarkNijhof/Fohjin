@@ -13,33 +13,33 @@ namespace Fohjin.DDD.BankApplication.Views
             RegisterClientEvents();
         }
 
-        public event EventAction OnCloseTheAccount;
-        public event EventAction OnFormElementGotChanged;
-        public event EventAction OnCancel;
-        public event EventAction OnInitiateAccountNameChange;
-        public event EventAction OnInitiateMoneyDeposit;
-        public event EventAction OnInitiateMoneyWithdrawal;
-        public event EventAction OnInitiateMoneyTransfer;
-        public event EventAction OnChangeAccountName;
-        public event EventAction OnDepositMoney;
-        public event EventAction OnWithdrawalMoney;
-        public event EventAction OnTransferMoney;
+        public event EventAction? OnCloseTheAccount;
+        public event EventAction? OnFormElementGotChanged;
+        public event EventAction? OnCancel;
+        public event EventAction? OnInitiateAccountNameChange;
+        public event EventAction? OnInitiateMoneyDeposit;
+        public event EventAction? OnInitiateMoneyWithdrawal;
+        public event EventAction? OnInitiateMoneyTransfer;
+        public event EventAction? OnChangeAccountName;
+        public event EventAction? OnDepositMoney;
+        public event EventAction? OnWithdrawalMoney;
+        public event EventAction? OnTransferMoney;
 
         private void RegisterClientEvents()
         {
-            changeAccountNameToolStripMenuItem.Click += (s, e) => OnInitiateAccountNameChange();
-            closeAccountToolStripMenuItem.Click += (s, e) => OnCloseTheAccount();
-            makeCashMutationToolStripMenuItem.Click += (s, e) => OnInitiateMoneyDeposit();
-            makeCashWithdrawalToolStripMenuItem.Click += (s, e) => OnInitiateMoneyWithdrawal();
-            transferMoneyToolStripMenuItem.Click += (s, e) => OnInitiateMoneyTransfer();
-            _depositCancelButton.Click += (s, e) => OnCancel();
-            _depositButton.Click += (s, e) => OnDepositMoney();
-            _withdrawalCancelButton.Click += (s, e) => OnCancel();
-            _withdrawalButton.Click += (s, e) => OnWithdrawalMoney();
-            _transferCancelButton.Click += (s, e) => OnCancel();
-            _transferButton.Click += (s, e) => OnTransferMoney();
-            _newAccountNameCancelButton.Click += (s, e) => OnCancel();
-            _newAccountNameSaveButton.Click += (s, e) => OnChangeAccountName();
+            changeAccountNameToolStripMenuItem.Click += (s, e) => OnInitiateAccountNameChange?.Invoke();
+            closeAccountToolStripMenuItem.Click += (s, e) => OnCloseTheAccount?.Invoke();
+            makeCashMutationToolStripMenuItem.Click += (s, e) => OnInitiateMoneyDeposit?.Invoke();
+            makeCashWithdrawalToolStripMenuItem.Click += (s, e) => OnInitiateMoneyWithdrawal?.Invoke();
+            transferMoneyToolStripMenuItem.Click += (s, e) => OnInitiateMoneyTransfer?.Invoke();
+            _depositCancelButton.Click += (s, e) => OnCancel?.Invoke();
+            _depositButton.Click += (s, e) => OnDepositMoney?.Invoke();
+            _withdrawalCancelButton.Click += (s, e) => OnCancel?.Invoke();
+            _withdrawalButton.Click += (s, e) => OnWithdrawalMoney?.Invoke();
+            _transferCancelButton.Click += (s, e) => OnCancel?.Invoke();
+            _transferButton.Click += (s, e) => OnTransferMoney?.Invoke();
+            _newAccountNameCancelButton.Click += (s, e) => OnCancel?.Invoke();
+            _newAccountNameSaveButton.Click += (s, e) => OnChangeAccountName?.Invoke();
         }
 
         public string AccountNameLabel
@@ -52,16 +52,16 @@ namespace Fohjin.DDD.BankApplication.Views
             set { _accountNumberLabel.Text = value; }
         }
 
-        public IEnumerable<LedgerReport> Ledgers
+        public IEnumerable<LedgerReport>? Ledgers
         {
-            get { return (IEnumerable<LedgerReport>)_ledgers.DataSource; }
-            set { _ledgers.DataSource = value; }
+            get => _ledgers.DataSource as IEnumerable<LedgerReport>;
+            set => _ledgers.DataSource = value;
         }
 
-        public IEnumerable<AccountReport> TransferAccounts
+        public IEnumerable<AccountReport>? TransferAccounts
         {
-            get { return (IEnumerable<AccountReport>)_transferAccounts.DataSource; }
-            set { _transferAccounts.DataSource = value; }
+            get => _transferAccounts.DataSource as IEnumerable<AccountReport>;
+            set => _transferAccounts.DataSource = value;
         }
 
         public void EnableDetailsPanel()

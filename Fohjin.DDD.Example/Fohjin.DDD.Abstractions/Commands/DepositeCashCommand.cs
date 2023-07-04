@@ -2,9 +2,9 @@ using System.Text.Json.Serialization;
 
 namespace Fohjin.DDD.Commands
 {
-    public class DepositCashCommand : CommandBase
+    public record DepositCashCommand : CommandBase
     {
-        public decimal Amount { get; set; }
+        public decimal Amount { get; init; }
 
         [JsonConstructor]
         public DepositCashCommand() : base() { }

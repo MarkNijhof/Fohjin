@@ -47,11 +47,11 @@ namespace Test.Fohjin.DDD.Events
                 ;
             var serviceProvider = services.BuildServiceProvider();
 
-            var evnt = (IDomainEvent)eventType.GetNonDefaultValue(serviceProvider);
+            var evnt = eventType.GetNonDefaultValue(serviceProvider) as IDomainEvent;
 
-            var instance = (IEventHandler)ActivatorUtilities.CreateInstance(serviceProvider, handlerType);
-            await instance.ExecuteAsync(evnt);
-
+            var instance = ActivatorUtilities.CreateInstance(serviceProvider, handlerType) as IEventHandler;
+            if (evnt != null && instance != null)
+                await instance.ExecuteAsync(evnt);
         }
         public static string TestDataDisplayName(MethodInfo methodInfo, object[] data) =>
             $"{methodInfo.Name} for {((Type)data[0]).Name} => {((Type?)data?[1])?.Name}";

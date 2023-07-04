@@ -22,9 +22,10 @@ namespace Fohjin.DDD.CommandHandlers
         public override Task ExecuteAsync(OpenNewAccountForClientCommand compensatingCommand)
         {
             var client = _repository.GetById<Client>(compensatingCommand.Id);
-            var activeAccount = client.CreateNewAccount(compensatingCommand.AccountName, _systemHash.Hash(compensatingCommand.AccountName));
+            var activeAccount = client?.CreateNewAccount(compensatingCommand.AccountName, _systemHash.Hash(compensatingCommand.AccountName));
 
-            _repository.Add(activeAccount);
+            if (activeAccount != null)
+                _repository.Add(activeAccount);
 
             return Task.CompletedTask;
         }

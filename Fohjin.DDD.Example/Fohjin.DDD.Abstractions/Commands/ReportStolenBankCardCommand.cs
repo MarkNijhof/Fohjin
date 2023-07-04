@@ -2,9 +2,9 @@
 
 namespace Fohjin.DDD.Commands
 {
-    public class ReportStolenBankCardCommand : CommandBase
+    public record ReportStolenBankCardCommand : CommandBase
     {
-        public Guid BankCardId { get; set; }
+        public Guid BankCardId { get; init; }
 
 
         [JsonConstructor]

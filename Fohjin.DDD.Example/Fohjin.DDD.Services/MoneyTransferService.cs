@@ -77,7 +77,7 @@ namespace Fohjin.DDD.Services
 
         private void MoneyTransferIsGoingToAnExternalNonExistingAccount(MoneyTransfer moneyTransfer)
         {
-            _receiveMoneyTransfers.Receive(new MoneyTransfer(moneyTransfer.SourceAccount, moneyTransfer.TargetAccount.Reverse().ToString(), moneyTransfer.Amount));
+            _receiveMoneyTransfers.Receive(new MoneyTransfer(moneyTransfer.SourceAccount, moneyTransfer.TargetAccount?.Reverse().ToString(), moneyTransfer.Amount));
         }
 
         private void CompensatingActionBecauseOfFailedMoneyTransfer(MoneyTransfer moneyTransfer)

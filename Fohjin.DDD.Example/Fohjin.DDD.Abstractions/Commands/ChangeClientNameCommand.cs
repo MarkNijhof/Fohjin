@@ -2,14 +2,14 @@ using System.Text.Json.Serialization;
 
 namespace Fohjin.DDD.Commands
 {
-    public class ChangeClientNameCommand : CommandBase
+    public record ChangeClientNameCommand : CommandBase
     {
-        public string ClientName { get; set; }
+        public string? ClientName { get; init; }
 
 
         [JsonConstructor]
         public ChangeClientNameCommand() : base() { }
-        public ChangeClientNameCommand(Guid id, string clientName) : base(id)
+        public ChangeClientNameCommand(Guid id, string? clientName) : base(id)
         {
             ClientName = clientName;
         }

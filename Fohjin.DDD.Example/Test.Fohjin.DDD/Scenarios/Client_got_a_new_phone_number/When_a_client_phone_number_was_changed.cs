@@ -37,7 +37,7 @@ namespace Test.Fohjin.DDD.Scenarios.Client_got_a_new_phone_number
         [TestMethod]
         public void Then_the_client_details_report_will_be_updated_with_the_expected_details()
         {
-            UpdateObject.WillBeSimuliar(new { PhoneNumber = "1234567890" }.ToString());
+            UpdateObject.WillBeSimuliar(new { PhoneNumber = "1234567890" }.ToString() ?? "");
             WhereObject.WillBeSimuliar(new { Id = _clientId });
         }
     }

@@ -43,7 +43,7 @@ namespace Test.Fohjin.DDD.Scenarios.Client_got_his_name_changed
         [TestMethod]
         public void Then_the_client_report_will_be_updated_with_the_expected_details()
         {
-            UpdateClientObject.WillBeSimuliar(new { Name = "New Client Name" }.ToString());
+            UpdateClientObject.WillBeSimuliar(new { Name = "New Client Name" }.ToString() ?? "");
             WhereClientObject.WillBeSimuliar(new { Id = _clientId });
         }
 
@@ -56,7 +56,7 @@ namespace Test.Fohjin.DDD.Scenarios.Client_got_his_name_changed
         [TestMethod]
         public void Then_the_client_details_report_will_be_updated_with_the_expected_details()
         {
-            UpdateClientDetailsObject.WillBeSimuliar(new { ClientName = "New Client Name" }.ToString());
+            UpdateClientDetailsObject.WillBeSimuliar(new { ClientName = "New Client Name" }.ToString() ?? "");
             WhereClientDetailsObject.WillBeSimuliar(new { Id = _clientId });
         }
     }

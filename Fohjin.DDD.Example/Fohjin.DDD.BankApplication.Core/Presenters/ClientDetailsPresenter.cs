@@ -12,8 +12,8 @@ namespace Fohjin.DDD.BankApplication.Presenters
         private bool _createNewProcess;
         private bool _addNewAccountProcess;
         private int _editStep;
-        private ClientReport _clientReport;
-        private ClientDetailsReport _clientDetailsReport;
+        private ClientReport? _clientReport;
+        private ClientDetailsReport _clientDetailsReport = new();
         private readonly IClientDetailsView _clientDetailsView;
         private readonly IAccountDetailsPresenter _accountDetailsPresenter;
         private readonly IPopupPresenter _popupPresenter;
@@ -53,7 +53,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
             {
                 _editStep = 1;
                 _createNewProcess = true;
-                _clientDetailsReport = new ClientDetailsReport(Guid.NewGuid(), string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty);
+                _clientDetailsReport = ClientDetailsReport.New;
                 ResetForm();
                 _clientDetailsView.EnableClientNamePanel();
                 _clientDetailsView.ShowDialog();
@@ -68,13 +68,14 @@ namespace Fohjin.DDD.BankApplication.Presenters
 
         private void LoadData()
         {
-            _clientDetailsReport = _reportingRepository.GetByExample<ClientDetailsReport>(new { _clientReport.Id }).FirstOrDefault();
+            _clientDetailsReport = _reportingRepository.GetByExample<ClientDetailsReport>(new { _clientReport?.Id }).FirstOrDefault()
+                ?? ClientDetailsReport.New;
 
             SetClientDetailsData();
             SetReadOnlyData();
         }
 
-        public void SetClient(ClientReport clientReport)
+        public void SetClient(ClientReport? clientReport)
         {
             _clientReport = clientReport;
         }
@@ -123,31 +124,23 @@ namespace Fohjin.DDD.BankApplication.Presenters
                 if (_createNewProcess)
                 {
                     _editStep = 2;
-                    _clientDetailsReport = new ClientDetailsReport(
-                        _clientDetailsReport.Id,
-                        _clientDetailsView.ClientName,
-                        _clientDetailsReport.Street,
-                        _clientDetailsReport.StreetNumber,
-                        _clientDetailsReport.PostalCode,
-                        _clientDetailsReport.City,
-                        _clientDetailsReport.PhoneNumber);
+                    _clientDetailsReport = ClientDetailsReport.New with
+                    {
+                        ClientName = _clientDetailsView.ClientName,
+                    };
 
                     _clientDetailsView.EnableAddressPanel();
                     return;
                 }
 
                 _bus.Publish(new ChangeClientNameCommand(
-                                 _clientDetailsReport.Id,
-                                 _clientDetailsView.ClientName));
+                             _clientDetailsReport.Id,
+                             _clientDetailsView.ClientName));
 
-                _clientDetailsReport = new ClientDetailsReport(
-                    _clientDetailsReport.Id,
-                    _clientDetailsView.ClientName,
-                    _clientDetailsReport.Street,
-                    _clientDetailsReport.StreetNumber,
-                    _clientDetailsReport.PostalCode,
-                    _clientDetailsReport.City,
-                    _clientDetailsReport.PhoneNumber);
+                _clientDetailsReport = _clientDetailsReport with
+                {
+                    ClientName = _clientDetailsView.ClientName,
+                };
 
                 EnableAllMenuButtons();
                 _clientDetailsView.EnableOverviewPanel();
@@ -164,14 +157,14 @@ namespace Fohjin.DDD.BankApplication.Presenters
                 if (_createNewProcess)
                 {
                     _editStep = 3;
-                    _clientDetailsReport = new ClientDetailsReport(
-                        _clientDetailsReport.Id,
-                        _clientDetailsReport.ClientName,
-                        _clientDetailsView.Street,
-                        _clientDetailsView.StreetNumber,
-                        _clientDetailsView.PostalCode,
-                        _clientDetailsView.City,
-                        _clientDetailsReport.PhoneNumber);
+
+                    _clientDetailsReport = ClientDetailsReport.New with
+                    {
+                        Street = _clientDetailsView.Street,
+                        StreetNumber = _clientDetailsView.StreetNumber,
+                        PostalCode = _clientDetailsView.PostalCode,
+                        City = _clientDetailsView.City,
+                    };
 
                     _clientDetailsView.EnablePhoneNumberPanel();
                     return;
@@ -184,14 +177,13 @@ namespace Fohjin.DDD.BankApplication.Presenters
                                  _clientDetailsView.PostalCode,
                                  _clientDetailsView.City));
 
-                _clientDetailsReport = new ClientDetailsReport(
-                    _clientDetailsReport.Id,
-                    _clientDetailsReport.ClientName,
-                    _clientDetailsView.Street,
-                    _clientDetailsView.StreetNumber,
-                    _clientDetailsView.PostalCode,
-                    _clientDetailsView.City,
-                    _clientDetailsReport.PhoneNumber);
+                _clientDetailsReport = _clientDetailsReport with
+                {
+                    Street = _clientDetailsView.Street,
+                    StreetNumber = _clientDetailsView.StreetNumber,
+                    PostalCode = _clientDetailsView.PostalCode,
+                    City = _clientDetailsView.City,
+                };
 
                 EnableAllMenuButtons();
                 _clientDetailsView.EnableOverviewPanel();
@@ -208,7 +200,9 @@ namespace Fohjin.DDD.BankApplication.Presenters
                 if (_createNewProcess)
                 {
                     _editStep = 4;
-                    _bus.Publish(new CreateClientCommand(
+
+                    if (_clientDetailsReport != null)
+                        _bus.Publish(new CreateClientCommand(
                                      Guid.NewGuid(),
                                      _clientDetailsReport.ClientName,
                                      _clientDetailsReport.Street,

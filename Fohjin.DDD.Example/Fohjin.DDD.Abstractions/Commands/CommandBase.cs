@@ -1,8 +1,8 @@
 namespace Fohjin.DDD.Commands
 {
-    public abstract class CommandBase : ICommand
+    public abstract record CommandBase : ICommand
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; init; }
 
         public CommandBase()
         {

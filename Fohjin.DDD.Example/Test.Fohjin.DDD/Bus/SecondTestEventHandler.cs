@@ -18,7 +18,10 @@ namespace Test.Fohjin.DDD.Bus
             return Task.CompletedTask;
         }
 
-        public Task ExecuteAsync(IDomainEvent @event) =>
-            ExecuteAsync(@event as TestEvent);
+        public async Task ExecuteAsync(IDomainEvent @event)
+        {
+            if (@event is TestEvent evnt)
+                await ExecuteAsync(evnt);
+        }
     }
 }

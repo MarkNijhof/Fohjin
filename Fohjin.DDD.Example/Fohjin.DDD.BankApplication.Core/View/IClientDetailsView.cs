@@ -4,24 +4,24 @@ namespace Fohjin.DDD.BankApplication.Views
 {
     public interface IClientDetailsView : IView
     {
-        string ClientName { get; set; }
-        string Street { get; set; }
-        string StreetNumber { get; set; }
-        string PostalCode { get; set; }
-        string City { get; set; }
-        string PhoneNumber { get; set; }
-        string NewAccountName { get; set; }
+        string? ClientName { get; set; }
+        string? Street { get; set; }
+        string? StreetNumber { get; set; }
+        string? PostalCode { get; set; }
+        string? City { get; set; }
+        string? PhoneNumber { get; set; }
+        string? NewAccountName { get; set; }
 
-        string ClientNameLabel { set; }
-        string AddressLine1Label { set; }
-        string AddressLine2Label { set; }
-        string PhoneNumberLabel { set; }
+        string? ClientNameLabel { set; }
+        string? AddressLine1Label { set; }
+        string? AddressLine2Label { set; }
+        string? PhoneNumberLabel { set; }
 
-        IEnumerable<AccountReport> Accounts { get; set; }
-        AccountReport GetSelectedAccount();
+        IEnumerable<AccountReport>? Accounts { get; set; }
+        AccountReport? GetSelectedAccount();
 
-        IEnumerable<ClosedAccountReport> ClosedAccounts { get; set; }
-        ClosedAccountReport GetSelectedClosedAccount();
+        IEnumerable<ClosedAccountReport>? ClosedAccounts { get; set; }
+        ClosedAccountReport? GetSelectedClosedAccount();
 
         void EnableAddNewAccountMenu();
         void DisableAddNewAccountMenu();

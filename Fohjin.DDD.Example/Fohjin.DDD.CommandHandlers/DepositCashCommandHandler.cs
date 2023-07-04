@@ -17,7 +17,7 @@ namespace Fohjin.DDD.CommandHandlers
         {
             var activeAccount = _repository.GetById<ActiveAccount>(compensatingCommand.Id);
 
-            activeAccount.Deposit(new Amount(compensatingCommand.Amount));
+            activeAccount?.Deposit(new Amount(compensatingCommand.Amount));
 
             return Task.CompletedTask;
         }

@@ -40,7 +40,8 @@ namespace Test.Fohjin.DDD.Domain.Repositories
         {
             TestContext.SetupWorkingDirectory();
             var dataBaseFile = Path.Combine(
-                (string)TestContext.Properties[TestContextExtensions.TestWorkingDirectory],
+                (string?)TestContext.Properties[TestContextExtensions.TestWorkingDirectory] ??
+                    throw new NotSupportedException($"TestContext Property is missing {nameof(TestContextExtensions.TestWorkingDirectory)}"),
                 DomainDatabaseBootStrapper.DataBaseFile
                 );
 

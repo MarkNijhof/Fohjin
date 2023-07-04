@@ -31,7 +31,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
             }
         }
 
-        private MethodInfo GetTheEventHandler(string viewDefinedEvent, IDictionary<string, MethodInfo> presenterEventHandlers, EventInfo eventInfo)
+        private MethodInfo? GetTheEventHandler(string viewDefinedEvent, IDictionary<string, MethodInfo> presenterEventHandlers, EventInfo eventInfo)
         {
             var substring = viewDefinedEvent.Substring(2);
             if (!presenterEventHandlers.ContainsKey(substring))

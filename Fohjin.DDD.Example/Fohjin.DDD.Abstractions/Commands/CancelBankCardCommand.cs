@@ -2,9 +2,9 @@
 
 namespace Fohjin.DDD.Commands
 {
-    public class CancelBankCardCommand : CommandBase
+    public record CancelBankCardCommand : CommandBase
     {
-        public Guid BankCardId { get; set; }
+        public Guid BankCardId { get; init; }
 
         [JsonConstructor]
         public CancelBankCardCommand(): base() { }

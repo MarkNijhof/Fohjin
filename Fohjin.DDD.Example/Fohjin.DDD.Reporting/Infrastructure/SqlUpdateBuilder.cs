@@ -5,7 +5,7 @@ namespace Fohjin.DDD.Reporting.Infrastructure
 
     public class SqlUpdateBuilder : ISqlUpdateBuilder
     {
-        public string GetUpdateString<TDto>(object update, object where) where TDto : class
+        public string GetUpdateString<TDto>(object? update, object? where) where TDto : class
         {
             if (update == null)
                 throw new ArgumentNullException(nameof(update));

@@ -26,10 +26,11 @@ namespace Test.Fohjin.DDD.Commands
                 ;
             var serviceProvider = services.BuildServiceProvider();
 
-            var command = (ICommand)commandType.GetNonDefaultValue(serviceProvider);
+            var command = (ICommand?)commandType.GetNonDefaultValue(serviceProvider);
 
             var instance = (ICommandHandler)ActivatorUtilities.CreateInstance(serviceProvider, handlerType);
-            await instance.ExecuteAsync(command);
+            if (command != null)
+                await instance.ExecuteAsync(command);
         }
         public static string TestDataDisplayName(MethodInfo methodInfo, object[] data) =>
             $"{methodInfo.Name} for {((Type)data[0]).Name} => {((Type)data[1]).Name}";

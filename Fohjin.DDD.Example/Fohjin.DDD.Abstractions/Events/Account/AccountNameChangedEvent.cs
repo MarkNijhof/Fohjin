@@ -1,17 +1,16 @@
 using System.Text.Json.Serialization;
 
-namespace Fohjin.DDD.Events.Account
+namespace Fohjin.DDD.Events.Account;
+
+public record AccountNameChangedEvent : DomainEvent
 {
-    public class AccountNameChangedEvent : DomainEvent
+    public string? AccountName { get; set; }
+
+    [JsonConstructor]
+    public AccountNameChangedEvent() { }
+
+    public AccountNameChangedEvent(string? accountName)
     {
-        public string AccountName { get; set; } = null!;
-
-        [JsonConstructor]
-        public AccountNameChangedEvent() { }
-
-        public AccountNameChangedEvent(string accountName)
-        {
-            AccountName = accountName;
-        }
+        AccountName = accountName;
     }
 }

@@ -2,17 +2,17 @@ using System.Text.Json.Serialization;
 
 namespace Fohjin.DDD.Reporting.Dtos
 {
-    public class ClientDetailsReport
+    public record ClientDetailsReport
     {
         public Guid Id { get; set; }
         public List<AccountReport> Accounts { get; set; } = new();
         public List<ClosedAccountReport> ClosedAccounts { get; set; } = new();
-        public string ClientName { get; set; } = null!;
-        public string Street { get; set; } = null!;
-        public string StreetNumber { get; set; } = null!;
-        public string PostalCode { get; set; } = null!;
-        public string City { get; set; } = null!;
-        public string PhoneNumber { get; set; } = null!;
+        public string? ClientName { get; set; }
+        public string? Street { get; set; }
+        public string? StreetNumber { get; set; }
+        public string? PostalCode { get; set; }
+        public string? City { get; set; }
+        public string? PhoneNumber { get; set; }
 
         [JsonConstructor]
         public ClientDetailsReport()
@@ -20,7 +20,15 @@ namespace Fohjin.DDD.Reporting.Dtos
         }
 
         [SqliteConstructor]
-        public ClientDetailsReport(Guid id, string clientName, string street, string streetNumber, string postalCode, string city, string phoneNumber)
+        public ClientDetailsReport(
+            Guid id,
+            string? clientName,
+            string? street,
+            string? streetNumber,
+            string? postalCode,
+            string? city,
+            string? phoneNumber
+            )
         {
             Id = id;
             ClientName = clientName;
@@ -30,5 +38,7 @@ namespace Fohjin.DDD.Reporting.Dtos
             City = city;
             PhoneNumber = phoneNumber;
         }
+
+        public static ClientDetailsReport New => new ClientDetailsReport { Id = Guid.NewGuid(), };
     }
 }

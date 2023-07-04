@@ -6,7 +6,7 @@ namespace Fohjin.DDD.Reporting.Dtos
     {
         public Guid Id { get; set; }
         public Guid AccountDetailsReportId { get; set; }
-        public string Action { get; set; }
+        public string Action { get; set; } = null!;
         public decimal Amount { get; set; }
 
         [JsonConstructor]
@@ -21,9 +21,6 @@ namespace Fohjin.DDD.Reporting.Dtos
             Amount = amount;
         }
 
-        public override string ToString()
-        {
-            return string.Format("{0} - {1:C}", Action, Amount);
-        }
+        public override string ToString() => "{Action} - {Amount:C}";
     }
 }

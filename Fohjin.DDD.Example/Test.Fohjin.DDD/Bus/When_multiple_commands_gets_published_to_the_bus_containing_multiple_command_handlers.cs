@@ -32,10 +32,10 @@ namespace Test.Fohjin.DDD.Bus
             _otherCommand = new TestCommand(Guid.NewGuid());
         }
 
-        protected override void When()
+        protected override async Task WhenAsync()
         {
             SubjectUnderTest.Publish(new List<object> { _command, _otherCommand });
-            SubjectUnderTest.CommitAsync();
+            await SubjectUnderTest.CommitAsync();
         }
 
         [TestMethod]

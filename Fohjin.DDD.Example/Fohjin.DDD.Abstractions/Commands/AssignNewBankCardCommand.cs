@@ -2,9 +2,9 @@
 
 namespace Fohjin.DDD.Commands
 {
-    public class AssignNewBankCardCommand : CommandBase
+    public record AssignNewBankCardCommand : CommandBase
     {
-        public Guid AccountId { get; set; }
+        public Guid AccountId { get; init; }
 
         [JsonConstructor]
         public AssignNewBankCardCommand() : base() { }

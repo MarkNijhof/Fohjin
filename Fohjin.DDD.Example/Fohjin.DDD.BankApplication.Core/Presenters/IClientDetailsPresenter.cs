@@ -4,6 +4,6 @@ namespace Fohjin.DDD.BankApplication.Presenters
 {
     public interface IClientDetailsPresenter : IPresenter
     {
-        void SetClient(ClientReport clientReport);
+        void SetClient(ClientReport? clientReport);
     }
 }

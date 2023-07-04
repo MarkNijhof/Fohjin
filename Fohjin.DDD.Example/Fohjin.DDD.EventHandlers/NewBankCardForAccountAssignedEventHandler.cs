@@ -1,22 +1,19 @@
 ﻿using Fohjin.DDD.Events.Client;
 using Fohjin.DDD.Reporting;
 
-namespace Fohjin.DDD.EventHandlers
+namespace Fohjin.DDD.EventHandlers;
+
+public class NewBankCardForAccountAssignedEventHandler : EventHandlerBase<NewBankCardForAccountAsignedEvent>
 {
-    public class NewBankCardForAccountAssignedEventHandler : EventHandlerBase<NewBankCardForAccountAsignedEvent>
+    private readonly IReportingRepository _reportingRepository;
+
+    public NewBankCardForAccountAssignedEventHandler(IReportingRepository reportingRepository)
     {
-        private readonly IReportingRepository _reportingRepository;
+        _reportingRepository = reportingRepository;
+    }
 
-        public NewBankCardForAccountAssignedEventHandler(IReportingRepository reportingRepository)
-        {
-            _reportingRepository = reportingRepository;
-        }
-
-        public override Task ExecuteAsync(NewBankCardForAccountAsignedEvent theEvent)
-        {
-            throw new NotImplementedException();
-
-            return Task.CompletedTask;
-        }
+    public override Task ExecuteAsync(NewBankCardForAccountAsignedEvent theEvent)
+    {
+        throw new NotImplementedException();
     }
 }

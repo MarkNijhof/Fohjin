@@ -17,8 +17,8 @@ namespace Fohjin.DDD.Domain.Account
         public ClosedAccount()
         {
             Id = Guid.Empty;
-            _accountName = new (string.Empty);
-            _accountNumber = new (string.Empty);
+            _accountName = new(string.Empty);
+            _accountNumber = new(string.Empty);
             Version = 0;
             EventVersion = 0;
 
@@ -33,10 +33,10 @@ namespace Fohjin.DDD.Domain.Account
             Apply(new ClosedAccountCreatedEvent(Guid.NewGuid(), accountId, clientId, Ledgers, accountName, accountNumber));
         }
 
-        public static ClosedAccount CreateNew(Guid accountId, Guid clientId, List<Ledger> ledgers, AccountName accountName, AccountNumber accountNumber)=>
+        public static ClosedAccount CreateNew(Guid accountId, Guid clientId, List<Ledger> ledgers, AccountName accountName, AccountNumber accountNumber) =>
             new ClosedAccount(accountId, clientId, ledgers, accountName.Name, accountNumber.Number);
 
-        IMemento IOriginator.CreateMemento()=>
+        IMemento IOriginator.CreateMemento() =>
             new ClosedAccountMemento(Id, Version, _originalAccountId, _clientId, _accountName.Name, _accountNumber.Number, _ledgers);
 
         void IOriginator.SetMemento(IMemento memento)
@@ -54,11 +54,13 @@ namespace Fohjin.DDD.Domain.Account
                 var split = ledger.Value.Split(new[] { '|' });
                 var amount = new Amount(Convert.ToDecimal(split[0]));
                 var account = new AccountNumber(split[1]);
-                _ledgers.Add(InstantiateClassFromStringValue<Ledger>(ledger.Key, amount, account));
+                var instance = InstantiateClassFromStringValue<Ledger>(ledger.Key, amount, account);
+                if (instance != null)
+                    _ledgers.Add(instance);
             }
         }
 
-        private TRequestedType InstantiateClassFromStringValue<TRequestedType>(string className, params object[] constructorArguments)
+        private TRequestedType? InstantiateClassFromStringValue<TRequestedType>(string className, params object[] constructorArguments)
         {
             var classType = GetType()
                 .Assembly
@@ -66,7 +68,10 @@ namespace Fohjin.DDD.Domain.Account
                 .Where(x => x.Name == className)
                 .FirstOrDefault();
 
-            return (TRequestedType)Activator.CreateInstance(classType, constructorArguments);
+            if (classType == null)
+                return default;
+
+            return (TRequestedType?)Activator.CreateInstance(classType, constructorArguments);
         }
 
         private void RegisterEvents()
@@ -87,7 +92,9 @@ namespace Fohjin.DDD.Domain.Account
                 var split = ledger.Value.Split(new[] { '|' });
                 var amount = new Amount(Convert.ToDecimal(split[0]));
                 var account = new AccountNumber(split[1]);
-                _ledgers.Add(InstantiateClassFromStringValue<Ledger>(ledger.Key, amount, account));
+                var instance = InstantiateClassFromStringValue<Ledger>(ledger.Key, amount, account);
+                if (instance != null)
+                    _ledgers.Add(instance);
             }
         }
     }

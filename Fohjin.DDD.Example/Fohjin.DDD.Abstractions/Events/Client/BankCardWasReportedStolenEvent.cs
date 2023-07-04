@@ -1,6 +1,5 @@
-﻿namespace Fohjin.DDD.Events.Client
+﻿namespace Fohjin.DDD.Events.Client;
+
+public record BankCardWasReportedStolenEvent : DomainEvent
 {
-    public class BankCardWasReportedStolenEvent : DomainEvent
-    {
-    }
 }

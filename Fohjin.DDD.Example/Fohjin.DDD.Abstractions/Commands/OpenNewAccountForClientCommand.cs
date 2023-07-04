@@ -2,9 +2,9 @@ using System.Text.Json.Serialization;
 
 namespace Fohjin.DDD.Commands
 {
-    public class OpenNewAccountForClientCommand : CommandBase
+    public record OpenNewAccountForClientCommand : CommandBase
     {
-        public string AccountName { get; set; }
+        public string AccountName { get; init; } = null!;
 
         [JsonConstructor]
         public OpenNewAccountForClientCommand() : base() { }

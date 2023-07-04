@@ -1,17 +1,16 @@
 using System.Text.Json.Serialization;
 
-namespace Fohjin.DDD.Domain.Client
+namespace Fohjin.DDD.Domain.Client;
+
+public record PhoneNumber
 {
-    public class PhoneNumber
+    public string? Number { get; init; }
+
+    [JsonConstructor]
+    public PhoneNumber() { }
+
+    public PhoneNumber(string? number)
     {
-        public string Number { get; set; }
-
-        [JsonConstructor]
-        public PhoneNumber() { }
-
-        public PhoneNumber(string number)
-        {
-            Number = number;
-        }
+        Number = number;
     }
 }

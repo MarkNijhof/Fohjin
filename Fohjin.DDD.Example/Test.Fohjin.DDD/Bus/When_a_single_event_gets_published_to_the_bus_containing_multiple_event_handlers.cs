@@ -31,10 +31,10 @@ namespace Test.Fohjin.DDD.Bus
             _event = new TestEvent();
         }
 
-        protected override void When()
+        protected override async Task WhenAsync()
         {
             SubjectUnderTest.Publish(new List<object> { _event });
-            SubjectUnderTest.CommitAsync();
+            await SubjectUnderTest.CommitAsync();
         }
 
         [TestMethod]

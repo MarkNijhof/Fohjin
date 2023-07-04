@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace Fohjin.DDD.Reporting.Dtos
 {
-    public class ClosedAccountReport : AccountReport
+    public record ClosedAccountReport : AccountReport
     {
         [JsonConstructor]
         public ClosedAccountReport()
@@ -10,7 +10,12 @@ namespace Fohjin.DDD.Reporting.Dtos
         }
 
         [SqliteConstructor]
-        public ClosedAccountReport(Guid id, Guid clientDetailsId, string name, string accountNumber) :
+        public ClosedAccountReport(
+            Guid id,
+            Guid clientDetailsId, 
+            string? name, 
+            string? accountNumber
+            ) :
             base(id, clientDetailsId, name, accountNumber)
         {
         }

@@ -17,7 +17,7 @@ namespace Fohjin.DDD.CommandHandlers
         {
             var activeAccount = _repository.GetById<ActiveAccount>(compensatingCommand.Id);
 
-            activeAccount.Withdrawal(new Amount(compensatingCommand.Amount));
+            activeAccount?.Withdrawal(new Amount(compensatingCommand.Amount));
             return Task.CompletedTask;
         }
     }

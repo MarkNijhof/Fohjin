@@ -18,9 +18,10 @@ namespace Test.Fohjin.DDD.Scenarios.Receiving_money_transfer
                 .Returns(new List<AccountReport> { new AccountReport(Guid.NewGuid(), Guid.NewGuid(), "AccountName", "target account number") });
         }
 
-        protected override void When()
+        protected override Task WhenAsync()
         {
             SubjectUnderTest.Receive(new MoneyTransfer("source account number", "target account number", 123.45M));
+            return Task.CompletedTask;
         }
 
         [TestMethod]

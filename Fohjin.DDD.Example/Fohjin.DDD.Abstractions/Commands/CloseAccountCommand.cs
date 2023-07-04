@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace Fohjin.DDD.Commands
 {
-    public class CloseAccountCommand : CommandBase
+    public record CloseAccountCommand : CommandBase
     {
         [JsonConstructor]
         public CloseAccountCommand() : base() { }

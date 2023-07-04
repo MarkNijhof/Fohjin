@@ -36,9 +36,10 @@ namespace Test.Fohjin.DDD.Scenarios.Transfering_money
                 ;
         }
 
-        protected override void When()
+        protected override Task WhenAsync()
         {
             SubjectUnderTest.Send(new MoneyTransfer("source account number", "target account number", 123.45M));
+            return Task.CompletedTask;
         }
 
         [TestMethod]

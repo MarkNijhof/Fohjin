@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace Test.Fohjin.DDD.Bus
 {
-    public class TestCommand : CommandBase
+    public record TestCommand : CommandBase
     {
         [JsonConstructor]
         public TestCommand() : base() { }

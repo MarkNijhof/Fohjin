@@ -70,9 +70,9 @@ namespace Test.Fohjin.DDD.TestUtilities
                 return true;
             else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(List<>))
             {
-                var list = type.GetDefaultConstructorInfo().Invoke(Array.Empty<object?>());
-                var item = type.GetGenericArguments()[0].GetNonDefaultValue(serviceProvider);
-                type.GetMethod("Add")?.Invoke(list, new object?[] { item });
+                var list = type?.GetDefaultConstructorInfo()?.Invoke(Array.Empty<object?>());
+                var item = type?.GetGenericArguments()[0].GetNonDefaultValue(serviceProvider);
+                type?.GetMethod("Add")?.Invoke(list, new object?[] { item });
                 return list;
             }
             else if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(KeyValuePair<,>))
@@ -86,7 +86,7 @@ namespace Test.Fohjin.DDD.TestUtilities
             }
             else if (type.IsInterface)
             {
-                return type.GetInstanceTypes().FirstOrDefault().GetNonDefaultValue(serviceProvider);
+                return type.GetInstanceTypes()?.FirstOrDefault()?.GetNonDefaultValue(serviceProvider);
             }
             else
             {
@@ -104,17 +104,18 @@ namespace Test.Fohjin.DDD.TestUtilities
                     }
                 }
 
-                return type.GetDefaultConstructorInfo().Invoke(Array.Empty<object?>())
+                return type.GetDefaultConstructorInfo()?
+                    .Invoke(Array.Empty<object?>())
                     .FillObject(serviceProvider);
             }
         }
 
-        public static object GetDefaultValue(this Type type) =>
+        public static object? GetDefaultValue(this Type type) =>
             typeof(TypeExtensions).GetMethod(nameof(GetDefaultValue), 1, Type.EmptyTypes)
-                .MakeGenericMethod(type)
-                .Invoke(null, Array.Empty<object?>());
+                ?.MakeGenericMethod(type)
+                ?.Invoke(null, Array.Empty<object?>());
 
-        public static T GetDefaultValue<T>() => default;
+        public static T? GetDefaultValue<T>() => default;
 
         public static Type EnsureNotDefault(this Type type, object instance)
         {

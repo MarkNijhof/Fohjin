@@ -18,7 +18,7 @@ namespace Test.Fohjin.DDD.Bus
                 .AddTransient<IEventHandler>(_ => _handler)
                 ;
             ;
-            var messageRouter = new MessageRouter(this.Provider,  this.Logger<MessageRouter>());
+            var messageRouter = new MessageRouter(this.Provider, this.Logger<MessageRouter>());
             DoNotMock.Add(typeof(IRouteMessages), messageRouter);
         }
 
@@ -27,10 +27,10 @@ namespace Test.Fohjin.DDD.Bus
             _event = new TestEvent();
         }
 
-        protected override void When()
+        protected override async Task WhenAsync()
         {
             SubjectUnderTest.Publish(new List<object> { _event });
-            SubjectUnderTest.CommitAsync();
+            await SubjectUnderTest.CommitAsync();
         }
 
         [TestMethod]

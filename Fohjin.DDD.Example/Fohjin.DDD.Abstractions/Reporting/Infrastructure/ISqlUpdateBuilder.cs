@@ -2,6 +2,6 @@
 {
     public interface ISqlUpdateBuilder
     {
-        string GetUpdateString<TDto>(object update, object where) where TDto : class;
+        string GetUpdateString<TDto>(object? update, object? where) where TDto : class;
     }
 }

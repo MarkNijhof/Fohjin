@@ -8,7 +8,7 @@ namespace Test.Fohjin.DDD
     [TestClass]
     public abstract class BaseTestFixture
     {
-        protected Exception CaughtException;
+        protected Exception? CaughtException;
         protected virtual void Given() { }
         protected abstract void When();
         protected virtual void Finally() { }
@@ -37,7 +37,7 @@ namespace Test.Fohjin.DDD
     [TestClass]
     public abstract class BaseTestFixture<TSubjectUnderTest>
     {
-        public TestContext TestContext { get; set; }
+        public TestContext TestContext { get; set; } = null!;
 
         private readonly IServiceCollection _services = new ServiceCollection()
             .AddLogging(opt => opt.AddConsole().SetMinimumLevel(LogLevel.Information))
@@ -49,14 +49,14 @@ namespace Test.Fohjin.DDD
 
         public ILogger<T> Logger<T>() => Provider.GetRequiredService<ILogger<T>>();
 
-        private Dictionary<Type, object> mocks;
+        private Dictionary<Type, object>? mocks;
 
-        protected Dictionary<Type, object> DoNotMock;
-        protected TSubjectUnderTest SubjectUnderTest;
-        protected Exception CaughtException;
+        protected Dictionary<Type, object>? DoNotMock;
+        protected TSubjectUnderTest? SubjectUnderTest;
+        protected Exception? CaughtException;
         protected virtual void SetupDependencies() { }
         protected virtual void Given() { }
-        protected abstract void When();
+        protected abstract Task WhenAsync();
         protected virtual void Finally() { }
 
         [TestInitialize]
@@ -74,7 +74,7 @@ namespace Test.Fohjin.DDD
 
             try
             {
-                When();
+                WhenAsync();
             }
             catch (Exception exception)
             {
@@ -86,9 +86,9 @@ namespace Test.Fohjin.DDD
             }
         }
 
-        public Mock<TType> OnDependency<TType>() where TType : class
+        public Mock<TType>? OnDependency<TType>() where TType : class
         {
-            return (Mock<TType>)mocks[typeof(TType)];
+            return (Mock<TType>?)mocks?[typeof(TType)];
         }
 
         private TSubjectUnderTest BuildSubjectUnderTest()
@@ -96,12 +96,17 @@ namespace Test.Fohjin.DDD
             var constructorInfo = typeof(TSubjectUnderTest).GetConstructors().First();
 
             var parameters = new List<object>();
-            foreach (var mock in mocks)
+            foreach (var mock in mocks ?? Enumerable.Empty<KeyValuePair<Type, object>>())
             {
-                object theObject;
-                if (!DoNotMock.TryGetValue(mock.Key, out theObject))
-                    theObject = ((Mock)mock.Value).Object;
+                if (DoNotMock == null )
+                {
+                    continue;
+                }
 
+                if (!DoNotMock.TryGetValue(mock.Key, out var theObject))
+                {
+                    theObject = ((Mock)mock.Value).Object;
+                }
                 parameters.Add(theObject);
             }
 

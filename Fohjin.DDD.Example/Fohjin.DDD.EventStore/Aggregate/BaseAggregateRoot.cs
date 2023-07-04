@@ -16,7 +16,7 @@ namespace Fohjin.DDD.EventStore.Aggregate
 
         protected void RegisterEvent<TEvent>(Action<TEvent> eventHandler) where TEvent : class, TDomainEvent
         {
-            _registeredEvents.Add(typeof(TEvent), theEvent => eventHandler(theEvent as TEvent));
+            _registeredEvents.Add(typeof(TEvent), theEvent => eventHandler((TEvent)theEvent));
         }
 
         protected void Apply<TEvent>(TEvent domainEvent) where TEvent : class, TDomainEvent
@@ -44,8 +44,8 @@ namespace Fohjin.DDD.EventStore.Aggregate
         private void Apply(Type eventType, TDomainEvent domainEvent)
         {
 
-            if (!_registeredEvents.TryGetValue(eventType, out Action<TDomainEvent> handler))
-                throw new UnregisteredDomainEventException(string.Format("The requested domain event '{0}' is not registered in '{1}'", eventType.FullName, GetType().FullName));
+            if (!_registeredEvents.TryGetValue(eventType, out var handler))
+                throw new UnregisteredDomainEventException($"The requested domain event '{eventType.FullName}' is not registered in '{GetType().FullName}'");
 
             handler(domainEvent);
         }
@@ -57,7 +57,8 @@ namespace Fohjin.DDD.EventStore.Aggregate
 
         void IEventProvider<TDomainEvent>.Clear()
         {
-            _childEventProviders.ForEach(x => x.Clear());
+            foreach (var item in _childEventProviders)
+                item.Clear();
             _appliedEvents.Clear();
         }
 
@@ -72,10 +73,8 @@ namespace Fohjin.DDD.EventStore.Aggregate
             _childEventProviders.Add(entityEventProvider);
         }
 
-        private IEnumerable<TDomainEvent> GetChildEventsAndUpdateEventVersion()
-        {
-            return _childEventProviders.SelectMany(entity => entity.GetChanges());
-        }
+        private IEnumerable<TDomainEvent> GetChildEventsAndUpdateEventVersion() =>
+            _childEventProviders.SelectMany(entity => entity.GetChanges());
 
         private int GetNewEventVersion() => EventVersion++;
     }

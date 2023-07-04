@@ -23,8 +23,11 @@ namespace Test.Fohjin.DDD.TestUtilities.Tools
             _testContext.AddResults(typeof(TDto).Name + "-delete", example);
         }
 
-        public IEnumerable<TDto> GetByExample<TDto>(object example) where TDto : class
+        public IEnumerable<TDto> GetByExample<TDto>(object? example) where TDto : class
         {
+            if (example == null)
+                yield break;
+
             _testContext.AddResults(typeof(TDto).Name + "-getby", example);
             yield return (TDto)typeof(TDto).BuildObject(_serviceProvider);
         }

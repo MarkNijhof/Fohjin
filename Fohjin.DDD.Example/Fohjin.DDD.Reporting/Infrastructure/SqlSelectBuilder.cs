@@ -10,7 +10,7 @@ namespace Fohjin.DDD.Reporting.Infrastructure
             return string.Format("{0};", GetSelectString<TDto>());
         }
 
-        public string CreateSqlSelectStatementFromDto<TDto>(IEnumerable<KeyValuePair<string, object>> example) where TDto : class
+        public string CreateSqlSelectStatementFromDto<TDto>(IEnumerable<KeyValuePair<string, object>>? example) where TDto : class
         {
             return example != null
                 ? string.Format("{0} {1};", GetSelectString<TDto>(), GetWhereString(example))

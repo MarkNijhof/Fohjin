@@ -23,14 +23,14 @@ namespace Fohjin.DDD.Reporting.Infrastructure
             _sqlDeleteBuilder = sqlDeleteBuilder;
         }
 
-        public IEnumerable<TDto> GetByExample<TDto>(object example) where TDto : class
+        public IEnumerable<TDto> GetByExample<TDto>(object? example) where TDto : class
         {
             return example == null
-                ? GetByExample<TDto>(new Dictionary<string, object>())
+                ? GetByExample<TDto>(new Dictionary<string, object?>())
                 : GetByExample<TDto>(GetPropertyInformation(example));
         }
 
-        public IEnumerable<TDto> GetByExample<TDto>(IDictionary<string, object> example) where TDto : class
+        public IEnumerable<TDto> GetByExample<TDto>(IDictionary<string, object?> example) where TDto : class
         {
             List<TDto> dtos;
             var dtoType = typeof(TDto);
@@ -60,7 +60,7 @@ namespace Fohjin.DDD.Reporting.Infrastructure
             Save<TDto>(GetPropertyInformation(dto));
         }
 
-        public void Save<TDto>(IEnumerable<KeyValuePair<string, object>> dto) where TDto : class
+        public void Save<TDto>(IEnumerable<KeyValuePair<string, object?>> dto) where TDto : class
         {
             var commandText = _sqlInsertBuilder.CreateSqlInsertStatementFromDto<TDto>();
 
@@ -110,7 +110,7 @@ namespace Fohjin.DDD.Reporting.Infrastructure
             Delete<TDto>(GetPropertyInformation(example));
         }
 
-        public void Delete<TDto>(IEnumerable<KeyValuePair<string, object>> example) where TDto : class
+        public void Delete<TDto>(IEnumerable<KeyValuePair<string, object?>> example) where TDto : class
         {
             var commandText = _sqlDeleteBuilder.CreateSqlDeleteStatementFromDto<TDto>(example);
 
@@ -152,13 +152,19 @@ namespace Fohjin.DDD.Reporting.Infrastructure
 
         private static IEnumerable<KeyValuePair<string, object>> CreateSelectObject<TDto>(TDto parentDto)
         {
-            var columnName = string.Format("{0}Id", parentDto.GetType().Name);
+            if (parentDto == null)
+                yield break;
+
+            var columnName = $"{parentDto.GetType().Name}Id";
             var columnValue = parentDto.GetType().GetProperty("Id")?.GetValue(parentDto, Array.Empty<object>());
 
-            return new Dictionary<string, object> { { columnName, columnValue } };
+            if (columnValue == null)
+                yield break;
+
+            yield return KeyValuePair.Create(columnName, columnValue);
         }
 
-        private List<TDto> DoGetByExample<TDto>(SqliteTransaction sqliteTransaction, Type dtoType, IEnumerable<KeyValuePair<string, object>> example) where TDto : class
+        private List<TDto> DoGetByExample<TDto>(SqliteTransaction sqliteTransaction, Type dtoType, IEnumerable<KeyValuePair<string, object?>>? example) where TDto : class
         {
             var dtos = new List<TDto>();
             var commandText = _sqlSelectBuilder.CreateSqlSelectStatementFromDto<TDto>(example);
@@ -225,15 +231,12 @@ namespace Fohjin.DDD.Reporting.Infrastructure
             return (TDto)dtoConstructor.Invoke(constructorArguments);
         }
 
-        private static Dictionary<string, object> GetPropertyInformation(object example)
-        {
-            var exampleData = new Dictionary<string, object>();
+        private static Dictionary<string, object?> GetPropertyInformation(object example) =>
+            example.GetType().GetProperties()
+                .Where(Where)
+                .ToDictionary(x => x.Name, x => x.GetValue(example, Array.Empty<object>()));
 
-            example.GetType().GetProperties().Where(Where).ToList().ForEach(x => exampleData.Add(x.Name, x.GetValue(example, Array.Empty<object>())));
-            return exampleData;
-        }
-
-        private static void AddParameters(SqliteCommand sqliteCommand, IEnumerable<KeyValuePair<string, object>> example)
+        private static void AddParameters(SqliteCommand sqliteCommand, IEnumerable<KeyValuePair<string, object?>> example)
         {
             if (example == null)
                 return;
@@ -241,7 +244,7 @@ namespace Fohjin.DDD.Reporting.Infrastructure
                 sqliteCommand.Parameters.Add(new SqliteParameter($"{@item.Key.ToLower()}", item.Value));
         }
 
-        private static void AddUpdateParameters(SqliteCommand sqliteCommand, IEnumerable<KeyValuePair<string, object>> example)
+        private static void AddUpdateParameters(SqliteCommand sqliteCommand, IEnumerable<KeyValuePair<string, object?>> example)
         {
             if (example == null)
                 return;

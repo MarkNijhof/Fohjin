@@ -21,7 +21,8 @@ namespace Fohjin.DDD.EventStore
             _log = log;
         }
 
-        public TAggregate GetById<TAggregate>(Guid id) where TAggregate : class, IOriginator, IEventProvider<TDomainEvent>, new()
+        public TAggregate? GetById<TAggregate>(Guid id)
+            where TAggregate : class, IOriginator, IEventProvider<TDomainEvent>, new()
         {
             _log.LogInformation($"{nameof(GetById)}({{{nameof(id)}}})", id);
             return RegisterForTracking(_identityMap.GetById<TAggregate>(id)) ?? _eventStoreUnitOfWork.GetById<TAggregate>(id);
@@ -33,7 +34,8 @@ namespace Fohjin.DDD.EventStore
             _eventStoreUnitOfWork.Add(aggregateRoot);
         }
 
-        private TAggregate RegisterForTracking<TAggregate>(TAggregate aggregateRoot) where TAggregate : class, IOriginator, IEventProvider<TDomainEvent>, new()
+        private TAggregate? RegisterForTracking<TAggregate>(TAggregate? aggregateRoot)
+            where TAggregate : class, IOriginator, IEventProvider<TDomainEvent>, new()
         {
             if (aggregateRoot == null)
                 return aggregateRoot;

@@ -13,24 +13,24 @@ namespace Fohjin.DDD.BankApplication.Views
             RegisterCLientEvents();
         }
 
-        public event EventAction OnCreateNewClient;
-        public event EventAction OnOpenSelectedClient;
+        public event EventAction? OnCreateNewClient;
+        public event EventAction? OnOpenSelectedClient;
 
         private void RegisterCLientEvents()
         {
-            addANewClientToolStripMenuItem.Click += (s, e) => OnCreateNewClient();
-            _clients.Click += (s, e) => OnOpenSelectedClient();
+            addANewClientToolStripMenuItem.Click += (s, e) => OnCreateNewClient?.Invoke();
+            _clients.Click += (s, e) => OnOpenSelectedClient?.Invoke();
         }
 
-        public IEnumerable<ClientReport> Clients
+        public IEnumerable<ClientReport>? Clients
         {
-            get { return (IEnumerable<ClientReport>)_clients.DataSource; }
+            get { return _clients.DataSource as IEnumerable<ClientReport>;  }
             set { _clients.DataSource = value; }
         }
 
-        public ClientReport GetSelectedClient()
+        public ClientReport? GetSelectedClient()
         {
-            return (ClientReport)_clients.SelectedItem;
+            return _clients.SelectedItem as ClientReport;
         }
     }
 }

@@ -4,11 +4,11 @@ namespace Test.Fohjin.DDD.TestUtilities
 {
     public class TupleConfigurationProvider : ConfigurationProvider
     {
-        public TupleConfigurationProvider(params (string key, string value)[] settings)
+        public TupleConfigurationProvider(params (string key, string? value)[] settings)
             : this(settings.AsEnumerable())
         {
         }
-        public TupleConfigurationProvider(IEnumerable<(string key, string value)> settings)
+        public TupleConfigurationProvider(IEnumerable<(string key, string? value)> settings)
         {
             foreach (var item in settings)
             {

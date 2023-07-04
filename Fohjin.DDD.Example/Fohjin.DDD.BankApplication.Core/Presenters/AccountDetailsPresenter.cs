@@ -10,7 +10,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
     public class AccountDetailsPresenter : Presenter<IAccountDetailsView>, IAccountDetailsPresenter
     {
         private int _editStep;
-        private AccountReport _accountReport;
+        private AccountReport? _accountReport;
         private AccountDetailsReport _accountDetailsReport;
         private readonly IAccountDetailsView _accountDetailsView;
         private readonly IPopupPresenter _popupPresenter;
@@ -49,16 +49,16 @@ namespace Fohjin.DDD.BankApplication.Presenters
             if (_accountReport == null)
                 return;
 
-            _accountDetailsReport = _reportingRepository.GetByExample<AccountDetailsReport>(new { _accountReport.Id }).FirstOrDefault();
-            _accountDetailsView.AccountName = _accountDetailsReport.AccountName;
-            _accountDetailsView.AccountNameLabel = _accountDetailsReport.AccountName;
-            _accountDetailsView.AccountNumberLabel = _accountDetailsReport.AccountNumber;
-            _accountDetailsView.BalanceLabel = _accountDetailsReport.Balance;
-            _accountDetailsView.Ledgers = _accountDetailsReport.Ledgers;
-            _accountDetailsView.TransferAccounts = _reportingRepository.GetByExample<AccountReport>(null).ToList().Where(x => x.Id != _accountDetailsReport.Id).ToList();
+            _accountDetailsReport = _reportingRepository?.GetByExample<AccountDetailsReport>(new { _accountReport.Id }).FirstOrDefault();
+            _accountDetailsView.AccountName = _accountDetailsReport?.AccountName;
+            _accountDetailsView.AccountNameLabel = _accountDetailsReport?.AccountName;
+            _accountDetailsView.AccountNumberLabel = _accountDetailsReport?.AccountNumber;
+            _accountDetailsView.BalanceLabel = _accountDetailsReport?.Balance ?? 0;
+            _accountDetailsView.Ledgers = _accountDetailsReport?.Ledgers;
+            _accountDetailsView.TransferAccounts = _reportingRepository?.GetByExample<AccountReport>(null).ToList().Where(x => x.Id != _accountDetailsReport?.Id).ToList();
         }
 
-        public void SetAccount(AccountReport accountReport)
+        public void SetAccount(AccountReport? accountReport)
         {
             _accountReport = accountReport;
         }
@@ -70,7 +70,8 @@ namespace Fohjin.DDD.BankApplication.Presenters
                 //                if (_accountDetailsReport == null)
                 //                    return;
 
-                _bus.Publish(new CloseAccountCommand(_accountReport.Id));
+                if (_accountReport != null)
+                    _bus.Publish(new CloseAccountCommand(_accountReport.Id));
 
                 _accountDetailsView.Close();
             });
@@ -237,9 +238,6 @@ namespace Fohjin.DDD.BankApplication.Presenters
             return _accountDetailsView.DepositAmount > decimal.Zero;
         }
 
-        private bool AccountNameHasChanged()
-        {
-            return _accountDetailsView.AccountName != _accountDetailsReport.AccountName;
-        }
+        private bool AccountNameHasChanged() => _accountDetailsView.AccountName != _accountDetailsReport?.AccountName;
     }
 }

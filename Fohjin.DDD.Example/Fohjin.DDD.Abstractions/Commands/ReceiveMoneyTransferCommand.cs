@@ -2,15 +2,15 @@ using System.Text.Json.Serialization;
 
 namespace Fohjin.DDD.Commands
 {
-    public class ReceiveMoneyTransferCommand : CommandBase
+    public record ReceiveMoneyTransferCommand : CommandBase
     {
-        public decimal Amount { get; set; }
-        public string AccountNumber { get; set; }
+        public decimal Amount { get; init; }
+        public string? AccountNumber { get; init; }
 
         [JsonConstructor]
         public ReceiveMoneyTransferCommand() : base() { }
 
-        public ReceiveMoneyTransferCommand(Guid id, decimal amount, string accountNumber) : base(id)
+        public ReceiveMoneyTransferCommand(Guid id, decimal amount, string? accountNumber) : base(id)
         {
             Amount = amount;
             AccountNumber = accountNumber;

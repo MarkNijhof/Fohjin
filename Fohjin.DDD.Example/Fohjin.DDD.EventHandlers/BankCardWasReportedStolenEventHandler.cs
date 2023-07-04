@@ -1,21 +1,19 @@
 ﻿using Fohjin.DDD.Events.Client;
 using Fohjin.DDD.Reporting;
 
-namespace Fohjin.DDD.EventHandlers
+namespace Fohjin.DDD.EventHandlers;
+
+public class BankCardWasReportedStolenEventHandler : EventHandlerBase<BankCardWasReportedStolenEvent>
 {
-    public class BankCardWasReportedStolenEventHandler : EventHandlerBase<BankCardWasReportedStolenEvent>
+    private readonly IReportingRepository _reportingRepository;
+
+    public BankCardWasReportedStolenEventHandler(IReportingRepository reportingRepository)
     {
-        private readonly IReportingRepository _reportingRepository;
+        _reportingRepository = reportingRepository;
+    }
 
-        public BankCardWasReportedStolenEventHandler(IReportingRepository reportingRepository)
-        {
-            _reportingRepository = reportingRepository;
-        }
-
-        public override Task ExecuteAsync(BankCardWasReportedStolenEvent theEvent)
-        {
-            throw new NotImplementedException();
-            return Task.CompletedTask;
-        }
+    public override Task ExecuteAsync(BankCardWasReportedStolenEvent theEvent)
+    {
+        throw new NotImplementedException();
     }
 }

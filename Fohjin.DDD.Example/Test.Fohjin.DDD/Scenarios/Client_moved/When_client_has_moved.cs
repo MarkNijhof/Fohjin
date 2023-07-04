@@ -37,7 +37,7 @@ namespace Test.Fohjin.DDD.Scenarios.Client_moved
         [TestMethod]
         public void Then_the_client_details_report_will_be_updated_with_the_expected_details()
         {
-            UpdateClientDetailsObject.WillBeSimuliar(new { Street = "Street", StreetNumber = "123", PostalCode = "5000", City = "Bergen" }.ToString());
+            UpdateClientDetailsObject.WillBeSimuliar(new { Street = "Street", StreetNumber = "123", PostalCode = "5000", City = "Bergen" }.ToString() ?? "");
             WhereClientDetailsObject.WillBeSimuliar(new { Id = _clientId });
         }
     }

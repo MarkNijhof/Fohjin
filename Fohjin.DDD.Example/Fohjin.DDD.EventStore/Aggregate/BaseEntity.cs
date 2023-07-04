@@ -1,15 +1,17 @@
-﻿namespace Fohjin.DDD.EventStore.Aggregate
+﻿using System.Collections.Concurrent;
+
+namespace Fohjin.DDD.EventStore.Aggregate
 {
     public abstract class BaseEntity<TDomainEvent> : IEntityEventProvider<TDomainEvent> where TDomainEvent : IDomainEvent
     {
         public Guid Id { get; set; }
-        private readonly Dictionary<Type, Action<TDomainEvent>> _events = new();
-        private readonly List<TDomainEvent> _appliedEvents = new();
+        private readonly ConcurrentDictionary<Type, Action<TDomainEvent>> _events = new();
+        private readonly ConcurrentBag<TDomainEvent> _appliedEvents = new();
         private Func<int>? _versionProvider;
 
         protected void RegisterEvent<TEvent>(Action<TEvent> eventHandler) where TEvent : class, TDomainEvent
         {
-            _events.Add(typeof(TEvent), theEvent => eventHandler(theEvent as TEvent));
+            _events.TryAdd(typeof(TEvent), theEvent => eventHandler((TEvent)theEvent));
         }
 
         protected void Apply<TEvent>(TEvent domainEvent) where TEvent : class, TDomainEvent
@@ -34,8 +36,8 @@
 
         private void Apply(Type eventType, TDomainEvent domainEvent)
         {
-            if (!_events.TryGetValue(eventType, out Action<TDomainEvent> handler))
-                throw new UnregisteredDomainEventException(string.Format("The requested domain event '{0}' is not registered in '{1}'", eventType.FullName, GetType().FullName));
+            if (!_events.TryGetValue(eventType, out var handler))
+                throw new UnregisteredDomainEventException($"The requested domain event '{eventType.FullName}' is not registered in '{GetType().FullName}'");
 
             handler(domainEvent);
         }

@@ -1,8 +1,5 @@
-using System.Text.Json.Serialization;
+namespace Fohjin.DDD.Events.Account;
 
-namespace Fohjin.DDD.Events.Account
+public record AccountClosedEvent : DomainEvent
 {
-    public class AccountClosedEvent : DomainEvent
-    {
-    }
 }

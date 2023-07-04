@@ -45,7 +45,8 @@ namespace Test.Fohjin.DDD.Domain.Repositories
         {
             TestContext.SetupWorkingDirectory();
             var dataBaseFile = Path.Combine(
-                (string)TestContext.Properties[TestContextExtensions.TestWorkingDirectory],
+                (string?)TestContext.Properties[TestContextExtensions.TestWorkingDirectory] ??
+                    throw new NotSupportedException($"TestContext.Properties is missing [TestContextExtensions.TestWorkingDirectory]"),
                 DomainDatabaseBootStrapper.DataBaseFile
                 );
 
@@ -150,14 +151,14 @@ namespace Test.Fohjin.DDD.Domain.Repositories
                 if (field.FieldType == typeof(List<Ledger>))
                 {
                     var counter = 0;
-                    var ledgers = (List<Ledger>)field.GetValue(recreated);
-                    foreach (var ledger in (List<Ledger>)field.GetValue(original))
+                    var ledgers = field.GetValue(recreated) as List<Ledger>;
+                    foreach (var ledger in field.GetValue(original) as List<Ledger> ?? Enumerable.Empty<Ledger>())
                     {
-                        Assert.AreEqual(ledgers[counter++].ToString(), ledger.ToString());
+                        Assert.AreEqual(ledgers?[counter++].ToString(), ledger.ToString());
                     }
                     continue;
                 }
-                Assert.AreEqual(field.GetValue(recreated).ToString(), field.GetValue(original).ToString());
+                Assert.AreEqual(field.GetValue(recreated)?.ToString(), field.GetValue(original)?.ToString());
             }
         }
 

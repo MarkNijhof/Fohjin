@@ -17,9 +17,10 @@ namespace Fohjin.DDD.CommandHandlers
         {
             var activeAccount = _repository.GetById<ActiveAccount>(compensatingCommand.Id);
 
-            var closedAccount = activeAccount.Close();
+            var closedAccount = activeAccount?.Close();
 
-            _repository.Add(closedAccount);
+            if (closedAccount != null)
+                _repository.Add(closedAccount);
             return Task.CompletedTask;
         }
     }

@@ -4,20 +4,27 @@ using System.Text.Json.Serialization;
 
 namespace Fohjin.DDD.Domain.Mementos
 {
-    [Serializable]
-    public class ClosedAccountMemento : IMemento
+    public record ClosedAccountMemento : IMemento
     {
-        public Guid Id { get; set; }
-        public int Version { get; set; }
-        public Guid OriginalAccountId { get; set; }
-        public Guid ClientId { get; set; }
-        public string AccountName { get; set; }
-        public string AccountNumber { get; set; }
-        public List<KeyValuePair<string, string>> Ledgers { get; set; }
+        public Guid Id { get; init; }
+        public int Version { get; init; }
+        public Guid OriginalAccountId { get; init; }
+        public Guid ClientId { get; init; }
+        public string? AccountName { get; init; }
+        public string? AccountNumber { get; init; }
+        public List<KeyValuePair<string, string>> Ledgers { get; init; } = new();
 
         [JsonConstructor]
         public ClosedAccountMemento() { }
-        public ClosedAccountMemento(Guid id, int version, Guid originalAccountId, Guid clientId, string accountName, string accountNumber, List<Ledger> ledgers)
+        public ClosedAccountMemento(
+            Guid id,
+            int version,
+            Guid originalAccountId,
+            Guid clientId,
+            string? accountName,
+            string? accountNumber,
+            List<Ledger> ledgers
+            )
         {
             Id = id;
             Version = version;

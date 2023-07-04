@@ -2,18 +2,23 @@ using System.Text.Json.Serialization;
 
 namespace Fohjin.DDD.Reporting.Dtos
 {
-    public class AccountReport
+    public record AccountReport
     {
-        public Guid Id { get; set; }
-        public Guid ClientDetailsReportId { get; set; }
-        public string AccountName { get; set; }
-        public string AccountNumber { get; set; }
+        public Guid Id { get; init; }
+        public Guid ClientDetailsReportId { get; init; }
+        public string? AccountName { get; init; }
+        public string? AccountNumber { get; init; }
 
         [JsonConstructor]
         public AccountReport() { }
 
         [SqliteConstructor]
-        public AccountReport(Guid id, Guid clientDetailsReportId, string accountName, string accountNumber)
+        public AccountReport(
+            Guid id,
+            Guid clientDetailsReportId,
+            string? accountName, 
+            string? accountNumber
+            )
         {
             Id = id;
             ClientDetailsReportId = clientDetailsReportId;
@@ -21,9 +26,6 @@ namespace Fohjin.DDD.Reporting.Dtos
             AccountNumber = accountNumber;
         }
 
-        public override string ToString()
-        {
-            return string.Format("{0} - ({1})", AccountNumber, AccountName);
-        }
+        public override string ToString() => $"{AccountNumber} - ({AccountName})";
     }
 }

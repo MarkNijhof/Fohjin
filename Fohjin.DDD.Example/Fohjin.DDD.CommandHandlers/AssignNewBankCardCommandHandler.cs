@@ -16,8 +16,9 @@ namespace Fohjin.DDD.CommandHandlers
         public override Task ExecuteAsync(AssignNewBankCardCommand assignNewCancelReportStolenBankCardCommand)
         {
             var client = _repository.GetById<Client>(assignNewCancelReportStolenBankCardCommand.Id);
-            client.AssignNewBankCardForAccount(assignNewCancelReportStolenBankCardCommand.AccountId);
-            _repository.Add(client);
+            client?.AssignNewBankCardForAccount(assignNewCancelReportStolenBankCardCommand.AccountId);
+            if (client != null)
+                _repository.Add(client);
             return Task.CompletedTask;
         }
     }
