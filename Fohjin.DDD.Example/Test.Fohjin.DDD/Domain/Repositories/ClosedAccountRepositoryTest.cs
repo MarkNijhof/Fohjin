@@ -26,25 +26,23 @@ public class ClosedAccountRepositoryTest
         ;
     public IServiceCollection Services => _services;
 
-    private IServiceProvider? _provider;
+    private IServiceProvider _provider;
     public IServiceProvider Provider => _provider ??= _services.BuildServiceProvider();
 
     public ILogger<T> Logger<T>() => Provider.GetRequiredService<ILogger<T>>();
 
-    private const string dataBaseFile = "domainDataBase.db3";
-
-    private IDomainRepository<IDomainEvent>? _repository;
-    private DomainEventStorage<IDomainEvent>? _domainEventStorage;
-    private EventStoreIdentityMap<IDomainEvent>? _eventStoreIdentityMap;
-    private EventStoreUnitOfWork<IDomainEvent>? _eventStoreUnitOfWork;
-    private List<Ledger>? _ledgers;
+    private IDomainRepository<IDomainEvent> _repository;
+    private DomainEventStorage<IDomainEvent> _domainEventStorage;
+    private EventStoreIdentityMap<IDomainEvent> _eventStoreIdentityMap;
+    private EventStoreUnitOfWork<IDomainEvent> _eventStoreUnitOfWork;
+    private List<Ledger> _ledgers;
 
     [TestInitialize]
     public void SetUp()
     {
         TestContext.SetupWorkingDirectory();
         var dataBaseFile = Path.Combine(
-            (string?)TestContext.Properties[TestContextExtensions.TestWorkingDirectory] ??
+            (string)TestContext.Properties[TestContextExtensions.TestWorkingDirectory] ??
                 throw new NotSupportedException($"TestContext.Properties is missing [TestContextExtensions.TestWorkingDirectory]"),
             DomainDatabaseBootStrapper.DataBaseFile
             );

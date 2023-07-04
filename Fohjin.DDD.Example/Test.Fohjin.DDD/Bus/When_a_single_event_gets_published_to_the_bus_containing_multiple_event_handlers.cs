@@ -8,9 +8,9 @@ namespace Test.Fohjin.DDD.Bus;
 
 public class When_a_single_event_gets_published_to_the_bus_containing_multiple_event_handlers : BaseTestFixture<DirectBus>
 {
-    private FirstTestEventHandler? _handler;
-    private SecondTestEventHandler? _secondHandler;
-    private TestEvent? _event;
+    private FirstTestEventHandler _handler;
+    private SecondTestEventHandler _secondHandler;
+    private TestEvent _event;
 
     protected override void SetupDependencies()
     {

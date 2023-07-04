@@ -23,6 +23,6 @@ namespace Fohjin.DDD.Domain.Account
 
         public bool IsNegative() => _decimalAmount < 0;
         public static implicit operator decimal(Amount amount) => amount._decimalAmount;
-        public static implicit operator Amount(decimal decimalAmount) => new Amount(decimalAmount);
+        public static implicit operator Amount(decimal decimalAmount) => new (decimalAmount);
     }
 }

@@ -14,6 +14,6 @@ namespace Fohjin.DDD.Domain.Account
             new Amount(_amount).Substract(amount).IsNegative();
 
         public static implicit operator decimal(Balance balance) => balance._amount;
-        public static implicit operator Balance(decimal decimalAmount) => new Balance(decimalAmount);
+        public static implicit operator Balance(decimal decimalAmount) => new (decimalAmount);
     }
 }

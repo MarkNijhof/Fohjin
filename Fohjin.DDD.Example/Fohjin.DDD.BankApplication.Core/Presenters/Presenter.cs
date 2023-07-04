@@ -20,7 +20,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
             foreach (var viewDefinedEvent in viewDefinedEvents)
             {
                 var eventInfo = viewEvents[viewDefinedEvent];
-                var methodInfo = GetTheEventHandler(viewDefinedEvent, presenterEventHandlers, eventInfo);
+                var methodInfo = GetTheEventHandler(viewDefinedEvent, presenterEventHandlers);
 
                 if (methodInfo == null)
                 {
@@ -31,9 +31,9 @@ namespace Fohjin.DDD.BankApplication.Presenters
             }
         }
 
-        private MethodInfo? GetTheEventHandler(string viewDefinedEvent, IDictionary<string, MethodInfo>? presenterEventHandlers, EventInfo eventInfo)
+        private static MethodInfo? GetTheEventHandler(string viewDefinedEvent, IDictionary<string, MethodInfo>? presenterEventHandlers)
         {
-            var substring = viewDefinedEvent.Substring(2);
+            var substring = viewDefinedEvent[2..];
             if (!presenterEventHandlers?.ContainsKey(substring) ?? false)
                 return null;
 

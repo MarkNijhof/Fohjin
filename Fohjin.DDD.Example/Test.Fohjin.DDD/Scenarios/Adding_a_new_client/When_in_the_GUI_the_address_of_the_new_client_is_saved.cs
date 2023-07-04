@@ -16,8 +16,8 @@ namespace Test.Fohjin.DDD.Scenarios.Adding_a_new_client
 
         protected override void Given()
         {
-            Presenter.SetClient(null);
-            Presenter.Display();
+            Presenter?.SetClient(null);
+            Presenter?.Display();
             On<IClientDetailsView>().ValueFor(x => x.ClientName).IsSetTo("New Client Name");
             On<IClientDetailsView>().FireEvent(x => x.OnFormElementGotChanged += null);
             On<IClientDetailsView>().FireEvent(x => x.OnSaveNewClientName += null);

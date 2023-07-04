@@ -4,7 +4,7 @@ namespace Test.Fohjin.DDD.TestUtilities
 {
     public class TestSystemRandom : ISystemRandom
     {
-        private Func<int, int, int> _rand;
+        private readonly Func<int, int, int> _rand;
 
         public TestSystemRandom(
              Func<int, int, int> rand)

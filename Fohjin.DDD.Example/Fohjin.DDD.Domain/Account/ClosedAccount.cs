@@ -34,7 +34,7 @@ namespace Fohjin.DDD.Domain.Account
         }
 
         public static ClosedAccount CreateNew(Guid accountId, Guid clientId, List<Ledger> ledgers, AccountName accountName, AccountNumber accountNumber) =>
-            new ClosedAccount(accountId, clientId, ledgers, accountName.Name, accountNumber.Number);
+            new (accountId, clientId, ledgers, accountName.Name, accountNumber.Number);
 
         IMemento IOriginator.CreateMemento() =>
             new ClosedAccountMemento(Id, Version, _originalAccountId, _clientId, _accountName.Name, _accountNumber.Number, _ledgers);

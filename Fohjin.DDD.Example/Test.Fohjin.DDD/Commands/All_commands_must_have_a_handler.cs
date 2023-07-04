@@ -15,7 +15,7 @@ namespace Test.Fohjin.DDD.Commands
     {
         [ContextualTestMethod]
         [DynamicData(nameof(TestData), DynamicDataSourceType.Method, DynamicDataDisplayName = nameof(TestDataDisplayName))]
-        public async Task TestCommandHandlers(Type commandType, Type? handlerType)
+        public async Task TestCommandHandlers(Type commandType, Type handlerType)
         {
             Assert.IsNotNull(handlerType, "No handlers exist");
 
@@ -26,7 +26,7 @@ namespace Test.Fohjin.DDD.Commands
                 ;
             var serviceProvider = services.BuildServiceProvider();
 
-            var command = (ICommand?)commandType.GetNonDefaultValue(serviceProvider);
+            var command = (ICommand)commandType.GetNonDefaultValue(serviceProvider);
 
             var instance = (ICommandHandler)ActivatorUtilities.CreateInstance(serviceProvider, handlerType);
             if (command != null)

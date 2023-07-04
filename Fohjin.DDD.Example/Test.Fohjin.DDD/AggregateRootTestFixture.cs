@@ -5,9 +5,9 @@ namespace Test.Fohjin.DDD;
 //[TestClass]
 public abstract class AggregateRootTestFixture<TAggregateRoot> where TAggregateRoot : IEventProvider<IDomainEvent>, new()
 {
-    protected TAggregateRoot? AggregateRoot;
-    protected Exception? CaughtException;
-    protected IEnumerable<IDomainEvent>? PublishedEvents;
+    protected TAggregateRoot AggregateRoot;
+    protected Exception CaughtException;
+    protected IEnumerable<IDomainEvent> PublishedEvents;
     protected virtual IEnumerable<IDomainEvent> Given()
     {
         return new List<IDomainEvent>();

@@ -25,22 +25,22 @@ public class ActiveAccountRepositoryTest
         ;
     public IServiceCollection Services => _services;
 
-    private IServiceProvider? _provider;
+    private IServiceProvider _provider;
     public IServiceProvider Provider => _provider ??= _services.BuildServiceProvider();
 
     public ILogger<T> Logger<T>() => Provider.GetRequiredService<ILogger<T>>();
 
-    private IDomainRepository<IDomainEvent>? _repository;
-    private DomainEventStorage<IDomainEvent>? _domainEventStorage;
-    private EventStoreIdentityMap<IDomainEvent>? _eventStoreIdentityMap;
-    private EventStoreUnitOfWork<IDomainEvent>? _eventStoreUnitOfWork;
+    private IDomainRepository<IDomainEvent> _repository;
+    private DomainEventStorage<IDomainEvent> _domainEventStorage;
+    private EventStoreIdentityMap<IDomainEvent> _eventStoreIdentityMap;
+    private EventStoreUnitOfWork<IDomainEvent> _eventStoreUnitOfWork;
 
     [TestInitialize]
     public void SetUp()
     {
         TestContext.SetupWorkingDirectory();
         var dataBaseFile = Path.Combine(
-            (string?)TestContext.Properties[TestContextExtensions.TestWorkingDirectory] ??
+            (string)TestContext.Properties[TestContextExtensions.TestWorkingDirectory] ??
                 throw new NotSupportedException($"TestContext Property is missing {nameof(TestContextExtensions.TestWorkingDirectory)}"),
             DomainDatabaseBootStrapper.DataBaseFile
             );

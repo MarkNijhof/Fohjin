@@ -176,10 +176,7 @@ namespace Fohjin.DDD.Reporting.Infrastructure
 
             var dtoConstructor = dtoType.GetConstructors()
                     .Where(c => c.GetCustomAttribute<SqliteConstructorAttribute>() != null)
-                    .FirstOrDefault();
-
-            if (dtoConstructor == null)
-                throw new ApplicationException($"must label ctor for sqlite");
+                    .FirstOrDefault() ?? throw new ApplicationException($"must label ctor for sqlite");
 
             while (sqLiteDataReader.Read())
             {

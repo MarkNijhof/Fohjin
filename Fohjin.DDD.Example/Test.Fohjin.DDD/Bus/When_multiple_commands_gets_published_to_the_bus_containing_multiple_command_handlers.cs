@@ -8,10 +8,10 @@ namespace Test.Fohjin.DDD.Bus
 {
     public class When_multiple_commands_gets_published_to_the_bus_containing_multiple_command_handlers : BaseTestFixture<DirectBus>
     {
-        private FirstTestCommandHandler? _handler;
-        private SecondTestCommandHandler? _secondHandler;
-        private TestCommand? _command;
-        private TestCommand? _otherCommand;
+        private FirstTestCommandHandler _handler;
+        private SecondTestCommandHandler _secondHandler;
+        private TestCommand _command;
+        private TestCommand _otherCommand;
 
         protected override void SetupDependencies()
         {

@@ -7,15 +7,12 @@ namespace Test.Fohjin.DDD.TestUtilities.Tools
     public class TestSendMoneyTransfer : ISendMoneyTransfer
     {
         private readonly TestContext _testContext;
-        private readonly IServiceProvider _serviceProvider;
 
         public TestSendMoneyTransfer(
-            TestContext testContext,
-            IServiceProvider serviceProvider
+            TestContext testContext
             )
         {
             _testContext = testContext;
-            _serviceProvider = serviceProvider;
         }
 
         public void Send(MoneyTransfer moneyTransfer)

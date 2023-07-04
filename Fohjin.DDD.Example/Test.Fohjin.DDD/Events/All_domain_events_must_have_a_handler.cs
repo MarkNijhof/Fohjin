@@ -18,7 +18,7 @@ public class All_domain_events_must_have_a_handler
 
     [DataTestMethod]
     [DynamicData(nameof(TestData), DynamicDataSourceType.Method, DynamicDataDisplayName = nameof(TestDataDisplayName))]
-    public async Task TestEventHandler(Type eventType, Type? handlerType = null)
+    public async Task TestEventHandler(Type eventType, Type handlerType = null)
     {
         this.TestContext.WriteLine($"RUN_ID:{TestContext.Properties[$"RUN_ID"] = Guid.NewGuid()}");
         this.TestContext.Properties[$"Parameter::{nameof(eventType)}"] = eventType;
@@ -40,10 +40,7 @@ public class All_domain_events_must_have_a_handler
             ;
         var serviceProvider = services.BuildServiceProvider();
 
-        var evnt = eventType.GetNonDefaultValue(serviceProvider) as IDomainEvent;
-
-        var instance = ActivatorUtilities.CreateInstance(serviceProvider, handlerType) as IEventHandler;
-        if (evnt != null && instance != null)
+        if (eventType.GetNonDefaultValue(serviceProvider) is IDomainEvent evnt && ActivatorUtilities.CreateInstance(serviceProvider, handlerType) is IEventHandler instance)
             await instance.ExecuteAsync(evnt);
     }
     public static string TestDataDisplayName(MethodInfo methodInfo, object[] data) =>

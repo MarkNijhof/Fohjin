@@ -39,6 +39,6 @@ namespace Fohjin.DDD.Reporting.Dtos
             PhoneNumber = phoneNumber;
         }
 
-        public static ClientDetailsReport New => new ClientDetailsReport { Id = Guid.NewGuid(), };
+        public static ClientDetailsReport New => new () { Id = Guid.NewGuid(), };
     }
 }

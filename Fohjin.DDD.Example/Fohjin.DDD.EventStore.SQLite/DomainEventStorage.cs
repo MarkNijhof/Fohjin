@@ -152,8 +152,7 @@ namespace Fohjin.DDD.EventStore.SQLite
             {
                 using var sqliteCommand = new SqliteCommand(commandText, sqliteTransaction.Connection, sqliteTransaction);
                 sqliteCommand.Parameters.Add(new SqliteParameter("@eventProviderId", eventProviderId));
-                var bytes = sqliteCommand.ExecuteScalar() as byte[];
-                if (bytes != null)
+                if (sqliteCommand.ExecuteScalar() is byte[] bytes)
                     snapshot = Deserialize<ISnapShot>(bytes);
                 sqliteTransaction.Commit();
             }

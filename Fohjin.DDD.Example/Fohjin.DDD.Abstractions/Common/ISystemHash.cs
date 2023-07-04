@@ -1,7 +1,6 @@
-﻿namespace Fohjin.DDD.Common
+﻿namespace Fohjin.DDD.Common;
+
+public interface ISystemHash
 {
-    public interface ISystemHash
-    {
-        string Hash(string input);
-    }
+    string? Hash(string? input);
 }

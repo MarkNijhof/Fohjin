@@ -33,5 +33,5 @@ public record AccountDetailsReport
         AccountNumber = accountNumber;
     }
 
-    public static AccountDetailsReport New => new AccountDetailsReport { Id = Guid.NewGuid() };
+    public static AccountDetailsReport New => new() { Id = Guid.NewGuid() };
 }

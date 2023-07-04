@@ -33,13 +33,13 @@ namespace Test.Fohjin.DDD
         {
             Assert.AreNotEqual(value?.ToString(), source?.ToString());
         }
-        public static void WithMessage(this Exception theException, string message)
+        public static void WithMessage(this Exception? theException, string message)
         {
-            Assert.AreEqual(message, theException.Message);
+            Assert.AreEqual(message, theException?.Message);
         }
-        public static TDomainEvent Last<TDomainEvent>(this IEnumerable<IDomainEvent> events)
+        public static TDomainEvent? Last<TDomainEvent>(this IEnumerable<IDomainEvent>? events)
         {
-            return (TDomainEvent)events.Last();
+            return (TDomainEvent?)events?.Last();
         }
         public static object? LastMinus(this IEnumerable<IDomainEvent>? events, int minus)
         {

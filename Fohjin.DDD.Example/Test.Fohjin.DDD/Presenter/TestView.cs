@@ -1,28 +1,27 @@
 ﻿using Fohjin.DDD.BankApplication.Views;
 
-namespace Test.Fohjin.DDD.Presenter
+namespace Test.Fohjin.DDD.Presenter;
+
+public class TestView : ITestView
 {
-    public class TestView : ITestView
+    public event EventAction OnTest = null!;
+
+    public void Test()
     {
-        public event EventAction OnTest;
+        OnTest();
+    }
 
-        public void Test()
-        {
-            OnTest();
-        }
+    // IView Interface plumbing
+    public void Dispose()
+    {
+    }
 
-        // IView Interface plumbing
-        public void Dispose()
-        {
-        }
+    public DialogResults ShowDialog()
+    {
+        throw new NotImplementedException();
+    }
 
-        public DialogResults ShowDialog()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Close()
-        {
-        }
+    public void Close()
+    {
     }
 }

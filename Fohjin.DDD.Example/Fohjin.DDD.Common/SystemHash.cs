@@ -1,15 +1,15 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 
-namespace Fohjin.DDD.Common
+namespace Fohjin.DDD.Common;
+
+public class SystemHash : ISystemHash
 {
-    public class SystemHash : ISystemHash
+    public string? Hash(string? input)
     {
-        public string Hash(string input)
-        {
-            using var md5 = MD5.Create();
-            var hash = md5.ComputeHash(Encoding.UTF8.GetBytes(input));
-            return new Guid(hash).ToString();
-        }
+        if (input == null)
+            return null;
+        var hash = MD5.HashData(Encoding.UTF8.GetBytes(input));
+        return new Guid(hash).ToString();
     }
 }

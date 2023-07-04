@@ -10,9 +10,7 @@ namespace Test.Fohjin.DDD.TestUtilities
     {
         public static object BuildObject(this Type type, IServiceProvider? serviceProvider = null)
         {
-            var defaultConstructor = type.GetDefaultConstructorInfo();
-            if (defaultConstructor == null)
-                throw new NotSupportedException($"{type}");
+            var defaultConstructor = type.GetDefaultConstructorInfo() ?? throw new NotSupportedException($"{type}");
 
             var obj = defaultConstructor.Invoke(Array.Empty<object?>());
 

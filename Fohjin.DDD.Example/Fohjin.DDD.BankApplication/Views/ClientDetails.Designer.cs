@@ -369,7 +369,7 @@
             this._postalCode.Name = "_postalCode";
             this._postalCode.Size = new System.Drawing.Size(55, 20);
             this._postalCode.TabIndex = 2;
-            this._postalCode.TextChanged += new System.EventHandler(this._client_Changed);
+            this._postalCode.TextChanged += new System.EventHandler(this.ClientChanged);
             // 
             // _streetNumber
             // 
@@ -377,7 +377,7 @@
             this._streetNumber.Name = "_streetNumber";
             this._streetNumber.Size = new System.Drawing.Size(55, 20);
             this._streetNumber.TabIndex = 1;
-            this._streetNumber.TextChanged += new System.EventHandler(this._client_Changed);
+            this._streetNumber.TextChanged += new System.EventHandler(this.ClientChanged);
             // 
             // _city
             // 
@@ -385,7 +385,7 @@
             this._city.Name = "_city";
             this._city.Size = new System.Drawing.Size(212, 20);
             this._city.TabIndex = 3;
-            this._city.TextChanged += new System.EventHandler(this._client_Changed);
+            this._city.TextChanged += new System.EventHandler(this.ClientChanged);
             // 
             // label3
             // 
@@ -402,7 +402,7 @@
             this._street.Name = "_street";
             this._street.Size = new System.Drawing.Size(212, 20);
             this._street.TabIndex = 0;
-            this._street.TextChanged += new System.EventHandler(this._client_Changed);
+            this._street.TextChanged += new System.EventHandler(this.ClientChanged);
             // 
             // label2
             // 
@@ -461,7 +461,7 @@
             this._phoneNumber.Name = "_phoneNumber";
             this._phoneNumber.Size = new System.Drawing.Size(273, 20);
             this._phoneNumber.TabIndex = 0;
-            this._phoneNumber.TextChanged += new System.EventHandler(this._client_Changed);
+            this._phoneNumber.TextChanged += new System.EventHandler(this.ClientChanged);
             // 
             // _clientNameTab
             // 
@@ -511,7 +511,7 @@
             this._clientName.Name = "_clientName";
             this._clientName.Size = new System.Drawing.Size(273, 20);
             this._clientName.TabIndex = 0;
-            this._clientName.TextChanged += new System.EventHandler(this._client_Changed);
+            this._clientName.TextChanged += new System.EventHandler(this.ClientChanged);
             // 
             // _addNewAccount
             // 
@@ -561,7 +561,7 @@
             this._newAccountName.Name = "_newAccountName";
             this._newAccountName.Size = new System.Drawing.Size(273, 20);
             this._newAccountName.TabIndex = 0;
-            this._newAccountName.TextChanged += new System.EventHandler(this._client_Changed);
+            this._newAccountName.TextChanged += new System.EventHandler(this.ClientChanged);
             // 
             // ClientDetails
             // 

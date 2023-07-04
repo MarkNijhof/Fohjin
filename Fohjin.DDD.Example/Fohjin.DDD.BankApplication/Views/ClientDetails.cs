@@ -207,7 +207,7 @@ namespace Fohjin.DDD.BankApplication.Views
             _newAccountName.Focus();
         }
 
-        private void _client_Changed(object sender, EventArgs e) =>
+        private void ClientChanged(object sender, EventArgs e) =>
             OnFormElementGotChanged?.Invoke();
     }
 }
