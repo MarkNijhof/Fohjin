@@ -12,8 +12,8 @@ namespace Test.Fohjin.DDD.Scenarios.Client_got_his_name_changed
     public class When_in_the_GUI_inserting_the_new_client_name : PresenterTestFixture<ClientDetailsPresenter>
     {
         private readonly Guid _clientId = Guid.NewGuid();
-        private ClientDetailsReport _clientDetailsReport;
-        private List<ClientDetailsReport> _clientDetailsReports;
+        private ClientDetailsReport? _clientDetailsReport;
+        private List<ClientDetailsReport>? _clientDetailsReports;
 
         protected override void SetupDependencies()
         {

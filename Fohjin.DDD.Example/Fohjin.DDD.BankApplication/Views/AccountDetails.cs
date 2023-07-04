@@ -42,12 +42,12 @@ namespace Fohjin.DDD.BankApplication.Views
             _newAccountNameSaveButton.Click += (s, e) => OnChangeAccountName?.Invoke();
         }
 
-        public string AccountNameLabel
+        public string? AccountNameLabel
         {
             set { _accountNameLabel.Text = value; }
         }
 
-        public string AccountNumberLabel
+        public string? AccountNumberLabel
         {
             set { _accountNumberLabel.Text = value; }
         }
@@ -155,7 +155,7 @@ namespace Fohjin.DDD.BankApplication.Views
             set { _balanceLabel.Text = value.ToString(); }
         }
 
-        public string AccountName
+        public string? AccountName
         {
             get { return _accountName.Text; }
             set { _accountName.Text = value; }

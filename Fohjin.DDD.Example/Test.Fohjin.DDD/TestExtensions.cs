@@ -5,17 +5,17 @@ namespace Test.Fohjin.DDD
 {
     public static class TestExtensions
     {
-        public static IDomainEvent Number(this IEnumerable<IDomainEvent> events, int value)
+        public static IDomainEvent? Number(this IEnumerable<IDomainEvent>? events, int value)
         {
-            return events.ToList()[--value];
+            return events?.ToList()[--value];
         }
-        public static void CountIs(this IEnumerable<IDomainEvent> events, int value)
+        public static void CountIs(this IEnumerable<IDomainEvent>? events, int value)
         {
-            Assert.AreEqual(value, events.ToList().Count());
+            Assert.AreEqual(value, events?.ToList().Count());
         }
-        public static void WillBeOfType<TType>(this object theEvent)
+        public static void WillBeOfType<TType>(this object? theEvent)
         {
-            Assert.AreEqual(typeof(TType), theEvent.GetType());
+            Assert.AreEqual(typeof(TType), theEvent?.GetType());
         }
         public static void WillBe(this object? source, object? value)
         {
@@ -39,19 +39,19 @@ namespace Test.Fohjin.DDD
         }
         public static TDomainEvent Last<TDomainEvent>(this IEnumerable<IDomainEvent> events)
         {
-            return (TDomainEvent) events.Last();
+            return (TDomainEvent)events.Last();
         }
-        public static object LastMinus(this IEnumerable<IDomainEvent> events, int minus)
+        public static object? LastMinus(this IEnumerable<IDomainEvent>? events, int minus)
         {
-            return events.ToList()[events.Count() - 1 - minus];
+            return events?.ToList()[events.Count() - 1 - minus];
         }
-        public static TDomainEvent LastMinus<TDomainEvent>(this IEnumerable<IDomainEvent> events, int minus)
+        public static TDomainEvent? LastMinus<TDomainEvent>(this IEnumerable<IDomainEvent>? events, int minus)
         {
-            return (TDomainEvent) events.ToList()[events.Count() - 1 - minus];
+            return (TDomainEvent?)events?.ToList()[events.Count() - 1 - minus];
         }
         public static TDomainEvent As<TDomainEvent>(this object theObject)
         {
-            return (TDomainEvent) theObject;
+            return (TDomainEvent)theObject;
         }
     }
 }

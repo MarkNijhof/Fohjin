@@ -1,16 +1,15 @@
 using System.Text.Json.Serialization;
 
-namespace Fohjin.DDD.Commands
-{
-    public record OpenNewAccountForClientCommand : CommandBase
-    {
-        public string AccountName { get; init; } = null!;
+namespace Fohjin.DDD.Commands;
 
-        [JsonConstructor]
-        public OpenNewAccountForClientCommand() : base() { }
-        public OpenNewAccountForClientCommand(Guid id, string accountName) : base(id)
-        {
-            AccountName = accountName;
-        }
+public record OpenNewAccountForClientCommand : CommandBase
+{
+    public string? AccountName { get; init; }
+
+    [JsonConstructor]
+    public OpenNewAccountForClientCommand() : base() { }
+    public OpenNewAccountForClientCommand(Guid id, string? accountName) : base(id)
+    {
+        AccountName = accountName;
     }
 }

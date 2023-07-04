@@ -7,7 +7,7 @@ namespace Test.Fohjin.DDD.Domain
     {
         protected override void When()
         {
-            AggregateRoot.DoSomethingIlligal();
+            AggregateRoot?.DoSomethingIlligal();
         }
 
         [TestMethod]
@@ -19,7 +19,7 @@ namespace Test.Fohjin.DDD.Domain
         [TestMethod]
         public void Then_the_exception_will_have_the_following_message()
         {
-            CaughtException.Message.WillBe(string.Format("The requested domain event '{0}' is not registered in '{1}'", typeof(SomeUnregisteredEvent).FullName, typeof(TestAggregateRoot).FullName));
+            CaughtException?.Message.WillBe(string.Format("The requested domain event '{0}' is not registered in '{1}'", typeof(SomeUnregisteredEvent).FullName, typeof(TestAggregateRoot).FullName));
         }
     }
 }

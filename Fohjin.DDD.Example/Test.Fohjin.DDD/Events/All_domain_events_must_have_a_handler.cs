@@ -9,69 +9,61 @@ using System.Reflection;
 using Test.Fohjin.DDD.TestUtilities;
 using Test.Fohjin.DDD.TestUtilities.Tools;
 
-namespace Test.Fohjin.DDD.Events
+namespace Test.Fohjin.DDD.Events;
+
+[TestClass]
+public class All_domain_events_must_have_a_handler
 {
-    [TestClass]
-    public class All_domain_events_must_have_a_handler
+    public TestContext TestContext { get; set; } = null!;
+
+    [DataTestMethod]
+    [DynamicData(nameof(TestData), DynamicDataSourceType.Method, DynamicDataDisplayName = nameof(TestDataDisplayName))]
+    public async Task TestEventHandler(Type eventType, Type? handlerType = null)
     {
-        public TestContext TestContext { get; set; }
+        this.TestContext.WriteLine($"RUN_ID:{TestContext.Properties[$"RUN_ID"] = Guid.NewGuid()}");
+        this.TestContext.Properties[$"Parameter::{nameof(eventType)}"] = eventType;
+        this.TestContext.Properties[$"Parameter::{nameof(handlerType)}"] = handlerType;
 
-        //[TestMethod]
-        //public void TestItems()
-        //{
-        //    var ents = typeof(IDomainEvent).GetInstanceTypes().ToArray();
-        //    var res = TestData().ToArray();
-        //}
-
-        [DataTestMethod]
-        [DynamicData(nameof(TestData), DynamicDataSourceType.Method, DynamicDataDisplayName = nameof(TestDataDisplayName))]
-        public async Task TestEventHandler(Type eventType, Type? handlerType = null)
+        if (handlerType == null && (eventType.Namespace?.Contains("Test") ?? true))
         {
-            this.TestContext.WriteLine($"RUN_ID:{TestContext.Properties[$"RUN_ID"] = Guid.NewGuid()}");
-            this.TestContext.Properties[$"Parameter::{nameof(eventType)}"] = eventType;
-            this.TestContext.Properties[$"Parameter::{nameof(handlerType)}"] = handlerType;
-
-            if (handlerType == null && eventType.Namespace.Contains("Test"))
-            {
-                Assert.Inconclusive("No handlers exist but it's a test event anyway");
-            }
-
-            Assert.IsNotNull(handlerType, "No handlers exist");
-
-            var services = new ServiceCollection()
-                .AddLogging(log => log.AddConsole().SetMinimumLevel(LogLevel.Information))
-                .AddSingleton(_ => TestContext)
-                .AddSingleton(typeof(IDomainRepository<>), typeof(TestDomainRepository<>))
-                .AddSingleton<IReportingRepository, TestReportingRepository>()
-                .AddSingleton<ISendMoneyTransfer, TestSendMoneyTransfer>()
-                ;
-            var serviceProvider = services.BuildServiceProvider();
-
-            var evnt = eventType.GetNonDefaultValue(serviceProvider) as IDomainEvent;
-
-            var instance = ActivatorUtilities.CreateInstance(serviceProvider, handlerType) as IEventHandler;
-            if (evnt != null && instance != null)
-                await instance.ExecuteAsync(evnt);
+            Assert.Inconclusive("No handlers exist but it's a test event anyway");
         }
-        public static string TestDataDisplayName(MethodInfo methodInfo, object[] data) =>
-            $"{methodInfo.Name} for {((Type)data[0]).Name} => {((Type?)data?[1])?.Name}";
 
-        public static IEnumerable<object[]> TestData()
-        {
-            var commands = from eventType in typeof(IDomainEvent).GetInstanceTypes()
-                           let handlerInterfaceType = typeof(IEventHandler<>).MakeGenericType(eventType)
-                           let handlers = handlerInterfaceType.GetInstanceTypes()
-                           from handlerType in handlers.DefaultIfEmpty()
-                           select new
-                           {
-                               eventType,
-                               handlerType,
-                           };
+        Assert.IsNotNull(handlerType, "No handlers exist");
 
-            var items = commands
-                ;
-            var mapped = items.Select(i => new object[] { i.eventType, i.handlerType });
-            return mapped;
-        }
+        var services = new ServiceCollection()
+            .AddLogging(log => log.AddConsole().SetMinimumLevel(LogLevel.Information))
+            .AddSingleton(_ => TestContext)
+            .AddSingleton(typeof(IDomainRepository<>), typeof(TestDomainRepository<>))
+            .AddSingleton<IReportingRepository, TestReportingRepository>()
+            .AddSingleton<ISendMoneyTransfer, TestSendMoneyTransfer>()
+            ;
+        var serviceProvider = services.BuildServiceProvider();
+
+        var evnt = eventType.GetNonDefaultValue(serviceProvider) as IDomainEvent;
+
+        var instance = ActivatorUtilities.CreateInstance(serviceProvider, handlerType) as IEventHandler;
+        if (evnt != null && instance != null)
+            await instance.ExecuteAsync(evnt);
+    }
+    public static string TestDataDisplayName(MethodInfo methodInfo, object[] data) =>
+        $"{methodInfo.Name} for {((Type)data[0]).Name} => {((Type?)data?[1])?.Name}";
+
+    public static IEnumerable<object[]> TestData()
+    {
+        var commands = from eventType in typeof(IDomainEvent).GetInstanceTypes()
+                       let handlerInterfaceType = typeof(IEventHandler<>).MakeGenericType(eventType)
+                       let handlers = handlerInterfaceType.GetInstanceTypes()
+                       from handlerType in handlers.DefaultIfEmpty()
+                       select new
+                       {
+                           eventType,
+                           handlerType,
+                       };
+
+        var items = commands
+            ;
+        var mapped = items.Select(i => new object[] { i.eventType, i.handlerType });
+        return mapped;
     }
 }

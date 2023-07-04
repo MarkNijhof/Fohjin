@@ -12,13 +12,13 @@ namespace Test.Fohjin.DDD.Scenarios.Receiving_money_transfer
         protected override void SetupDependencies()
         {
             OnDependency<IReportingRepository>()
-                .Setup(x => x.GetByExample<AccountReport>(It.IsAny<object>()))
+                ?.Setup(x => x.GetByExample<AccountReport>(It.IsAny<object>()))
                 .Throws(new Exception("account not found"));
         }
 
         protected override  Task WhenAsync()
         {
-            SubjectUnderTest.Receive(new MoneyTransfer("source account number", "target account number", 123.45M));
+            SubjectUnderTest?.Receive(new MoneyTransfer("source account number", "target account number", 123.45M));
             return Task.CompletedTask;
         }
 
@@ -31,7 +31,7 @@ namespace Test.Fohjin.DDD.Scenarios.Receiving_money_transfer
         [TestMethod]
         public void Then_the_exception_message_will_be()
         {
-            CaughtException.Message.WillBe(string.Format("The requested account '{0}' is not managed by this bank", "target account number"));
+            CaughtException?.Message.WillBe(string.Format("The requested account '{0}' is not managed by this bank", "target account number"));
         }
     }
 }

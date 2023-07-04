@@ -1,4 +1,3 @@
-using System;
 using Fohjin.DDD.EventHandlers;
 using Fohjin.DDD.Events.Account;
 using Fohjin.DDD.Reporting;
@@ -11,18 +10,18 @@ namespace Test.Fohjin.DDD.Scenarios.Withdrawing_cash;
 public class When_cash_was_withdrawn : EventTestFixture<CashWithdrawnEvent, CashWithdrawnEventHandler>
 {
     private static Guid _accountId;
-    private object UpdateAccountDetailsObject;
-    private object WhereAccountDetailsObject;
-    private LedgerReport LedgerReportObject;
+    private object? UpdateAccountDetailsObject;
+    private object? WhereAccountDetailsObject;
+    private LedgerReport? LedgerReportObject;
 
     protected override void SetupDependencies()
     {
         OnDependency<IReportingRepository>()
-            .Setup(x => x.Update<AccountDetailsReport>(It.IsAny<object>(), It.IsAny<object>()))
+            ?.Setup(x => x.Update<AccountDetailsReport>(It.IsAny<object>(), It.IsAny<object>()))
             .Callback<object, object>((u, w) => { UpdateAccountDetailsObject = u; WhereAccountDetailsObject = w; });
 
         OnDependency<IReportingRepository>()
-            .Setup(x => x.Save(It.IsAny<LedgerReport>()))
+            ?.Setup(x => x.Save(It.IsAny<LedgerReport>()))
             .Callback<LedgerReport>(l => { LedgerReportObject = l; });
     }
 
@@ -35,7 +34,7 @@ public class When_cash_was_withdrawn : EventTestFixture<CashWithdrawnEvent, Cash
     [TestMethod]
     public void Then_the_reporting_repository_will_be_used_to_update_the_account_details_report()
     {
-        OnDependency<IReportingRepository>().Verify(x => x.Update<AccountDetailsReport>(It.IsAny<object>(), It.IsAny<object>()));
+        OnDependency<IReportingRepository>()?.Verify(x => x.Update<AccountDetailsReport>(It.IsAny<object>(), It.IsAny<object>()));
     }
 
     [TestMethod]
@@ -54,8 +53,8 @@ public class When_cash_was_withdrawn : EventTestFixture<CashWithdrawnEvent, Cash
     [TestMethod]
     public void Then_the_ledger_report_will_be_saved_with_the_expected_details()
     {
-        LedgerReportObject.AccountDetailsReportId.WillBe(_accountId);
-        LedgerReportObject.Amount.WillBe(10.5M);
-        LedgerReportObject.Action.WillBe("Withdrawal");
+        LedgerReportObject?.AccountDetailsReportId.WillBe(_accountId);
+        LedgerReportObject?.Amount.WillBe(10.5M);
+        LedgerReportObject?.Action.WillBe("Withdrawal");
     }
 }

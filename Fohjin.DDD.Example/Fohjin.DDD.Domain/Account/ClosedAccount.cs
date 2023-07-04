@@ -25,7 +25,7 @@ namespace Fohjin.DDD.Domain.Account
             RegisterEvents();
         }
 
-        private ClosedAccount(Guid accountId, Guid clientId, List<Ledger> ledgers, string accountName, string accountNumber) : this()
+        private ClosedAccount(Guid accountId, Guid clientId, List<Ledger> ledgers, string? accountName, string? accountNumber) : this()
         {
             var Ledgers = new List<KeyValuePair<string, string>>();
             ledgers.ForEach(x => Ledgers.Add(new KeyValuePair<string, string>(x.GetType().Name, string.Format("{0}|{1}", ((decimal)x.Amount), x.Account.Number))));

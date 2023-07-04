@@ -20,6 +20,6 @@ namespace Test.Fohjin.DDD.Bus
         }
 
         public Task ExecuteAsync(IDomainEvent @event) =>
-            ExecuteAsync(@event as TestEvent);
+            ExecuteAsync((TestEvent)@event);
     }
 }

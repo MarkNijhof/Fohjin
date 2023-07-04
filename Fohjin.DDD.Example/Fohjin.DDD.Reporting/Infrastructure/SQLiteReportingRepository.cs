@@ -236,7 +236,7 @@ namespace Fohjin.DDD.Reporting.Infrastructure
                 .Where(Where)
                 .ToDictionary(x => x.Name, x => x.GetValue(example, Array.Empty<object>()));
 
-        private static void AddParameters(SqliteCommand sqliteCommand, IEnumerable<KeyValuePair<string, object?>> example)
+        private static void AddParameters(SqliteCommand sqliteCommand, IEnumerable<KeyValuePair<string, object?>>? example)
         {
             if (example == null)
                 return;

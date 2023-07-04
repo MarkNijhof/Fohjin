@@ -53,7 +53,7 @@ public class Client : BaseAggregateRoot<IDomainEvent>, IOriginator
         Apply(new ClientMovedEvent(newAddress.Street, newAddress.StreetNumber, newAddress.PostalCode, newAddress.City));
     }
 
-    public ActiveAccount CreateNewAccount(string accountName, string accountNumber)
+    public ActiveAccount CreateNewAccount(string? accountName, string? accountNumber)
     {
         IsClientCreated();
 

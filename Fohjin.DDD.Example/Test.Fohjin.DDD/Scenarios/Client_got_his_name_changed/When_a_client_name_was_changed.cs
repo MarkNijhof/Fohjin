@@ -11,19 +11,19 @@ namespace Test.Fohjin.DDD.Scenarios.Client_got_his_name_changed
     public class When_a_client_name_was_changed : EventTestFixture<ClientNameChangedEvent, ClientNameChangedEventHandler>
     {
         private static Guid _clientId;
-        private object UpdateClientObject;
-        private object WhereClientObject;
-        private object UpdateClientDetailsObject;
-        private object WhereClientDetailsObject;
+        private object? UpdateClientObject;
+        private object? WhereClientObject;
+        private object? UpdateClientDetailsObject;
+        private object? WhereClientDetailsObject;
 
         protected override void SetupDependencies()
         {
             OnDependency<IReportingRepository>()
-                .Setup(x => x.Update<ClientReport>(It.IsAny<object>(), It.IsAny<object>()))
+                ?.Setup(x => x.Update<ClientReport>(It.IsAny<object>(), It.IsAny<object>()))
                 .Callback<object, object>((u, w) => { UpdateClientObject = u; WhereClientObject = w; });
 
             OnDependency<IReportingRepository>()
-                .Setup(x => x.Update<ClientDetailsReport>(It.IsAny<object>(), It.IsAny<object>()))
+                ?.Setup(x => x.Update<ClientDetailsReport>(It.IsAny<object>(), It.IsAny<object>()))
                 .Callback<object, object>((u, w) => { UpdateClientDetailsObject = u; WhereClientDetailsObject = w; });
         }
 

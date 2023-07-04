@@ -32,4 +32,6 @@ public record AccountDetailsReport
         Balance = balance;
         AccountNumber = accountNumber;
     }
+
+    public static AccountDetailsReport New => new AccountDetailsReport { Id = Guid.NewGuid() };
 }

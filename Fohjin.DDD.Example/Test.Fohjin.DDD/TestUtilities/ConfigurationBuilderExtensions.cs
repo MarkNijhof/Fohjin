@@ -26,7 +26,7 @@ namespace Test.Fohjin.DDD.TestUtilities
             builder.Add(new TupleConfigurationSource(
                 settings.OfType<KeyValuePair<object, object?>>()
                         .Where(k => k.Key != null && k.Value != null)
-                        .Select(k => (k.Key.ToString(), k.Value?.ToString()))
+                        .Select(k => (k.Key.ToString() ?? "", k.Value?.ToString()))
                 ));
     }
 }

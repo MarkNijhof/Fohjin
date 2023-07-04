@@ -119,7 +119,7 @@ namespace Test.Fohjin.DDD
 
             foreach (var parameter in constructorInfo.GetParameters())
             {
-                mocks.Add(parameter.ParameterType, CreateMock(parameter.ParameterType));
+                mocks?.Add(parameter.ParameterType, CreateMock(parameter.ParameterType));
             }
         }
 

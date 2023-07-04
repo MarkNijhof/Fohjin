@@ -10,9 +10,9 @@ namespace Test.Fohjin.DDD.Scenarios.Transfering_money;
 public class When_money_transfer_failed : EventTestFixture<MoneyTransferFailedEvent, MoneyTransferFailedEventHandler>
 {
     private static Guid _accountId;
-    private object UpdateAccountDetailsObject;
-    private object WhereAccountDetailsObject;
-    private LedgerReport LedgerReportObject;
+    private object? UpdateAccountDetailsObject;
+    private object? WhereAccountDetailsObject;
+    private LedgerReport? LedgerReportObject;
 
     protected override void SetupDependencies()
     {
@@ -53,8 +53,8 @@ public class When_money_transfer_failed : EventTestFixture<MoneyTransferFailedEv
     [TestMethod]
     public void Then_the_ledger_report_will_be_saved_with_the_expected_details()
     {
-        LedgerReportObject.AccountDetailsReportId.WillBe(_accountId);
-        LedgerReportObject.Amount.WillBe(10.5M);
-        LedgerReportObject.Action.WillBe("Transfer to 0987654321 failed");
+        LedgerReportObject?.AccountDetailsReportId.WillBe(_accountId);
+        LedgerReportObject?.Amount.WillBe(10.5M);
+        LedgerReportObject?.Action.WillBe("Transfer to 0987654321 failed");
     }
 }

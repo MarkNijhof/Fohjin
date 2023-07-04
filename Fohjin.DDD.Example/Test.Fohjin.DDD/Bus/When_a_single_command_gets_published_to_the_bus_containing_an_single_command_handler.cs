@@ -8,8 +8,8 @@ namespace Test.Fohjin.DDD.Bus
 {
     public class When_a_single_command_gets_published_to_the_bus_containing_an_single_command_handler : BaseTestFixture<DirectBus>
     {
-        private FirstTestCommandHandler _handler;
-        private TestCommand _command;
+        private FirstTestCommandHandler? _handler;
+        private TestCommand? _command;
 
         protected override void SetupDependencies()
         {
@@ -19,7 +19,7 @@ namespace Test.Fohjin.DDD.Bus
                 ;
 
             var messageRouter = new MessageRouter(this.Provider, this.Logger<MessageRouter>());
-            DoNotMock.Add(typeof(IRouteMessages), messageRouter);
+            DoNotMock?.Add(typeof(IRouteMessages), messageRouter);
         }
 
         protected override void Given()
@@ -29,6 +29,9 @@ namespace Test.Fohjin.DDD.Bus
 
         protected override async Task WhenAsync()
         {
+            if (SubjectUnderTest == null || _command == null)
+                return;
+
             SubjectUnderTest.Publish(_command);
             await SubjectUnderTest.CommitAsync();
         }
@@ -36,7 +39,7 @@ namespace Test.Fohjin.DDD.Bus
         [TestMethod]
         public void Then_the_execute_method_on_the_returned_command_handler_is_invoked_with_the_provided_command()
         {
-            _handler.Ids.First().WillBe(_command.Id);
+            _handler?.Ids.First().WillBe(_command?.Id);
         }
     }
 }

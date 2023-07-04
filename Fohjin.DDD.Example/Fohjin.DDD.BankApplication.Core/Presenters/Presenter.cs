@@ -31,13 +31,13 @@ namespace Fohjin.DDD.BankApplication.Presenters
             }
         }
 
-        private MethodInfo? GetTheEventHandler(string viewDefinedEvent, IDictionary<string, MethodInfo> presenterEventHandlers, EventInfo eventInfo)
+        private MethodInfo? GetTheEventHandler(string viewDefinedEvent, IDictionary<string, MethodInfo>? presenterEventHandlers, EventInfo eventInfo)
         {
             var substring = viewDefinedEvent.Substring(2);
-            if (!presenterEventHandlers.ContainsKey(substring))
+            if (!presenterEventHandlers?.ContainsKey(substring) ?? false)
                 return null;
 
-            return presenterEventHandlers[substring];
+            return presenterEventHandlers?[substring];
         }
 
         private void WireUpTheEventAndEventHandler(TView view, EventInfo eventInfo, MethodInfo methodInfo)
@@ -46,9 +46,9 @@ namespace Fohjin.DDD.BankApplication.Presenters
             eventInfo.AddEventHandler(view, newDelegate);
         }
 
-        private static IDictionary<string, MethodInfo> GetPresenterEventHandlers<TPresenter>(ICollection<string> actionProperties, TPresenter presenter)
+        private static IDictionary<string, MethodInfo>? GetPresenterEventHandlers<TPresenter>(ICollection<string> actionProperties, TPresenter presenter)
         {
-            return presenter
+            return presenter?
                 .GetType()
                 .GetMethods(BindingFlags.Instance | BindingFlags.Public)
                 .Where(x => Contains(actionProperties, x))

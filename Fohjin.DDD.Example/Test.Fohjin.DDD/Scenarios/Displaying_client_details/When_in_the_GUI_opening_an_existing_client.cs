@@ -8,18 +8,18 @@ namespace Test.Fohjin.DDD.Scenarios.Displaying_client_details
 {
     public class When_in_the_GUI_opening_an_existing_client : PresenterTestFixture<ClientSearchFormPresenter>
     {
-        private ClientReport _clientReport;
+        private ClientReport _clientReport = new();
 
         protected override void SetupDependencies()
         {
             OnDependency<IPopupPresenter>()
-                .Setup(x => x.CatchPossibleException(It.IsAny<Action>()))
+                ?.Setup(x => x.CatchPossibleException(It.IsAny<Action>()))
                 .Callback<Action>(x => x());
 
             _clientReport = new ClientReport(Guid.NewGuid(), "Client Name");
 
             OnDependency<IClientSearchFormView>()
-                .Setup(x => x.GetSelectedClient())
+                ?.Setup(x => x.GetSelectedClient())
                 .Returns(_clientReport);
         }
 

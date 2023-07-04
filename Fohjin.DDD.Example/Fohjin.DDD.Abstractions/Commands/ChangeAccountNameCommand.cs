@@ -1,17 +1,16 @@
 using System.Text.Json.Serialization;
 
-namespace Fohjin.DDD.Commands
+namespace Fohjin.DDD.Commands;
+
+public record ChangeAccountNameCommand : CommandBase
 {
-    public record ChangeAccountNameCommand : CommandBase
+    public string? AccountName { get; init; }
+
+    [JsonConstructor]
+    public ChangeAccountNameCommand() : base() { }
+
+    public ChangeAccountNameCommand(Guid id, string? accountName) : base(id)
     {
-        public string AccountName { get; init; } = null!;
-
-        [JsonConstructor]
-        public ChangeAccountNameCommand() : base() { }
-
-        public ChangeAccountNameCommand(Guid id, string accountName) : base(id)
-        {
-            AccountName = accountName;
-        }
+        AccountName = accountName;
     }
 }

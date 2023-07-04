@@ -10,18 +10,18 @@ namespace Test.Fohjin.DDD.Scenarios.Depositing_cash;
 public class When_cash_was_Depositd : EventTestFixture<CashDepositedEvent, CashDepositEventHandler>
 {
     private static Guid _accountId;
-    private object UpdateAccountDetailsObject;
-    private object WhereAccountDetailsObject;
-    private LedgerReport LedgerReportObject;
+    private object? UpdateAccountDetailsObject;
+    private object? WhereAccountDetailsObject;
+    private LedgerReport? LedgerReportObject;
 
     protected override void SetupDependencies()
     {
         OnDependency<IReportingRepository>()
-            .Setup(x => x.Update<AccountDetailsReport>(It.IsAny<object>(), It.IsAny<object>()))
+            ?.Setup(x => x.Update<AccountDetailsReport>(It.IsAny<object>(), It.IsAny<object>()))
             .Callback<object, object>((u, w) => { UpdateAccountDetailsObject = u; WhereAccountDetailsObject = w; });
 
         OnDependency<IReportingRepository>()
-            .Setup(x => x.Save(It.IsAny<LedgerReport>()))
+            ?.Setup(x => x.Save(It.IsAny<LedgerReport>()))
             .Callback<LedgerReport>(l => { LedgerReportObject = l; });
     }
 
