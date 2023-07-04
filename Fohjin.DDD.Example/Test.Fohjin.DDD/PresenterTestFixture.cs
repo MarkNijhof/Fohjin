@@ -63,7 +63,7 @@ public abstract class PresenterTestFixture<TPresenter>
     private static object CreateMock(Type type)
     {
         var constructorInfo = typeof(Mock<>).MakeGenericType(type).GetConstructors().First();
-        return constructorInfo.Invoke(new object[] { });
+        return constructorInfo.Invoke(Array.Empty<object>());
     }
 }
 

@@ -126,10 +126,6 @@ public abstract class BaseTestFixture<TSubjectUnderTest>
     private static object CreateMock(Type type)
     {
         var constructorInfo = typeof(Mock<>).MakeGenericType(type).GetConstructors().First();
-        return constructorInfo.Invoke(new object[] { });
+        return constructorInfo.Invoke(Array.Empty<object>());
     }
 }
-
-//public class GivenAttribute : SetUpAttribute { }
-
-//public class ThenAttribute : TestMethodAttribute { }
