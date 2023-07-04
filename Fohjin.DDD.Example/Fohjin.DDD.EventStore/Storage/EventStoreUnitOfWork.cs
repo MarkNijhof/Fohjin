@@ -66,7 +66,7 @@ namespace Fohjin.DDD.EventStore.Storage
             }
             _eventProviders.Clear();
 
-            _bus.Commit();
+            _bus.CommitAsync();
             _domainEventStorage.Commit();
         }
 

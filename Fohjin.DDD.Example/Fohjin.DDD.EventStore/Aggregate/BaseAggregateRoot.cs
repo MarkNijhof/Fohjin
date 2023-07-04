@@ -77,9 +77,6 @@ namespace Fohjin.DDD.EventStore.Aggregate
             return _childEventProviders.SelectMany(entity => entity.GetChanges());
         }
 
-        private int GetNewEventVersion()
-        {
-            return ++EventVersion;
-        }
+        private int GetNewEventVersion() => EventVersion++;
     }
 }

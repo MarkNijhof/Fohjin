@@ -30,7 +30,7 @@ namespace Test.Fohjin.DDD.Bus
         protected override void When()
         {
             SubjectUnderTest.Publish(_command);
-            SubjectUnderTest.Commit();
+            SubjectUnderTest.CommitAsync();
         }
 
         [TestMethod]

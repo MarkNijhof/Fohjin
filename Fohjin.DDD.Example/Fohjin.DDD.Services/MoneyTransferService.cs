@@ -67,7 +67,7 @@ namespace Fohjin.DDD.Services
         {
             var account = _reportingRepository.GetByExample<AccountReport>(new { AccountNumber = moneyTransfer.TargetAccount }).First();
             _bus.Publish(new ReceiveMoneyTransferCommand(account.Id, moneyTransfer.Amount, moneyTransfer.SourceAccount));
-            _bus.Commit();
+            _bus.CommitAsync();
         }
 
         private void MoneyTransferIsGoingToAnExternalAccount(MoneyTransfer moneyTransfer)

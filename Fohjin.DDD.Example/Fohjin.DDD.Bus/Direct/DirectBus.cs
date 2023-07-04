@@ -1,5 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System.Collections.Concurrent;
 
 namespace Fohjin.DDD.Bus.Direct
 {
@@ -9,8 +10,7 @@ namespace Fohjin.DDD.Bus.Direct
         private readonly IServiceProvider _serviceProvider;
         private readonly ILogger _log;
 
-        private readonly object _lockObject = new();
-        private readonly Queue<object> _preCommitQueue = new(32);
+        private readonly ConcurrentQueue<object> _preCommitQueue = new();
         private readonly IQueue _postCommitQueue;
 
         public DirectBus(
@@ -28,43 +28,30 @@ namespace Fohjin.DDD.Bus.Direct
         public void Publish(object message)
         {
             _log.LogInformation($"{nameof(Publish)}: {{{nameof(message)}}}", message);
-            lock (_lockObject)
-            {
-                _preCommitQueue.Enqueue(message);
-            }
+            _preCommitQueue.Enqueue(message);
         }
 
         public void Publish(IEnumerable<object> messages)
         {
             _log.LogInformation($"{nameof(Publish)}: {{{nameof(messages)}}}", messages);
-            lock (_lockObject)
-            {
-                foreach (var message in messages)
-                {
-                    _preCommitQueue.Enqueue(message);
-                }
-            }
+            foreach (var message in messages)
+                _preCommitQueue.Enqueue(message);
         }
 
-        public void Commit()
+        public async Task CommitAsync()
         {
-            _log.LogInformation($"{nameof(Commit)}");
-            lock (_lockObject)
+            _log.LogInformation($"{nameof(CommitAsync)}");
+
+            while (_preCommitQueue.TryDequeue(out var @obj))
             {
-                while (_preCommitQueue.Any())
-                {
-                    _postCommitQueue.PutAsync(_preCommitQueue.Dequeue()).GetAwaiter().GetResult();
-                }
+                await _postCommitQueue.PutAsync(@obj);
             }
         }
 
         public void Rollback()
         {
             _log.LogInformation($"{nameof(Rollback)}");
-            lock (_lockObject)
-            {
                 _preCommitQueue.Clear();
-            }
         }
 
         private async Task DoPublishAsync(object message)

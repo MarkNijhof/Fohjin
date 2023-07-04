@@ -151,7 +151,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
 
                 EnableAllMenuButtons();
                 _clientDetailsView.EnableOverviewPanel();
-                _bus.Commit();
+                _bus.CommitAsync();
                 _systemTimer.Trigger(LoadData, 1000);
             });
         }
@@ -195,7 +195,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
 
                 EnableAllMenuButtons();
                 _clientDetailsView.EnableOverviewPanel();
-                _bus.Commit();
+                _bus.CommitAsync();
                 _systemTimer.Trigger(LoadData, 2000);
             });
         }
@@ -217,7 +217,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
                                      _clientDetailsReport.City,
                                      _clientDetailsView.PhoneNumber));
 
-                    _bus.Commit();
+                    _bus.CommitAsync();
                     _clientDetailsView.Close();
                     return;
                 }
@@ -237,7 +237,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
 
                 EnableAllMenuButtons();
                 _clientDetailsView.EnableOverviewPanel();
-                _bus.Commit();
+                _bus.CommitAsync();
                 _systemTimer.Trigger(LoadData, 2000);
             });
         }
@@ -253,7 +253,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
                 _addNewAccountProcess = false;
                 EnableAllMenuButtons();
                 _clientDetailsView.EnableOverviewPanel();
-                _bus.Commit();
+                _bus.CommitAsync();
                 _systemTimer.Trigger(LoadData, 2000);
             });
         }

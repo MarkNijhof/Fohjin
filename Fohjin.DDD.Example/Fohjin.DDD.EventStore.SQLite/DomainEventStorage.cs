@@ -126,7 +126,7 @@ namespace Fohjin.DDD.EventStore.SQLite
 
             var version = GetEventProviderVersion(eventProvider, _sqLiteTransaction);
 
-            if (version != eventProvider.Version)
+            if (version != eventProvider.Version && eventProvider.Version > 0)
                 throw new ConcurrencyViolationException($"version not correct: {version} != {eventProvider.Version} ({eventProvider.GetType()})");
 
             foreach (var domainEvent in eventProvider.GetChanges())

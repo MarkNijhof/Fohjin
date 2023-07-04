@@ -46,6 +46,9 @@ namespace Fohjin.DDD.BankApplication.Presenters
 
         private void LoadData()
         {
+            if (_accountReport == null)
+                return;
+
             _accountDetailsReport = _reportingRepository.GetByExample<AccountDetailsReport>(new { _accountReport.Id }).FirstOrDefault();
             _accountDetailsView.AccountName = _accountDetailsReport.AccountName;
             _accountDetailsView.AccountNameLabel = _accountDetailsReport.AccountName;
@@ -130,7 +133,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
 
                 _accountDetailsView.EnableMenuButtons();
                 _accountDetailsView.EnableDetailsPanel();
-                _bus.Commit();
+                _bus.CommitAsync();
                 _systemTimer.Trigger(LoadData, 2000);
             });
         }
@@ -145,7 +148,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
 
                 _accountDetailsView.EnableMenuButtons();
                 _accountDetailsView.EnableDetailsPanel();
-                _bus.Commit();
+                _bus.CommitAsync();
                 _systemTimer.Trigger(LoadData, 2000);
             });
         }
@@ -160,7 +163,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
 
                 _accountDetailsView.EnableMenuButtons();
                 _accountDetailsView.EnableDetailsPanel();
-                _bus.Commit();
+                _bus.CommitAsync();
                 _systemTimer.Trigger(LoadData, 2000);
             });
         }
@@ -176,7 +179,7 @@ namespace Fohjin.DDD.BankApplication.Presenters
 
                 _accountDetailsView.EnableMenuButtons();
                 _accountDetailsView.EnableDetailsPanel();
-                _bus.Commit();
+                _bus.CommitAsync();
                 _systemTimer.Trigger(LoadData, 2000);
                 _systemTimer.Trigger(LoadData, 4000); // This one is because there is also a delay in the transfer service :)
             });
