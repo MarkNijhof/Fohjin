@@ -1,11 +1,8 @@
-﻿using System;
-
-namespace Fohjin.DDD.Commands
+﻿namespace Fohjin.DDD.Commands
 {
-    [Serializable]
-    public class CancelBankCardCommand : Command
+    public record CancelBankCardCommand : Command
     {
-        public Guid BankCardId { get; private set; }
+        public Guid BankCardId { get; init; }
 
         public CancelBankCardCommand(Guid id, Guid bankCardId) : base(id)
         {

@@ -1,0 +1,1 @@
+https://leanpub.com/cqrs

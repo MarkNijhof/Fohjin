@@ -1,8 +1,6 @@
-﻿using System.Windows.Forms;
-
-namespace Fohjin.DDD.BankApplication.Views
+﻿namespace Fohjin.DDD.BankApplication.Views
 {
-    public partial class Popup : Form, IPopupView
+    public partial class Popup : ViewFormBase, IPopupView
     {
         public Popup()
         {

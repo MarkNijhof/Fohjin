@@ -1,12 +1,16 @@
-namespace Fohjin.DDD.Domain.Client
-{
-    public class PhoneNumber
-    {
-        public string Number { get; private set; }
+using System.Text.Json.Serialization;
 
-        public PhoneNumber(string number)
-        {
-            Number = number;
-        }
+namespace Fohjin.DDD.Domain.Client;
+
+public record PhoneNumber
+{
+    public string? Number { get; init; }
+
+    [JsonConstructor]
+    public PhoneNumber() { }
+
+    public PhoneNumber(string? number)
+    {
+        Number = number;
     }
 }

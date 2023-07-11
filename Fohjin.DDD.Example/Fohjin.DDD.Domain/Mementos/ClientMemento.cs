@@ -1,35 +1,45 @@
-using System;
-using System.Collections.Generic;
 using Fohjin.DDD.EventStore.Storage.Memento;
+using System.Text.Json.Serialization;
 
-namespace Fohjin.DDD.Domain.Mementos
+namespace Fohjin.DDD.Domain.Mementos;
+
+public record ClientMemento : IMemento
 {
-    [Serializable]
-    public class ClientMemento : IMemento
-    {
-        internal Guid Id { get; private set; }
-        internal int Version { get; private set; }
-        internal string ClientName { get; private set; }
-        internal string Street { get; private set; }
-        internal string StreetNumber { get; private set; }
-        internal string PostalCode { get; private set; }
-        internal string City { get; private set; }
-        internal string PhoneNumber { get; private set; }
-        internal List<Guid> Accounts { get; private set; }
-        internal List<IMemento> BankCardMementos { get; private set; }
+    public Guid Id { get; init; }
+    public int Version { get; init; }
+    public string? ClientName { get; init; }
+    public string? Street { get; init; }
+    public string? StreetNumber { get; init; }
+    public string? PostalCode { get; init; }
+    public string? City { get; init; }
+    public string? PhoneNumber { get; init; }
+    public List<Guid> Accounts { get; init; } = new();
+    public List<IMemento> BankCardMementos { get; init; } = new();
 
-        public ClientMemento(Guid id, int version, string clientName, string street, string streetNumber, string postalCode, string city, string phoneNumber, List<Guid> accounts, List<IMemento> bankCardMementos)
-        {
-            Id = id;
-            Version = version;
-            ClientName = clientName;
-            Street = street;
-            StreetNumber = streetNumber;
-            PostalCode = postalCode;
-            City = city;
-            PhoneNumber = phoneNumber;
-            Accounts = accounts;
-            BankCardMementos = bankCardMementos;
-        }
+    [JsonConstructor]
+    public ClientMemento() { }
+    public ClientMemento(
+        Guid id,
+        int version, 
+        string? clientName, 
+        string? street,
+        string? streetNumber,
+        string? postalCode,
+        string? city,
+        string? phoneNumber,
+        List<Guid> accounts, 
+        List<IMemento> bankCardMementos
+        )
+    {
+        Id = id;
+        Version = version;
+        ClientName = clientName;
+        Street = street;
+        StreetNumber = streetNumber;
+        PostalCode = postalCode;
+        City = city;
+        PhoneNumber = phoneNumber;
+        Accounts = accounts;
+        BankCardMementos = bankCardMementos;
     }
 }

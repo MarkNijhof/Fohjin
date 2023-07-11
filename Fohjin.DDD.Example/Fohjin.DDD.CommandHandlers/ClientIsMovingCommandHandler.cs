@@ -4,7 +4,7 @@ using Fohjin.DDD.EventStore;
 
 namespace Fohjin.DDD.CommandHandlers
 {
-    public class ClientIsMovingCommandHandler : ICommandHandler<ClientIsMovingCommand>
+    public class ClientIsMovingCommandHandler : CommandHandlerBase<ClientIsMovingCommand>
     {
         private readonly IDomainRepository<IDomainEvent> _repository;
 
@@ -13,11 +13,12 @@ namespace Fohjin.DDD.CommandHandlers
             _repository = repository;
         }
 
-        public void Execute(ClientIsMovingCommand compensatingCommand)
+        public override Task ExecuteAsync(ClientIsMovingCommand compensatingCommand)
         {
             var client = _repository.GetById<Client>(compensatingCommand.Id);
 
-            client.ClientMoved(new Address(compensatingCommand.Street, compensatingCommand.StreetNumber, compensatingCommand.PostalCode, compensatingCommand.City));
+            client?.ClientMoved(new Address(compensatingCommand.Street, compensatingCommand.StreetNumber, compensatingCommand.PostalCode, compensatingCommand.City));
+            return Task.CompletedTask;
         }
     }
 }

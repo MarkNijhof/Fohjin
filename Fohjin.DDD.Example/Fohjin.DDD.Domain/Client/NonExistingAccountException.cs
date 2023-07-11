@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Fohjin.DDD.Domain.Client
+﻿namespace Fohjin.DDD.Domain.Client
 {
     public class NonExistingAccountException : Exception
     {

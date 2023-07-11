@@ -2,6 +2,7 @@
 using Fohjin.DDD.CommandHandlers;
 using Fohjin.DDD.Commands;
 using Fohjin.DDD.Domain.Client;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Test.Fohjin.DDD.Scenarios.Client_got_a_new_phone_number
 {
@@ -12,13 +13,13 @@ namespace Test.Fohjin.DDD.Scenarios.Client_got_a_new_phone_number
             return new ChangeClientPhoneNumberCommand(Guid.NewGuid(), "95009937");
         }
 
-        [Then]
+        [TestMethod]
         public void Then_a_non_existing_client_exception_will_be_thrown()
         {
             CaughtException.WillBeOfType<NonExistingClientException>();
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_exception_message_will_be()
         {
             CaughtException.Message.WillBe("The Client is not created and no opperations can be executed on it");

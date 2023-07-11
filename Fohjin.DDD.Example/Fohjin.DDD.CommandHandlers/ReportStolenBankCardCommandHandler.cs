@@ -4,7 +4,7 @@ using Fohjin.DDD.EventStore;
 
 namespace Fohjin.DDD.CommandHandlers
 {
-    public class ReportStolenBankCardCommandHandler : ICommandHandler<ReportStolenBankCardCommand>
+    public class ReportStolenBankCardCommandHandler : CommandHandlerBase<ReportStolenBankCardCommand>
     {
         private readonly IDomainRepository<IDomainEvent> _repository;
 
@@ -13,12 +13,15 @@ namespace Fohjin.DDD.CommandHandlers
             _repository = repository;
         }
 
-        public void Execute(ReportStolenBankCardCommand cancelReportStolenBankCardCommand)
+        public override Task ExecuteAsync(ReportStolenBankCardCommand cancelReportStolenBankCardCommand)
         {
             var client = _repository.GetById<Client>(cancelReportStolenBankCardCommand.Id);
-            var bankCard = client.GetBankCard(cancelReportStolenBankCardCommand.BankCardId);
-            bankCard.BankCardIsReportedStolen();
-            _repository.Add(client);
+            var bankCard = client?.GetBankCard(cancelReportStolenBankCardCommand.BankCardId);
+            bankCard?.BankCardIsReportedStolen();
+            if (client != null)
+                _repository.Add(client);
+
+            return Task.CompletedTask;
         }
     }
 }

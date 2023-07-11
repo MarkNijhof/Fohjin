@@ -1,7 +1,7 @@
-﻿using System;
-using Fohjin.DDD.CommandHandlers;
+﻿using Fohjin.DDD.CommandHandlers;
 using Fohjin.DDD.Commands;
 using Fohjin.DDD.Domain.Account;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Test.Fohjin.DDD.Scenarios.Client_wants_to_close_an_account
 {
@@ -12,7 +12,7 @@ namespace Test.Fohjin.DDD.Scenarios.Client_wants_to_close_an_account
             return new CloseAccountCommand(Guid.NewGuid());
         }
 
-        [Then]
+        [TestMethod]
         public void Then_a_non_existing_account_exception_will_be_thrown()
         {
             CaughtException.WillBeOfType<NonExitsingAccountException>();

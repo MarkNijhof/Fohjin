@@ -5,6 +5,7 @@ using Fohjin.DDD.Commands;
 using Fohjin.DDD.Domain.Client;
 using Fohjin.DDD.Events.Client;
 using Fohjin.DDD.EventStore;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Test.Fohjin.DDD.Scenarios.Assign_new_bank_card
 {
@@ -25,13 +26,13 @@ namespace Test.Fohjin.DDD.Scenarios.Assign_new_bank_card
             return new CancelBankCardCommand(_clientId, _bankCardId);
         }
 
-        [Then]
+        [TestMethod]
         public void Then_a_non_existing_bank_card_is_disabled_will_be_thrown()
         {
             CaughtException.WillBeOfType<NonExistingBankCardException>();
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_exception_message_will_be()
         {
             CaughtException.Message.WillBe("The requested bank card does not exist!");

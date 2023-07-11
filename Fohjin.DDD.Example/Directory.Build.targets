@@ -1,0 +1,11 @@
+<Project>
+
+	<Target Name="DeepClean">
+		<Message Text="===== Really cleaning project: $(Configuration) - &quot;$(MSBuildProjectName)&quot;"  Importance="high"/>
+		<RemoveDir Directories="$(BaseIntermediateOutputPath)" ContinueOnError="true" />
+		<MakeDir Directories="$(BaseIntermediateOutputPath)" ContinueOnError="true" />
+		<RemoveDir Directories="$(BaseOutputPath)" ContinueOnError="true" />
+		<MakeDir Directories="$(BaseOutputPath)" ContinueOnError="true" />
+	</Target>
+
+</Project>

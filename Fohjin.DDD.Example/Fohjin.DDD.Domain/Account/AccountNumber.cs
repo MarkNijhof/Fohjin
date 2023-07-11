@@ -1,17 +1,19 @@
+using System.Text.Json.Serialization;
+
 namespace Fohjin.DDD.Domain.Account
 {
     public class AccountNumber
     {
-        public string Number { get; private set; }
+        public string? Number { get; set; } 
 
-        public AccountNumber(string number)
+        [JsonConstructor]
+        public AccountNumber() { }
+
+        public AccountNumber(string? number)
         {
             Number = number;
         }
 
-        public override string ToString()
-        {
-            return Number;
-        }
+        public override string? ToString() => Number;
     }
 }

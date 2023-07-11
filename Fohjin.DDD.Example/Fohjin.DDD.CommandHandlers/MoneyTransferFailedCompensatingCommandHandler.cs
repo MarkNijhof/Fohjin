@@ -4,7 +4,7 @@ using Fohjin.DDD.EventStore;
 
 namespace Fohjin.DDD.CommandHandlers
 {
-    public class MoneyTransferFailedCompensatingCommandHandler : ICommandHandler<MoneyTransferFailedCompensatingCommand>
+    public class MoneyTransferFailedCompensatingCommandHandler : CommandHandlerBase<MoneyTransferFailedCompensatingCommand>
     {
         private readonly IDomainRepository<IDomainEvent> _repository;
 
@@ -13,11 +13,13 @@ namespace Fohjin.DDD.CommandHandlers
             _repository = repository;
         }
 
-        public void Execute(MoneyTransferFailedCompensatingCommand compensatingCommand)
+        public override Task ExecuteAsync(MoneyTransferFailedCompensatingCommand compensatingCommand)
         {
             var activeAccount = _repository.GetById<ActiveAccount>(compensatingCommand.Id);
 
-            activeAccount.PreviousTransferFailed(new AccountNumber(compensatingCommand.AccountNumber), new Amount(compensatingCommand.Amount));
+            activeAccount?.PreviousTransferFailed(new AccountNumber(compensatingCommand.AccountNumber), new Amount(compensatingCommand.Amount));
+
+            return Task.CompletedTask;
         }
     }
 }

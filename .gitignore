@@ -12,3 +12,4 @@ _ReSharper.*
 NDependOut
 .svn
 *.chm
+/.vs/fohjin-cqrs/v17

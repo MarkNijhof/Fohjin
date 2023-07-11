@@ -1,9 +1,6 @@
-using System;
-
 namespace Fohjin.DDD.Commands
 {
-    [Serializable]
-    public class CloseAccountCommand : Command
+    public record CloseAccountCommand : Command
     {
         public CloseAccountCommand(Guid id) : base(id) { }
     }

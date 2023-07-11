@@ -1,316 +1,36 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{CEBF24CE-3326-464B-B6C5-463E7F4BF4BC}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Test.Fohjin.DDD</RootNamespace>
-    <AssemblyName>Test.Fohjin.DDD</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <OldToolsVersion>3.5</OldToolsVersion>
-    <UpgradeBackupLocation />
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
-  </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="Moq, Version=3.1.416.3, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Lib\Moq\Moq.dll</HintPath>
-    </Reference>
-    <Reference Include="nunit.framework, Version=2.4.6.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Lib\NUnit\nunit.framework.dll</HintPath>
-    </Reference>
-    <Reference Include="StructureMap, Version=2.5.3.0, Culture=neutral, PublicKeyToken=e60ad81abae3c223, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Lib\StructureMap\StructureMap.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data.SQLite, Version=1.0.65.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Lib\sqlite\bin\System.Data.SQLite.DLL</HintPath>
-    </Reference>
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml.Linq">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data.DataSetExtensions">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="BaseTestFixture.cs" />
-    <Compile Include="Bus\Command_bus.cs" />
-    <Compile Include="Bus\Event_bus.cs" />
-    <Compile Include="Commands\All_commands_must_be_Serializable.cs" />
-    <Compile Include="Commands\All_commands_must_have_a_handler.cs" />
-    <Compile Include="Configuration\ApplicationBootStrapperTest.cs" />
-    <Compile Include="Configuration\DatabaseBootStrapperTest.cs" />
-    <Compile Include="Configuration\ReportingBootStrapperTest.cs" />
-    <Compile Include="Configuration\StructureMapTest.cs" />
-    <Compile Include="Domain\BaseAggregateTest.cs" />
-    <Compile Include="Domain\Repositories\ClientRepositoryTest.cs" />
-    <Compile Include="Domain\Repositories\ClosedAccountRepositoryTest.cs" />
-    <Compile Include="Events\All_domain_events_must_have_a_handler.cs" />
-    <Compile Include="EventTestFixture.cs" />
-    <Compile Include="PresenterTestFixture.cs" />
-    <Compile Include="Presenter\PresenterTest.cs" />
-    <Compile Include="Queueing\InMemoryQueue_test.cs" />
-    <Compile Include="Reporting\Infrastructure\SqlDeleteBuilderTest.cs" />
-    <Compile Include="Reporting\Infrastructure\SqlUpdateBuilderTest.cs" />
-    <Compile Include="Scenarios\Adding_a_new_client\When_creating_a_new_client.cs" />
-    <Compile Include="Scenarios\Adding_a_new_client\When_in_the_GUI_adding_a_new_client.cs" />
-    <Compile Include="Scenarios\Adding_a_new_client\When_in_the_GUI_canceling_to_add_the_new_client.cs" />
-    <Compile Include="Scenarios\Adding_a_new_client\When_in_the_GUI_the_address_of_the_new_client_is_saved.cs" />
-    <Compile Include="Scenarios\Adding_a_new_client\When_in_the_GUI_the_name_of_the_new_client_is_saved.cs" />
-    <Compile Include="Scenarios\Adding_a_new_client\When_in_the_GUI_the_new_client_form_is_displayed_.cs" />
-    <Compile Include="Scenarios\Adding_a_new_client\When_in_the_GUI_the_phone_number_of_the_new_client_is_saved.cs" />
-    <Compile Include="Scenarios\Assign_new_bank_card\When_assigning_a_new_bank_card.cs" />
-    <Compile Include="Scenarios\Assign_new_bank_card\When_assigning_a_new_bank_card_on_a_non_existing_client.cs" />
-    <Compile Include="Scenarios\Assign_new_bank_card\When_canceling_a_bank_card.cs" />
-    <Compile Include="Scenarios\Assign_new_bank_card\When_canceling_a_disabled_bank_card.cs" />
-    <Compile Include="Scenarios\Assign_new_bank_card\When_canceling_a_non_existing_bank_card.cs" />
-    <Compile Include="Scenarios\Assign_new_bank_card\When_reporting_a_bank_card_stolen.cs" />
-    <Compile Include="Scenarios\Assign_new_bank_card\When_reporting_a_disabled_bank_card_stolen.cs" />
-    <Compile Include="Scenarios\Assign_new_bank_card\When_reporting_a_non_existing_bank_card_stolen.cs" />
-    <Compile Include="Scenarios\Changing_the_name_of_an_account\When_changing_the_name_of_an_account.cs" />
-    <Compile Include="Scenarios\Changing_the_name_of_an_account\When_changing_the_name_of_a_closed_account.cs" />
-    <Compile Include="Scenarios\Changing_the_name_of_an_account\When_changing_the_name_of_a_non_existing_account.cs" />
-    <Compile Include="Scenarios\Changing_the_name_of_an_account\When_in_the_GUI_canceling_to_change_account_name.cs" />
-    <Compile Include="Scenarios\Changing_the_name_of_an_account\When_in_the_GUI_changing_an_account_name.cs" />
-    <Compile Include="Scenarios\Changing_the_name_of_an_account\When_in_the_GUI_clearing_the_new_name.cs" />
-    <Compile Include="Scenarios\Changing_the_name_of_an_account\When_in_the_GUI_inserting_the_new_name.cs" />
-    <Compile Include="Scenarios\Changing_the_name_of_an_account\When_in_the_GUI_saving_the_new_name.cs" />
-    <Compile Include="Scenarios\Client_got_a_new_phone_number\When_changing_the_phone_number.cs" />
-    <Compile Include="Scenarios\Client_got_a_new_phone_number\When_changing_the_phone_number_of_a_non_existing_client.cs" />
-    <Compile Include="Scenarios\Client_got_a_new_phone_number\When_in_the_GUI_changing_a_clients_phone_number.cs" />
-    <Compile Include="Scenarios\Client_got_a_new_phone_number\When_in_the_GUI_clearing_the_new_phone_number.cs" />
-    <Compile Include="Scenarios\Client_got_a_new_phone_number\When_in_the_GUI_inserting_the_new_phone_number.cs" />
-    <Compile Include="Scenarios\Client_got_a_new_phone_number\When_in_the_GUI_saving_the_new_phone_number.cs" />
-    <Compile Include="Scenarios\Client_got_his_name_changed\When_changing_the_name_of_a_client.cs" />
-    <Compile Include="Scenarios\Client_got_his_name_changed\When_changing_the_name_of_a_non_existing_client.cs" />
-    <Compile Include="Scenarios\Client_got_his_name_changed\When_in_the_GUI_canceling_the_changing_of_the_client_name.cs" />
-    <Compile Include="Scenarios\Client_got_his_name_changed\When_in_the_GUI_changing_the_name_of_a_client.cs" />
-    <Compile Include="Scenarios\Client_got_his_name_changed\When_in_the_GUI_clearing_the_new_client_name.cs" />
-    <Compile Include="Scenarios\Client_got_his_name_changed\When_in_the_GUI_inserting_the_new_client_name.cs" />
-    <Compile Include="Scenarios\Client_got_his_name_changed\When_in_the_GUI_saving_the_new_client_name.cs" />
-    <Compile Include="Scenarios\Client_moved\When_a_client_is_moving.cs" />
-    <Compile Include="Scenarios\Client_moved\When_a_non_existing_client_is_moving.cs" />
-    <Compile Include="Scenarios\Client_moved\When_in_the_GUI_a_client_is_moving_.cs" />
-    <Compile Include="Scenarios\Client_moved\When_in_the_GUI_clearing_the_new_address.cs" />
-    <Compile Include="Scenarios\Client_moved\When_in_the_GUI_inserting_the_new_address.cs" />
-    <Compile Include="Scenarios\Client_moved\When_in_the_GUI_saving_the_new_address.cs" />
-    <Compile Include="Scenarios\Client_wants_to_close_an_account\When_an_account_was_closed.cs" />
-    <Compile Include="Scenarios\Client_wants_to_close_an_account\When_closing_an_account.cs" />
-    <Compile Include="Scenarios\Client_wants_to_close_an_account\When_closing_an_account_with_a_positive_balance.cs" />
-    <Compile Include="Scenarios\Client_wants_to_close_an_account\When_closing_a_closed_account.cs" />
-    <Compile Include="Scenarios\Client_wants_to_close_an_account\When_closing_a_non_existing_account.cs" />
-    <Compile Include="Scenarios\Client_wants_to_close_an_account\When_creating_a_closed_account.cs" />
-    <Compile Include="Scenarios\Client_wants_to_close_an_account\When_in_the_GUI_closing_an_account.cs" />
-    <Compile Include="Scenarios\Client_wants_to_open_a_new_account\When_an_account_was_opened.cs" />
-    <Compile Include="Scenarios\Client_wants_to_open_a_new_account\When_opening_a_new_account.cs" />
-    <Compile Include="Scenarios\Client_wants_to_open_a_new_account\When_opening_a_new_account_for_a_non_existing_client.cs" />
-    <Compile Include="Scenarios\Client_wants_to_open_a_new_account\When_an_account_was_assigned_to_a_client.cs" />
-    <Compile Include="Scenarios\Client_wants_to_open_a_new_account\When_in_the_GUI_canceling_the_opening_of_a_new_account.cs" />
-    <Compile Include="Scenarios\Client_wants_to_open_a_new_account\When_creating_a_new_account.cs" />
-    <Compile Include="Scenarios\Client_wants_to_open_a_new_account\When_in_the_GUI_saving_the_new_account.cs" />
-    <Compile Include="Scenarios\Client_wants_to_open_a_new_account\When_in_the_GUI_opening_a_new_account.cs" />
-    <Compile Include="Scenarios\Client_moved\When_client_has_moved.cs" />
-    <Compile Include="Scenarios\Changing_the_name_of_an_account\When_an_account_name_was_changed.cs" />
-    <Compile Include="Scenarios\Client_got_his_name_changed\When_a_client_name_was_changed.cs" />
-    <Compile Include="Scenarios\Client_got_a_new_phone_number\When_a_client_phone_number_was_changed.cs" />
-    <Compile Include="Scenarios\Client_wants_to_close_an_account\When_an_closed_account_was_created.cs" />
-    <Compile Include="Scenarios\Adding_a_new_client\When_the_new_client_was_created.cs" />
-    <Compile Include="Scenarios\Depositing_cash\When_depositing_cash.cs" />
-    <Compile Include="Scenarios\Depositing_cash\When_depositing_cash_on_a_closed_account.cs" />
-    <Compile Include="Scenarios\Depositing_cash\When_depositing_cash_on_a_non_existing_account.cs" />
-    <Compile Include="Scenarios\Depositing_cash\When_in_the_GUI_canceling_to_make_a_cash_deposite.cs" />
-    <Compile Include="Scenarios\Depositing_cash\When_in_the_GUI_clearing_the_deposite_ammount.cs" />
-    <Compile Include="Scenarios\Depositing_cash\When_in_the_GUI_executing_the_cash_deposite.cs" />
-    <Compile Include="Scenarios\Depositing_cash\When_in_the_GUI_inserting_the_deposite_ammount.cs" />
-    <Compile Include="Scenarios\Depositing_cash\When_in_the_GUI_making_a_cash_deposite.cs" />
-    <Compile Include="Scenarios\Displaying_account_details\When_in_the_GUI_opening_an_existing_account.cs" />
-    <Compile Include="Scenarios\Displaying_client_details\When_in_the_GUI_opening_an_existing_client.cs" />
-    <Compile Include="Scenarios\Depositing_cash\When_cash_was_deposited.cs" />
-    <Compile Include="Scenarios\Receiving_money_transfer\When_receiveing_a_money_transfer.cs" />
-    <Compile Include="Scenarios\Receiving_money_transfer\When_receiveing_a_money_transfer_for_a_closed_account.cs" />
-    <Compile Include="Scenarios\Receiving_money_transfer\When_receiveing_a_money_transfer_for_a_non_existing_account.cs" />
-    <Compile Include="Scenarios\Receiving_money_transfer\When_receiving_a_money_transfer.cs" />
-    <Compile Include="Scenarios\Receiving_money_transfer\When_receiving_a_money_transfer_for_an_unknown_account.cs" />
-    <Compile Include="Scenarios\Transfering_money\When_compensating_a_failed_money_transfer.cs" />
-    <Compile Include="Scenarios\Transfering_money\When_compensating_a_failed_money_transfer_from_a_closed_account.cs" />
-    <Compile Include="Scenarios\Transfering_money\When_compensating_a_failed_money_transfer_from_a_non_existing_account.cs" />
-    <Compile Include="Scenarios\Transfering_money\When_failing_to_transfer_money_to_an_internal_account.cs" />
-    <Compile Include="Scenarios\Transfering_money\When_in_the_GUI_canceling_to_make_a_money_transfer.cs" />
-    <Compile Include="Scenarios\Transfering_money\When_in_the_GUI_clearing_the_transfer_ammount.cs" />
-    <Compile Include="Scenarios\Transfering_money\When_in_the_GUI_executing_the_money_transfer.cs" />
-    <Compile Include="Scenarios\Transfering_money\When_in_the_GUI_inserting_the_transfer_ammount.cs" />
-    <Compile Include="Scenarios\Transfering_money\When_in_the_GUI_making_a_money_transfer.cs" />
-    <Compile Include="Scenarios\Transfering_money\When_money_transfer_failed.cs" />
-    <Compile Include="Scenarios\Transfering_money\When_money_transfer_was_send.cs" />
-    <Compile Include="Scenarios\Transfering_money\When_money_transfer_was_send_further.cs" />
-    <Compile Include="Scenarios\Transfering_money\When_sending_a_money_transfer.cs" />
-    <Compile Include="Scenarios\Transfering_money\When_sending_a_money_transfer_from_an_account_with_to_little_balance.cs" />
-    <Compile Include="Scenarios\Transfering_money\When_sending_a_money_transfer_from_a_closed_account.cs" />
-    <Compile Include="Scenarios\Transfering_money\When_sending_a_money_transfer_from_a_non_existing_account.cs" />
-    <Compile Include="Scenarios\Transfering_money\When_transfering_money_to_an_external_account.cs" />
-    <Compile Include="Scenarios\Transfering_money\When_transfering_money_to_an_internal_account.cs" />
-    <Compile Include="Scenarios\Withdrawing_cash\When_cash_was_withdrawn.cs" />
-    <Compile Include="Scenarios\Opening_the_bank_application\Opening_the_application.cs" />
-    <Compile Include="Scenarios\Displaying_client_details\When_in_the_GUI_displaying_client_details.cs" />
-    <Compile Include="Scenarios\Receiving_money_transfer\When_a_money_transfer_was_received.cs" />
-    <Compile Include="Scenarios\Transfering_money\When_failing_to_transfer_money_to_an_external_account.cs" />
-    <Compile Include="Scenarios\Displaying_account_details\When_in_the_GUI_displaying_account_details.cs" />
-    <Compile Include="Scenarios\Displaying_the_error_popup\When_in_the_GUI_displaying_the_error_popup.cs" />
-    <Compile Include="Scenarios\Withdrawing_cash\When_in_the_GUI_canceling_to_make_a_cash_withdrawl.cs" />
-    <Compile Include="Scenarios\Withdrawing_cash\When_in_the_GUI_clearing_the_withdrawl_ammount.cs" />
-    <Compile Include="Scenarios\Withdrawing_cash\When_in_the_GUI_executing_the_cash_withdrawl.cs" />
-    <Compile Include="Scenarios\Withdrawing_cash\When_in_the_GUI_inserting_the_withdrawl_ammount.cs" />
-    <Compile Include="Scenarios\Withdrawing_cash\When_in_the_GUI_making_a_cash_withdrawl.cs" />
-    <Compile Include="Scenarios\Withdrawing_cash\When_withdrawing_cash.cs" />
-    <Compile Include="Scenarios\Withdrawing_cash\When_withdrawling_cash_from_an_account_account_with_to_little_balance.cs" />
-    <Compile Include="Scenarios\Withdrawing_cash\When_withdrawling_cash_from_a_closed_account.cs" />
-    <Compile Include="Scenarios\Withdrawing_cash\When_withdrawling_cash_from_a_non_existing_account.cs" />
-    <Compile Include="TestExtensions.cs" />
-    <Compile Include="CommandTestFixture.cs" />
-    <Compile Include="Domain\Repositories\ActiveAccountRepositoryTest.cs" />
-    <Compile Include="AggregateRootTestFixture.cs" />
-    <Compile Include="Events\All_domain_events_must_be_Serializable.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Reporting\Infrastructure\RepositoryTest.cs" />
-    <Compile Include="Reporting\Infrastructure\SqlCreateBuilderTest.cs" />
-    <Compile Include="Reporting\Infrastructure\SqlInsertBuilderTest.cs" />
-    <Compile Include="Reporting\Infrastructure\SqlSelectBuilderTest.cs" />
-    <Compile Include="Reporting\Infrastructure\TestDtoCase1.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Fohjin.DDD.BankApplication\Fohjin.DDD.BankApplication.csproj">
-      <Project>{672A4AB0-6972-49F1-86A6-C2B7DE5AD4D4}</Project>
-      <Name>Fohjin.DDD.BankApplication</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Fohjin.DDD.Bus\Fohjin.DDD.Bus.csproj">
-      <Project>{809E2C9E-8ACD-40D5-86C8-43256C3D8AA8}</Project>
-      <Name>Fohjin.DDD.Bus</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Fohjin.DDD.CommandHandlers\Fohjin.DDD.CommandHandlers.csproj">
-      <Project>{7757DA0F-CD51-4753-95C8-8632177AA60E}</Project>
-      <Name>Fohjin.DDD.CommandHandlers</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Fohjin.DDD.Commands\Fohjin.DDD.Commands.csproj">
-      <Project>{58D61FA0-D67F-4D72-81EA-2D709356AF95}</Project>
-      <Name>Fohjin.DDD.Commands</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Fohjin.DDD.Configuration\Fohjin.DDD.Configuration.csproj">
-      <Project>{CF50373D-3EB9-492D-A88F-70D7D6756DFF}</Project>
-      <Name>Fohjin.DDD.Configuration</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Fohjin.DDD.Domain\Fohjin.DDD.Domain.csproj">
-      <Project>{0FB24C8F-FA8C-409E-A71C-8580F7D78474}</Project>
-      <Name>Fohjin.DDD.Domain</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Fohjin.DDD.EventHandlers\Fohjin.DDD.EventHandlers.csproj">
-      <Project>{2A96D452-7D1D-4118-B3D4-8EF543D1FBCB}</Project>
-      <Name>Fohjin.DDD.EventHandlers</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Fohjin.DDD.EventStore.SQLite\Fohjin.DDD.EventStore.SQLite.csproj">
-      <Project>{8DE1C044-594E-4A85-8244-FE059BF4825B}</Project>
-      <Name>Fohjin.DDD.EventStore.SQLite</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Fohjin.DDD.EventStore\Fohjin.DDD.EventStore.csproj">
-      <Project>{318F1FE0-DA43-4A02-9956-361C9FE96915}</Project>
-      <Name>Fohjin.DDD.EventStore</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Fohjin.DDD.Events\Fohjin.DDD.Events.csproj">
-      <Project>{CFB4C037-822D-470E-8A01-832957D193C9}</Project>
-      <Name>Fohjin.DDD.Events</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Fohjin.DDD.Reporting.Dto\Fohjin.DDD.Reporting.Dto.csproj">
-      <Project>{44666AF0-AC7A-486E-AD1F-49FD0573ED43}</Project>
-      <Name>Fohjin.DDD.Reporting.Dto</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Fohjin.DDD.Reporting\Fohjin.DDD.Reporting.csproj">
-      <Project>{0E86D5C6-929D-4304-A00D-ADC9FB2AFE77}</Project>
-      <Name>Fohjin.DDD.Reporting</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Fohjin.DDD.Services\Fohjin.DDD.Services.csproj">
-      <Project>{B2428304-1BF2-4BCB-B250-7D09E536560A}</Project>
-      <Name>Fohjin.DDD.Services</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Fohjin\Fohjin.csproj">
-      <Project>{202FEBE5-F8A1-4A68-8306-75FDE33E0D45}</Project>
-      <Name>Fohjin</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
-      <Visible>False</Visible>
-      <ProductName>Windows Installer 3.1</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="EventStore\" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>disable</Nullable>
+
+		<IsPackable>false</IsPackable>
+		<IsTestProject>true</IsTestProject>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
+		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
+		<PackageReference Include="Moq" Version="4.18.4" />
+		<PackageReference Include="MSTest.TestAdapter" Version="3.0.2" />
+		<PackageReference Include="MSTest.TestFramework" Version="3.0.2" />
+		<PackageReference Include="coverlet.collector" Version="3.2.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Fohjin.DDD.Abstractions\Fohjin.DDD.Abstractions.csproj" />
+	  <ProjectReference Include="..\Fohjin.DDD.BankApplication.Core\Fohjin.DDD.BankApplication.Core.csproj" />
+	  <ProjectReference Include="..\Fohjin.DDD.Bus\Fohjin.DDD.Bus.csproj" />
+	  <ProjectReference Include="..\Fohjin.DDD.CommandHandlers\Fohjin.DDD.CommandHandlers.csproj" />
+	  <ProjectReference Include="..\Fohjin.DDD.Common\Fohjin.DDD.Common.csproj" />
+	  <ProjectReference Include="..\Fohjin.DDD.Configuration\Fohjin.DDD.Configuration.csproj" />
+	  <ProjectReference Include="..\Fohjin.DDD.Domain\Fohjin.DDD.Domain.csproj" />
+	  <ProjectReference Include="..\Fohjin.DDD.EventHandlers\Fohjin.DDD.EventHandlers.csproj" />
+	  <ProjectReference Include="..\Fohjin.DDD.EventStore.SQLite\Fohjin.DDD.EventStore.SQLite.csproj" />
+	  <ProjectReference Include="..\Fohjin.DDD.EventStore\Fohjin.DDD.EventStore.csproj" />
+	  <ProjectReference Include="..\Fohjin.DDD.Reporting\Fohjin.DDD.Reporting.csproj" />
+	  <ProjectReference Include="..\Fohjin.DDD.Services\Fohjin.DDD.Services.csproj" />
+	</ItemGroup>
+
 </Project>

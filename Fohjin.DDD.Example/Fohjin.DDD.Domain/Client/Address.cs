@@ -1,18 +1,21 @@
-namespace Fohjin.DDD.Domain.Client
-{
-    public class Address
-    {
-        public string Street { get; private set; }
-        public string StreetNumber { get; private set; }
-        public string PostalCode { get; private set; }
-        public string City { get; private set; }
+using System.Text.Json.Serialization;
 
-        public Address(string street, string streetNumber, string postalCode, string city)
-        {
-            Street = street;
-            StreetNumber = streetNumber;
-            PostalCode = postalCode;
-            City = city;
-        }
+namespace Fohjin.DDD.Domain.Client;
+
+public record Address
+{
+    public string? Street { get; init; }
+    public string? StreetNumber { get; init; }
+    public string? PostalCode { get; init; }
+    public string? City { get; init; }
+
+    [JsonConstructor]
+    public Address() { }
+    public Address(string? street, string? streetNumber, string? postalCode, string? city)
+    {
+        Street = street;
+        StreetNumber = streetNumber;
+        PostalCode = postalCode;
+        City = city;
     }
 }

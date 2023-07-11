@@ -5,6 +5,7 @@ using Fohjin.DDD.Commands;
 using Fohjin.DDD.Domain.Account;
 using Fohjin.DDD.Events.Account;
 using Fohjin.DDD.EventStore;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Test.Fohjin.DDD.Scenarios.Client_wants_to_close_an_account
 {
@@ -21,7 +22,7 @@ namespace Test.Fohjin.DDD.Scenarios.Client_wants_to_close_an_account
             return new CloseAccountCommand(Guid.NewGuid());
         }
 
-        [Then]
+        [TestMethod]
         public void Then_an_account_balance_not_zero_exception_will_be_thrown()
         {
             CaughtException.WillBeOfType<AccountBalanceNotZeroException>();

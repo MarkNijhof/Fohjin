@@ -1,16 +1,11 @@
-using System;
-using System.Linq;
 using Fohjin.DDD.Bus;
 using Fohjin.DDD.Commands;
 using Fohjin.DDD.Reporting;
-using Fohjin.DDD.Reporting.Dto;
+using Fohjin.DDD.Reporting.Dtos;
+using Fohjin.DDD.Services.Models;
 
 namespace Fohjin.DDD.Services
 {
-    public interface IReceiveMoneyTransfers
-    {
-        void Receive(MoneyTransfer moneyTransfer);
-    }
 
     public class MoneyReceiveService : IReceiveMoneyTransfers
     {
@@ -32,10 +27,10 @@ namespace Fohjin.DDD.Services
         {
             try
             {
-                var account = _reportingRepository.GetByExample<AccountReport>(new {moneyTransfer.TargetAccount}).First();
-                _bus.Publish(new ReceiveMoneyTransferCommand(account.Id, moneyTransfer.Ammount, moneyTransfer.SourceAccount));
+                var account = _reportingRepository.GetByExample<AccountReport>(new { moneyTransfer.TargetAccount }).First();
+                _bus.Publish(new ReceiveMoneyTransferCommand(account.Id, moneyTransfer.Amount, moneyTransfer.SourceAccount));
             }
-            catch(Exception)
+            catch (Exception)
             {
                 RequestedAccountDoesNotExist(moneyTransfer);
             }

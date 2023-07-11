@@ -1,10 +1,10 @@
 using Fohjin.DDD.Events.Account;
 using Fohjin.DDD.Reporting;
-using Fohjin.DDD.Reporting.Dto;
+using Fohjin.DDD.Reporting.Dtos;
 
 namespace Fohjin.DDD.EventHandlers
 {
-    public class CashWithdrawnEventHandler : IEventHandler<CashWithdrawnEvent>
+    public class CashWithdrawnEventHandler : EventHandlerBase<CashWithdrawnEvent>
     {
         private readonly IReportingRepository _reportingRepository;
 
@@ -13,10 +13,11 @@ namespace Fohjin.DDD.EventHandlers
             _reportingRepository = reportingRepository;
         }
 
-        public void Execute(CashWithdrawnEvent theEvent)
+        public override Task ExecuteAsync(CashWithdrawnEvent theEvent)
         {
-            _reportingRepository.Update<AccountDetailsReport>(new {theEvent.Balance }, new { Id = theEvent.AggregateId });
-            _reportingRepository.Save(new LedgerReport(theEvent.Id, theEvent.AggregateId, "Withdrawl", theEvent.Amount));
+            _reportingRepository.Update<AccountDetailsReport>(new { theEvent.Balance }, new { Id = theEvent.AggregateId });
+            _reportingRepository.Save(new LedgerReport(theEvent.Id, theEvent.AggregateId, "Withdrawal", theEvent.Amount));
+            return Task.CompletedTask;
         }
     }
 }

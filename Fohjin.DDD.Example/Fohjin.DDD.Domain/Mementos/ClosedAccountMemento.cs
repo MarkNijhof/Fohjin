@@ -1,22 +1,30 @@
-using System;
-using System.Collections.Generic;
 using Fohjin.DDD.Domain.Account;
 using Fohjin.DDD.EventStore.Storage.Memento;
+using System.Text.Json.Serialization;
 
 namespace Fohjin.DDD.Domain.Mementos
 {
-    [Serializable]
-    public class ClosedAccountMemento : IMemento
+    public record ClosedAccountMemento : IMemento
     {
-        internal Guid Id { get; private set; }
-        internal int Version { get; private set; }
-        internal Guid OriginalAccountId { get; private set; }
-        internal Guid ClientId { get; private set; }
-        internal string AccountName { get; private set; }
-        internal string AccountNumber { get; private set; }
-        internal List<KeyValuePair<string, string>> Ledgers { get; private set; }
+        public Guid Id { get; init; }
+        public int Version { get; init; }
+        public Guid OriginalAccountId { get; init; }
+        public Guid ClientId { get; init; }
+        public string? AccountName { get; init; }
+        public string? AccountNumber { get; init; }
+        public List<KeyValuePair<string, string>> Ledgers { get; init; } = new();
 
-        public ClosedAccountMemento(Guid id, int version, Guid originalAccountId, Guid clientId, string accountName, string accountNumber, List<Ledger> ledgers)
+        [JsonConstructor]
+        public ClosedAccountMemento() { }
+        public ClosedAccountMemento(
+            Guid id,
+            int version,
+            Guid originalAccountId,
+            Guid clientId,
+            string? accountName,
+            string? accountNumber,
+            List<Ledger> ledgers
+            )
         {
             Id = id;
             Version = version;

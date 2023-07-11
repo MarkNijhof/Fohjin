@@ -5,6 +5,7 @@ using Fohjin.DDD.Commands;
 using Fohjin.DDD.Domain.Account;
 using Fohjin.DDD.Events.Account;
 using Fohjin.DDD.EventStore;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Test.Fohjin.DDD.Scenarios.Receiving_money_transfer
 {
@@ -21,13 +22,13 @@ namespace Test.Fohjin.DDD.Scenarios.Receiving_money_transfer
             return new ReceiveMoneyTransferCommand(Guid.NewGuid(), 10.0M, "1234567890");
         }
 
-        [Then]
+        [TestMethod]
         public void Then_a_closed_account_exception_will_be_thrown()
         {
             CaughtException.WillBeOfType<ClosedAccountException>();
         }
 
-        [Then]
+        [TestMethod]
         public void Then_the_exception_message_will_be()
         {
             CaughtException.Message.WillBe("The ActiveAcount is closed and no opperations can be executed on it");
